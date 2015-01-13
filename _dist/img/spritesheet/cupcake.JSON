@@ -1,0 +1,2553 @@
+﻿{
+    "frames": {
+        "cupcake10000": {
+            "frame": {
+                "x": 2,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10001": {
+            "frame": {
+                "x": 318,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10002": {
+            "frame": {
+                "x": 634,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10003": {
+            "frame": {
+                "x": 950,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10004": {
+            "frame": {
+                "x": 1266,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10005": {
+            "frame": {
+                "x": 1582,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10006": {
+            "frame": {
+                "x": 2,
+                "y": 185,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10007": {
+            "frame": {
+                "x": 318,
+                "y": 185,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10008": {
+            "frame": {
+                "x": 634,
+                "y": 185,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10009": {
+            "frame": {
+                "x": 950,
+                "y": 185,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10010": {
+            "frame": {
+                "x": 1266,
+                "y": 185,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10011": {
+            "frame": {
+                "x": 1582,
+                "y": 185,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10012": {
+            "frame": {
+                "x": 2,
+                "y": 368,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10013": {
+            "frame": {
+                "x": 318,
+                "y": 368,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10014": {
+            "frame": {
+                "x": 634,
+                "y": 368,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10015": {
+            "frame": {
+                "x": 950,
+                "y": 368,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10016": {
+            "frame": {
+                "x": 1266,
+                "y": 368,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10017": {
+            "frame": {
+                "x": 1582,
+                "y": 368,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10018": {
+            "frame": {
+                "x": 2,
+                "y": 551,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10019": {
+            "frame": {
+                "x": 318,
+                "y": 551,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10020": {
+            "frame": {
+                "x": 634,
+                "y": 551,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10021": {
+            "frame": {
+                "x": 950,
+                "y": 551,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10022": {
+            "frame": {
+                "x": 1266,
+                "y": 551,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10023": {
+            "frame": {
+                "x": 1582,
+                "y": 551,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10024": {
+            "frame": {
+                "x": 2,
+                "y": 734,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10025": {
+            "frame": {
+                "x": 318,
+                "y": 734,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10026": {
+            "frame": {
+                "x": 634,
+                "y": 734,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10027": {
+            "frame": {
+                "x": 950,
+                "y": 734,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10028": {
+            "frame": {
+                "x": 1266,
+                "y": 734,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10029": {
+            "frame": {
+                "x": 1582,
+                "y": 734,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10030": {
+            "frame": {
+                "x": 2,
+                "y": 917,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10031": {
+            "frame": {
+                "x": 318,
+                "y": 917,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10032": {
+            "frame": {
+                "x": 634,
+                "y": 917,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10033": {
+            "frame": {
+                "x": 950,
+                "y": 917,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10034": {
+            "frame": {
+                "x": 1266,
+                "y": 917,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10035": {
+            "frame": {
+                "x": 1582,
+                "y": 917,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10036": {
+            "frame": {
+                "x": 2,
+                "y": 1100,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10037": {
+            "frame": {
+                "x": 318,
+                "y": 1100,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10038": {
+            "frame": {
+                "x": 634,
+                "y": 368,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10039": {
+            "frame": {
+                "x": 634,
+                "y": 1100,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10040": {
+            "frame": {
+                "x": 950,
+                "y": 1100,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10041": {
+            "frame": {
+                "x": 1266,
+                "y": 1100,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10042": {
+            "frame": {
+                "x": 1582,
+                "y": 1100,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10043": {
+            "frame": {
+                "x": 2,
+                "y": 1283,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10044": {
+            "frame": {
+                "x": 318,
+                "y": 1283,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10045": {
+            "frame": {
+                "x": 634,
+                "y": 1283,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10046": {
+            "frame": {
+                "x": 950,
+                "y": 1283,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10047": {
+            "frame": {
+                "x": 1266,
+                "y": 1283,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10048": {
+            "frame": {
+                "x": 1582,
+                "y": 1283,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10049": {
+            "frame": {
+                "x": 2,
+                "y": 1466,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10050": {
+            "frame": {
+                "x": 318,
+                "y": 1466,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10051": {
+            "frame": {
+                "x": 634,
+                "y": 1466,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10052": {
+            "frame": {
+                "x": 950,
+                "y": 1466,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10053": {
+            "frame": {
+                "x": 1266,
+                "y": 1466,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10054": {
+            "frame": {
+                "x": 1582,
+                "y": 1466,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10055": {
+            "frame": {
+                "x": 2,
+                "y": 1649,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10056": {
+            "frame": {
+                "x": 318,
+                "y": 1649,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10057": {
+            "frame": {
+                "x": 634,
+                "y": 1649,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10058": {
+            "frame": {
+                "x": 950,
+                "y": 1649,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10059": {
+            "frame": {
+                "x": 1266,
+                "y": 1649,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10060": {
+            "frame": {
+                "x": 1582,
+                "y": 1649,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10061": {
+            "frame": {
+                "x": 2,
+                "y": 1832,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10062": {
+            "frame": {
+                "x": 318,
+                "y": 1832,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10063": {
+            "frame": {
+                "x": 634,
+                "y": 1832,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10064": {
+            "frame": {
+                "x": 950,
+                "y": 1832,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10065": {
+            "frame": {
+                "x": 1266,
+                "y": 1832,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10066": {
+            "frame": {
+                "x": 1582,
+                "y": 1832,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10067": {
+            "frame": {
+                "x": 2,
+                "y": 2015,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10068": {
+            "frame": {
+                "x": 318,
+                "y": 2015,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10069": {
+            "frame": {
+                "x": 634,
+                "y": 2015,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10070": {
+            "frame": {
+                "x": 950,
+                "y": 2015,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10071": {
+            "frame": {
+                "x": 1266,
+                "y": 2015,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10072": {
+            "frame": {
+                "x": 1582,
+                "y": 2015,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10073": {
+            "frame": {
+                "x": 2,
+                "y": 2198,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10074": {
+            "frame": {
+                "x": 318,
+                "y": 2198,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10075": {
+            "frame": {
+                "x": 634,
+                "y": 2198,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10076": {
+            "frame": {
+                "x": 950,
+                "y": 2198,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10077": {
+            "frame": {
+                "x": 1266,
+                "y": 2198,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10078": {
+            "frame": {
+                "x": 1582,
+                "y": 2198,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10079": {
+            "frame": {
+                "x": 2,
+                "y": 2381,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10080": {
+            "frame": {
+                "x": 318,
+                "y": 2381,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10081": {
+            "frame": {
+                "x": 634,
+                "y": 2381,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10082": {
+            "frame": {
+                "x": 950,
+                "y": 2381,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10083": {
+            "frame": {
+                "x": 1266,
+                "y": 2381,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10084": {
+            "frame": {
+                "x": 1582,
+                "y": 2381,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10085": {
+            "frame": {
+                "x": 2,
+                "y": 2564,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10086": {
+            "frame": {
+                "x": 318,
+                "y": 2564,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10087": {
+            "frame": {
+                "x": 634,
+                "y": 2564,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10088": {
+            "frame": {
+                "x": 950,
+                "y": 2564,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10089": {
+            "frame": {
+                "x": 1266,
+                "y": 2564,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10090": {
+            "frame": {
+                "x": 1582,
+                "y": 2564,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10091": {
+            "frame": {
+                "x": 2,
+                "y": 2747,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10092": {
+            "frame": {
+                "x": 318,
+                "y": 2747,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10093": {
+            "frame": {
+                "x": 634,
+                "y": 2747,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10094": {
+            "frame": {
+                "x": 950,
+                "y": 2747,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10095": {
+            "frame": {
+                "x": 1266,
+                "y": 2747,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10096": {
+            "frame": {
+                "x": 1582,
+                "y": 2747,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10097": {
+            "frame": {
+                "x": 2,
+                "y": 2930,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10098": {
+            "frame": {
+                "x": 318,
+                "y": 2930,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10099": {
+            "frame": {
+                "x": 634,
+                "y": 2930,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10100": {
+            "frame": {
+                "x": 950,
+                "y": 2930,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10101": {
+            "frame": {
+                "x": 1266,
+                "y": 2930,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10102": {
+            "frame": {
+                "x": 1582,
+                "y": 2930,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10103": {
+            "frame": {
+                "x": 2,
+                "y": 3113,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10104": {
+            "frame": {
+                "x": 318,
+                "y": 3113,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10105": {
+            "frame": {
+                "x": 634,
+                "y": 3113,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10106": {
+            "frame": {
+                "x": 950,
+                "y": 3113,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10107": {
+            "frame": {
+                "x": 1266,
+                "y": 3113,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10108": {
+            "frame": {
+                "x": 950,
+                "y": 1832,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10109": {
+            "frame": {
+                "x": 2,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10110": {
+            "frame": {
+                "x": 1582,
+                "y": 3113,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10111": {
+            "frame": {
+                "x": 2,
+                "y": 3296,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10112": {
+            "frame": {
+                "x": 318,
+                "y": 3296,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10113": {
+            "frame": {
+                "x": 634,
+                "y": 3296,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10114": {
+            "frame": {
+                "x": 950,
+                "y": 3296,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10115": {
+            "frame": {
+                "x": 1266,
+                "y": 3296,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10116": {
+            "frame": {
+                "x": 1582,
+                "y": 3296,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10117": {
+            "frame": {
+                "x": 2,
+                "y": 3479,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10118": {
+            "frame": {
+                "x": 318,
+                "y": 3479,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10119": {
+            "frame": {
+                "x": 634,
+                "y": 3479,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10120": {
+            "frame": {
+                "x": 950,
+                "y": 3479,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10121": {
+            "frame": {
+                "x": 1266,
+                "y": 3479,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10122": {
+            "frame": {
+                "x": 1582,
+                "y": 3479,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10123": {
+            "frame": {
+                "x": 2,
+                "y": 3662,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10124": {
+            "frame": {
+                "x": 318,
+                "y": 3662,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10125": {
+            "frame": {
+                "x": 634,
+                "y": 3662,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        },
+        "cupcake10126": {
+            "frame": {
+                "x": 2,
+                "y": 2,
+                "w": 314,
+                "h": 181
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 314,
+                "h": 181
+            },
+            "sourceSize": {
+                "w": 314,
+                "h": 181
+            }
+        }
+    },
+    "meta": {
+        "image": "cupcake.png",
+        "format": "RGBA8888",
+        "size": {
+            "w": 1900,
+            "h": 3900
+        },
+        "scale": "1"
+    }
+}
