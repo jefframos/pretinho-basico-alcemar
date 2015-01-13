@@ -347,8 +347,12 @@ var Application = AbstractApplication.extend({
         this.spritesheet.addAnimation(motionHurt), this.spritesheet.play("idle"), this.screen = screen, 
         this.defaultVel = 50;
     },
+    setTarget: function(pos) {
+        this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? this.velocity.y = -1 : this.target > this.getPosition().y && (this.velocity.y = 1));
+    },
     update: function() {
         this.getPosition().y > windowHeight && this.velocity.y > 0 ? this.velocity.y = 0 : this.getPosition().y < 0 && this.velocity.y < 0 && (this.velocity.y = 0), 
+        pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0), 
         this._super(), this.getPosition().x > windowWidth + 50 && this.preKill();
     },
     destroy: function() {
@@ -373,9 +377,24 @@ var Application = AbstractApplication.extend({
         var assetsToLoader = [ "_dist/img/ease.png", "_dist/img/UI/simpleButtonOver.png", "_dist/img/spritesheet/red/red.json", "_dist/img/UI/simpleButtonUp.png" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded(), this.textAcc = new PIXI.Text("Acc", {
-            font: "20px Arial"
-        }), this.addChild(this.textAcc), this.textAcc.position.y = 50, this.textAcc.position.x = 50, 
-        this.accelerometer = {};
+            font: "15px Arial"
+        }), this.addChild(this.textAcc), this.textAcc.position.y = 20, this.textAcc.position.x = windowWidth - 150, 
+        this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), this.hitTouch.setInteractive(!0), 
+        this.hitTouch.beginFill(0), this.hitTouch.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.hitTouch), this.hitTouch.alpha = 0, this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, .7 * windowWidth, windowHeight), 
+        this.hitTouchAttack = new PIXI.Graphics(), this.hitTouchAttack.setInteractive(!0), 
+        this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight);
+        var self = this;
+        this.hitTouchAttack.touchstart = function() {
+            self.textAcc.setText("TOUCH START!");
+        }, this.hitTouchAttack.touchend = function() {
+            self.red.spritesheet.play("hurt"), self.textAcc.setText("TOUCH END!");
+        }, this.hitTouch.touchstart = function(touchData) {
+            self.red && self.red.setTarget(touchData.global.y);
+        }, this.hitTouch.touchend = function() {}, this.hitTouch.touchmove = function(touchData) {
+            self.red && self.red.setTarget(touchData.global.y), console.log(touchData);
+        };
     },
     onProgress: function() {
         this._super();
@@ -386,16 +405,16 @@ var Application = AbstractApplication.extend({
     initApplication: function() {
         this.easeImg = new SimpleSprite("_dist/img/ease.png"), this.addChild(this.easeImg), 
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50), 
-        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(windowWidth / 2, windowHeight / 2);
+        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(windowWidth / 2, .1 * windowHeight);
         var self = this;
         this.buttonHurt = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.buttonHurt.build(130), this.buttonHurt.setPosition(50, windowHeight / 2 + 30), 
+        this.buttonHurt.build(130), this.buttonHurt.setPosition(50, .2 * windowHeight), 
         this.addChild(this.buttonHurt), this.buttonHurt.addLabel(new PIXI.Text("Hurt", {
             font: "20px Arial"
         }), 5, 5), this.buttonHurt.clickCallback = function() {
             self.red.spritesheet.play("hurt");
         }, this.add = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.add.build(130), this.add.setPosition(50, windowHeight / 2 + 90), this.addChild(this.add), 
+        this.add.build(130), this.add.setPosition(50, .4 * windowHeight), this.addChild(this.add), 
         this.add.addLabel(new PIXI.Text("Add Entity", {
             font: "20px Arial"
         }), 5, 5), this.add.clickCallback = function() {
@@ -403,13 +422,13 @@ var Application = AbstractApplication.extend({
             red.build(), red.setPosition(0, windowHeight * Math.random()), self.addChild(red), 
             red.velocity.x = 1;
         }, this.btnBenchmark = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.btnBenchmark.build(130), this.btnBenchmark.setPosition(50, windowHeight / 2 + 150), 
+        this.btnBenchmark.build(130), this.btnBenchmark.setPosition(50, .6 * windowHeight), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Benchmark", {
             font: "20px Arial"
         }), 5, 5), this.btnBenchmark.clickCallback = function() {
             self.benchmark();
         }, possibleFullscreen() && (this.fullScreen = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.fullScreen.build(130), this.fullScreen.setPosition(50, windowHeight / 2 + 210), 
+        this.fullScreen.build(130), this.fullScreen.setPosition(50, .8 * windowHeight), 
         this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full Screen", {
             font: "20px Arial"
         }), 5, 5), this.fullScreen.clickCallback = function() {

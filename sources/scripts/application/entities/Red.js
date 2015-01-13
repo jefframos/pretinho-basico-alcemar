@@ -26,17 +26,29 @@ var Red = SpritesheetEntity.extend({
 		this.defaultVel = 50;
 
 	},
+	setTarget:function(pos){
+		this.target = pos;
+		if(pointDistance(0,this.getPosition().y,0, this.target) < 4){
+			return;
+		}
+		if(this.target < this.getPosition().y){
+			this.velocity.y = -1;
+		}else if(this.target > this.getPosition().y){
+			this.velocity.y = 1;
+		}
+	},
 	update:function(){
 		if(this.getPosition().y > windowHeight && this.velocity.y > 0){
 			this.velocity.y = 0;
 		}else if(this.getPosition().y < 0 && this.velocity.y < 0){
 			this.velocity.y = 0;
 		}
+
+		if(pointDistance(0,this.getPosition().y,0, this.target) < 4){
+			this.velocity.y = 0;
+		}
+
 		this._super();
-		// if(this.screen && this.screen.acelerometer){
-		// 	// alert(screen.acelerometer);
-		// 	this.velocity.y = this.defaultVel * this.screen.acelerometer.y;
-		// }
 		
 		if(this.getPosition().x > windowWidth + 50){
 			this.preKill();
