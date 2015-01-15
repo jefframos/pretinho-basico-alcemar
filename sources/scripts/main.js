@@ -17,6 +17,7 @@ if(testMobile()){
 	realWindowWidth = windowWidth;
 	realWindowHeight = windowHeight;
 }
+// alert(window.innerHeight+' - '+ screen.width);
 var windowWidthVar = window.innerWidth,
 windowHeightVar = window.innerHeight;
 var renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, false, true);

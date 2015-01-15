@@ -9,3 +9,8 @@ function degreesToRadians(deg) {
 function radiansToDegrees(rad) {
 	return rad / (Math.PI / 180);
 }
+
+function scaleConverter(current, max, scale) {
+	console.log(current, max, scale);
+	return (max * scale) / current;
+}

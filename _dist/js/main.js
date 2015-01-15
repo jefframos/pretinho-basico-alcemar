@@ -1,4 +1,4 @@
-/*! jefframos 13-01-2015 */
+/*! jefframos 15-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -75,6 +75,10 @@ function degreesToRadians(deg) {
 
 function radiansToDegrees(rad) {
     return rad / (Math.PI / 180);
+}
+
+function scaleConverter(current, max, scale) {
+    return console.log(current, max, scale), max * scale / current;
 }
 
 function testMobile() {
@@ -293,8 +297,8 @@ var Application = AbstractApplication.extend({
         } else this.onAssetsLoaded();
     },
     initApplication: function() {
-        this.waitScreen = new WaitScreen("Main"), this.screenManager.addScreen(this.waitScreen), 
-        this.screenManager.change("Main");
+        this.waitScreen = new WaitScreen("Wait"), this.waitScreen = new GameScreen("Game"), 
+        this.screenManager.addScreen(this.waitScreen), this.screenManager.change("Game");
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -302,6 +306,79 @@ var Application = AbstractApplication.extend({
     show: function() {},
     hide: function() {},
     destroy: function() {}
+}), BarView = Class.extend({
+    init: function(width, height, maxValue, currentValue) {
+        this.maxValue = maxValue, this.text = "default", this.currentValue = currentValue, 
+        this.container = new PIXI.DisplayObjectContainer(), this.width = width, this.height = height, 
+        this.backShape = new PIXI.Graphics(), this.backShape.beginFill(16711680), this.backShape.drawRect(0, 0, width, height), 
+        this.container.addChild(this.backShape), this.frontShape = new PIXI.Graphics(), 
+        this.frontShape.beginFill(65280), this.frontShape.drawRect(0, 0, width, height), 
+        this.container.addChild(this.frontShape), this.frontShape.scale.x = this.currentValue / this.maxValue;
+    },
+    setFrontColor: function(color) {
+        this.frontShape && this.container.removeChild(this.frontShape), this.frontShape = new PIXI.Graphics(), 
+        this.frontShape.beginFill(color), this.frontShape.drawRect(0, 0, this.width, this.height), 
+        this.container.addChild(this.frontShape);
+    },
+    setBackColor: function(color) {
+        this.backShape && this.container.removeChild(this.backShape), this.backShape = new PIXI.Graphics(), 
+        this.backShape.beginFill(color), this.backShape.drawRect(0, 0, this.width, this.height), 
+        this.container.addChildAt(this.backShape, 0);
+    },
+    setText: function(text) {
+        this.text !== text && (this.lifebar ? this.lifebar.setText(text) : (this.lifebar = new PIXI.Text(text, {
+            fill: "white",
+            align: "center",
+            font: "10px Arial"
+        }), this.container.addChild(this.lifebar)));
+    },
+    updateBar: function(currentValue, maxValue) {
+        (this.currentValue !== currentValue || this.maxValue !== maxValue && currentValue >= 0) && (this.currentValue = currentValue, 
+        this.maxValue = maxValue, this.frontShape.scale.x = this.currentValue / this.maxValue, 
+        this.frontShape.scale.x < 0 && (this.frontShape.scale.x = 0));
+    },
+    getContent: function() {
+        return this.container;
+    },
+    setPosition: function(x, y) {
+        this.container.position.x = x, this.container.position.y = y;
+    }
+}), Bullet = Entity.extend({
+    init: function(vel, timeLive) {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 40, this.width = 1, 
+        this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
+        this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
+        this.power = 1, this.defaultVelocity = 1, this.imgSource = "red0001";
+    },
+    build: function() {
+        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0;
+    },
+    update: function() {
+        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width;
+    },
+    collide: function(arrayCollide) {
+        this.collidable && arrayCollide[0].type === this.target && (this.preKill(), arrayCollide[0].hurt(this.power, this.fireType));
+    },
+    preKill: function() {
+        if (this.collidable) {
+            var self = this;
+            this.updateable = !1, this.collidable = !1, this.getContent().tint = 16711680, TweenLite.to(this.getContent().scale, .3, {
+                x: .2,
+                y: .2,
+                onComplete: function() {
+                    self.kill = !0;
+                }
+            });
+        }
+    },
+    pointDistance: function(x, y, x0, y0) {
+        return Math.sqrt((x -= x0) * x + (y -= y0) * y);
+    },
+    touch: function(collection) {
+        collection.object && "environment" === collection.object.type && collection.object.fireCollide(), 
+        this.preKill();
+    }
 }), Cupcake = SpritesheetEntity.extend({
     init: function() {
         this._super(!0);
@@ -365,6 +442,105 @@ var Application = AbstractApplication.extend({
     build: function() {},
     destroy: function() {},
     serialize: function() {}
+}), GameScreen = AbstractScreen.extend({
+    init: function(label) {
+        this._super(label);
+    },
+    destroy: function() {
+        this._super();
+    },
+    build: function() {
+        this._super();
+        var assetsToLoader = [ "_dist/img/ease.png", "_dist/img/UI/simpleButtonOver.png", "_dist/img/spritesheet/red/red.json", "_dist/img/UI/simpleButtonUp.png" ];
+        assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
+        this.initLoad()) : this.onAssetsLoaded(), this.textAcc = new PIXI.Text("Acc", {
+            font: "15px Arial"
+        }), this.addChild(this.textAcc), this.textAcc.position.y = 20, this.textAcc.position.x = windowWidth - 150, 
+        this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), this.hitTouch.setInteractive(!0), 
+        this.hitTouch.beginFill(0), this.hitTouch.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.hitTouch), this.hitTouch.alpha = 0, this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, .7 * windowWidth, windowHeight), 
+        this.hitTouchAttack = new PIXI.Graphics(), this.hitTouchAttack.setInteractive(!0), 
+        this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight), 
+        this.playerModel = {
+            bulletVel: 5,
+            range: 100,
+            maxEnergy: 100,
+            maxBulletEnergy: 100,
+            currentEnergy: 100,
+            currentBulletEnergy: 100,
+            recoverEnergy: .5,
+            recoverBulletEnergy: .5,
+            bulletCoast: .3,
+            chargeBullet: 1,
+            currentBulletForce: 0
+        };
+        var self = this;
+        this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
+            self.textAcc.setText("TOUCH START!"), self.onBulletTouch = !0;
+        }, this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function() {
+            self.textAcc.setText("TOUCH END!"), self.onBulletTouch = !1;
+            var fireForce = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy * self.playerModel.range;
+            if (self.playerModel.currentBulletForce = 0, !(self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast)) {
+                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce;
+                self.textAcc.setText(timeLive);
+                var bullet = new Bullet({
+                    x: self.playerModel.bulletVel,
+                    y: 0
+                }, timeLive);
+                bullet.build(), bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y), 
+                self.addChild(bullet), self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
+                self.playerModel.currentBulletEnergy < 0 && (self.playerModel.currentBulletEnergy = 0);
+            }
+        }, this.hitTouch.touchstart = function(touchData) {
+            self.red && self.red.setTarget(touchData.global.y);
+        }, this.hitTouch.touchend = function() {}, this.hitTouch.touchmove = function(touchData) {
+            self.red && self.red.setTarget(touchData.global.y);
+        }, this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
+        this.bulletBar.setPosition(windowWidth / 2 - this.bulletBar.width / 2, .01 * windowHeight);
+    },
+    onProgress: function() {
+        this._super();
+    },
+    onAssetsLoaded: function() {
+        this.initApplication();
+    },
+    update: function() {
+        this._super(), this.onBulletTouch && this.playerModel.currentBulletEnergy > 0 ? (this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet, 
+        this.playerModel.currentBulletForce += this.playerModel.chargeBullet) : this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
+        this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy);
+    },
+    initApplication: function() {
+        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(.05 * windowWidth + this.red.getContent().width / 2, windowHeight / 2);
+        var scale = scaleConverter(this.red.getContent().height, windowHeight, .3);
+        this.red.setScale(scale, scale);
+        var self = this;
+        this.btnBenchmark = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
+        this.btnBenchmark.build(40, 20), this.btnBenchmark.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 10), 
+        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Bench", {
+            font: "10px Arial"
+        }), 5, 5), this.btnBenchmark.clickCallback = function() {
+            self.benchmark();
+        }, possibleFullscreen() && (this.fullScreen = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
+        this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
+        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
+            font: "10px Arial"
+        }), 5, 5), this.fullScreen.clickCallback = function() {
+            fullscreen();
+        }), this.initBench = !1;
+    },
+    benchmark: function() {
+        function addEntity() {
+            var red = new Red();
+            red.build(), red.setPosition(-20, windowHeight * Math.random()), self.addChild(red), 
+            red.velocity.x = 1, self.accBench++, self.accBench > 300 && (self.initBench = !1, 
+            clearInterval(self.benchInterval));
+        }
+        if (!this.initBench) {
+            var self = this;
+            this.initBench = !0, this.accBench = 0, this.benchInterval = setInterval(addEntity, 50);
+        }
+    }
 }), WaitScreen = AbstractScreen.extend({
     init: function(label) {
         this._super(label);
@@ -405,32 +581,18 @@ var Application = AbstractApplication.extend({
     initApplication: function() {
         this.easeImg = new SimpleSprite("_dist/img/ease.png"), this.addChild(this.easeImg), 
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50), 
-        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(windowWidth / 2, .1 * windowHeight);
+        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(.05 * windowWidth + this.red.width / 2, windowHeight / 2);
         var self = this;
-        this.buttonHurt = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.buttonHurt.build(130), this.buttonHurt.setPosition(50, .2 * windowHeight), 
-        this.addChild(this.buttonHurt), this.buttonHurt.addLabel(new PIXI.Text("Hurt", {
-            font: "20px Arial"
-        }), 5, 5), this.buttonHurt.clickCallback = function() {
-            self.red.spritesheet.play("hurt");
-        }, this.add = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.add.build(130), this.add.setPosition(50, .4 * windowHeight), this.addChild(this.add), 
-        this.add.addLabel(new PIXI.Text("Add Entity", {
-            font: "20px Arial"
-        }), 5, 5), this.add.clickCallback = function() {
-            var red = new Red();
-            red.build(), red.setPosition(0, windowHeight * Math.random()), self.addChild(red), 
-            red.velocity.x = 1;
-        }, this.btnBenchmark = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.btnBenchmark.build(130), this.btnBenchmark.setPosition(50, .6 * windowHeight), 
-        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Benchmark", {
-            font: "20px Arial"
+        this.btnBenchmark = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
+        this.btnBenchmark.build(40, 20), this.btnBenchmark.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 10), 
+        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Bench", {
+            font: "10px Arial"
         }), 5, 5), this.btnBenchmark.clickCallback = function() {
             self.benchmark();
         }, possibleFullscreen() && (this.fullScreen = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.fullScreen.build(130), this.fullScreen.setPosition(50, .8 * windowHeight), 
-        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full Screen", {
-            font: "20px Arial"
+        this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
+        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
+            font: "10px Arial"
         }), 5, 5), this.fullScreen.clickCallback = function() {
             fullscreen();
         }), this.initBench = !1;

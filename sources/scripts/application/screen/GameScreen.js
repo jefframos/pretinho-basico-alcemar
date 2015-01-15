@@ -1,5 +1,5 @@
 /*jshint undef:false */
-var WaitScreen = AbstractScreen.extend({
+var GameScreen = AbstractScreen.extend({
     init: function (label) {
         this._super(label);
     },
@@ -45,16 +45,48 @@ var WaitScreen = AbstractScreen.extend({
         this.hitTouchAttack.alpha = 0;
         this.hitTouchAttack.hitArea = new PIXI.Rectangle(windowWidth * 0.3, 0, windowWidth, windowHeight);
         
+
+        this.playerModel = {
+            bulletVel:5,
+            range:100,
+            maxEnergy:100,
+            maxBulletEnergy:100,
+            currentEnergy:100,
+            currentBulletEnergy:100,
+            recoverEnergy:0.5,
+            recoverBulletEnergy:0.5,
+            bulletCoast:0.3,
+            chargeBullet:1,
+            currentBulletForce:0
+        };
+
         var self = this;
 
 
-        this.hitTouchAttack.touchstart = function(touchData){
+        this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function(touchData){
             self.textAcc.setText('TOUCH START!');
+            self.onBulletTouch = true;
         };
          
-        this.hitTouchAttack.touchend = function(touchData){
-            self.red.spritesheet.play('hurt');
+        this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function(touchData){
+            // self.red.spritesheet.play('hurt');
             self.textAcc.setText('TOUCH END!');
+            self.onBulletTouch = false;
+            var fireForce = (self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy) * self.playerModel.range;
+            self.playerModel.currentBulletForce = 0;
+            if(self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast){
+                return;
+            }
+            var timeLive = (self.red.getContent().width/ self.playerModel.bulletVel) + (fireForce);
+            self.textAcc.setText(timeLive);
+            var bullet = new Bullet({x:self.playerModel.bulletVel, y:0}, timeLive);
+            bullet.build();
+            bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y);
+            self.addChild(bullet);
+            self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast;
+            if(self.playerModel.currentBulletEnergy < 0){
+                self.playerModel.currentBulletEnergy = 0;
+            }
         };
 
 
@@ -74,9 +106,11 @@ var WaitScreen = AbstractScreen.extend({
             if(self.red){
                 self.red.setTarget(touchData.global.y);
             }
-            console.log(touchData);
         };
-            
+
+        this.bulletBar = new BarView(windowWidth * 0.1, 10, 1, 1);
+        this.addChild(this.bulletBar);
+        this.bulletBar.setPosition(windowWidth/2 - this.bulletBar.width / 2, windowHeight * 0.01);
     },
     onProgress:function(){
         this._super();
@@ -85,16 +119,23 @@ var WaitScreen = AbstractScreen.extend({
     {
         this.initApplication();
     },
+    update:function() {
+        this._super();
+        if(this.onBulletTouch && this.playerModel.currentBulletEnergy> 0){
+            this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet;
+            this.playerModel.currentBulletForce += this.playerModel.chargeBullet;
+        }else if(this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
+            this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy;
+        }
+        this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy);
+    },
     initApplication:function(){
-        this.easeImg = new SimpleSprite('_dist/img/ease.png');
-        this.addChild(this.easeImg);
-        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
-
         this.red = new Red();
         this.red.build(this);
         this.addChild(this.red);
-        this.red.setPosition(windowWidth * 0.05 + this.red.width / 2,windowHeight /2);
-
+        this.red.setPosition(windowWidth * 0.05 +this.red.getContent().width/2,windowHeight /2);
+        var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.3);
+        this.red.setScale( scale,scale);
         var self = this;
         // this.buttonHurt = new DefaultButton('_dist/img/UI/simpleButtonUp.png', '_dist/img/UI/simpleButtonOver.png');
         // this.buttonHurt.build(130);
