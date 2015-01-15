@@ -36,6 +36,9 @@ var Bullet = Entity.extend({
             this.preKill();
         }
         this.range = this.width;
+        if(this.fall){
+            this.velocity.y -= 0.1;
+        }
     },
     collide:function(arrayCollide){
         // console.log('fireCollide', arrayCollide[0].type);
@@ -53,11 +56,12 @@ var Bullet = Entity.extend({
         //this._super();
         if(this.collidable){
             var self = this;
-            this.updateable = false;
+            this.updateable = true;
             this.collidable = false;
-            this.getContent().tint = 0xff0000;
-
-            TweenLite.to(this.getContent().scale, 0.3, {x:0.2, y:0.2, onComplete:function(){self.kill = true;}});
+            this.fall = true;
+            // this.getContent().tint = 0xff0000;
+            //var scl = this.getContent().scale.x;
+            //TweenLite.to(this.getContent().scale, 0.3, {x:scl * , y:1, onComplete:function(){self.kill = true;}});
 
         }
     },

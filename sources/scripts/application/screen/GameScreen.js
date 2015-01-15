@@ -48,7 +48,7 @@ var GameScreen = AbstractScreen.extend({
 
         this.playerModel = {
             bulletVel:5,
-            range:100,
+            range:40,
             maxEnergy:100,
             maxBulletEnergy:100,
             currentEnergy:100,
@@ -64,26 +64,37 @@ var GameScreen = AbstractScreen.extend({
 
 
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function(touchData){
+            if(self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast){
+                return;
+            }
             self.textAcc.setText('TOUCH START!');
+            self.touchstart = true;
             self.onBulletTouch = true;
         };
          
         this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function(touchData){
             // self.red.spritesheet.play('hurt');
-            self.textAcc.setText('TOUCH END!');
-            self.onBulletTouch = false;
-            var fireForce = (self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy) * self.playerModel.range;
-            self.playerModel.currentBulletForce = 0;
-            if(self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast){
+            if(!self.touchstart){
                 return;
             }
+            self.touchstart = false;
+
+            self.textAcc.setText('TOUCH END!');
+            self.onBulletTouch = false;
+            var percent = (self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy);
+            var fireForce = percent * self.playerModel.range;
+            self.playerModel.currentBulletForce = 0;
             var timeLive = (self.red.getContent().width/ self.playerModel.bulletVel) + (fireForce);
-            self.textAcc.setText(timeLive);
-            var bullet = new Bullet({x:self.playerModel.bulletVel, y:0}, timeLive);
+
+            var bullet = new Bullet({x:self.playerModel.bulletVel + self.playerModel.bulletVel*percent, y:0}, timeLive);
             bullet.build();
             bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y);
             self.addChild(bullet);
+
+            var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, 0.5);
+            bullet.setScale(scaleBullet , scaleBullet);
             self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast;
+
             if(self.playerModel.currentBulletEnergy < 0){
                 self.playerModel.currentBulletEnergy = 0;
             }

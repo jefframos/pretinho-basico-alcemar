@@ -355,21 +355,15 @@ var Application = AbstractApplication.extend({
         this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0;
     },
     update: function() {
-        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width;
+        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width, 
+        this.fall && (this.velocity.y -= .1);
     },
     collide: function(arrayCollide) {
         this.collidable && arrayCollide[0].type === this.target && (this.preKill(), arrayCollide[0].hurt(this.power, this.fireType));
     },
     preKill: function() {
         if (this.collidable) {
-            var self = this;
-            this.updateable = !1, this.collidable = !1, this.getContent().tint = 16711680, TweenLite.to(this.getContent().scale, .3, {
-                x: .2,
-                y: .2,
-                onComplete: function() {
-                    self.kill = !0;
-                }
-            });
+            this.updateable = !0, this.collidable = !1, this.fall = !0;
         }
     },
     pointDistance: function(x, y, x0, y0) {
@@ -464,7 +458,7 @@ var Application = AbstractApplication.extend({
         this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight), 
         this.playerModel = {
             bulletVel: 5,
-            range: 100,
+            range: 40,
             maxEnergy: 100,
             maxBulletEnergy: 100,
             currentEnergy: 100,
@@ -477,19 +471,21 @@ var Application = AbstractApplication.extend({
         };
         var self = this;
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
-            self.textAcc.setText("TOUCH START!"), self.onBulletTouch = !0;
+            self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.textAcc.setText("TOUCH START!"), 
+            self.touchstart = !0, self.onBulletTouch = !0);
         }, this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function() {
-            self.textAcc.setText("TOUCH END!"), self.onBulletTouch = !1;
-            var fireForce = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy * self.playerModel.range;
-            if (self.playerModel.currentBulletForce = 0, !(self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast)) {
-                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce;
-                self.textAcc.setText(timeLive);
-                var bullet = new Bullet({
-                    x: self.playerModel.bulletVel,
+            if (self.touchstart) {
+                self.touchstart = !1, self.textAcc.setText("TOUCH END!"), self.onBulletTouch = !1;
+                var percent = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy, fireForce = percent * self.playerModel.range;
+                self.playerModel.currentBulletForce = 0;
+                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, bullet = new Bullet({
+                    x: self.playerModel.bulletVel + self.playerModel.bulletVel * percent,
                     y: 0
                 }, timeLive);
                 bullet.build(), bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y), 
-                self.addChild(bullet), self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
+                self.addChild(bullet);
+                var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, .5);
+                bullet.setScale(scaleBullet, scaleBullet), self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
                 self.playerModel.currentBulletEnergy < 0 && (self.playerModel.currentBulletEnergy = 0);
             }
         }, this.hitTouch.touchstart = function(touchData) {
