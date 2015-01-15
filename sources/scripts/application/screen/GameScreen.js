@@ -119,9 +119,15 @@ var GameScreen = AbstractScreen.extend({
             }
         };
 
+        var posHelper =  windowHeight * 0.05;
         this.bulletBar = new BarView(windowWidth * 0.1, 10, 1, 1);
         this.addChild(this.bulletBar);
-        this.bulletBar.setPosition(windowWidth/2 - this.bulletBar.width / 2, windowHeight * 0.01);
+        this.bulletBar.setPosition(posHelper, posHelper);
+
+        this.energyBar = new BarView(windowWidth * 0.1, 10, 1, 1);
+        this.addChild(this.energyBar);
+        this.energyBar.setPosition(posHelper * 2 + this.bulletBar.width, posHelper);
+        console.log(Math.pow(posHelper, 2), posHelper);
     },
     onProgress:function(){
         this._super();

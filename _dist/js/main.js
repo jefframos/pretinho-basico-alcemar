@@ -492,8 +492,12 @@ var Application = AbstractApplication.extend({
             self.red && self.red.setTarget(touchData.global.y);
         }, this.hitTouch.touchend = function() {}, this.hitTouch.touchmove = function(touchData) {
             self.red && self.red.setTarget(touchData.global.y);
-        }, this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
-        this.bulletBar.setPosition(windowWidth / 2 - this.bulletBar.width / 2, .01 * windowHeight);
+        };
+        var posHelper = .05 * windowHeight;
+        this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
+        this.bulletBar.setPosition(posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
+        this.addChild(this.energyBar), this.energyBar.setPosition(2 * posHelper + this.bulletBar.width, posHelper), 
+        console.log(Math.pow(posHelper, 2), posHelper);
     },
     onProgress: function() {
         this._super();
