@@ -11,10 +11,10 @@ var GameScreen = AbstractScreen.extend({
 
         
 
-        var assetsToLoader = ['_dist/img/ease.png',
-        '_dist/img/UI/simpleButtonOver.png',
-        '_dist/img/spritesheet/red/red.json',
-        '_dist/img/UI/simpleButtonUp.png'];
+        var assetsToLoader = ['dist/img/ease.png',
+        'dist/img/UI/simpleButtonOver.png',
+        'dist/img/spritesheet/red/red.json',
+        'dist/img/UI/simpleButtonUp.png'];
 
 
         if(assetsToLoader.length > 0){
@@ -154,7 +154,7 @@ var GameScreen = AbstractScreen.extend({
         var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.3);
         this.red.setScale( scale,scale);
         var self = this;
-        // this.buttonHurt = new DefaultButton('_dist/img/UI/simpleButtonUp.png', '_dist/img/UI/simpleButtonOver.png');
+        // this.buttonHurt = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
         // this.buttonHurt.build(130);
         // this.buttonHurt.setPosition( 50,windowHeight * 0.2);
         // this.addChild(this.buttonHurt);
@@ -163,7 +163,7 @@ var GameScreen = AbstractScreen.extend({
         //     self.red.spritesheet.play('hurt');
         // };
 
-        // this.add = new DefaultButton('_dist/img/UI/simpleButtonUp.png', '_dist/img/UI/simpleButtonOver.png');
+        // this.add = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
         // this.add.build(130);
         // this.add.setPosition( 50,windowHeight * 0.4);
         // this.addChild(this.add);
@@ -177,7 +177,7 @@ var GameScreen = AbstractScreen.extend({
         //     // fullscreen();
         // };
 
-        this.btnBenchmark = new DefaultButton('_dist/img/UI/simpleButtonUp.png', '_dist/img/UI/simpleButtonOver.png');
+        this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
         this.btnBenchmark.build(40, 20);
         this.btnBenchmark.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 10);
         this.addChild(this.btnBenchmark);
@@ -187,7 +187,7 @@ var GameScreen = AbstractScreen.extend({
         };
 
         if(possibleFullscreen()){
-            this.fullScreen = new DefaultButton('_dist/img/UI/simpleButtonUp.png', '_dist/img/UI/simpleButtonOver.png');
+            this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
             this.fullScreen.build(40, 20);
             this.fullScreen.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 35);
             this.addChild(this.fullScreen);

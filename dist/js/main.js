@@ -1,4 +1,4 @@
-/*! jefframos 15-01-2015 */
+/*! jefframos 16-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -445,7 +445,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "_dist/img/ease.png", "_dist/img/UI/simpleButtonOver.png", "_dist/img/spritesheet/red/red.json", "_dist/img/UI/simpleButtonUp.png" ];
+        var assetsToLoader = [ "dist/img/ease.png", "dist/img/UI/simpleButtonOver.png", "dist/img/spritesheet/red/red.json", "dist/img/UI/simpleButtonUp.png" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded(), this.textAcc = new PIXI.Text("Acc", {
             font: "15px Arial"
@@ -515,13 +515,13 @@ var Application = AbstractApplication.extend({
         var scale = scaleConverter(this.red.getContent().height, windowHeight, .3);
         this.red.setScale(scale, scale);
         var self = this;
-        this.btnBenchmark = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
+        this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.btnBenchmark.build(40, 20), this.btnBenchmark.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 10), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Bench", {
             font: "10px Arial"
         }), 5, 5), this.btnBenchmark.clickCallback = function() {
             self.benchmark();
-        }, possibleFullscreen() && (this.fullScreen = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
+        }, possibleFullscreen() && (this.fullScreen = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
         this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
             font: "10px Arial"
@@ -550,7 +550,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "_dist/img/ease.png", "_dist/img/UI/simpleButtonOver.png", "_dist/img/spritesheet/red/red.json", "_dist/img/UI/simpleButtonUp.png" ];
+        var assetsToLoader = [ "dist/img/ease.png", "dist/img/UI/simpleButtonOver.png", "dist/img/spritesheet/red/red.json", "dist/img/UI/simpleButtonUp.png" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded(), this.textAcc = new PIXI.Text("Acc", {
             font: "15px Arial"

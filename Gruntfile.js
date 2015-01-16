@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         // global variables
         globalConfig: {
             src: 'sources/',
-            dest: '_dist/'
+            dest: 'dist/'
         },
 
         // js compression and concatenation

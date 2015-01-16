@@ -11,10 +11,10 @@ var WaitScreen = AbstractScreen.extend({
 
         
 
-        var assetsToLoader = ['_dist/img/ease.png',
-        '_dist/img/UI/simpleButtonOver.png',
-        '_dist/img/spritesheet/red/red.json',
-        '_dist/img/UI/simpleButtonUp.png'];
+        var assetsToLoader = ['dist/img/ease.png',
+        'dist/img/UI/simpleButtonOver.png',
+        'dist/img/spritesheet/red/red.json',
+        'dist/img/UI/simpleButtonUp.png'];
 
 
         if(assetsToLoader.length > 0){
