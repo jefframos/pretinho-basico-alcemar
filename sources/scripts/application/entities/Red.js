@@ -10,20 +10,22 @@ var Red = SpritesheetEntity.extend({
 
 		var self = this;
 		var motionIdle = new SpritesheetAnimation();
-		motionIdle.build('idle', this.getFramesByRange('red0', 1, 26), 1, true, null);
+		motionIdle.build('idle', this.getFramesByRange('piangers0', 2, 8), 1, true, null);
 		
 		var motionHurt = new SpritesheetAnimation();
-		motionHurt.build('hurt', this.getFramesByRange('red0', 28, 43), 1, false, function(){
+		motionHurt.build('hurt', this.getFramesByRange('piangers0', 2, 2), 1, false, function(){
 			self.spritesheet.play('idle');
 		});
 
 		this.spritesheet = new Spritesheet();
 		this.spritesheet.addAnimation(motionIdle);
-		this.spritesheet.addAnimation(motionHurt);
+		// this.spritesheet.addAnimation(motionHurt);
 		this.spritesheet.play('idle');
 
 		this.screen = screen;
-		this.defaultVel = 50;
+		this.defaultVel = 50 * gameScale;
+
+		this.upVel = 1 * gameScale;
 
 	},
 	setTarget:function(pos){
@@ -32,9 +34,9 @@ var Red = SpritesheetEntity.extend({
 			return;
 		}
 		if(this.target < this.getPosition().y){
-			this.velocity.y = -1;
+			this.velocity.y = -this.upVel;
 		}else if(this.target > this.getPosition().y){
-			this.velocity.y = 1;
+			this.velocity.y = this.upVel;
 		}
 	},
 	update:function(){
@@ -49,6 +51,10 @@ var Red = SpritesheetEntity.extend({
 		}
 
 		this._super();
+
+		if(this.getContent().texture){
+			this.getContent().texture.rotation = this.velocity.y;
+		}
 		
 		if(this.getPosition().x > windowWidth + 50){
 			this.preKill();

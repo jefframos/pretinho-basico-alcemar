@@ -9,10 +9,14 @@ windowHeight = 600;
 
 var realWindowWidth = 820,
 realWindowHeight = 600;
-
+var gameScale = 1.8;
 if(testMobile()){
-	windowWidth = window.innerWidth;//640;
-	windowHeight = window.innerHeight;//960;
+	windowWidth = window.innerWidth * gameScale;//640;
+	windowHeight = window.innerHeight * gameScale;//960;
+// 
+	// alert(windowWidth +' - '+windowHeight);
+	// windowWidth = window.screen.height;//640;
+	// windowHeight = window.screen.width;//960;
 
 	realWindowWidth = windowWidth;
 	realWindowHeight = windowHeight;
@@ -72,7 +76,8 @@ function update() {
 
 var initialize = function(){
 	// //inicia o game e da um build
-	// PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST;//2;
+	PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST;//2;
+	// PIXI.Texture.SCALE_MODE.DEFAULT = PIXI.Texture.SCALE_MODE.NEAREST;
 	requestAnimFrame(update);
 };
 

@@ -1,4 +1,4 @@
-/*! jefframos 16-01-2015 */
+/*! jefframos 19-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -343,12 +343,42 @@ var Application = AbstractApplication.extend({
     setPosition: function(x, y) {
         this.container.position.x = x, this.container.position.y = y;
     }
-}), Bullet = Entity.extend({
+}), Bird = Entity.extend({
     init: function(vel, timeLive) {
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 40, this.width = 1, 
         this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
         this.power = 1, this.defaultVelocity = 1, this.imgSource = "red0001";
+    },
+    build: function() {
+        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0;
+    },
+    update: function() {
+        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width, 
+        this.fall && (this.velocity.y -= .1);
+    },
+    collide: function(arrayCollide) {
+        this.collidable && arrayCollide[0].type === this.target && (this.preKill(), arrayCollide[0].hurt(this.power, this.fireType));
+    },
+    preKill: function() {
+        if (this.collidable) {
+            this.updateable = !0, this.collidable = !1, this.fall = !0;
+        }
+    },
+    pointDistance: function(x, y, x0, y0) {
+        return Math.sqrt((x -= x0) * x + (y -= y0) * y);
+    },
+    touch: function(collection) {
+        collection.object && "environment" === collection.object.type && collection.object.fireCollide(), 
+        this.preKill();
+    }
+}), Bullet = Entity.extend({
+    init: function(vel, timeLive) {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 40, this.width = 1, 
+        this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
+        this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
+        this.power = 1, this.defaultVelocity = 1, this.imgSource = "belga";
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -410,21 +440,22 @@ var Application = AbstractApplication.extend({
     },
     build: function(screen) {
         var self = this, motionIdle = new SpritesheetAnimation();
-        motionIdle.build("idle", this.getFramesByRange("red0", 1, 26), 1, !0, null);
+        motionIdle.build("idle", this.getFramesByRange("piangers0", 2, 8), 1, !0, null);
         var motionHurt = new SpritesheetAnimation();
-        motionHurt.build("hurt", this.getFramesByRange("red0", 28, 43), 1, !1, function() {
+        motionHurt.build("hurt", this.getFramesByRange("piangers0", 2, 2), 1, !1, function() {
             self.spritesheet.play("idle");
         }), this.spritesheet = new Spritesheet(), this.spritesheet.addAnimation(motionIdle), 
-        this.spritesheet.addAnimation(motionHurt), this.spritesheet.play("idle"), this.screen = screen, 
-        this.defaultVel = 50;
+        this.spritesheet.play("idle"), this.screen = screen, this.defaultVel = 50 * gameScale, 
+        this.upVel = 1 * gameScale;
     },
     setTarget: function(pos) {
-        this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? this.velocity.y = -1 : this.target > this.getPosition().y && (this.velocity.y = 1));
+        this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? this.velocity.y = -this.upVel : this.target > this.getPosition().y && (this.velocity.y = this.upVel));
     },
     update: function() {
         this.getPosition().y > windowHeight && this.velocity.y > 0 ? this.velocity.y = 0 : this.getPosition().y < 0 && this.velocity.y < 0 && (this.velocity.y = 0), 
         pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0), 
-        this._super(), this.getPosition().x > windowWidth + 50 && this.preKill();
+        this._super(), this.getContent().texture && (this.getContent().texture.rotation = this.velocity.y), 
+        this.getPosition().x > windowWidth + 50 && this.preKill();
     },
     destroy: function() {
         this._super();
@@ -445,7 +476,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/ease.png", "dist/img/UI/simpleButtonOver.png", "dist/img/spritesheet/red/red.json", "dist/img/UI/simpleButtonUp.png" ];
+        var assetsToLoader = [ "dist/img/ease.png", "dist/img/UI/simpleButtonOver.png", "dist/img/spritesheet/red/red.json", "dist/img/atlas/atlas.json", "dist/img/UI/simpleButtonUp.png" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded(), this.textAcc = new PIXI.Text("Acc", {
             font: "15px Arial"
@@ -484,7 +515,7 @@ var Application = AbstractApplication.extend({
                 }, timeLive);
                 bullet.build(), bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y), 
                 self.addChild(bullet);
-                var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, .5);
+                var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, .5 * gameScale);
                 bullet.setScale(scaleBullet, scaleBullet), self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
                 self.playerModel.currentBulletEnergy < 0 && (self.playerModel.currentBulletEnergy = 0);
             }
@@ -495,9 +526,8 @@ var Application = AbstractApplication.extend({
         };
         var posHelper = .05 * windowHeight;
         this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
-        this.bulletBar.setPosition(posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
-        this.addChild(this.energyBar), this.energyBar.setPosition(2 * posHelper + this.bulletBar.width, posHelper), 
-        console.log(Math.pow(posHelper, 2), posHelper);
+        this.bulletBar.setPosition(150 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
+        this.addChild(this.energyBar), this.energyBar.setPosition(150 + 2 * posHelper + this.bulletBar.width, posHelper);
     },
     onProgress: function() {
         this._super();
@@ -511,10 +541,8 @@ var Application = AbstractApplication.extend({
         this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy);
     },
     initApplication: function() {
-        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(.05 * windowWidth + this.red.getContent().width / 2, windowHeight / 2);
-        var scale = scaleConverter(this.red.getContent().height, windowHeight, .3);
-        this.red.setScale(scale, scale);
-        var self = this;
+        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(.1 * windowWidth + this.red.getContent().width / 2, windowHeight / 2);
+        var self = (scaleConverter(this.red.getContent().height, windowHeight, .3), this);
         this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.btnBenchmark.build(40, 20), this.btnBenchmark.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 10), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Bench", {
@@ -532,7 +560,7 @@ var Application = AbstractApplication.extend({
     benchmark: function() {
         function addEntity() {
             var red = new Red();
-            red.build(), red.setPosition(-20, windowHeight * Math.random()), self.addChild(red), 
+            red.build(), red.setPosition(-90, windowHeight * Math.random()), self.addChild(red), 
             red.velocity.x = 1, self.accBench++, self.accBench > 300 && (self.initBench = !1, 
             clearInterval(self.benchInterval));
         }
@@ -670,9 +698,9 @@ var Application = AbstractApplication.extend({
         for (var exists = !1, i = this.vecPositions.length - 1; i >= 0; i--) this.vecPositions[i] === position && (exists = !0);
         exists || this.vecPositions.push(position);
     }
-}), meter = new FPSMeter(), resizeProportional = !0, windowWidth = 820, windowHeight = 600, realWindowWidth = 820, realWindowHeight = 600;
+}), meter = new FPSMeter(), resizeProportional = !0, windowWidth = 820, windowHeight = 600, realWindowWidth = 820, realWindowHeight = 600, gameScale = 1.8;
 
-testMobile() && (windowWidth = window.innerWidth, windowHeight = window.innerHeight, 
+testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
 realWindowWidth = windowWidth, realWindowHeight = windowHeight);
 
 var windowWidthVar = window.innerWidth, windowHeightVar = window.innerHeight, renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, !1, !0);
@@ -685,7 +713,7 @@ var APP;
 APP = new Application(), APP.build(), APP.show();
 
 var ratio = 1, initialize = function() {
-    requestAnimFrame(update);
+    PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 };
 
 !function() {

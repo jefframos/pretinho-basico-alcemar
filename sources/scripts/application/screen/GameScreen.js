@@ -14,6 +14,8 @@ var GameScreen = AbstractScreen.extend({
         var assetsToLoader = ['dist/img/ease.png',
         'dist/img/UI/simpleButtonOver.png',
         'dist/img/spritesheet/red/red.json',
+        // 'dist/img/spritesheet/piangers/piangers.json',
+        'dist/img/atlas/atlas.json',
         'dist/img/UI/simpleButtonUp.png'];
 
 
@@ -91,7 +93,7 @@ var GameScreen = AbstractScreen.extend({
             bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y);
             self.addChild(bullet);
 
-            var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, 0.5);
+            var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, 0.5 * gameScale);
             bullet.setScale(scaleBullet , scaleBullet);
             self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast;
 
@@ -122,12 +124,12 @@ var GameScreen = AbstractScreen.extend({
         var posHelper =  windowHeight * 0.05;
         this.bulletBar = new BarView(windowWidth * 0.1, 10, 1, 1);
         this.addChild(this.bulletBar);
-        this.bulletBar.setPosition(posHelper, posHelper);
+        this.bulletBar.setPosition(150 + posHelper, posHelper);
 
         this.energyBar = new BarView(windowWidth * 0.1, 10, 1, 1);
         this.addChild(this.energyBar);
-        this.energyBar.setPosition(posHelper * 2 + this.bulletBar.width, posHelper);
-        console.log(Math.pow(posHelper, 2), posHelper);
+        this.energyBar.setPosition(150 + posHelper * 2 + this.bulletBar.width, posHelper);
+        // console.log(Math.pow(posHelper, 2), posHelper);
     },
     onProgress:function(){
         this._super();
@@ -150,9 +152,9 @@ var GameScreen = AbstractScreen.extend({
         this.red = new Red();
         this.red.build(this);
         this.addChild(this.red);
-        this.red.setPosition(windowWidth * 0.05 +this.red.getContent().width/2,windowHeight /2);
+        this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
         var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.3);
-        this.red.setScale( scale,scale);
+        //this.red.setScale( scale,scale);
         var self = this;
         // this.buttonHurt = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
         // this.buttonHurt.build(130);
@@ -212,7 +214,7 @@ var GameScreen = AbstractScreen.extend({
         function addEntity(){
             var red = new Red();
             red.build();
-            red.setPosition(-20, windowHeight * Math.random());
+            red.setPosition(-90, windowHeight * Math.random());
             self.addChild(red);
             red.velocity.x = 1;
             self.accBench ++;
