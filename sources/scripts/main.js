@@ -35,16 +35,8 @@ APP = new Application();
 APP.build();
 APP.show();
 
-// var context = renderer.getContext('2d');
-// var devicePixelRatio = window.devicePixelRatio || 1;
-// var backingStoreRatio = context.webkitBackingStorePixelRatio ||
-//                     context.mozBackingStorePixelRatio ||
-//                     context.msBackingStorePixelRatio ||
-//                     context.oBackingStorePixelRatio ||
-//                     context.backingStorePixelRatio || 1;
 
 var ratio = 1;//devicePixelRatio / backingStoreRatio;
-
 
 function update() {
 	requestAnimFrame(update );
@@ -74,7 +66,6 @@ function update() {
 
 
 var initialize = function(){
-	// //inicia o game e da um build
 	PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST;//2;
 	// PIXI.Texture.SCALE_MODE.DEFAULT = PIXI.Texture.SCALE_MODE.NEAREST;
 	requestAnimFrame(update);
