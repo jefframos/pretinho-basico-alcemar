@@ -1,4 +1,4 @@
-/*! jefframos 19-01-2015 */
+/*! jefframos 20-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -382,18 +382,26 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0;
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.getContent().alpha = 0, 
+        TweenLite.to(this.getContent(), .5, {
+            alpha: 1
+        });
     },
     update: function() {
-        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width, 
-        this.fall && (this.velocity.y -= .1);
+        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width;
     },
     collide: function(arrayCollide) {
         this.collidable && arrayCollide[0].type === this.target && (this.preKill(), arrayCollide[0].hurt(this.power, this.fireType));
     },
     preKill: function() {
         if (this.collidable) {
-            this.updateable = !0, this.collidable = !1, this.fall = !0;
+            var self = this;
+            this.updateable = !0, this.collidable = !1, this.fall = !0, TweenLite.to(this.getContent(), .3, {
+                alpha: 0,
+                onComplete: function() {
+                    self.kill = !0;
+                }
+            });
         }
     },
     pointDistance: function(x, y, x0, y0) {
@@ -446,7 +454,8 @@ var Application = AbstractApplication.extend({
             self.spritesheet.play("idle");
         }), this.spritesheet = new Spritesheet(), this.spritesheet.addAnimation(motionIdle), 
         this.spritesheet.play("idle"), this.screen = screen, this.defaultVel = 50 * gameScale, 
-        this.upVel = 1 * gameScale;
+        this.upVel = 1 * gameScale, this.spritesheet.texture.anchor.x = .5, this.spritesheet.texture.anchor.y = .5, 
+        this.rotation = 0;
     },
     setTarget: function(pos) {
         this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? this.velocity.y = -this.upVel : this.target > this.getPosition().y && (this.velocity.y = this.upVel));
@@ -454,8 +463,11 @@ var Application = AbstractApplication.extend({
     update: function() {
         this.getPosition().y > windowHeight && this.velocity.y > 0 ? this.velocity.y = 0 : this.getPosition().y < 0 && this.velocity.y < 0 && (this.velocity.y = 0), 
         pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0), 
-        this._super(), this.getContent().texture && (this.getContent().texture.rotation = this.velocity.y), 
-        this.getPosition().x > windowWidth + 50 && this.preKill();
+        this._super(), this.spritesheet.texture.anchor.x = .5, this.spritesheet.texture.anchor.y = .5, 
+        this.spritesheet.texture.rotation = this.rotation, this.rotation > 360 && (this.rotation = 0), 
+        this.rotation < 0 && (this.rotation = 360), TweenLite.to(this, .5, {
+            rotation: 5 * this.velocity.y * Math.PI / 180
+        }), this.getPosition().x > windowWidth + 50 && this.preKill();
     },
     destroy: function() {
         this._super();
@@ -488,7 +500,7 @@ var Application = AbstractApplication.extend({
         this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight), 
         this.playerModel = {
-            bulletVel: 5,
+            bulletVel: 10,
             range: 40,
             maxEnergy: 100,
             maxBulletEnergy: 100,
@@ -509,13 +521,15 @@ var Application = AbstractApplication.extend({
                 self.touchstart = !1, self.textAcc.setText("TOUCH END!"), self.onBulletTouch = !1;
                 var percent = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy, fireForce = percent * self.playerModel.range;
                 self.playerModel.currentBulletForce = 0;
-                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, bullet = new Bullet({
-                    x: self.playerModel.bulletVel + self.playerModel.bulletVel * percent,
-                    y: 0
+                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, vel = self.playerModel.bulletVel + self.playerModel.bulletVel * percent, angle = self.red.rotation;
+                console.log(Math.cos(angle));
+                var bullet = new Bullet({
+                    x: Math.cos(angle) * vel,
+                    y: Math.sin(angle) * vel
                 }, timeLive);
-                bullet.build(), bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y), 
+                bullet.build(), bullet.setPosition(.8 * self.red.getPosition().x, .8 * self.red.getPosition().y), 
                 self.addChild(bullet);
-                var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, .5 * gameScale);
+                var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, .8 * gameScale);
                 bullet.setScale(scaleBullet, scaleBullet), self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
                 self.playerModel.currentBulletEnergy < 0 && (self.playerModel.currentBulletEnergy = 0);
             }
@@ -542,14 +556,8 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(.1 * windowWidth + this.red.getContent().width / 2, windowHeight / 2);
-        var self = (scaleConverter(this.red.getContent().height, windowHeight, .3), this);
-        this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.btnBenchmark.build(40, 20), this.btnBenchmark.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 10), 
-        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Bench", {
-            font: "10px Arial"
-        }), 5, 5), this.btnBenchmark.clickCallback = function() {
-            self.benchmark();
-        }, possibleFullscreen() && (this.fullScreen = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        scaleConverter(this.red.getContent().height, windowHeight, .3);
+        possibleFullscreen() && (this.fullScreen = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
         this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
             font: "10px Arial"

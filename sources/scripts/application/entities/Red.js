@@ -27,6 +27,15 @@ var Red = SpritesheetEntity.extend({
 
 		this.upVel = 1 * gameScale;
 
+		// TweenLite.to(this.getContent().position, 0.5, {x:500});
+		// console.log(this.spritesheet.texture.rotation = 10);
+		// TweenLite.to(this.spritesheet.texture, 0.5, {rotation:90});
+		// this.getContent().pivot.x = this.spritesheet.texture.width * 1.5 ;// / 2;
+		// this.getContent().pivot.y = this.spritesheet.texture.height* 1.5;// / 2;
+		this.spritesheet.texture.anchor.x = 0.5;
+		this.spritesheet.texture.anchor.y = 0.5;
+		this.rotation = 0;
+		// console.log(this.spritesheet.texture);
 	},
 	setTarget:function(pos){
 		this.target = pos;
@@ -50,11 +59,21 @@ var Red = SpritesheetEntity.extend({
 			this.velocity.y = 0;
 		}
 
-		this._super();
+		// this.rotation += 0.001;
 
-		if(this.getContent().texture){
-			this.getContent().texture.rotation = this.velocity.y;
+		this._super();
+		this.spritesheet.texture.anchor.x = 0.5;
+		this.spritesheet.texture.anchor.y = 0.5;
+		this.spritesheet.texture.rotation  = this.rotation;//(this.velocity.y * 5) * Math.PI / 180;
+		if(this.rotation > 360){
+			this.rotation = 0;
 		}
+		if(this.rotation < 0){
+			this.rotation = 360;
+		}
+		TweenLite.to(this, 0.5, {rotation:(this.velocity.y * 5) * Math.PI / 180});
+		// this.spritesheet.texture.rotation = this.velocity.y * Math.PI / 180;
+		// this.getContent().rotation = this.velocity.y / 10;
 		
 		if(this.getPosition().x > windowWidth + 50){
 			this.preKill();

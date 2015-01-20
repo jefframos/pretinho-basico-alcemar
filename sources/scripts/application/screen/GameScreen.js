@@ -49,7 +49,7 @@ var GameScreen = AbstractScreen.extend({
         
 
         this.playerModel = {
-            bulletVel:5,
+            bulletVel:10,
             range:40,
             maxEnergy:100,
             maxBulletEnergy:100,
@@ -88,12 +88,18 @@ var GameScreen = AbstractScreen.extend({
             self.playerModel.currentBulletForce = 0;
             var timeLive = (self.red.getContent().width/ self.playerModel.bulletVel) + (fireForce);
 
-            var bullet = new Bullet({x:self.playerModel.bulletVel + self.playerModel.bulletVel*percent, y:0}, timeLive);
+            var vel = self.playerModel.bulletVel + self.playerModel.bulletVel*percent;
+            var angle = self.red.rotation;
+            console.log(Math.cos(angle));
+            var bullet = new Bullet({x:Math.cos(angle) * vel,
+                y:Math.sin(angle) * vel},
+                timeLive);
             bullet.build();
-            bullet.setPosition(self.red.getPosition().x, self.red.getPosition().y);
+            //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
+            bullet.setPosition(self.red.getPosition().x * 0.8, self.red.getPosition().y * 0.8);
             self.addChild(bullet);
 
-            var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, 0.5 * gameScale);
+            var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, 0.8 * gameScale);
             bullet.setScale(scaleBullet , scaleBullet);
             self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast;
 
@@ -152,7 +158,10 @@ var GameScreen = AbstractScreen.extend({
         this.red = new Red();
         this.red.build(this);
         this.addChild(this.red);
+        // this.red.getContent().position.x = 500;
+        // this.red.getContent().position.y = 500;
         this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
+        // this.red.setPosition(500,500);
         var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.3);
         //this.red.setScale( scale,scale);
         var self = this;
@@ -179,14 +188,14 @@ var GameScreen = AbstractScreen.extend({
         //     // fullscreen();
         // };
 
-        this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.btnBenchmark.build(40, 20);
-        this.btnBenchmark.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 10);
-        this.addChild(this.btnBenchmark);
-        this.btnBenchmark.addLabel(new PIXI.Text('Bench', {font:'10px Arial'}),5,5);
-        this.btnBenchmark.clickCallback = function(){
-            self.benchmark();
-        };
+        // this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        // this.btnBenchmark.build(40, 20);
+        // this.btnBenchmark.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 10);
+        // this.addChild(this.btnBenchmark);
+        // this.btnBenchmark.addLabel(new PIXI.Text('Bench', {font:'10px Arial'}),5,5);
+        // this.btnBenchmark.clickCallback = function(){
+        //     self.benchmark();
+        // };
 
         if(possibleFullscreen()){
             this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');

@@ -16,7 +16,7 @@ var Bullet = Entity.extend({
         this.timeLive = timeLive;
         this.power = 1;
         this.defaultVelocity = 1;
-        this.imgSource = 'red0001';
+        this.imgSource = 'belga';
 
     },
     build: function(){
@@ -28,6 +28,9 @@ var Bullet = Entity.extend({
 
         this.updateable = true;
         this.collidable = true;
+
+        this.getContent().alpha = 0;
+        TweenLite.to(this.getContent(), 0.5, {alpha:1});
     },
     update: function(){
         this._super();
@@ -36,9 +39,9 @@ var Bullet = Entity.extend({
             this.preKill();
         }
         this.range = this.width;
-        if(this.fall){
-            this.velocity.y -= 0.1;
-        }
+        // if(this.fall){
+        //     this.velocity.y -= 0.1;
+        // }
     },
     collide:function(arrayCollide){
         // console.log('fireCollide', arrayCollide[0].type);
@@ -61,7 +64,7 @@ var Bullet = Entity.extend({
             this.fall = true;
             // this.getContent().tint = 0xff0000;
             //var scl = this.getContent().scale.x;
-            //TweenLite.to(this.getContent().scale, 0.3, {x:scl * , y:1, onComplete:function(){self.kill = true;}});
+            TweenLite.to(this.getContent(), 0.3, {alpha:0, onComplete:function(){self.kill = true;}});
 
         }
     },
