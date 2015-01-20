@@ -68,9 +68,9 @@ var Red = SpritesheetEntity.extend({
 		if(this.rotation > 360){
 			this.rotation = 0;
 		}
-		if(this.rotation < 0){
-			this.rotation = 360;
-		}
+		// if(this.rotation < 0){
+		// 	this.rotation = 360;
+		// }
 		TweenLite.to(this, 0.5, {rotation:(this.velocity.y * 5) * Math.PI / 180});
 		// this.spritesheet.texture.rotation = this.velocity.y * Math.PI / 180;
 		// this.getContent().rotation = this.velocity.y / 10;

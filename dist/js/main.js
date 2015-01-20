@@ -276,7 +276,7 @@ SmartSocket.SOCKET_ERROR = "socketError";
 
 var Application = AbstractApplication.extend({
     init: function() {
-        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(3153730), 
+        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(12580351), 
         this.stage.removeChild(this.loadText), this.isMobile = testMobile(), this.appContainer = document.getElementById("rect"), 
         this.id = parseInt(1e11 * Math.random());
     },
@@ -465,7 +465,7 @@ var Application = AbstractApplication.extend({
         pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0), 
         this._super(), this.spritesheet.texture.anchor.x = .5, this.spritesheet.texture.anchor.y = .5, 
         this.spritesheet.texture.rotation = this.rotation, this.rotation > 360 && (this.rotation = 0), 
-        this.rotation < 0 && (this.rotation = 360), TweenLite.to(this, .5, {
+        TweenLite.to(this, .5, {
             rotation: 5 * this.velocity.y * Math.PI / 180
         }), this.getPosition().x > windowWidth + 50 && this.preKill();
     },
@@ -509,9 +509,10 @@ var Application = AbstractApplication.extend({
             recoverEnergy: .5,
             recoverBulletEnergy: .5,
             bulletCoast: .3,
+            energyCoast: .1,
             chargeBullet: 1,
             currentBulletForce: 0
-        };
+        }, this.particleAccum = 50;
         var self = this;
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
             self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.textAcc.setText("TOUCH START!"), 
@@ -540,8 +541,8 @@ var Application = AbstractApplication.extend({
         };
         var posHelper = .05 * windowHeight;
         this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
-        this.bulletBar.setPosition(150 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
-        this.addChild(this.energyBar), this.energyBar.setPosition(150 + 2 * posHelper + this.bulletBar.width, posHelper);
+        this.bulletBar.setPosition(250 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
+        this.addChild(this.energyBar), this.energyBar.setPosition(250 + 2 * posHelper + this.bulletBar.width, posHelper);
     },
     onProgress: function() {
         this._super();
@@ -552,11 +553,30 @@ var Application = AbstractApplication.extend({
     update: function() {
         this._super(), this.onBulletTouch && this.playerModel.currentBulletEnergy > 0 ? (this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet, 
         this.playerModel.currentBulletForce += this.playerModel.chargeBullet) : this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
-        this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy);
+        this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast && (this.playerModel.currentEnergy -= this.playerModel.energyCoast), 
+        this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
+        this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
+        this.updateParticles(), this.textAcc.setText(this.childs.length);
+    },
+    updateParticles: function() {
+        if (this.particleAccum < 0) {
+            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 25;
+            var particle = new Particles({
+                x: .5 * -Math.random() - .2,
+                y: -(.5 * Math.random() + .5)
+            }, 140, "smoke", .01);
+            particle.build(), particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
+            this.addChild(particle);
+        } else this.particleAccum--;
     },
     initApplication: function() {
-        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(.1 * windowWidth + this.red.getContent().width / 2, windowHeight / 2);
+        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.rotation = -1, 
+        this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight);
         scaleConverter(this.red.getContent().height, windowHeight, .3);
+        TweenLite.to(this.red.spritesheet.position, 1, {
+            x: .15 * windowWidth + this.red.getContent().width / 2,
+            y: windowHeight / 2
+        });
         possibleFullscreen() && (this.fullScreen = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
         this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
@@ -705,6 +725,28 @@ var Application = AbstractApplication.extend({
     addPosition: function(position) {
         for (var exists = !1, i = this.vecPositions.length - 1; i >= 0; i--) this.vecPositions[i] === position && (exists = !0);
         exists || this.vecPositions.push(position);
+    }
+}), Particles = Entity.extend({
+    init: function(vel, timeLive, label, rotation) {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 40, this.width = 1, 
+        this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
+        this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
+        this.power = 1, this.defaultVelocity = 1, this.imgSource = label, rotation && (this.rotation = rotation);
+    },
+    build: function() {
+        this.updateable = !0, this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.sprite.alpha = 0, this.sprite.scale.x = .2, this.sprite.scale.y = .2, 
+        TweenLite.to(this.sprite, .5, {
+            alpha: 1
+        });
+    },
+    update: function() {
+        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width, 
+        this.rotation && (this.getContent().rotation += this.rotation), this.sprite.alpha >= .03 && (this.sprite.alpha -= .03), 
+        this.sprite.scale.x >= 1 || (this.sprite.scale.x += .03, this.sprite.scale.y += .03);
+    },
+    preKill: function() {
+        this.updateable = !0, this.kill = !0;
     }
 }), meter = new FPSMeter(), resizeProportional = !0, windowWidth = 820, windowHeight = 600, realWindowWidth = 820, realWindowHeight = 600, gameScale = 1.8;
 

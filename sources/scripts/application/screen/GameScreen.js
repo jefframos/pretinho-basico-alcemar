@@ -58,10 +58,11 @@ var GameScreen = AbstractScreen.extend({
             recoverEnergy:0.5,
             recoverBulletEnergy:0.5,
             bulletCoast:0.3,
+            energyCoast:0.1,
             chargeBullet:1,
             currentBulletForce:0
         };
-
+        this.particleAccum = 50;
         var self = this;
 
 
@@ -130,11 +131,11 @@ var GameScreen = AbstractScreen.extend({
         var posHelper =  windowHeight * 0.05;
         this.bulletBar = new BarView(windowWidth * 0.1, 10, 1, 1);
         this.addChild(this.bulletBar);
-        this.bulletBar.setPosition(150 + posHelper, posHelper);
+        this.bulletBar.setPosition(250 + posHelper, posHelper);
 
         this.energyBar = new BarView(windowWidth * 0.1, 10, 1, 1);
         this.addChild(this.energyBar);
-        this.energyBar.setPosition(150 + posHelper * 2 + this.bulletBar.width, posHelper);
+        this.energyBar.setPosition(250 + posHelper * 2 + this.bulletBar.width, posHelper);
         // console.log(Math.pow(posHelper, 2), posHelper);
     },
     onProgress:function(){
@@ -152,17 +153,40 @@ var GameScreen = AbstractScreen.extend({
         }else if(this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
             this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy;
         }
+
+        if(this.playerModel.currentEnergy > this.playerModel.energyCoast * 1.1){
+            this.playerModel.currentEnergy -= this.playerModel.energyCoast;
+        }
         this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy);
+        this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy);
+        this.updateParticles();
+
+        this.textAcc.setText(this.childs.length);
+    },
+    updateParticles:function(){
+        if(this.particleAccum < 0){
+            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 25;
+            var particle = new Particles({x:-Math.random() * 0.5 - 0.2, y:-(Math.random() * 0.5 + 0.5)}, 140, 'smoke', 0.01);
+            particle.build();
+            particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5,
+                this.red.getPosition().y- this.red.getContent().height / 2 + 25);
+            this.addChild(particle);
+
+        }else{
+            this.particleAccum --;
+        }
     },
     initApplication:function(){
         this.red = new Red();
         this.red.build(this);
         this.addChild(this.red);
-        // this.red.getContent().position.x = 500;
-        // this.red.getContent().position.y = 500;
-        this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
-        // this.red.setPosition(500,500);
+        this.red.rotation = -1;
+        this.red.setPosition(windowWidth * 0.1 -this.red.getContent().width,windowHeight * 1.2);
+
+        // this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
         var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.3);
+
+        TweenLite.to(this.red.spritesheet.position, 1,{x:windowWidth * 0.15 +this.red.getContent().width/2, y:windowHeight /2} );
         //this.red.setScale( scale,scale);
         var self = this;
         // this.buttonHurt = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
