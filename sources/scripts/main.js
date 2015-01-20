@@ -13,7 +13,6 @@ var gameScale = 1.8;
 if(testMobile()){
 	windowWidth = window.innerWidth * gameScale;//640;
 	windowHeight = window.innerHeight * gameScale;//960;
-// 
 	// alert(windowWidth +' - '+windowHeight);
 	// windowWidth = window.screen.height;//640;
 	// windowHeight = window.screen.width;//960;
