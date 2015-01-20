@@ -1,4 +1,4 @@
-/*! jefframos 16-01-2015 */
+/*! jefframos 20-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
