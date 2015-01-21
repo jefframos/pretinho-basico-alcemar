@@ -45,7 +45,7 @@ var GameScreen = AbstractScreen.extend({
         
 
         this.playerModel = {
-            bulletVel:10,
+            bulletVel:8,
             range:40,
             maxEnergy:100,
             maxBulletEnergy:100,
@@ -54,9 +54,9 @@ var GameScreen = AbstractScreen.extend({
             recoverEnergy:0.5,
             recoverBulletEnergy:0.5,
             bulletCoast:0.3,
-            energyCoast:0.1,
+            energyCoast:0.01,
             chargeBullet:1,
-            currentBulletForce:0,
+            currentBulletForce:100,
             velocity:1.5
         };
         this.particleAccum = 50;
@@ -84,7 +84,7 @@ var GameScreen = AbstractScreen.extend({
             self.onBulletTouch = false;
             var percent = (self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy);
             var fireForce = percent * self.playerModel.range;
-            self.playerModel.currentBulletForce = 0;
+            // self.playerModel.currentBulletForce = 0;
             var timeLive = (self.red.getContent().width/ self.playerModel.bulletVel) + (fireForce);
 
             var vel = self.playerModel.bulletVel + self.playerModel.bulletVel*percent;
@@ -98,7 +98,7 @@ var GameScreen = AbstractScreen.extend({
             self.layer.addChild(bullet);
 
             var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, 0.8 * gameScale);
-            bullet.setScale(scaleBullet , scaleBullet);
+            // bullet.setScale(scaleBullet , scaleBullet);
             self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast;
 
             if(self.playerModel.currentBulletEnergy < 0){
@@ -148,13 +148,19 @@ var GameScreen = AbstractScreen.extend({
     },
     update:function() {
         this._super();
+        // if(this.onBulletTouch && this.playerModel.currentBulletEnergy> 0){
+        //     // this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet;
+        //     this.playerModel.currentBulletForce += this.playerModel.chargeBullet;
+        // }else if(this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
+        //     this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy;
+        // }
         if(this.onBulletTouch && this.playerModel.currentBulletEnergy> 0){
-            this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet;
-            this.playerModel.currentBulletForce += this.playerModel.chargeBullet;
-        }else if(this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
+            // this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet;
+            // this.playerModel.currentBulletForce += this.playerModel.chargeBullet;
+        }
+        if(this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
             this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy;
         }
-
         if(this.playerModel.currentEnergy > this.playerModel.energyCoast * 1.1){
             this.playerModel.currentEnergy -= this.playerModel.energyCoast;
         }else{

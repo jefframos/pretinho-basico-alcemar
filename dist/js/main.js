@@ -371,7 +371,7 @@ var Application = AbstractApplication.extend({
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
         this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = 1, this.defaultVelocity = 1, this.imgSource = "belga";
+        this.power = 1, this.defaultVelocity = 1, this.imgSource = "bullet";
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -446,7 +446,7 @@ var Application = AbstractApplication.extend({
     },
     build: function(screen, playerModel) {
         var self = this, motionIdle = new SpritesheetAnimation();
-        motionIdle.build("idle", this.getFramesByRange("piangers0", 2, 8), 1, !0, null);
+        motionIdle.build("idle", [ "piangersN" ], 1, !0, null);
         var motionHurt = new SpritesheetAnimation();
         motionHurt.build("hurt", this.getFramesByRange("piangers0", 2, 2), 1, !1, function() {
             self.spritesheet.play("idle");
@@ -463,7 +463,7 @@ var Application = AbstractApplication.extend({
         pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0)), 
         this._super(), this.spritesheet.texture.anchor.x = .5, this.spritesheet.texture.anchor.y = .5, 
         this.spritesheet.texture.rotation = this.rotation, this.rotation > 360 && (this.rotation = 0), 
-        TweenLite.to(this, .5, {
+        TweenLite.to(this, .3, {
             rotation: 5 * this.velocity.y * Math.PI / 180
         }), this.getPosition().x > windowWidth + 50 && this.preKill();
     },
@@ -527,7 +527,7 @@ var Application = AbstractApplication.extend({
         this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight), 
         this.playerModel = {
-            bulletVel: 10,
+            bulletVel: 8,
             range: 40,
             maxEnergy: 100,
             maxBulletEnergy: 100,
@@ -536,9 +536,9 @@ var Application = AbstractApplication.extend({
             recoverEnergy: .5,
             recoverBulletEnergy: .5,
             bulletCoast: .3,
-            energyCoast: .1,
+            energyCoast: .01,
             chargeBullet: 1,
-            currentBulletForce: 0,
+            currentBulletForce: 100,
             velocity: 1.5
         }, this.particleAccum = 50, this.gameOver = !1;
         var self = this;
@@ -548,16 +548,16 @@ var Application = AbstractApplication.extend({
         }, this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function() {
             if (self.touchstart && !self.gameOver) {
                 self.touchstart = !1, self.onBulletTouch = !1;
-                var percent = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy, fireForce = percent * self.playerModel.range;
-                self.playerModel.currentBulletForce = 0;
-                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, vel = self.playerModel.bulletVel + self.playerModel.bulletVel * percent, angle = self.red.rotation, bullet = new Bullet({
+                var percent = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy, fireForce = percent * self.playerModel.range, timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, vel = self.playerModel.bulletVel + self.playerModel.bulletVel * percent, angle = self.red.rotation, bullet = new Bullet({
                     x: Math.cos(angle) * vel,
                     y: Math.sin(angle) * vel
                 }, timeLive);
                 bullet.build(), bullet.setPosition(.8 * self.red.getPosition().x, .8 * self.red.getPosition().y), 
                 self.layer.addChild(bullet);
-                var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, .8 * gameScale);
-                bullet.setScale(scaleBullet, scaleBullet), self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
+                {
+                    scaleConverter(self.red.getContent().height, bullet.getContent().height, .8 * gameScale);
+                }
+                self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
                 self.playerModel.currentBulletEnergy < 0 && (self.playerModel.currentBulletEnergy = 0);
             }
         }, this.hitTouch.touchstart = function(touchData) {
@@ -575,8 +575,8 @@ var Application = AbstractApplication.extend({
         this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
     },
     update: function() {
-        if (this._super(), this.onBulletTouch && this.playerModel.currentBulletEnergy > 0 ? (this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet, 
-        this.playerModel.currentBulletForce += this.playerModel.chargeBullet) : this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
+        if (this._super(), this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
+        this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
         this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
         this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && this.screenManager.change("EndGame")), 
         this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 

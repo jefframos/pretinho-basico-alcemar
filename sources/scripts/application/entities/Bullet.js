@@ -16,7 +16,7 @@ var Bullet = Entity.extend({
         this.timeLive = timeLive;
         this.power = 1;
         this.defaultVelocity = 1;
-        this.imgSource = 'belga';
+        this.imgSource = 'bullet';
 
     },
     build: function(){
@@ -56,15 +56,12 @@ var Bullet = Entity.extend({
         }
     },
     preKill:function(){
-        //this._super();
         if(this.collidable){
             var self = this;
             this.updateable = true;
             this.collidable = false;
             this.fall = true;
             this.velocity = {x:0, y:0};
-            // this.getContent().tint = 0xff0000;
-            //var scl = this.getContent().scale.x;
             TweenLite.to(this.getContent(), 0.3, {alpha:0, onComplete:function(){self.kill = true;}});
 
         }

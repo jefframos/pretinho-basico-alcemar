@@ -10,7 +10,8 @@ var Red = SpritesheetEntity.extend({
 
 		var self = this;
 		var motionIdle = new SpritesheetAnimation();
-		motionIdle.build('idle', this.getFramesByRange('piangers0', 2, 8), 1, true, null);
+		// motionIdle.build('idle', this.getFramesByRange('piangers0', 2, 8), 1, true, null);
+		motionIdle.build('idle', ['piangersN'], 1, true, null);
 		
 		var motionHurt = new SpritesheetAnimation();
 		motionHurt.build('hurt', this.getFramesByRange('piangers0', 2, 2), 1, false, function(){
@@ -75,7 +76,7 @@ var Red = SpritesheetEntity.extend({
 		// if(this.rotation < 0){
 		// 	this.rotation = 360;
 		// }
-		TweenLite.to(this, 0.5, {rotation:(this.velocity.y * 5) * Math.PI / 180});
+		TweenLite.to(this, 0.3, {rotation:(this.velocity.y * 5) * Math.PI / 180});
 		// this.spritesheet.texture.rotation = this.velocity.y * Math.PI / 180;
 		// this.getContent().rotation = this.velocity.y / 10;
 		
