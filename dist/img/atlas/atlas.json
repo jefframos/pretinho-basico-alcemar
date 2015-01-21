@@ -116,14 +116,32 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":49,"h":59},
 	"sourceSize": {"w":49,"h":59},
 	"pivot": {"x":0.5,"y":0.5}
+},
+"tree2":
+{
+	"frame": {"x":1332,"y":2,"w":213,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":192},
+	"sourceSize": {"w":213,"h":192},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"tree3":
+{
+	"frame": {"x":1547,"y":2,"w":213,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":192},
+	"sourceSize": {"w":213,"h":192},
+	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":1332,"h":208},
+	"size": {"w":1762,"h":208},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:88593c8d1bf7ec3b2ee429f7a370910f:13bf484fbcbdb4da934b836ec1203276:cbce6b53f0f49e0bf15173c25c41f876$"
+	"smartupdate": "$TexturePacker:SmartUpdate:84c4ffd27c907eff39cd67ccd72acdfe:a014bd67aa1078f55106f15423f0f95f:cbce6b53f0f49e0bf15173c25c41f876$"
 }
 }

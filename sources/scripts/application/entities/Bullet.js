@@ -4,10 +4,10 @@ var Bullet = Entity.extend({
         this._super( true );
         this.updateable = false;
         this.deading = false;
-        this.range = 40;
+        this.range = 80;
         this.width = 1;
         this.height = 1;
-        this.type = 'fire';
+        this.type = 'bullet';
         this.target = 'enemy';
         this.fireType = 'physical';
         this.node = null;
@@ -34,6 +34,7 @@ var Bullet = Entity.extend({
     },
     update: function(){
         this._super();
+        this.layer.collideChilds(this);
         this.timeLive --;
         if(this.timeLive <= 0){
             this.preKill();
@@ -44,14 +45,13 @@ var Bullet = Entity.extend({
         // }
     },
     collide:function(arrayCollide){
-        // console.log('fireCollide', arrayCollide[0].type);
+        console.log('fireCollide', arrayCollide[0]);
         if(this.collidable){
-            if(arrayCollide[0].type === this.target){
-               // if(this.fireType === 'physical'){
-                this.preKill();
-                //}
-                arrayCollide[0].hurt(this.power, this.fireType);
-                
+            if(arrayCollide[0].type === 'bird'){
+                console.log(arrayCollide[0].type);
+                this.kill = true;//preKill();
+                arrayCollide[0].preKill();
+                // arrayCollide[0].hurt(this.power, this.fireType);
             }
         }
     },
@@ -62,6 +62,7 @@ var Bullet = Entity.extend({
             this.updateable = true;
             this.collidable = false;
             this.fall = true;
+            this.velocity = {x:0, y:0};
             // this.getContent().tint = 0xff0000;
             //var scl = this.getContent().scale.x;
             TweenLite.to(this.getContent(), 0.3, {alpha:0, onComplete:function(){self.kill = true;}});

@@ -34,9 +34,12 @@ var Application = AbstractApplication.extend({
     },
     initApplication:function(){
         this.waitScreen = new WaitScreen('Wait');
-        this.waitScreen = new GameScreen('Game');
+        this.gameScreen = new GameScreen('Game');
+        this.endGameScreen = new EndGameScreen('EndGame');
         this.screenManager.addScreen(this.waitScreen);
-        this.screenManager.change('Game');
+        this.screenManager.addScreen(this.gameScreen);
+        this.screenManager.addScreen(this.endGameScreen);
+        this.screenManager.change('Wait');
     },
     onAssetsLoaded:function()
     {

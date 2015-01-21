@@ -1,4 +1,4 @@
-/*! jefframos 20-01-2015 */
+/*! jefframos 21-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -297,8 +297,10 @@ var Application = AbstractApplication.extend({
         } else this.onAssetsLoaded();
     },
     initApplication: function() {
-        this.waitScreen = new WaitScreen("Wait"), this.waitScreen = new GameScreen("Game"), 
-        this.screenManager.addScreen(this.waitScreen), this.screenManager.change("Game");
+        this.waitScreen = new WaitScreen("Wait"), this.gameScreen = new GameScreen("Game"), 
+        this.endGameScreen = new EndGameScreen("EndGame"), this.screenManager.addScreen(this.waitScreen), 
+        this.screenManager.addScreen(this.gameScreen), this.screenManager.addScreen(this.endGameScreen), 
+        this.screenManager.change("Wait");
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -344,39 +346,30 @@ var Application = AbstractApplication.extend({
         this.container.position.x = x, this.container.position.y = y;
     }
 }), Bird = Entity.extend({
-    init: function(vel, timeLive) {
-        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 40, this.width = 1, 
-        this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
-        this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = 1, this.defaultVelocity = 1, this.imgSource = "red0001";
+    init: function() {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
+        this.height = 1, this.type = "bird", this.target = "enemy", this.fireType = "physical", 
+        this.node = null, this.velocity.y = -.8, this.velocity.x = -.2, this.power = 1, 
+        this.defaultVelocity = 1, this.imgSource = "belga";
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0;
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width, 
+        console.log(this.range, this.centerPosition);
     },
     update: function() {
-        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width, 
-        this.fall && (this.velocity.y -= .1);
+        this._super();
     },
     collide: function(arrayCollide) {
-        this.collidable && arrayCollide[0].type === this.target && (this.preKill(), arrayCollide[0].hurt(this.power, this.fireType));
+        this.parent && this.parent.textAcc && this.parent.textAcc.setText("COLIDIU"), this.collidable && "bullet" === arrayCollide[0].type && this.preKill();
     },
     preKill: function() {
-        if (this.collidable) {
-            this.updateable = !0, this.collidable = !1, this.fall = !0;
-        }
-    },
-    pointDistance: function(x, y, x0, y0) {
-        return Math.sqrt((x -= x0) * x + (y -= y0) * y);
-    },
-    touch: function(collection) {
-        collection.object && "environment" === collection.object.type && collection.object.fireCollide(), 
-        this.preKill();
+        this.kill = !0;
     }
 }), Bullet = Entity.extend({
     init: function(vel, timeLive) {
-        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 40, this.width = 1, 
-        this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
+        this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
         this.power = 1, this.defaultVelocity = 1, this.imgSource = "belga";
     },
@@ -388,15 +381,20 @@ var Application = AbstractApplication.extend({
         });
     },
     update: function() {
-        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width;
+        this._super(), this.layer.collideChilds(this), this.timeLive--, this.timeLive <= 0 && this.preKill(), 
+        this.range = this.width;
     },
     collide: function(arrayCollide) {
-        this.collidable && arrayCollide[0].type === this.target && (this.preKill(), arrayCollide[0].hurt(this.power, this.fireType));
+        console.log("fireCollide", arrayCollide[0]), this.collidable && "bird" === arrayCollide[0].type && (console.log(arrayCollide[0].type), 
+        this.kill = !0, arrayCollide[0].preKill());
     },
     preKill: function() {
         if (this.collidable) {
             var self = this;
-            this.updateable = !0, this.collidable = !1, this.fall = !0, TweenLite.to(this.getContent(), .3, {
+            this.updateable = !0, this.collidable = !1, this.fall = !0, this.velocity = {
+                x: 0,
+                y: 0
+            }, TweenLite.to(this.getContent(), .3, {
                 alpha: 0,
                 onComplete: function() {
                     self.kill = !0;
@@ -446,7 +444,7 @@ var Application = AbstractApplication.extend({
     init: function() {
         this._super(!0);
     },
-    build: function(screen) {
+    build: function(screen, playerModel) {
         var self = this, motionIdle = new SpritesheetAnimation();
         motionIdle.build("idle", this.getFramesByRange("piangers0", 2, 8), 1, !0, null);
         var motionHurt = new SpritesheetAnimation();
@@ -454,15 +452,15 @@ var Application = AbstractApplication.extend({
             self.spritesheet.play("idle");
         }), this.spritesheet = new Spritesheet(), this.spritesheet.addAnimation(motionIdle), 
         this.spritesheet.play("idle"), this.screen = screen, this.defaultVel = 50 * gameScale, 
-        this.upVel = 1 * gameScale, this.spritesheet.texture.anchor.x = .5, this.spritesheet.texture.anchor.y = .5, 
-        this.rotation = 0;
+        this.upVel = playerModel.velocity * gameScale, this.spritesheet.texture.anchor.x = .5, 
+        this.spritesheet.texture.anchor.y = .5, this.rotation = 0;
     },
     setTarget: function(pos) {
         this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? this.velocity.y = -this.upVel : this.target > this.getPosition().y && (this.velocity.y = this.upVel));
     },
     update: function() {
-        this.getPosition().y > windowHeight && this.velocity.y > 0 ? this.velocity.y = 0 : this.getPosition().y < 0 && this.velocity.y < 0 && (this.velocity.y = 0), 
-        pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0), 
+        this.gameOver || (this.getPosition().y > windowHeight && this.velocity.y > 0 ? this.velocity.y = 0 : this.getPosition().y < 0 && this.velocity.y < 0 && (this.velocity.y = 0), 
+        pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0)), 
         this._super(), this.spritesheet.texture.anchor.x = .5, this.spritesheet.texture.anchor.y = .5, 
         this.spritesheet.texture.rotation = this.rotation, this.rotation > 360 && (this.rotation = 0), 
         TweenLite.to(this, .5, {
@@ -479,7 +477,7 @@ var Application = AbstractApplication.extend({
     build: function() {},
     destroy: function() {},
     serialize: function() {}
-}), GameScreen = AbstractScreen.extend({
+}), EndGameScreen = AbstractScreen.extend({
     init: function(label) {
         this._super(label);
     },
@@ -488,11 +486,40 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/ease.png", "dist/img/UI/simpleButtonOver.png", "dist/img/spritesheet/red/red.json", "dist/img/atlas/atlas.json", "dist/img/UI/simpleButtonUp.png" ];
+        var assetsToLoader = [];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
-        this.initLoad()) : this.onAssetsLoaded(), this.textAcc = new PIXI.Text("Acc", {
+        this.initLoad()) : this.onAssetsLoaded();
+    },
+    onProgress: function() {
+        this._super();
+    },
+    onAssetsLoaded: function() {
+        this.initApplication();
+    },
+    initApplication: function() {
+        var self = this;
+        this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.btnBenchmark.build(80, 50), this.btnBenchmark.setPosition(windowWidth / 2, windowHeight / 2), 
+        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("REINIT", {
             font: "15px Arial"
-        }), this.addChild(this.textAcc), this.textAcc.position.y = 20, this.textAcc.position.x = windowWidth - 150, 
+        }), 5, 5), this.btnBenchmark.clickCallback = function() {
+            self.screenManager.change("Game");
+        };
+    }
+}), GameScreen = AbstractScreen.extend({
+    init: function(label) {
+        this._super(label);
+    },
+    destroy: function() {
+        this._super();
+    },
+    build: function() {
+        this._super(), this.textAcc = new PIXI.Text("", {
+            font: "15px Arial"
+        }), this.addChild(this.textAcc), this.textAcc.position.y = 20, this.textAcc.position.x = windowWidth - 150;
+        var assetsToLoader = [ "dist/img/atlas/atlas.json" ];
+        assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
+        this.textAcc.setText(this.textAcc.text + "\ninitLoad"), this.initLoad()) : this.onAssetsLoaded(), 
         this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), this.hitTouch.setInteractive(!0), 
         this.hitTouch.beginFill(0), this.hitTouch.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.hitTouch), this.hitTouch.alpha = 0, this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, .7 * windowWidth, windowHeight), 
@@ -511,79 +538,93 @@ var Application = AbstractApplication.extend({
             bulletCoast: .3,
             energyCoast: .1,
             chargeBullet: 1,
-            currentBulletForce: 0
-        }, this.particleAccum = 50;
+            currentBulletForce: 0,
+            velocity: 1.5
+        }, this.particleAccum = 50, this.gameOver = !1;
         var self = this;
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
-            self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.textAcc.setText("TOUCH START!"), 
-            self.touchstart = !0, self.onBulletTouch = !0);
+            self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.touchstart = !0, 
+            self.onBulletTouch = !0);
         }, this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function() {
-            if (self.touchstart) {
-                self.touchstart = !1, self.textAcc.setText("TOUCH END!"), self.onBulletTouch = !1;
+            if (self.touchstart && !self.gameOver) {
+                self.touchstart = !1, self.onBulletTouch = !1;
                 var percent = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy, fireForce = percent * self.playerModel.range;
                 self.playerModel.currentBulletForce = 0;
-                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, vel = self.playerModel.bulletVel + self.playerModel.bulletVel * percent, angle = self.red.rotation;
-                console.log(Math.cos(angle));
-                var bullet = new Bullet({
+                var timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, vel = self.playerModel.bulletVel + self.playerModel.bulletVel * percent, angle = self.red.rotation, bullet = new Bullet({
                     x: Math.cos(angle) * vel,
                     y: Math.sin(angle) * vel
                 }, timeLive);
                 bullet.build(), bullet.setPosition(.8 * self.red.getPosition().x, .8 * self.red.getPosition().y), 
-                self.addChild(bullet);
+                self.layer.addChild(bullet);
                 var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, .8 * gameScale);
                 bullet.setScale(scaleBullet, scaleBullet), self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
                 self.playerModel.currentBulletEnergy < 0 && (self.playerModel.currentBulletEnergy = 0);
             }
         }, this.hitTouch.touchstart = function(touchData) {
-            self.red && self.red.setTarget(touchData.global.y);
-        }, this.hitTouch.touchend = function() {}, this.hitTouch.touchmove = function(touchData) {
-            self.red && self.red.setTarget(touchData.global.y);
-        };
-        var posHelper = .05 * windowHeight;
-        this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
-        this.bulletBar.setPosition(250 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
-        this.addChild(this.energyBar), this.energyBar.setPosition(250 + 2 * posHelper + this.bulletBar.width, posHelper);
+            self.gameOver || self.red && self.red.setTarget(touchData.global.y);
+        }, this.hitTouch.touchend = function() {
+            self.gameOver;
+        }, this.hitTouch.touchmove = function(touchData) {
+            self.gameOver || self.red && self.red.setTarget(touchData.global.y);
+        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 0;
     },
     onProgress: function() {
-        this._super();
+        this.textAcc.setText(this.textAcc.text + "\nonProgress"), this._super();
     },
     onAssetsLoaded: function() {
-        this.initApplication();
+        this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
     },
     update: function() {
-        this._super(), this.onBulletTouch && this.playerModel.currentBulletEnergy > 0 ? (this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet, 
+        if (this._super(), this.onBulletTouch && this.playerModel.currentBulletEnergy > 0 ? (this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet, 
         this.playerModel.currentBulletForce += this.playerModel.chargeBullet) : this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
-        this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast && (this.playerModel.currentEnergy -= this.playerModel.energyCoast), 
-        this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
-        this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
-        this.updateParticles(), this.textAcc.setText(this.childs.length);
+        this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
+        this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && this.screenManager.change("EndGame")), 
+        this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
+        this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
+        this.spawner <= 0) {
+            var bird = new Bird();
+            bird.build(), this.layer.addChild(bird), bird.setPosition(windowWidth / 2 + 100 * Math.random(), windowHeight), 
+            this.spawner = 500;
+        } else this.spawner--;
     },
     updateParticles: function() {
         if (this.particleAccum < 0) {
-            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 25;
+            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 40 + 8;
             var particle = new Particles({
-                x: .5 * -Math.random() - .2,
-                y: -(.5 * Math.random() + .5)
-            }, 140, "smoke", .01);
+                x: -.9,
+                y: -(.2 * Math.random() + .7)
+            }, 110, "smoke", -.01);
             particle.build(), particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
             this.addChild(particle);
         } else this.particleAccum--;
     },
     initApplication: function() {
-        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.rotation = -1, 
-        this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight);
+        var paralaxLayer1 = new Paralax(this.canvasArea.x);
+        paralaxLayer1.build("tree2", 100), this.addChild(paralaxLayer1), paralaxLayer1.velocity.x = -.5, 
+        paralaxLayer1.getContent().position.y = 420, this.textAcc.setText(this.textAcc.text + "\ninitApplication");
+        var paralaxLayer2 = new Paralax(this.canvasArea.x);
+        paralaxLayer2.build("tree3", 150), this.addChild(paralaxLayer2), paralaxLayer2.velocity.x = -.2, 
+        paralaxLayer2.getContent().position.y = 460, this.textAcc.setText(this.textAcc.text + "\ninitApplication"), 
+        this.layerManager = new LayerManager(), this.layerManager.build("Main"), this.addChild(this.layerManager), 
+        this.layer = new Layer(), this.layer.build("EntityLayer"), this.layerManager.addLayer(this.layer), 
+        this.red = new Red(), this.red.build(this, this.playerModel), this.layer.addChild(this.red), 
+        this.red.rotation = -1, this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight);
         scaleConverter(this.red.getContent().height, windowHeight, .3);
         TweenLite.to(this.red.spritesheet.position, 1, {
             x: .15 * windowWidth + this.red.getContent().width / 2,
             y: windowHeight / 2
         });
+        var posHelper = .05 * windowHeight;
+        this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
+        this.bulletBar.setPosition(250 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
+        this.addChild(this.energyBar), this.energyBar.setPosition(250 + 2 * posHelper + this.bulletBar.width, posHelper), 
         possibleFullscreen() && (this.fullScreen = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
         this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
             font: "10px Arial"
         }), 5, 5), this.fullScreen.clickCallback = function() {
             fullscreen();
-        }), this.initBench = !1;
+        }), this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication");
     },
     benchmark: function() {
         function addEntity() {
@@ -606,27 +647,9 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/ease.png", "dist/img/UI/simpleButtonOver.png", "dist/img/spritesheet/red/red.json", "dist/img/UI/simpleButtonUp.png" ];
+        var assetsToLoader = [ "dist/img/ease.png", "dist/img/atlas/atlas.json", "dist/img/UI/simpleButtonOver.png", "dist/img/UI/simpleButtonUp.png" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
-        this.initLoad()) : this.onAssetsLoaded(), this.textAcc = new PIXI.Text("Acc", {
-            font: "15px Arial"
-        }), this.addChild(this.textAcc), this.textAcc.position.y = 20, this.textAcc.position.x = windowWidth - 150, 
-        this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), this.hitTouch.setInteractive(!0), 
-        this.hitTouch.beginFill(0), this.hitTouch.drawRect(0, 0, windowWidth, windowHeight), 
-        this.addChild(this.hitTouch), this.hitTouch.alpha = 0, this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, .7 * windowWidth, windowHeight), 
-        this.hitTouchAttack = new PIXI.Graphics(), this.hitTouchAttack.setInteractive(!0), 
-        this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
-        this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight);
-        var self = this;
-        this.hitTouchAttack.touchstart = function() {
-            self.textAcc.setText("TOUCH START!");
-        }, this.hitTouchAttack.touchend = function() {
-            self.red.spritesheet.play("hurt"), self.textAcc.setText("TOUCH END!");
-        }, this.hitTouch.touchstart = function(touchData) {
-            self.red && self.red.setTarget(touchData.global.y);
-        }, this.hitTouch.touchend = function() {}, this.hitTouch.touchmove = function(touchData) {
-            self.red && self.red.setTarget(touchData.global.y), console.log(touchData);
-        };
+        this.initLoad()) : this.onAssetsLoaded();
     },
     onProgress: function() {
         this._super();
@@ -635,35 +658,16 @@ var Application = AbstractApplication.extend({
         this.initApplication();
     },
     initApplication: function() {
-        this.easeImg = new SimpleSprite("_dist/img/ease.png"), this.addChild(this.easeImg), 
-        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50), 
-        this.red = new Red(), this.red.build(this), this.addChild(this.red), this.red.setPosition(.05 * windowWidth + this.red.width / 2, windowHeight / 2);
+        this.easeImg = new SimpleSprite("dist/img/ease.png"), this.addChild(this.easeImg), 
+        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
-        this.btnBenchmark = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.btnBenchmark.build(40, 20), this.btnBenchmark.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 10), 
-        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Bench", {
-            font: "10px Arial"
+        this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.btnBenchmark.build(80, 50), this.btnBenchmark.setPosition(windowWidth / 2, windowHeight / 2), 
+        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("INIT", {
+            font: "15px Arial"
         }), 5, 5), this.btnBenchmark.clickCallback = function() {
-            self.benchmark();
-        }, possibleFullscreen() && (this.fullScreen = new DefaultButton("_dist/img/UI/simpleButtonUp.png", "_dist/img/UI/simpleButtonOver.png"), 
-        this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
-        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
-            font: "10px Arial"
-        }), 5, 5), this.fullScreen.clickCallback = function() {
-            fullscreen();
-        }), this.initBench = !1;
-    },
-    benchmark: function() {
-        function addEntity() {
-            var red = new Red();
-            red.build(), red.setPosition(-20, windowHeight * Math.random()), self.addChild(red), 
-            red.velocity.x = 1, self.accBench++, self.accBench > 300 && (self.initBench = !1, 
-            clearInterval(self.benchInterval));
-        }
-        if (!this.initBench) {
-            var self = this;
-            this.initBench = !0, this.accBench = 0, this.benchInterval = setInterval(addEntity, 50);
-        }
+            self.screenManager.change("Game");
+        };
     }
 }), FirebaseSocket = SmartSocket.extend({
     init: function(url) {
@@ -725,6 +729,29 @@ var Application = AbstractApplication.extend({
     addPosition: function(position) {
         for (var exists = !1, i = this.vecPositions.length - 1; i >= 0; i--) this.vecPositions[i] === position && (exists = !0);
         exists || this.vecPositions.push(position);
+    }
+}), Paralax = Class.extend({
+    init: function(maxWidth) {
+        this.velocity = {
+            x: 0,
+            y: 0
+        }, this.texture = "", this.sprite = "", this.container = new PIXI.DisplayObjectContainer(), 
+        this.updateable = !0, this.arraySprt = [], this.maxWidth = maxWidth, this.texWidth = 0, 
+        this.spacing = 0, this.totTiles = 0;
+    },
+    build: function(img, spacing) {
+        spacing && (this.spacing = spacing), this.texture = PIXI.Texture.fromFrame(img), 
+        this.texWidth = this.texture.width, this.totTiles = Math.ceil(this.maxWidth / this.texWidth) + 1;
+        for (var i = 0; i < this.totTiles; i++) this.sprite = new PIXI.Sprite(this.texture), 
+        this.sprite.position.x = (this.texWidth + this.spacing) * i, this.container.addChild(this.sprite);
+        console.log("this");
+    },
+    update: function() {
+        Math.abs(this.container.position.x + this.velocity.x) >= this.texWidth + this.totTiles * this.spacing ? this.container.position.x = 0 : this.container.position.x += this.velocity.x, 
+        this.container.position.y += this.velocity.y;
+    },
+    getContent: function() {
+        return this.container;
     }
 }), Particles = Entity.extend({
     init: function(vel, timeLive, label, rotation) {
