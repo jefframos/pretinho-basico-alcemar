@@ -1,4 +1,4 @@
-/*! jefframos 21-01-2015 */
+/*! jefframos 22-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -278,7 +278,7 @@ var Application = AbstractApplication.extend({
     init: function() {
         this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(12580351), 
         this.stage.removeChild(this.loadText), this.isMobile = testMobile(), this.appContainer = document.getElementById("rect"), 
-        this.id = parseInt(1e11 * Math.random());
+        this.id = parseInt(1e11 * Math.random()), this.gameModel = new AppModel();
     },
     update: function() {
         this._super();
@@ -296,10 +296,14 @@ var Application = AbstractApplication.extend({
             }, this.assetsLoader.load();
         } else this.onAssetsLoaded();
     },
+    getGameModel: function() {
+        return this.gameModel;
+    },
     initApplication: function() {
         this.waitScreen = new WaitScreen("Wait"), this.gameScreen = new GameScreen("Game"), 
-        this.endGameScreen = new EndGameScreen("EndGame"), this.screenManager.addScreen(this.waitScreen), 
-        this.screenManager.addScreen(this.gameScreen), this.screenManager.addScreen(this.endGameScreen), 
+        this.endGameScreen = new EndGameScreen("EndGame"), this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), 
+        this.screenManager.addScreen(this.waitScreen), this.screenManager.addScreen(this.gameScreen), 
+        this.screenManager.addScreen(this.endGameScreen), this.screenManager.addScreen(this.choicePlayerScreen), 
         this.screenManager.change("Wait");
     },
     onAssetsLoaded: function() {
@@ -350,7 +354,7 @@ var Application = AbstractApplication.extend({
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
         this.height = 1, this.type = "bird", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.y = -.8, this.velocity.x = -.2, this.power = 1, 
-        this.defaultVelocity = 1, this.imgSource = "belga";
+        this.defaultVelocity = 1, this.imgSource = "belga.png";
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -371,7 +375,7 @@ var Application = AbstractApplication.extend({
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
         this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = 1, this.defaultVelocity = 1, this.imgSource = "bullet";
+        this.power = 1, this.defaultVelocity = 1, this.imgSource = "bullet.png";
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -441,18 +445,18 @@ var Application = AbstractApplication.extend({
         this._super();
     }
 }), Red = SpritesheetEntity.extend({
-    init: function() {
-        this._super(!0);
+    init: function(playerModel) {
+        this.playerModel = playerModel, this._super(!0);
     },
-    build: function(screen, playerModel) {
+    build: function(screen) {
         var self = this, motionIdle = new SpritesheetAnimation();
-        motionIdle.build("idle", [ "piangersN" ], 1, !0, null);
+        console.log(this.playerModel), motionIdle.build("idle", [ this.playerModel.imgSource ], 1, !0, null);
         var motionHurt = new SpritesheetAnimation();
         motionHurt.build("hurt", this.getFramesByRange("piangers0", 2, 2), 1, !1, function() {
             self.spritesheet.play("idle");
         }), this.spritesheet = new Spritesheet(), this.spritesheet.addAnimation(motionIdle), 
         this.spritesheet.play("idle"), this.screen = screen, this.defaultVel = 50 * gameScale, 
-        this.upVel = playerModel.velocity * gameScale, this.spritesheet.texture.anchor.x = .5, 
+        this.upVel = this.playerModel.velocity * gameScale, this.spritesheet.texture.anchor.x = .5, 
         this.spritesheet.texture.anchor.y = .5, this.rotation = 0;
     },
     setTarget: function(pos) {
@@ -472,11 +476,93 @@ var Application = AbstractApplication.extend({
     }
 }), AppModel = Class.extend({
     init: function() {
-        this.id = 0;
+        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel(), new PlayerModel("piangers0001.png", .1, .4, 1.5, 4, 2) ], 
+        this.setModel(0);
+    },
+    setModel: function(id) {
+        this.currentID = id, this.currentPlayerModel = this.playerModels[id];
     },
     build: function() {},
     destroy: function() {},
     serialize: function() {}
+}), PlayerModel = Class.extend({
+    init: function(source, ecoast, bcoast, vel, bvel, bforce) {
+        this.range = 40, this.maxEnergy = 100, this.maxBulletEnergy = 100, this.currentEnergy = 100, 
+        this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
+        this.currentBulletForce = 100, this.recoverEnergy = .5, this.imgSource = source ? source : "piangersN.png", 
+        this.energyCoast = ecoast ? ecoast : .2, this.bulletCoast = bcoast ? bcoast : .2, 
+        this.velocity = vel ? vel : 2, this.bulletVel = bvel ? bvel : 8, this.bulletForce = bforce ? bforce : 1;
+    },
+    reset: function() {
+        this.currentEnergy = this.maxEnergy, this.currentBulletEnergy = this.maxBulletEnergy;
+    },
+    build: function() {},
+    destroy: function() {},
+    serialize: function() {}
+}), ChoicePlayerScreen = AbstractScreen.extend({
+    init: function(label) {
+        this._super(label);
+    },
+    destroy: function() {
+        this._super();
+    },
+    build: function() {
+        this._super();
+        var assetsToLoader = [];
+        assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
+        this.initLoad()) : this.onAssetsLoaded();
+    },
+    onProgress: function() {
+        this._super();
+    },
+    onAssetsLoaded: function() {
+        this.initApplication();
+    },
+    initApplication: function() {
+        this.easeImg = new SimpleSprite("dist/img/ease.png"), this.addChild(this.easeImg), 
+        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
+        var self = this;
+        this.char1 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char1.build(300, 100), this.char1.setPosition(windowWidth / 2 - this.char1.width / 2, windowHeight / 2), 
+        this.addChild(this.char1), this.char1.addLabel(new PIXI.Text("Piangers", {
+            align: "center",
+            font: "60px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 20, 15), this.char1.clickCallback = function() {
+            APP.getGameModel().setModel(0), self.updatePlayers();
+        }, this.char2 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char2.build(300, 100), this.char2.setPosition(windowWidth / 2 - this.char2.width / 2, windowHeight / 2 + 120), 
+        this.addChild(this.char2), this.char2.addLabel(new PIXI.Text("Piangers2", {
+            align: "center",
+            font: "60px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 15, 15), this.char2.clickCallback = function() {
+            APP.getGameModel().setModel(1), self.updatePlayers();
+        }, this.play = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.play.build(120, 70), this.play.setPosition(.95 * windowWidth - this.play.width, windowHeight / 2 + 120), 
+        this.addChild(this.play), this.play.addLabel(new PIXI.Text("PLAY", {
+            align: "center",
+            font: "35px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 15, 15), this.play.clickCallback = function() {
+            self.screenManager.change("Game");
+        }, this.returnButton = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.returnButton.build(60, 60), this.returnButton.setPosition(.95 * windowWidth - 65, .95 * windowHeight - 65), 
+        this.addChild(this.returnButton), this.returnButton.addLabel(new PIXI.Text("<", {
+            font: "10px Arial"
+        }), 5, 5), this.returnButton.clickCallback = function() {
+            self.screenManager.change("Wait");
+        }, this.updatePlayers();
+    },
+    updatePlayers: function() {
+        this.playerImg && this.playerImg.getContent().parent && this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
+        this.playerImg = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource), 
+        this.playerImg.container.anchor.x = .5, this.playerImg.container.anchor.y = .5, 
+        this.addChild(this.playerImg), this.playerImg.setPosition(windowWidth / 2, 250 - this.playerImg.container.height / 2);
+    }
 }), EndGameScreen = AbstractScreen.extend({
     init: function(label) {
         this._super(label);
@@ -499,11 +585,11 @@ var Application = AbstractApplication.extend({
     initApplication: function() {
         var self = this;
         this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.btnBenchmark.build(80, 50), this.btnBenchmark.setPosition(windowWidth / 2, windowHeight / 2), 
+        this.btnBenchmark.build(300, 120), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("REINIT", {
-            font: "15px Arial"
-        }), 5, 5), this.btnBenchmark.clickCallback = function() {
-            self.screenManager.change("Game");
+            font: "50px Arial"
+        }), 25, 15), this.btnBenchmark.clickCallback = function() {
+            self.screenManager.change("Choice");
         };
     }
 }), GameScreen = AbstractScreen.extend({
@@ -520,27 +606,13 @@ var Application = AbstractApplication.extend({
         var assetsToLoader = [ "dist/img/atlas/atlas.json" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.textAcc.setText(this.textAcc.text + "\ninitLoad"), this.initLoad()) : this.onAssetsLoaded(), 
-        this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), this.hitTouch.setInteractive(!0), 
+        this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), this.hitTouch.interactive = !0, 
         this.hitTouch.beginFill(0), this.hitTouch.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.hitTouch), this.hitTouch.alpha = 0, this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, .7 * windowWidth, windowHeight), 
-        this.hitTouchAttack = new PIXI.Graphics(), this.hitTouchAttack.setInteractive(!0), 
+        this.hitTouchAttack = new PIXI.Graphics(), this.hitTouchAttack.interactive = !0, 
         this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight), 
-        this.playerModel = {
-            bulletVel: 8,
-            range: 40,
-            maxEnergy: 100,
-            maxBulletEnergy: 100,
-            currentEnergy: 100,
-            currentBulletEnergy: 100,
-            recoverEnergy: .5,
-            recoverBulletEnergy: .5,
-            bulletCoast: .3,
-            energyCoast: .01,
-            chargeBullet: 1,
-            currentBulletForce: 100,
-            velocity: 1.5
-        }, this.particleAccum = 50, this.gameOver = !1;
+        this.particleAccum = 50, this.gameOver = !1;
         var self = this;
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
             self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.touchstart = !0, 
@@ -566,7 +638,7 @@ var Application = AbstractApplication.extend({
             self.gameOver;
         }, this.hitTouch.touchmove = function(touchData) {
             self.gameOver || self.red && self.red.setTarget(touchData.global.y);
-        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 0;
+        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 5;
     },
     onProgress: function() {
         this.textAcc.setText(this.textAcc.text + "\nonProgress"), this._super();
@@ -575,9 +647,9 @@ var Application = AbstractApplication.extend({
         this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
     },
     update: function() {
-        if (this._super(), this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
-        this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
-        this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
+        if (this._super(), this.playerModel) if (this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
+        this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
+        this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
         this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && this.screenManager.change("EndGame")), 
         this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
         this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
@@ -593,38 +665,39 @@ var Application = AbstractApplication.extend({
             var particle = new Particles({
                 x: -.9,
                 y: -(.2 * Math.random() + .7)
-            }, 110, "smoke", -.01);
+            }, 110, "smoke.png", -.01);
             particle.build(), particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
             this.addChild(particle);
         } else this.particleAccum--;
     },
     initApplication: function() {
         var paralaxLayer1 = new Paralax(this.canvasArea.x);
-        paralaxLayer1.build("tree2", 100), this.addChild(paralaxLayer1), paralaxLayer1.velocity.x = -.5, 
+        paralaxLayer1.build("tree2.png", 100), this.addChild(paralaxLayer1), paralaxLayer1.velocity.x = -.5, 
         paralaxLayer1.getContent().position.y = 420, this.textAcc.setText(this.textAcc.text + "\ninitApplication");
         var paralaxLayer2 = new Paralax(this.canvasArea.x);
-        paralaxLayer2.build("tree3", 150), this.addChild(paralaxLayer2), paralaxLayer2.velocity.x = -.2, 
+        paralaxLayer2.build("tree3.png", 150), this.addChild(paralaxLayer2), paralaxLayer2.velocity.x = -.2, 
         paralaxLayer2.getContent().position.y = 460, this.textAcc.setText(this.textAcc.text + "\ninitApplication"), 
         this.layerManager = new LayerManager(), this.layerManager.build("Main"), this.addChild(this.layerManager), 
         this.layer = new Layer(), this.layer.build("EntityLayer"), this.layerManager.addLayer(this.layer), 
-        this.red = new Red(), this.red.build(this, this.playerModel), this.layer.addChild(this.red), 
+        this.playerModel = APP.getGameModel().currentPlayerModel, this.playerModel.reset(), 
+        this.red = new Red(this.playerModel), this.red.build(this), this.layer.addChild(this.red), 
         this.red.rotation = -1, this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight);
-        scaleConverter(this.red.getContent().height, windowHeight, .3);
+        var scale = scaleConverter(this.red.getContent().height, windowHeight, .2);
         TweenLite.to(this.red.spritesheet.position, 1, {
             x: .15 * windowWidth + this.red.getContent().width / 2,
             y: windowHeight / 2
-        });
-        var posHelper = .05 * windowHeight;
+        }), this.red.setScale(scale, scale);
+        var self = this, posHelper = .05 * windowHeight;
         this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
         this.bulletBar.setPosition(250 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
         this.addChild(this.energyBar), this.energyBar.setPosition(250 + 2 * posHelper + this.bulletBar.width, posHelper), 
-        possibleFullscreen() && (this.fullScreen = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
-        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
+        this.returnButton = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.returnButton.build(60, 40), this.returnButton.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 65), 
+        this.addChild(this.returnButton), this.returnButton.addLabel(new PIXI.Text("<", {
             font: "10px Arial"
-        }), 5, 5), this.fullScreen.clickCallback = function() {
-            fullscreen();
-        }), this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication");
+        }), 5, 5), this.returnButton.clickCallback = function() {
+            self.screenManager.prevScreen();
+        }, this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication");
     },
     benchmark: function() {
         function addEntity() {
@@ -662,12 +735,21 @@ var Application = AbstractApplication.extend({
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.btnBenchmark.build(80, 50), this.btnBenchmark.setPosition(windowWidth / 2, windowHeight / 2), 
-        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("INIT", {
-            font: "15px Arial"
-        }), 5, 5), this.btnBenchmark.clickCallback = function() {
-            self.screenManager.change("Game");
-        };
+        console.log(this.btnBenchmark.build), this.btnBenchmark.build(300, 100), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 
+        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Jogar", {
+            align: "center",
+            font: "60px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 70, 15), this.btnBenchmark.clickCallback = function() {
+            self.screenManager.change("Choice");
+        }, possibleFullscreen() && (this.fullScreen = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
+        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
+            font: "10px Arial"
+        }), 5, 5), this.fullScreen.clickCallback = function() {
+            fullscreen();
+        });
     }
 }), FirebaseSocket = SmartSocket.extend({
     init: function(url) {

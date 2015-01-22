@@ -52,7 +52,7 @@ var DefaultButton = Class.extend({
 		if(height)
 			this.shapeButton.height = this.height;
 
-		this.shapeButton.setInteractive(true);
+		this.shapeButton.interactive = true;//(true);
 
 		this.shapeButton.mousedown = this.shapeButton.touchstart = function(data){
 			if(that.mouseDownCallback != null)

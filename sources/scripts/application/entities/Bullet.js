@@ -16,7 +16,7 @@ var Bullet = Entity.extend({
         this.timeLive = timeLive;
         this.power = 1;
         this.defaultVelocity = 1;
-        this.imgSource = 'bullet';
+        this.imgSource = 'bullet.png';
 
     },
     build: function(){

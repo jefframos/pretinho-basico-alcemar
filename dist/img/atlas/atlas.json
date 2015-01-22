@@ -1,6 +1,6 @@
 {"frames": {
 
-"belga":
+"belga.png":
 {
 	"frame": {"x":2,"y":2,"w":77,"h":76},
 	"rotated": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":77,"h":76},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"bullet":
+"bullet.png":
 {
 	"frame": {"x":81,"y":2,"w":34,"h":18},
 	"rotated": false,
@@ -18,7 +18,7 @@
 	"sourceSize": {"w":34,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"lambecu":
+"lambecu.png":
 {
 	"frame": {"x":117,"y":2,"w":85,"h":83},
 	"rotated": false,
@@ -27,45 +27,54 @@
 	"sourceSize": {"w":85,"h":83},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"piangersN":
+"piangers0001.png":
 {
-	"frame": {"x":204,"y":2,"w":164,"h":121},
+	"frame": {"x":2,"y":87,"w":135,"h":165},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":135,"h":165},
+	"sourceSize": {"w":135,"h":165},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"piangersN.png":
+{
+	"frame": {"x":2,"y":254,"w":164,"h":121},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":121},
 	"sourceSize": {"w":164,"h":121},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"roxo":
+"roxo.png":
 {
-	"frame": {"x":370,"y":2,"w":97,"h":75},
+	"frame": {"x":2,"y":377,"w":97,"h":75},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":97,"h":75},
 	"sourceSize": {"w":97,"h":75},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"smoke":
+"smoke.png":
 {
-	"frame": {"x":469,"y":2,"w":49,"h":59},
+	"frame": {"x":101,"y":377,"w":49,"h":59},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":49,"h":59},
 	"sourceSize": {"w":49,"h":59},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"tree2":
+"tree2.png":
 {
-	"frame": {"x":520,"y":2,"w":213,"h":192},
+	"frame": {"x":2,"y":454,"w":213,"h":192},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":192},
 	"sourceSize": {"w":213,"h":192},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"tree3":
+"tree3.png":
 {
-	"frame": {"x":735,"y":2,"w":213,"h":192},
+	"frame": {"x":2,"y":648,"w":213,"h":192},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":192},
@@ -77,8 +86,8 @@
 	"version": "1.0",
 	"image": "atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":950,"h":196},
+	"size": {"w":217,"h":842},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:85b78dd8914356a0e2ff6325c6f844ed:e2df66c9735fa3f8e24b02f626e6bed5:cbce6b53f0f49e0bf15173c25c41f876$"
+	"smartupdate": "$TexturePacker:SmartUpdate:268406066b7666f60366bbeeabe0d03a:27f3b2d58a2705d0de6d15baa0250cd8:cbce6b53f0f49e0bf15173c25c41f876$"
 }
 }

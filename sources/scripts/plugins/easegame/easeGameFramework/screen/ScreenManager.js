@@ -5,6 +5,7 @@ init:function()
         this.childs = [];
         this.container = new PIXI.DisplayObjectContainer();
         this.currentScreen = null;
+        this.lastScreenLabel = null;
         this.nextScreen = null;
         this.canvasArea = {x:0, y:0};
 	},
@@ -20,6 +21,10 @@ init:function()
 		this.childs.push(screen);
 		screen.canvasArea = this.canvasArea;
 		screen.screenManager = this;
+	},
+	prevScreen:function()
+	{
+		this.change(this.lastScreenLabel);
 	},
 	change:function(screenLabel)
 	{
@@ -38,6 +43,7 @@ init:function()
 						this.nextScreen.transitionIn();
 						this.container.addChild(this.nextScreen.getContent());
 					}
+					this.lastScreenLabel = this.currentScreen.screenLabel;
 					this.currentScreen = this.nextScreen;
 				}			
 			}

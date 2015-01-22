@@ -1,9 +1,10 @@
 /*jshint undef:false */
 var Red = SpritesheetEntity.extend({
-	init:function(){
+	init:function(playerModel){
+		this.playerModel = playerModel;
 		this._super( true );
 	},
-	build:function(screen, playerModel){
+	build:function(screen){
 		//the texture shoud be loaded before this class are instanced
 		//the label, is the label on the json of texture loaded
 		//the function 'getFramesByRange', is just a helper, this return one array with the labels of textures on json
@@ -11,7 +12,8 @@ var Red = SpritesheetEntity.extend({
 		var self = this;
 		var motionIdle = new SpritesheetAnimation();
 		// motionIdle.build('idle', this.getFramesByRange('piangers0', 2, 8), 1, true, null);
-		motionIdle.build('idle', ['piangersN'], 1, true, null);
+		console.log(this.playerModel);
+		motionIdle.build('idle', [this.playerModel.imgSource], 1, true, null);
 		
 		var motionHurt = new SpritesheetAnimation();
 		motionHurt.build('hurt', this.getFramesByRange('piangers0', 2, 2), 1, false, function(){
@@ -26,7 +28,7 @@ var Red = SpritesheetEntity.extend({
 		this.screen = screen;
 		this.defaultVel = 50 * gameScale;
 
-		this.upVel = playerModel.velocity * gameScale;
+		this.upVel = this.playerModel.velocity * gameScale;
 
 		// TweenLite.to(this.getContent().position, 0.5, {x:500});
 		// console.log(this.spritesheet.texture.rotation = 10);

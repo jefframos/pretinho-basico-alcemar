@@ -33,12 +33,12 @@ var EndGameScreen = AbstractScreen.extend({
        
         var self = this;
         this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.btnBenchmark.build(80,50);
-        this.btnBenchmark.setPosition( windowWidth / 2,windowHeight / 2);
+        this.btnBenchmark.build(300,120);
+        this.btnBenchmark.setPosition( windowWidth / 2 - this.btnBenchmark.width / 2,windowHeight / 2);
         this.addChild(this.btnBenchmark);
-        this.btnBenchmark.addLabel(new PIXI.Text('REINIT', {font:'15px Arial'}),5,5);
+        this.btnBenchmark.addLabel(new PIXI.Text('REINIT', {font:'50px Arial'}),25,15);
         this.btnBenchmark.clickCallback = function(){
-            self.screenManager.change('Game');
+            self.screenManager.change('Choice');
         };
     }
 });

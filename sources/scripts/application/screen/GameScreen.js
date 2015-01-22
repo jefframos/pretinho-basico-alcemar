@@ -28,7 +28,9 @@ var GameScreen = AbstractScreen.extend({
         this.accelerometer = {};
 
         this.hitTouch = new PIXI.Graphics();
-        this.hitTouch.setInteractive(true);
+        // this.hitTouch.setInteractive(true);
+        this.hitTouch.interactive = true;
+
         this.hitTouch.beginFill(0);
         this.hitTouch.drawRect(0,0,windowWidth, windowHeight);
         this.addChild(this.hitTouch);
@@ -36,7 +38,8 @@ var GameScreen = AbstractScreen.extend({
         this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, windowWidth * 0.7, windowHeight);
 
         this.hitTouchAttack = new PIXI.Graphics();
-        this.hitTouchAttack.setInteractive(true);
+        // this.hitTouchAttack.setInteractive(true);
+        this.hitTouchAttack.interactive = true;
         this.hitTouchAttack.beginFill(0);
         this.hitTouchAttack.drawRect(0,0,windowWidth, windowHeight);
         this.addChild(this.hitTouchAttack);
@@ -44,21 +47,7 @@ var GameScreen = AbstractScreen.extend({
         this.hitTouchAttack.hitArea = new PIXI.Rectangle(windowWidth * 0.3, 0, windowWidth, windowHeight);
         
 
-        this.playerModel = {
-            bulletVel:8,
-            range:40,
-            maxEnergy:100,
-            maxBulletEnergy:100,
-            currentEnergy:100,
-            currentBulletEnergy:100,
-            recoverEnergy:0.5,
-            recoverBulletEnergy:0.5,
-            bulletCoast:0.3,
-            energyCoast:0.01,
-            chargeBullet:1,
-            currentBulletForce:100,
-            velocity:1.5
-        };
+        
         this.particleAccum = 50;
         this.gameOver = false;
         var self = this;
@@ -135,7 +124,7 @@ var GameScreen = AbstractScreen.extend({
         };
         this.textAcc.setText(this.textAcc.text+'\nbuild');
 
-        this.spawner = 0;
+        this.spawner = 5;
     },
     onProgress:function(){
         this.textAcc.setText(this.textAcc.text+'\nonProgress');
@@ -148,20 +137,24 @@ var GameScreen = AbstractScreen.extend({
     },
     update:function() {
         this._super();
+        if(!this.playerModel)
+        {
+            return;
+        }
         // if(this.onBulletTouch && this.playerModel.currentBulletEnergy> 0){
         //     // this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet;
         //     this.playerModel.currentBulletForce += this.playerModel.chargeBullet;
         // }else if(this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
         //     this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy;
         // }
-        if(this.onBulletTouch && this.playerModel.currentBulletEnergy> 0){
+        if(this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy> 0){
             // this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet;
             // this.playerModel.currentBulletForce += this.playerModel.chargeBullet;
         }
-        if(this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
+        if(this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
             this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy;
         }
-        if(this.playerModel.currentEnergy > this.playerModel.energyCoast * 1.1){
+        if(this.playerModel && this.playerModel.currentEnergy > this.playerModel.energyCoast * 1.1){
             this.playerModel.currentEnergy -= this.playerModel.energyCoast;
         }else{
             this.gameOver = true;
@@ -170,7 +163,9 @@ var GameScreen = AbstractScreen.extend({
         if(this.gameOver){
             this.red.gameOver = true;
             this.red.velocity.y += 0.05;
+            // console.log(this.red.getPosition().y);
             if(this.red.getPosition().y > windowHeight+ this.red.getContent().height){
+                // console.log('over');
                 this.screenManager.change('EndGame');
             }
         }
@@ -200,7 +195,7 @@ var GameScreen = AbstractScreen.extend({
     updateParticles:function(){
         if(this.particleAccum < 0){
             this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 40 + 8;
-            var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke', -0.01);
+            var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke.png', -0.01);
             particle.build();
             particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5,
                 this.red.getPosition().y- this.red.getContent().height / 2 + 25);
@@ -213,14 +208,14 @@ var GameScreen = AbstractScreen.extend({
     initApplication:function(){
 
         var paralaxLayer1 = new Paralax(this.canvasArea.x);
-        paralaxLayer1.build('tree2', 100);
+        paralaxLayer1.build('tree2.png', 100);
         this.addChild(paralaxLayer1);
         paralaxLayer1.velocity.x = -0.5;
         paralaxLayer1.getContent().position.y = 420;
         this.textAcc.setText(this.textAcc.text+'\ninitApplication');
 
         var paralaxLayer2 = new Paralax(this.canvasArea.x);
-        paralaxLayer2.build('tree3', 150);
+        paralaxLayer2.build('tree3.png', 150);
         this.addChild(paralaxLayer2);
         paralaxLayer2.velocity.x = -0.2;
         paralaxLayer2.getContent().position.y = 460;
@@ -236,8 +231,11 @@ var GameScreen = AbstractScreen.extend({
         this.layer.build('EntityLayer');
         this.layerManager.addLayer(this.layer);
 
-        this.red = new Red();
-        this.red.build(this, this.playerModel);
+
+        this.playerModel = APP.getGameModel().currentPlayerModel;
+        this.playerModel.reset();
+        this.red = new Red(this.playerModel);
+        this.red.build(this);
         this.layer.addChild(this.red);
         this.red.rotation = -1;
         this.red.setPosition(windowWidth * 0.1 -this.red.getContent().width,windowHeight * 1.2);
@@ -245,9 +243,9 @@ var GameScreen = AbstractScreen.extend({
         
 
         // this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
-        var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.3);
+        var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.2);
         TweenLite.to(this.red.spritesheet.position, 1,{x:windowWidth * 0.15 +this.red.getContent().width/2, y:windowHeight /2} );
-        //this.red.setScale( scale,scale);
+        this.red.setScale( scale,scale);
         var self = this;
         var posHelper =  windowHeight * 0.05;
         this.bulletBar = new BarView(windowWidth * 0.1, 10, 1, 1);
@@ -258,16 +256,26 @@ var GameScreen = AbstractScreen.extend({
         this.addChild(this.energyBar);
         this.energyBar.setPosition(250 + posHelper * 2 + this.bulletBar.width, posHelper);
 
-        if(possibleFullscreen()){
-            this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-            this.fullScreen.build(40, 20);
-            this.fullScreen.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 35);
-            this.addChild(this.fullScreen);
-            this.fullScreen.addLabel(new PIXI.Text('Full', {font:'10px Arial'}),5,5);
-            this.fullScreen.clickCallback = function(){
-                fullscreen();
-            };
-        }
+
+        this.returnButton = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.returnButton.build(60, 40);
+        this.returnButton.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 65);
+        this.addChild(this.returnButton);
+        this.returnButton.addLabel(new PIXI.Text('<', {font:'10px Arial'}),5,5);
+        this.returnButton.clickCallback = function(){
+            self.screenManager.prevScreen();
+        };
+
+        // if(possibleFullscreen()){
+        //     this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        //     this.fullScreen.build(40, 20);
+        //     this.fullScreen.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 35);
+        //     this.addChild(this.fullScreen);
+        //     this.fullScreen.addLabel(new PIXI.Text('Full', {font:'10px Arial'}),5,5);
+        //     this.fullScreen.clickCallback = function(){
+        //         fullscreen();
+        //     };
+        // }
 
         this.initBench = false;
 

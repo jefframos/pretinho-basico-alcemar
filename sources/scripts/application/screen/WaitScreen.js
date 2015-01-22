@@ -38,12 +38,27 @@ var WaitScreen = AbstractScreen.extend({
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.btnBenchmark.build(80,50);
-        this.btnBenchmark.setPosition( windowWidth / 2,windowHeight / 2);
+        console.log(this.btnBenchmark.build);
+        this.btnBenchmark.build(300,100);
+        this.btnBenchmark.setPosition( windowWidth / 2 - this.btnBenchmark.width / 2,windowHeight / 2);
         this.addChild(this.btnBenchmark);
-        this.btnBenchmark.addLabel(new PIXI.Text('INIT', {font:'15px Arial'}),5,5);
+
+        // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
+
+        this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', font:'60px Arial', wordWrap:true, wordWrapWidth:300}),70,15);
         this.btnBenchmark.clickCallback = function(){
-            self.screenManager.change('Game');
+            self.screenManager.change('Choice');
         };
+
+        if(possibleFullscreen()){
+            this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+            this.fullScreen.build(40, 20);
+            this.fullScreen.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 35);
+            this.addChild(this.fullScreen);
+            this.fullScreen.addLabel(new PIXI.Text('Full', {font:'10px Arial'}),5,5);
+            this.fullScreen.clickCallback = function(){
+                fullscreen();
+            };
+        }
     }
 });

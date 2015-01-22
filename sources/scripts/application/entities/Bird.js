@@ -21,7 +21,7 @@ var Bird = Entity.extend({
 
         this.power = 1;
         this.defaultVelocity = 1;
-        this.imgSource = 'belga';
+        this.imgSource = 'belga.png';
 
 
 
