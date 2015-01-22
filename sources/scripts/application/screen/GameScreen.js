@@ -188,13 +188,13 @@ var GameScreen = AbstractScreen.extend({
         // if(this.layer){
         //     this.layer.collide
         // }
-        //this.updateParticles();
+        this.updateParticles();
 
         // this.textAcc.setText(this.childs.length);
     },
     updateParticles:function(){
         if(this.particleAccum < 0){
-            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 40 + 8;
+            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 8;
             var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke.png', -0.01);
             particle.build();
             particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5,
@@ -207,19 +207,23 @@ var GameScreen = AbstractScreen.extend({
     },
     initApplication:function(){
 
-        var paralaxLayer1 = new Paralax(this.canvasArea.x);
-        paralaxLayer1.build('tree2.png', 100);
-        this.addChild(paralaxLayer1);
-        paralaxLayer1.velocity.x = -0.5;
-        paralaxLayer1.getContent().position.y = 420;
-        this.textAcc.setText(this.textAcc.text+'\ninitApplication');
+        // var paralaxLayer1 = new Paralax(this.canvasArea.x);
+        // paralaxLayer1.build('tree2.png', 100);
+        // this.addChild(paralaxLayer1);
+        // paralaxLayer1.velocity.x = -0.5;
+        // paralaxLayer1.getContent().position.y = 420;
+        // this.textAcc.setText(this.textAcc.text+'\ninitApplication');
 
-        var paralaxLayer2 = new Paralax(this.canvasArea.x);
-        paralaxLayer2.build('tree3.png', 150);
-        this.addChild(paralaxLayer2);
-        paralaxLayer2.velocity.x = -0.2;
-        paralaxLayer2.getContent().position.y = 460;
-        this.textAcc.setText(this.textAcc.text+'\ninitApplication');
+        // var paralaxLayer2 = new Paralax(this.canvasArea.x);
+        // paralaxLayer2.build('tree3.png', 150);
+        // this.addChild(paralaxLayer2);
+        // paralaxLayer2.velocity.x = -0.2;
+        // paralaxLayer2.getContent().position.y = 460;
+        // this.textAcc.setText(this.textAcc.text+'\ninitApplication');
+        var environment = new Environment(windowWidth, windowHeight);
+        environment.build(['env1.png','env2.png','env3.png','env4.png']);
+        environment.velocity.x = -1;
+        this.addChild(environment);
 
         this.layerManager = new LayerManager();
         this.layerManager.build('Main');
@@ -240,10 +244,10 @@ var GameScreen = AbstractScreen.extend({
         this.red.rotation = -1;
         this.red.setPosition(windowWidth * 0.1 -this.red.getContent().width,windowHeight * 1.2);
 
-        
+        this.gameOver = false;
 
         // this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
-        var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.2);
+        var scale = scaleConverter(this.red.getContent().width, windowHeight, 0.25);
         TweenLite.to(this.red.spritesheet.position, 1,{x:windowWidth * 0.15 +this.red.getContent().width/2, y:windowHeight /2} );
         this.red.setScale( scale,scale);
         var self = this;
@@ -258,10 +262,10 @@ var GameScreen = AbstractScreen.extend({
 
 
         this.returnButton = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.returnButton.build(60, 40);
+        this.returnButton.build(60, 50);
         this.returnButton.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 65);
         this.addChild(this.returnButton);
-        this.returnButton.addLabel(new PIXI.Text('<', {font:'10px Arial'}),5,5);
+        this.returnButton.addLabel(new PIXI.Text('<', {font:'40px Arial'}),5,5);
         this.returnButton.clickCallback = function(){
             self.screenManager.prevScreen();
         };

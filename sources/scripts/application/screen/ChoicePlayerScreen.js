@@ -30,30 +30,49 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.initApplication();
     },
     initApplication:function(){
-        this.easeImg = new SimpleSprite('dist/img/ease.png');
-        this.addChild(this.easeImg);
-        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
+        // this.easeImg = new SimpleSprite('dist/img/ease.png');
+        // this.addChild(this.easeImg);
+        // this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.char1 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.char1.build(300,100);
+        this.char1.build(300,70);
         this.char1.setPosition( windowWidth / 2 - this.char1.width / 2,windowHeight / 2);
         this.addChild(this.char1);
 
-        this.char1.addLabel(new PIXI.Text('Piangers', { align:'center', font:'60px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
+        this.currentID = APP.getGameModel().currentID;
+        this.char1.addLabel(new PIXI.Text('Piangers', { align:'center', font:'40px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
         this.char1.clickCallback = function(){
+            if(self.currentID === 0){
+                return;
+            }
             APP.getGameModel().setModel(0);
             self.updatePlayers();
         };
 
 
         this.char2 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.char2.build(300,100);
-        this.char2.setPosition( windowWidth / 2 - this.char2.width / 2,windowHeight / 2 + 120);
+        this.char2.build(300,70);
+        this.char2.setPosition( windowWidth / 2 - this.char2.width / 2,windowHeight / 2 + 90);
         this.addChild(this.char2);
-
-        this.char2.addLabel(new PIXI.Text('Piangers2', { align:'center', font:'60px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        this.char2.addLabel(new PIXI.Text('Feter', { align:'center', font:'40px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char2.clickCallback = function(){
+            if(self.currentID === 1){
+                return;
+            }
             APP.getGameModel().setModel(1);
+            self.updatePlayers();
+        };
+
+        this.char3 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char3.build(300,70);
+        this.char3.setPosition( windowWidth / 2 - this.char3.width / 2,windowHeight / 2 + 180);
+        this.addChild(this.char3);
+        this.char3.addLabel(new PIXI.Text('Neto', { align:'center', font:'40px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        this.char3.clickCallback = function(){
+            if(self.currentID === 2){
+                return;
+            }
+            APP.getGameModel().setModel(2);
             self.updatePlayers();
         };
 
@@ -68,10 +87,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
         this.returnButton = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.returnButton.build(60, 60);
-        this.returnButton.setPosition( windowWidth * 0.95 - 65,windowHeight * 0.95 - 65);
+        this.returnButton.build(60, 80);
+        this.returnButton.setPosition( windowWidth * 0.05,windowHeight * 0.95 - 65);
         this.addChild(this.returnButton);
-        this.returnButton.addLabel(new PIXI.Text('<', {font:'10px Arial'}),5,5);
+        this.returnButton.addLabel(new PIXI.Text('<', {font:'70px Arial'}),5,5);
         this.returnButton.clickCallback = function(){
             self.screenManager.change('Wait');
         };
@@ -80,14 +99,19 @@ var ChoicePlayerScreen = AbstractScreen.extend({
     },
     updatePlayers:function()
     {
+        console.log(this.currentID, APP.getGameModel().currentID);
+        this.currentID = APP.getGameModel().currentID;
         if(this.playerImg && this.playerImg.getContent().parent){
             this.playerImg.getContent().parent.removeChild(this.playerImg.getContent());
         }
         this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
+
         this.playerImg.container.anchor.x = 0.5;
         this.playerImg.container.anchor.y = 0.5;
         // this.playerImg  = new PIXI.Sprite.fromFrame(this.imgSource);
         this.addChild(this.playerImg);
         this.playerImg.setPosition(windowWidth / 2 , 250 - this.playerImg.container.height / 2);
+        TweenLite.from(this.playerImg.getContent().position, 0.5, {y:  250 - this.playerImg.container.height / 2 - 50});
+        TweenLite.from(this.playerImg.getContent(), 0.5, {alpha:  0});
     }
 });

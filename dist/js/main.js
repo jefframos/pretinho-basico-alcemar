@@ -476,7 +476,7 @@ var Application = AbstractApplication.extend({
     }
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel(), new PlayerModel("piangers0001.png", .1, .4, 1.5, 4, 2) ], 
+        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .2, 2, 8, 1), new PlayerModel("feter.png", .05, .4, 1.5, 4, 2), new PlayerModel("neto.png", .05, .5, 2, 2, 4) ], 
         this.setModel(0);
     },
     setModel: function(id) {
@@ -490,7 +490,7 @@ var Application = AbstractApplication.extend({
         this.range = 40, this.maxEnergy = 100, this.maxBulletEnergy = 100, this.currentEnergy = 100, 
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
         this.currentBulletForce = 100, this.recoverEnergy = .5, this.imgSource = source ? source : "piangersN.png", 
-        this.energyCoast = ecoast ? ecoast : .2, this.bulletCoast = bcoast ? bcoast : .2, 
+        this.energyCoast = ecoast ? ecoast : .002, this.bulletCoast = bcoast ? bcoast : .2, 
         this.velocity = vel ? vel : 2, this.bulletVel = bvel ? bvel : 8, this.bulletForce = bforce ? bforce : 1;
     },
     reset: function() {
@@ -519,27 +519,34 @@ var Application = AbstractApplication.extend({
         this.initApplication();
     },
     initApplication: function() {
-        this.easeImg = new SimpleSprite("dist/img/ease.png"), this.addChild(this.easeImg), 
-        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.char1 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.char1.build(300, 100), this.char1.setPosition(windowWidth / 2 - this.char1.width / 2, windowHeight / 2), 
-        this.addChild(this.char1), this.char1.addLabel(new PIXI.Text("Piangers", {
+        this.char1.build(300, 70), this.char1.setPosition(windowWidth / 2 - this.char1.width / 2, windowHeight / 2), 
+        this.addChild(this.char1), this.currentID = APP.getGameModel().currentID, this.char1.addLabel(new PIXI.Text("Piangers", {
             align: "center",
-            font: "60px Arial",
+            font: "40px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
         }), 20, 15), this.char1.clickCallback = function() {
-            APP.getGameModel().setModel(0), self.updatePlayers();
+            0 !== self.currentID && (APP.getGameModel().setModel(0), self.updatePlayers());
         }, this.char2 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.char2.build(300, 100), this.char2.setPosition(windowWidth / 2 - this.char2.width / 2, windowHeight / 2 + 120), 
-        this.addChild(this.char2), this.char2.addLabel(new PIXI.Text("Piangers2", {
+        this.char2.build(300, 70), this.char2.setPosition(windowWidth / 2 - this.char2.width / 2, windowHeight / 2 + 90), 
+        this.addChild(this.char2), this.char2.addLabel(new PIXI.Text("Feter", {
             align: "center",
-            font: "60px Arial",
+            font: "40px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
         }), 15, 15), this.char2.clickCallback = function() {
-            APP.getGameModel().setModel(1), self.updatePlayers();
+            1 !== self.currentID && (APP.getGameModel().setModel(1), self.updatePlayers());
+        }, this.char3 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char3.build(300, 70), this.char3.setPosition(windowWidth / 2 - this.char3.width / 2, windowHeight / 2 + 180), 
+        this.addChild(this.char3), this.char3.addLabel(new PIXI.Text("Neto", {
+            align: "center",
+            font: "40px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 15, 15), this.char3.clickCallback = function() {
+            2 !== self.currentID && (APP.getGameModel().setModel(2), self.updatePlayers());
         }, this.play = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.play.build(120, 70), this.play.setPosition(.95 * windowWidth - this.play.width, windowHeight / 2 + 120), 
         this.addChild(this.play), this.play.addLabel(new PIXI.Text("PLAY", {
@@ -550,18 +557,24 @@ var Application = AbstractApplication.extend({
         }), 15, 15), this.play.clickCallback = function() {
             self.screenManager.change("Game");
         }, this.returnButton = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.returnButton.build(60, 60), this.returnButton.setPosition(.95 * windowWidth - 65, .95 * windowHeight - 65), 
+        this.returnButton.build(60, 80), this.returnButton.setPosition(.05 * windowWidth, .95 * windowHeight - 65), 
         this.addChild(this.returnButton), this.returnButton.addLabel(new PIXI.Text("<", {
-            font: "10px Arial"
+            font: "70px Arial"
         }), 5, 5), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.updatePlayers();
     },
     updatePlayers: function() {
+        console.log(this.currentID, APP.getGameModel().currentID), this.currentID = APP.getGameModel().currentID, 
         this.playerImg && this.playerImg.getContent().parent && this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
         this.playerImg = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource), 
         this.playerImg.container.anchor.x = .5, this.playerImg.container.anchor.y = .5, 
-        this.addChild(this.playerImg), this.playerImg.setPosition(windowWidth / 2, 250 - this.playerImg.container.height / 2);
+        this.addChild(this.playerImg), this.playerImg.setPosition(windowWidth / 2, 250 - this.playerImg.container.height / 2), 
+        TweenLite.from(this.playerImg.getContent().position, .5, {
+            y: 250 - this.playerImg.container.height / 2 - 50
+        }), TweenLite.from(this.playerImg.getContent(), .5, {
+            alpha: 0
+        });
     }
 }), EndGameScreen = AbstractScreen.extend({
     init: function(label) {
@@ -647,21 +660,24 @@ var Application = AbstractApplication.extend({
         this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
     },
     update: function() {
-        if (this._super(), this.playerModel) if (this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
-        this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
-        this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
-        this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && this.screenManager.change("EndGame")), 
-        this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
-        this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
-        this.spawner <= 0) {
-            var bird = new Bird();
-            bird.build(), this.layer.addChild(bird), bird.setPosition(windowWidth / 2 + 100 * Math.random(), windowHeight), 
-            this.spawner = 500;
-        } else this.spawner--;
+        if (this._super(), this.playerModel) {
+            if (this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
+            this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
+            this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
+            this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && this.screenManager.change("EndGame")), 
+            this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
+            this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
+            this.spawner <= 0) {
+                var bird = new Bird();
+                bird.build(), this.layer.addChild(bird), bird.setPosition(windowWidth / 2 + 100 * Math.random(), windowHeight), 
+                this.spawner = 500;
+            } else this.spawner--;
+            this.updateParticles();
+        }
     },
     updateParticles: function() {
         if (this.particleAccum < 0) {
-            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 40 + 8;
+            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 8;
             var particle = new Particles({
                 x: -.9,
                 y: -(.2 * Math.random() + .7)
@@ -671,18 +687,15 @@ var Application = AbstractApplication.extend({
         } else this.particleAccum--;
     },
     initApplication: function() {
-        var paralaxLayer1 = new Paralax(this.canvasArea.x);
-        paralaxLayer1.build("tree2.png", 100), this.addChild(paralaxLayer1), paralaxLayer1.velocity.x = -.5, 
-        paralaxLayer1.getContent().position.y = 420, this.textAcc.setText(this.textAcc.text + "\ninitApplication");
-        var paralaxLayer2 = new Paralax(this.canvasArea.x);
-        paralaxLayer2.build("tree3.png", 150), this.addChild(paralaxLayer2), paralaxLayer2.velocity.x = -.2, 
-        paralaxLayer2.getContent().position.y = 460, this.textAcc.setText(this.textAcc.text + "\ninitApplication"), 
-        this.layerManager = new LayerManager(), this.layerManager.build("Main"), this.addChild(this.layerManager), 
-        this.layer = new Layer(), this.layer.build("EntityLayer"), this.layerManager.addLayer(this.layer), 
-        this.playerModel = APP.getGameModel().currentPlayerModel, this.playerModel.reset(), 
-        this.red = new Red(this.playerModel), this.red.build(this), this.layer.addChild(this.red), 
-        this.red.rotation = -1, this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight);
-        var scale = scaleConverter(this.red.getContent().height, windowHeight, .2);
+        var environment = new Environment(windowWidth, windowHeight);
+        environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -1, 
+        this.addChild(environment), this.layerManager = new LayerManager(), this.layerManager.build("Main"), 
+        this.addChild(this.layerManager), this.layer = new Layer(), this.layer.build("EntityLayer"), 
+        this.layerManager.addLayer(this.layer), this.playerModel = APP.getGameModel().currentPlayerModel, 
+        this.playerModel.reset(), this.red = new Red(this.playerModel), this.red.build(this), 
+        this.layer.addChild(this.red), this.red.rotation = -1, this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight), 
+        this.gameOver = !1;
+        var scale = scaleConverter(this.red.getContent().width, windowHeight, .25);
         TweenLite.to(this.red.spritesheet.position, 1, {
             x: .15 * windowWidth + this.red.getContent().width / 2,
             y: windowHeight / 2
@@ -692,9 +705,9 @@ var Application = AbstractApplication.extend({
         this.bulletBar.setPosition(250 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
         this.addChild(this.energyBar), this.energyBar.setPosition(250 + 2 * posHelper + this.bulletBar.width, posHelper), 
         this.returnButton = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.returnButton.build(60, 40), this.returnButton.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 65), 
+        this.returnButton.build(60, 50), this.returnButton.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 65), 
         this.addChild(this.returnButton), this.returnButton.addLabel(new PIXI.Text("<", {
-            font: "10px Arial"
+            font: "40px Arial"
         }), 5, 5), this.returnButton.clickCallback = function() {
             self.screenManager.prevScreen();
         }, this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication");
@@ -811,6 +824,37 @@ var Application = AbstractApplication.extend({
     addPosition: function(position) {
         for (var exists = !1, i = this.vecPositions.length - 1; i >= 0; i--) this.vecPositions[i] === position && (exists = !0);
         exists || this.vecPositions.push(position);
+    }
+}), Environment = Class.extend({
+    init: function(maxWidth, maxHeight) {
+        this.velocity = {
+            x: 0,
+            y: 0
+        }, this.texture = "", this.sprite = "", this.container = new PIXI.DisplayObjectContainer(), 
+        this.updateable = !0, this.arraySprt = [], this.maxWidth = maxWidth, this.maxHeight = maxHeight, 
+        this.texWidth = 0, this.spacing = 0, this.totTiles = 0, this.currentSprId = 0;
+    },
+    build: function(imgs, spacing) {
+        this.arraySprt = imgs, spacing && (this.spacing = spacing);
+        for (var i = 0; i < this.arraySprt.length && !(this.container.width > this.maxWidth); i++) this.currentSprId = i, 
+        this.addEnv();
+    },
+    addEnv: function() {
+        this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame(this.arraySprt[this.currentSprId]));
+        var last = this.container.children[this.container.children.length - 1];
+        last && (this.sprite.position.x = last.position.x + last.width - 2), this.sprite.position.y = this.maxHeight - this.sprite.height, 
+        this.container.addChild(this.sprite);
+    },
+    update: function() {
+        if (!this.container.children) return void console.log(this.container);
+        for (var i = this.container.children.length - 1; i >= 0; i--) this.container.children[i].position.x + this.container.children[i].width < 0 && this.container.removeChild(this.container.children[i]), 
+        this.container.children[i].position.x += this.velocity.x;
+        var last = this.container.children[this.container.children.length - 1];
+        last.position.x + last.width - 20 < this.maxWidth && (this.currentSprId++, this.currentSprId >= this.arraySprt.length && (this.currentSprId = 0), 
+        this.addEnv());
+    },
+    getContent: function() {
+        return this.container;
     }
 }), Paralax = Class.extend({
     init: function(maxWidth) {

@@ -12,7 +12,7 @@ var PlayerModel = Class.extend({
 		this.recoverEnergy = 0.5;
 					
 		this.imgSource = source?source:'piangersN.png';
-		this.energyCoast = ecoast?ecoast:0.2;
+		this.energyCoast = ecoast?ecoast:0.002;
 		this.bulletCoast = bcoast?bcoast:0.2;
 		this.velocity = vel?vel:2;
 		this.bulletVel = bvel?bvel:8;
