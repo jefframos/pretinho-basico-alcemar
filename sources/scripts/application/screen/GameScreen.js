@@ -134,7 +134,7 @@ var GameScreen = AbstractScreen.extend({
         bullet.setPosition(this.red.getPosition().x * 0.8, this.red.getPosition().y * 0.8);
         this.layer.addChild(bullet);
 
-        var scaleBullet = scaleConverter(this.red.getContent().height, bullet.getContent().height, 0.8 * gameScale);
+        var scaleBullet = scaleConverter(this.red.getContent().width, bullet.getContent().width, 0.8);
         this.playerModel.currentBulletEnergy -= this.playerModel.maxBulletEnergy * this.playerModel.bulletCoast;
 
         if(this.playerModel.currentBulletEnergy < 0){
@@ -198,8 +198,8 @@ var GameScreen = AbstractScreen.extend({
             this.layer.addChild(bird);
 
             var scale = scaleConverter(bird.getContent().width, windowHeight, bird.birdModel.sizePercent);
-            console.log(scale);
-            // bird.setScale( scale,scale);
+            // console.log(scale);
+            bird.setScale( scale,scale);
             // console.log(bird);
             bird.setPosition(bird.behaviour.position.x ,bird.behaviour.position.y);
             this.spawner = bird.birdModel.toNext;

@@ -3,6 +3,7 @@ var Particles = Entity.extend({
     init:function(vel, timeLive, label, rotation){
         this._super( true );
         this.updateable = false;
+        this.colidable = false;
         this.deading = false;
         this.range = 40;
         this.width = 1;

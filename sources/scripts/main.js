@@ -4,11 +4,11 @@ function testMobile() {
 	return Modernizr.touch;// || window.innerWidth < 600;//true;// Modernizr.touch || window.innerWidth < 600;
 }
 var resizeProportional = true;
-var windowWidth = 820,
-windowHeight = 600;
+var windowWidth = 1136,
+windowHeight = 640;
 
-var realWindowWidth = 820,
-realWindowHeight = 600;
+var realWindowWidth = 1136,
+realWindowHeight = 640;
 var gameScale = 1.8;
 if(testMobile()){
 	windowWidth = window.innerWidth * gameScale;//640;

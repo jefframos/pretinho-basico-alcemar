@@ -18,8 +18,8 @@ var AppModel = Class.extend({
 
 		this.birdModels = [
 			new BirdModel('belga.png',null, 4, 0.1, 3, new BirdBehaviourSinoid({sinAcc:0.05}), 120, 0.1),
-			new BirdModel('roxo.png',null, 6, 0.2, -2, new BirdBehaviourDiag(), 200, 0.1),
-			new BirdModel('lambecu.png',null, 6, 0.2, -1, new BirdBehaviourDefault(), 150, 0.1)
+			new BirdModel('roxo.png',null, 6, 0.2, -3, new BirdBehaviourDiag({accX:0.02}), 200, 0.15),
+			new BirdModel('lambecu.png',null, 6, 0.2, -2, new BirdBehaviourDefault(), 150, 0.1)
 		];
 
 		this.setModel(0);

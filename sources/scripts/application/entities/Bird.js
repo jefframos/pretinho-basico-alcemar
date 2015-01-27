@@ -79,6 +79,7 @@ var Bird = Entity.extend({
                 this.getPosition().y);
             this.layer.addChild(particle);
         }
+        this.collidable = false;
         this.kill = true;
     }
 });

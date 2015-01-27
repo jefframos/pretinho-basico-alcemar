@@ -116,17 +116,20 @@ var Red = SpritesheetEntity.extend({
 		}
 	},
 	collide:function(arrayCollide){
-        if(this.collidable){
-            if(arrayCollide[0].type !== 'bullet'){
-               // if(this.fireType === 'physical'){
-                // this.preKill();
-                //}
-                this.playerModel.currentEnergy -= arrayCollide[0].demage * this.playerModel.maxEnergy;
-                arrayCollide[0].preKill();
-                
-            }
-        }
-    },
+		if(this.collidable){
+			if(arrayCollide[0].type !== 'bullet'){
+			   // if(this.fireType === 'physical'){
+				// this.preKill();
+				//}
+				var demage = arrayCollide[0].demage * this.playerModel.maxEnergy;
+				if(!isNaN(demage)){
+					this.playerModel.currentEnergy -= demage;
+				}
+				arrayCollide[0].preKill();
+				
+			}
+		}
+	},
 	destroy:function(){
 		this._super();
 	}

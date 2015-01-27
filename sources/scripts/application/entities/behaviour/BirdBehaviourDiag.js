@@ -6,13 +6,16 @@ var BirdBehaviourDiag = Class.extend({
 		this.acc = 0;
 	},
 	clone:function(){
+		this.props.accX = Math.random() * 0.02 + 0.005;
 		return new BirdBehaviourDiag(this.props);
 	},
 	update:function(entity){
-		entity.velocity.y = entity.vel + this.acc;
-		this.acc += 0.005;
+		this.acc += this.props.accX;
 		entity.velocity.x = -Math.abs(entity.vel);
-
+		entity.velocity.y = entity.vel + this.acc;
+		if(entity.velocity.y > 0){
+			entity.velocity.y = 0;
+		}
 	},
 	build:function(){
 
