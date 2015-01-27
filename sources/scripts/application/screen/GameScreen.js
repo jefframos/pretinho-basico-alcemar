@@ -74,31 +74,9 @@ var GameScreen = AbstractScreen.extend({
                 return;
             }
             self.touchstart = false;
-
-            // self.textAcc.setText('TOUCH END!');
             self.onBulletTouch = false;
-            var percent = (self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy);
-            var fireForce = percent * self.playerModel.range;
-            // self.playerModel.currentBulletForce = 0;
-            var timeLive = (self.red.getContent().width/ self.playerModel.bulletVel) + (fireForce);
 
-            var vel = self.playerModel.bulletVel + self.playerModel.bulletVel*percent;
-            var angle = self.red.rotation;
-            var bullet = new Bullet({x:Math.cos(angle) * vel,
-                y:Math.sin(angle) * vel},
-                timeLive, self.playerModel.bulletForce, self.playerModel.bulletSource);
-            bullet.build();
-            //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
-            bullet.setPosition(self.red.getPosition().x * 0.8, self.red.getPosition().y * 0.8);
-            self.layer.addChild(bullet);
-
-            var scaleBullet = scaleConverter(self.red.getContent().height, bullet.getContent().height, 0.8 * gameScale);
-            // bullet.setScale(scaleBullet , scaleBullet);
-            self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast;
-
-            if(self.playerModel.currentBulletEnergy < 0){
-                self.playerModel.currentBulletEnergy = 0;
-            }
+            self.shoot();
         };
 
 
@@ -108,7 +86,7 @@ var GameScreen = AbstractScreen.extend({
             }
             //self.textAcc.setText('TOUCH START!' + Math.random());
             if(self.red){
-                self.red.setTarget(touchData.global.y);
+                self.red.setTarget(touchData.global.y + self.red.getContent().height * 0.8);
             }
         };
          
@@ -125,12 +103,12 @@ var GameScreen = AbstractScreen.extend({
             }
             //self.textAcc.setText(touchData.global.y);
             if(self.red){
-                self.red.setTarget(touchData.global.y);
+                self.red.setTarget(touchData.global.y + self.red.getContent().height * 0.8);
             }
         };
         this.textAcc.setText(this.textAcc.text+'\nbuild');
 
-        this.spawner = 50;
+        this.spawner = 0;
     },
     onProgress:function(){
         this.textAcc.setText(this.textAcc.text+'\nonProgress');
@@ -141,12 +119,39 @@ var GameScreen = AbstractScreen.extend({
         this.textAcc.setText(this.textAcc.text+'\nAssetsLoaded');
         this.initApplication();
     },
+    shoot:function() {
+        var percent = (this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy);
+        var fireForce = percent * this.playerModel.range;
+        var timeLive = (this.red.getContent().width/ this.playerModel.bulletVel) + (fireForce);
+
+        var vel = this.playerModel.bulletVel + this.playerModel.bulletVel*percent;
+        var angle = this.red.rotation;
+        var bullet = new Bullet({x:Math.cos(angle) * vel,
+            y:Math.sin(angle) * vel},
+            timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource);
+        bullet.build();
+        //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
+        bullet.setPosition(this.red.getPosition().x * 0.8, this.red.getPosition().y * 0.8);
+        this.layer.addChild(bullet);
+
+        var scaleBullet = scaleConverter(this.red.getContent().height, bullet.getContent().height, 0.8 * gameScale);
+        this.playerModel.currentBulletEnergy -= this.playerModel.maxBulletEnergy * this.playerModel.bulletCoast;
+
+        if(this.playerModel.currentBulletEnergy < 0){
+            this.playerModel.currentBulletEnergy = 0;
+        }
+    },
     update:function() {
         this._super();
         if(!this.playerModel || !this.initApp)
         {
             return;
         }
+
+        if(!testMobile() && this.red && APP.stage.getMousePosition().y > 0 && APP.stage.getMousePosition().y < windowHeight){
+            this.red.setTarget(APP.stage.getMousePosition().y + this.red.getContent().height * 0.8);
+        }
+
         // if(this.onBulletTouch && this.playerModel.currentBulletEnergy> 0){
         //     // this.playerModel.currentBulletEnergy -= this.playerModel.chargeBullet;
         //     this.playerModel.currentBulletForce += this.playerModel.chargeBullet;
@@ -182,27 +187,26 @@ var GameScreen = AbstractScreen.extend({
             this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy);
         }
 
-        if(this.spawner <= 0){
-            var vel = -3;
-            var angle = Math.atan2(windowHeight / 2 - (this.red.getPosition().y + this.red.centerPosition.y), windowWidth - this.red.getPosition().x + this.red.centerPosition.x);
-// source, target, hp, demage, vel, timeLive
-            var birdModel = new BirdModel('belga.png', this.red, 4, 0.1, 3, 110);
+        this.updateBirds();
+        this.updateParticles();
 
-            var bird = new Bird(birdModel);
-            bird.build(new BirdBehaviourDefault(bird, {sinAcc:0.1}));
+    },
+    updateBirds:function(){
+        if(this.spawner <= 0){
+            var bird = APP.getGameModel().getNewBird(this.red);
+            bird.build();
             this.layer.addChild(bird);
-            // bird.setPosition(windowWidth/2 + (100 * Math.random()),windowHeight);
-            bird.setPosition(windowWidth ,windowHeight / 2);
-            this.spawner = 250;
+
+            var scale = scaleConverter(bird.getContent().width, windowHeight, bird.birdModel.sizePercent);
+            console.log(scale);
+            // bird.setScale( scale,scale);
+            // console.log(bird);
+            bird.setPosition(bird.behaviour.position.x ,bird.behaviour.position.y);
+            this.spawner = bird.birdModel.toNext;
+
         }else{
             this.spawner --;
         }
-        // if(this.layer){
-        //     this.layer.collide
-        // }
-        this.updateParticles();
-
-        // this.textAcc.setText(this.childs.length);
     },
     updateParticles:function(){
         if(this.particleAccum < 0){

@@ -38,9 +38,17 @@ var Bullet = Entity.extend({
         this.layer.collideChilds(this);
         this.timeLive --;
         if(this.timeLive <= 0){
-            this.preKill();
+            this.kill = true;
         }
-        this.range = this.width;
+        this.range = this.sprite.height;
+
+        if(this.collideArea){
+            return;
+        }
+        // this.collideArea = new PIXI.Graphics();
+        // this.collideArea.lineStyle(1,0x665544);
+        // this.collideArea.drawCircle(this.centerPosition.x,this.centerPosition.y,this.range);
+        // this.getContent().addChild(this.collideArea);
         // if(this.fall){
         //     this.velocity.y -= 0.1;
         // }
@@ -57,15 +65,16 @@ var Bullet = Entity.extend({
         }
     },
     preKill:function(){
-        if(this.collidable){
-            var self = this;
-            this.updateable = true;
-            this.collidable = false;
-            this.fall = true;
-            this.velocity = {x:0, y:0};
-            TweenLite.to(this.getContent(), 0.3, {alpha:0, onComplete:function(){self.kill = true;}});
-
+        for (var i = 4; i >= 0; i--) {
+            var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'bulletParticle.png', Math.random() * 0.1);
+            particle.build();
+            particle.gravity = 0.1 * Math.random() + 0.2;
+            particle.alphadecres = 0.08;
+            particle.setPosition(this.getPosition().x - (Math.random() + this.getContent().width * 0.1) / 2,
+                this.getPosition().y);
+            this.layer.addChild(particle);
         }
+        this.kill = true;
     },
     pointDistance: function(x, y, x0, y0){
         return Math.sqrt((x -= x0) * x + (y -= y0) * y);

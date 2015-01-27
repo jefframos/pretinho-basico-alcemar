@@ -314,7 +314,7 @@ var Application = AbstractApplication.extend({
         this.endGameScreen = new EndGameScreen("EndGame"), this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), 
         this.screenManager.addScreen(this.waitScreen), this.screenManager.addScreen(this.gameScreen), 
         this.screenManager.addScreen(this.endGameScreen), this.screenManager.addScreen(this.choicePlayerScreen), 
-        this.screenManager.change("Wait"), console.log(this.screenManager.container);
+        this.screenManager.change("Game"), console.log(this.screenManager.container);
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -366,23 +366,29 @@ var Application = AbstractApplication.extend({
         this.birdModel = birdModel, this.vel = birdModel.vel, this.velocity.x = -this.vel, 
         this.velocity.y = 0, this.demage = this.birdModel.demage, this.hp = this.birdModel.hp, 
         this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
-        this.acceleration = .1;
+        this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1;
     },
     hurt: function(demage) {
         this.hp -= demage, this.velocity.x = 0, this.hp <= 0 && this.preKill();
     },
-    build: function(behaviour) {
-        this.behaviour = behaviour, this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), 
-        this.sprite.anchor.x = .5, this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, 
-        this.range = this.sprite.width;
+    build: function() {
+        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
     },
     update: function() {
-        this._super(), this.behaviour.update(), this.velocity.x > -this.vel ? this.velocity.x -= this.acceleration : this.velocity.x = -this.vel;
-    },
-    collide: function(arrayCollide) {
-        this.parent && this.parent.textAcc && this.parent.textAcc.setText("COLIDIU"), this.collidable && "bullet" === arrayCollide[0].type && this.preKill();
+        this._super(), this.behaviour.update(this), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
+        this.range = .7 * this.sprite.height, this.collideArea;
     },
     preKill: function() {
+        for (var i = 4; i >= 0; i--) {
+            var particle = new Particles({
+                x: 4 * Math.random() - 2,
+                y: -(2 * Math.random() + 1)
+            }, 120, "smoke.png", .1 * Math.random());
+            particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
+            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+            this.layer.addChild(particle);
+        }
         this.kill = !0;
     }
 }), Bullet = Entity.extend({
@@ -400,26 +406,24 @@ var Application = AbstractApplication.extend({
         });
     },
     update: function() {
-        this._super(), this.layer.collideChilds(this), this.timeLive--, this.timeLive <= 0 && this.preKill(), 
-        this.range = this.width;
+        this._super(), this.layer.collideChilds(this), this.timeLive--, this.timeLive <= 0 && (this.kill = !0), 
+        this.range = this.sprite.height, this.collideArea;
     },
     collide: function(arrayCollide) {
         console.log("fireCollide", arrayCollide[0]), this.collidable && "bird" === arrayCollide[0].type && (console.log(arrayCollide[0].type), 
         this.preKill(), arrayCollide[0].hurt(this.power));
     },
     preKill: function() {
-        if (this.collidable) {
-            var self = this;
-            this.updateable = !0, this.collidable = !1, this.fall = !0, this.velocity = {
-                x: 0,
-                y: 0
-            }, TweenLite.to(this.getContent(), .3, {
-                alpha: 0,
-                onComplete: function() {
-                    self.kill = !0;
-                }
-            });
+        for (var i = 4; i >= 0; i--) {
+            var particle = new Particles({
+                x: 4 * Math.random() - 2,
+                y: -(2 * Math.random() + 1)
+            }, 120, "bulletParticle.png", .1 * Math.random());
+            particle.build(), particle.gravity = .1 * Math.random() + .2, particle.alphadecres = .08, 
+            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+            this.layer.addChild(particle);
         }
+        this.kill = !0;
     },
     pointDistance: function(x, y, x0, y0) {
         return Math.sqrt((x -= x0) * x + (y -= y0) * y);
@@ -490,7 +494,8 @@ var Application = AbstractApplication.extend({
             rotation: 5 * this.velocity.y * Math.PI / 180
         }) : TweenLite.to(this, .3, {
             rotation: 0
-        }), this.layer.collideChilds(this), this.getPosition().x > windowWidth + 50 && this.preKill();
+        }), this.range = .8 * this.getContent().height, this.layer.collideChilds(this), 
+        this.getPosition().x > windowWidth + 50 && this.preKill();
     },
     collide: function(arrayCollide) {
         this.collidable && "bullet" !== arrayCollide[0].type && (this.playerModel.currentEnergy -= arrayCollide[0].demage * this.playerModel.maxEnergy, 
@@ -500,30 +505,94 @@ var Application = AbstractApplication.extend({
         this._super();
     }
 }), BirdBehaviourDefault = Class.extend({
-    init: function(entity, props) {
-        this.entity = entity, this.props = props, this.sin = 0;
+    init: function(props) {
+        this.props = props, this.position = {
+            x: windowWidth,
+            y: .1 * windowHeight + .8 * windowHeight * Math.random()
+        };
     },
-    update: function() {
-        this.entity.velocity.y = Math.sin(this.sin) * this.entity.vel, this.sin += this.props.sinAcc;
+    clone: function() {
+        return new BirdBehaviourDefault(this.props);
+    },
+    update: function(entity) {
+        entity.velocity.x = -entity.vel;
+    },
+    build: function() {},
+    destroy: function() {},
+    serialize: function() {}
+}), BirdBehaviourDiag = Class.extend({
+    init: function(props) {
+        this.props = props, this.position = {
+            x: .7 * windowWidth + .3 * windowWidth * Math.random(),
+            y: windowHeight
+        }, this.acc = 0;
+    },
+    clone: function() {
+        return new BirdBehaviourDiag(this.props);
+    },
+    update: function(entity) {
+        entity.velocity.y = entity.vel + this.acc, this.acc += .005, entity.velocity.x = -Math.abs(entity.vel);
+    },
+    build: function() {},
+    destroy: function() {},
+    serialize: function() {}
+}), BirdBehaviourGuided = Class.extend({
+    init: function(props) {
+        this.props = props, this.sin = 0, this.position = {
+            x: windowWidth,
+            y: .1 * windowHeight + .8 * windowHeight * Math.random()
+        };
+    },
+    clone: function() {
+        return new BirdBehaviourSinoid(this.props);
+    },
+    update: function(entity) {
+        entity.velocity.y = Math.sin(this.sin) * entity.vel, this.sin += this.props.sinAcc;
+    },
+    build: function() {},
+    destroy: function() {},
+    serialize: function() {}
+}), BirdBehaviourSinoid = Class.extend({
+    init: function(props) {
+        this.props = props, this.sin = 0, this.position = {
+            x: windowWidth,
+            y: windowHeight / 2
+        };
+    },
+    clone: function() {
+        return new BirdBehaviourSinoid(this.props);
+    },
+    update: function(entity) {
+        entity.velocity.y = Math.sin(this.sin) * entity.vel, this.sin += this.props.sinAcc;
     },
     build: function() {},
     destroy: function() {},
     serialize: function() {}
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .2, 2, 8, 1, "bulletSmall.png"), new PlayerModel("feter.png", .03, .4, 1.5, 4, 2, "bullet.png"), new PlayerModel("neto.png", .05, .5, 2, 2, 4, "bullet.png") ], 
+        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .1, 2, 8, 1, "bulletSmall.png"), new PlayerModel("feter.png", .03, .2, 1.5, 4, 2, "bullet.png"), new PlayerModel("neto.png", .05, .25, 2, 2, 4, "bullet.png") ], 
+        this.birdModels = [ new BirdModel("belga.png", null, 4, .1, 3, new BirdBehaviourSinoid({
+            sinAcc: .05
+        }), 120, .1), new BirdModel("roxo.png", null, 6, .2, -2, new BirdBehaviourDiag(), 200, .1), new BirdModel("lambecu.png", null, 6, .2, -1, new BirdBehaviourDefault(), 150, .1) ], 
         this.setModel(0);
     },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
     },
+    getNewBird: function(player) {
+        var id = Math.floor(this.birdModels.length * Math.random());
+        this.birdModels[id].target = player;
+        var bird = new Bird(this.birdModels[id]);
+        return bird;
+    },
     build: function() {},
     destroy: function() {},
     serialize: function() {}
 }), BirdModel = Class.extend({
-    init: function(source, target, hp, demage, vel, timeLive) {
+    init: function(source, target, hp, demage, vel, behaviour, toNext, sizePercent) {
         this.imgSource = source ? source : "belga.png", this.demage = demage, this.vel = vel, 
-        this.hp = hp, this.target = target, this.timeLive = timeLive;
+        this.hp = hp, this.target = target, this.timeLive = 999, this.toNext = toNext ? toNext : 150, 
+        this.behaviour = behaviour, this.sizePercent = sizePercent;
     },
     serialize: function() {}
 }), PlayerModel = Class.extend({
@@ -673,27 +742,15 @@ var Application = AbstractApplication.extend({
             self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.touchstart = !0, 
             self.onBulletTouch = !0);
         }, this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function() {
-            if (self.touchstart && !self.gameOver) {
-                self.touchstart = !1, self.onBulletTouch = !1;
-                var percent = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy, fireForce = percent * self.playerModel.range, timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, vel = self.playerModel.bulletVel + self.playerModel.bulletVel * percent, angle = self.red.rotation, bullet = new Bullet({
-                    x: Math.cos(angle) * vel,
-                    y: Math.sin(angle) * vel
-                }, timeLive, self.playerModel.bulletForce, self.playerModel.bulletSource);
-                bullet.build(), bullet.setPosition(.8 * self.red.getPosition().x, .8 * self.red.getPosition().y), 
-                self.layer.addChild(bullet);
-                {
-                    scaleConverter(self.red.getContent().height, bullet.getContent().height, .8 * gameScale);
-                }
-                self.playerModel.currentBulletEnergy -= self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast, 
-                self.playerModel.currentBulletEnergy < 0 && (self.playerModel.currentBulletEnergy = 0);
-            }
+            self.touchstart && !self.gameOver && (self.touchstart = !1, self.onBulletTouch = !1, 
+            self.shoot());
         }, this.hitTouch.touchstart = function(touchData) {
-            self.gameOver || self.red && self.red.setTarget(touchData.global.y);
+            self.gameOver || self.red && self.red.setTarget(touchData.global.y + .8 * self.red.getContent().height);
         }, this.hitTouch.touchend = function() {
             self.gameOver;
         }, this.hitTouch.touchmove = function(touchData) {
-            self.gameOver || self.red && self.red.setTarget(touchData.global.y);
-        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 50;
+            self.gameOver || self.red && self.red.setTarget(touchData.global.y + .8 * self.red.getContent().height);
+        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 0;
     },
     onProgress: function() {
         this.textAcc.setText(this.textAcc.text + "\nonProgress"), this._super();
@@ -701,24 +758,35 @@ var Application = AbstractApplication.extend({
     onAssetsLoaded: function() {
         this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
     },
+    shoot: function() {
+        var percent = this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy, fireForce = percent * this.playerModel.range, timeLive = this.red.getContent().width / this.playerModel.bulletVel + fireForce, vel = this.playerModel.bulletVel + this.playerModel.bulletVel * percent, angle = this.red.rotation, bullet = new Bullet({
+            x: Math.cos(angle) * vel,
+            y: Math.sin(angle) * vel
+        }, timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource);
+        bullet.build(), bullet.setPosition(.8 * this.red.getPosition().x, .8 * this.red.getPosition().y), 
+        this.layer.addChild(bullet);
+        scaleConverter(this.red.getContent().height, bullet.getContent().height, .8 * gameScale);
+        this.playerModel.currentBulletEnergy -= this.playerModel.maxBulletEnergy * this.playerModel.bulletCoast, 
+        this.playerModel.currentBulletEnergy < 0 && (this.playerModel.currentBulletEnergy = 0);
+    },
     update: function() {
-        if (this._super(), this.playerModel && this.initApp) {
-            if (this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
-            this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
-            this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
-            this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && (console.log("GAME OVER"), 
-            this.screenManager.change("EndGame"))), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
-            this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
-            this.spawner <= 0) {
-                var birdModel = (Math.atan2(windowHeight / 2 - (this.red.getPosition().y + this.red.centerPosition.y), windowWidth - this.red.getPosition().x + this.red.centerPosition.x), 
-                new BirdModel("belga.png", this.red, 4, .1, 3, 110)), bird = new Bird(birdModel);
-                bird.build(new BirdBehaviourDefault(bird, {
-                    sinAcc: .1
-                })), this.layer.addChild(bird), bird.setPosition(windowWidth, windowHeight / 2), 
-                this.spawner = 250;
-            } else this.spawner--;
-            this.updateParticles();
-        }
+        this._super(), this.playerModel && this.initApp && (!testMobile() && this.red && APP.stage.getMousePosition().y > 0 && APP.stage.getMousePosition().y < windowHeight && this.red.setTarget(APP.stage.getMousePosition().y + .8 * this.red.getContent().height), 
+        this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
+        this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
+        this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
+        this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && (console.log("GAME OVER"), 
+        this.screenManager.change("EndGame"))), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
+        this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
+        this.updateBirds(), this.updateParticles());
+    },
+    updateBirds: function() {
+        if (this.spawner <= 0) {
+            var bird = APP.getGameModel().getNewBird(this.red);
+            bird.build(), this.layer.addChild(bird);
+            var scale = scaleConverter(bird.getContent().width, windowHeight, bird.birdModel.sizePercent);
+            console.log(scale), bird.setPosition(bird.behaviour.position.x, bird.behaviour.position.y), 
+            this.spawner = bird.birdModel.toNext;
+        } else this.spawner--;
     },
     updateParticles: function() {
         if (this.particleAccum < 0) {

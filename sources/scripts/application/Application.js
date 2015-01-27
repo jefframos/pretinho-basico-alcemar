@@ -76,7 +76,7 @@ var Application = AbstractApplication.extend({
         this.screenManager.addScreen(this.gameScreen);
         this.screenManager.addScreen(this.endGameScreen);
         this.screenManager.addScreen(this.choicePlayerScreen);
-        this.screenManager.change('Wait');
+        this.screenManager.change('Game');
 
         console.log(this.screenManager.container);
     },

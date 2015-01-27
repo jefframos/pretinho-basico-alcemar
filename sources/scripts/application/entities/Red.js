@@ -68,9 +68,6 @@ var Red = SpritesheetEntity.extend({
 			// this.velocity.y = this.upVel;
 		}
 	},
-	// gameOver:function(){
-	// 	this.gameOver = true;
-	// },
 	update:function(){
 		if(!this.gameOver){
 			if(this.getPosition().y > windowHeight && this.velocity.y > 0){
@@ -112,6 +109,7 @@ var Red = SpritesheetEntity.extend({
 		}
 		// this.spritesheet.texture.rotation = this.velocity.y * Math.PI / 180;
 		// this.getContent().rotation = this.velocity.y / 10;
+		this.range = this.getContent().height * 0.8;
 		this.layer.collideChilds(this);
 		if(this.getPosition().x > windowWidth + 50){
 			this.preKill();

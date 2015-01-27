@@ -21,7 +21,7 @@ var Bird = Entity.extend({
         this.hp = this.birdModel.hp;
         this.defaultVelocity = this.birdModel.vel;
         this.imgSource = this.birdModel.imgSource;
-        
+        this.behaviour = this.birdModel.behaviour.clone();
         this.acceleration = 0.1;
     },
     hurt: function(demage){
@@ -31,9 +31,7 @@ var Bird = Entity.extend({
             this.preKill();
         }
     },
-    build: function(behaviour){
-
-        this.behaviour = behaviour;
+    build: function(){
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
 
         this.sprite.anchor.x = 0.5;
@@ -43,56 +41,44 @@ var Bird = Entity.extend({
         this.collidable = true;
 
         this.range = this.sprite.width;
+
+        
         // this.centerPosition.x = -this.sprite.width/2;
         // this.centerPosition.y = -this.sprite.height/2;
-
-        // console.log(this.range, this.centerPosition);
     },
     update: function(){
         this._super();
-        this.behaviour.update();
+        this.behaviour.update(this);
 
-        if(this.velocity.x > -this.vel){
+
+        if(Math.abs(this.velocity.x) < Math.abs(this.vel)){
             this.velocity.x -= this.acceleration;
         }else{
-            this.velocity.x = -this.vel;
+            this.velocity.x = -Math.abs(this.vel);
         }
-        // this.timeLive --;
-        // if(this.timeLive <= 0){
-        //     this.preKill();
-        // }
-        // this.range = this.width;
-        // if(this.fall){
-        //     this.velocity.y -= 0.1;
-        // }
-    },
-    collide:function(arrayCollide){
-        // console.log('fireCollide', arrayCollide[0].type);
-        if(this.parent && this.parent.textAcc){
-            this.parent.textAcc.setText('COLIDIU');
+
+
+        // console.log(this.velocity);
+        this.range = this.sprite.height * 0.7;// * this.sprite.scale.x;
+
+        if(this.collideArea){
+            return;
         }
-        if(this.collidable){
-            if(arrayCollide[0].type === 'bullet'){
-               // if(this.fireType === 'physical'){
-                this.preKill();
-                //}
-                // arrayCollide[0].hurt(this.power, this.fireType);
-                
-            }
-        }
+        // this.collideArea = new PIXI.Graphics();
+        // this.collideArea.lineStyle(1,0x665544);
+        // this.collideArea.drawCircle(this.centerPosition.x,this.centerPosition.y,this.range);
+        // this.getContent().addChild(this.collideArea);
     },
     preKill:function(){
-        //this._super();
+        for (var i = 4; i >= 0; i--) {
+            var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'smoke.png', Math.random() * 0.1);
+            particle.build();
+            particle.gravity = 0.1 * Math.random();
+            particle.alphadecres = 0.08;
+            particle.setPosition(this.getPosition().x - (Math.random() + this.getContent().width * 0.1) / 2,
+                this.getPosition().y);
+            this.layer.addChild(particle);
+        }
         this.kill = true;
-        // if(this.collidable){
-        //     var self = this;
-        //     this.updateable = true;
-        //     this.collidable = false;
-        //     this.fall = true;
-        //     // this.getContent().tint = 0xff0000;
-        //     //var scl = this.getContent().scale.x;
-        //     //TweenLite.to(this.getContent().scale, 0.3, {x:scl * , y:1, onComplete:function(){self.kill = true;}});
-
-        // }
     }
 });
