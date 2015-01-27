@@ -192,10 +192,14 @@
             <filename>smoke.png</filename>
             <filename>lambecu.png</filename>
             <filename>roxo.png</filename>
-            <filename>tree2.png</filename>
-            <filename>tree3.png</filename>
             <filename>bullet.png</filename>
             <filename>piangersN.png</filename>
+            <filename>env3.png</filename>
+            <filename>env4.png</filename>
+            <filename>env1.png</filename>
+            <filename>env2.png</filename>
+            <filename>feter.png</filename>
+            <filename>neto.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

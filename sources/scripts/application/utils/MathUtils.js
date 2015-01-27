@@ -11,6 +11,6 @@ function radiansToDegrees(rad) {
 }
 
 function scaleConverter(current, max, scale) {
-	console.log(current, max, scale);
+	// console.log(current, max, scale);
 	return (max * scale) / current;
 }

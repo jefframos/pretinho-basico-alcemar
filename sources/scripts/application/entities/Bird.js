@@ -40,7 +40,7 @@ var Bird = Entity.extend({
         // this.centerPosition.x = this.sprite.width/2;
         // this.centerPosition.y = this.sprite.height/2;
 
-        console.log(this.range, this.centerPosition);
+        // console.log(this.range, this.centerPosition);
     },
     update: function(){
         this._super();

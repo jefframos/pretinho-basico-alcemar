@@ -12,7 +12,7 @@ var AppModel = Class.extend({
 
 		this.playerModels = [
 			new PlayerModel('piangersN.png', 0.04,0.2,2,8,1),
-			new PlayerModel('feter.png', 0.05,0.4,1.5,4,2),
+			new PlayerModel('feter.png', 3,0.4,1.5,4,2),
 			new PlayerModel('neto.png', 0.05,0.5,2,2,4),
 		];
 		this.setModel(0);

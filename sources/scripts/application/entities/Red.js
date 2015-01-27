@@ -12,7 +12,7 @@ var Red = SpritesheetEntity.extend({
 		var self = this;
 		var motionIdle = new SpritesheetAnimation();
 		// motionIdle.build('idle', this.getFramesByRange('piangers0', 2, 8), 1, true, null);
-		console.log(this.playerModel);
+		// console.log(this.playerModel);
 		motionIdle.build('idle', [this.playerModel.imgSource], 1, true, null);
 		
 		var motionHurt = new SpritesheetAnimation();

@@ -4,9 +4,16 @@ var GameScreen = AbstractScreen.extend({
         this._super(label);
     },
     destroy: function () {
+        this.initApp = false;
+        console.log('DESTROY');
         this._super();
     },
     build: function () {
+        console.log(this.gameOver);
+
+        this.particleAccum = 50;
+        this.gameOver = false;
+
         this._super();
 
         this.textAcc = new PIXI.Text('', {font:'15px Arial'});
@@ -48,8 +55,7 @@ var GameScreen = AbstractScreen.extend({
         
 
         
-        this.particleAccum = 50;
-        this.gameOver = false;
+       
         var self = this;
 
 
@@ -137,7 +143,7 @@ var GameScreen = AbstractScreen.extend({
     },
     update:function() {
         this._super();
-        if(!this.playerModel)
+        if(!this.playerModel || !this.initApp)
         {
             return;
         }
@@ -165,7 +171,7 @@ var GameScreen = AbstractScreen.extend({
             this.red.velocity.y += 0.05;
             // console.log(this.red.getPosition().y);
             if(this.red.getPosition().y > windowHeight+ this.red.getContent().height){
-                // console.log('over');
+                console.log('GAME OVER');
                 this.screenManager.change('EndGame');
             }
         }
@@ -206,7 +212,8 @@ var GameScreen = AbstractScreen.extend({
         }
     },
     initApplication:function(){
-
+        console.log('INIT APLICATION');
+        this.initApp = true;
         // var paralaxLayer1 = new Paralax(this.canvasArea.x);
         // paralaxLayer1.build('tree2.png', 100);
         // this.addChild(paralaxLayer1);

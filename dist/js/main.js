@@ -1,4 +1,4 @@
-/*! jefframos 22-01-2015 */
+/*! jefframos 27-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -78,7 +78,7 @@ function radiansToDegrees(rad) {
 }
 
 function scaleConverter(current, max, scale) {
-    return console.log(current, max, scale), max * scale / current;
+    return max * scale / current;
 }
 
 function testMobile() {
@@ -358,8 +358,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width, 
-        console.log(this.range, this.centerPosition);
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
     },
     update: function() {
         this._super();
@@ -450,7 +449,7 @@ var Application = AbstractApplication.extend({
     },
     build: function(screen) {
         var self = this, motionIdle = new SpritesheetAnimation();
-        console.log(this.playerModel), motionIdle.build("idle", [ this.playerModel.imgSource ], 1, !0, null);
+        motionIdle.build("idle", [ this.playerModel.imgSource ], 1, !0, null);
         var motionHurt = new SpritesheetAnimation();
         motionHurt.build("hurt", this.getFramesByRange("piangers0", 2, 2), 1, !1, function() {
             self.spritesheet.play("idle");
@@ -476,7 +475,7 @@ var Application = AbstractApplication.extend({
     }
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .2, 2, 8, 1), new PlayerModel("feter.png", .05, .4, 1.5, 4, 2), new PlayerModel("neto.png", .05, .5, 2, 2, 4) ], 
+        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .2, 2, 8, 1), new PlayerModel("feter.png", 3, .4, 1.5, 4, 2), new PlayerModel("neto.png", .05, .5, 2, 2, 4) ], 
         this.setModel(0);
     },
     setModel: function(id) {
@@ -610,10 +609,11 @@ var Application = AbstractApplication.extend({
         this._super(label);
     },
     destroy: function() {
-        this._super();
+        this.initApp = !1, console.log("DESTROY"), this._super();
     },
     build: function() {
-        this._super(), this.textAcc = new PIXI.Text("", {
+        console.log(this.gameOver), this.particleAccum = 50, this.gameOver = !1, this._super(), 
+        this.textAcc = new PIXI.Text("", {
             font: "15px Arial"
         }), this.addChild(this.textAcc), this.textAcc.position.y = 20, this.textAcc.position.x = windowWidth - 150;
         var assetsToLoader = [ "dist/img/atlas/atlas.json" ];
@@ -624,8 +624,7 @@ var Application = AbstractApplication.extend({
         this.addChild(this.hitTouch), this.hitTouch.alpha = 0, this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, .7 * windowWidth, windowHeight), 
         this.hitTouchAttack = new PIXI.Graphics(), this.hitTouchAttack.interactive = !0, 
         this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
-        this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight), 
-        this.particleAccum = 50, this.gameOver = !1;
+        this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight);
         var self = this;
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
             self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.touchstart = !0, 
@@ -660,12 +659,12 @@ var Application = AbstractApplication.extend({
         this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
     },
     update: function() {
-        if (this._super(), this.playerModel) {
+        if (this._super(), this.playerModel && this.initApp) {
             if (this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
             this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
             this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
-            this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && this.screenManager.change("EndGame")), 
-            this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
+            this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && (console.log("GAME OVER"), 
+            this.screenManager.change("EndGame"))), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
             this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
             this.spawner <= 0) {
                 var bird = new Bird();
@@ -687,6 +686,7 @@ var Application = AbstractApplication.extend({
         } else this.particleAccum--;
     },
     initApplication: function() {
+        console.log("INIT APLICATION"), this.initApp = !0;
         var environment = new Environment(windowWidth, windowHeight);
         environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -1, 
         this.addChild(environment), this.layerManager = new LayerManager(), this.layerManager.build("Main"), 
