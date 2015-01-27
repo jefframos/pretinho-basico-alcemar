@@ -463,6 +463,32 @@ var Application = AbstractApplication.extend({
     destroy: function() {
         this._super();
     }
+}), Item = Entity.extend({
+    init: function() {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
+        this.height = 1, this.type = "item", this.vel = 4, this.velocity.x = -this.vel, 
+        this.imgSource = "bullet.png";
+    },
+    build: function() {
+        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
+    },
+    update: function() {
+        this._super(), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
+        this.range = .7 * this.sprite.height, this.collideArea;
+    },
+    preKill: function() {
+        for (var i = 4; i >= 0; i--) {
+            var particle = new Particles({
+                x: 4 * Math.random() - 2,
+                y: -(2 * Math.random() + 1)
+            }, 120, "smoke.png", .1 * Math.random());
+            particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
+            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+            this.layer.addChild(particle);
+        }
+        this.collidable = !1, this.kill = !0;
+    }
 }), Red = SpritesheetEntity.extend({
     init: function(playerModel) {
         this.playerModel = playerModel, this._super(!0);
@@ -499,8 +525,11 @@ var Application = AbstractApplication.extend({
     },
     collide: function(arrayCollide) {
         if (this.collidable && "bullet" !== arrayCollide[0].type) {
-            var demage = arrayCollide[0].demage * this.playerModel.maxEnergy;
-            isNaN(demage) || (this.playerModel.currentEnergy -= demage), arrayCollide[0].preKill();
+            if ("item" === arrayCollide[0].type) this.playerModel.currentEnergy = this.playerModel.maxEnergy; else {
+                var demage = arrayCollide[0].demage * this.playerModel.maxEnergy;
+                isNaN(demage) || (this.playerModel.currentEnergy -= demage);
+            }
+            arrayCollide[0].preKill();
         }
     },
     destroy: function() {
@@ -810,7 +839,8 @@ var Application = AbstractApplication.extend({
         } else this.particleAccum--;
     },
     initApplication: function() {
-        console.log("INIT APLICATION"), this.initApp = !0;
+        console.log("INIT APLICATION"), this.initApp = !0, this.sky = new SimpleSprite("ceu1.png"), 
+        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight;
         var environment = new Environment(windowWidth, windowHeight);
         environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -1, 
         this.addChild(environment), this.layerManager = new LayerManager(), this.layerManager.build("Main"), 
@@ -834,7 +864,10 @@ var Application = AbstractApplication.extend({
             font: "40px Arial"
         }), 5, 5), this.returnButton.clickCallback = function() {
             self.screenManager.prevScreen();
-        }, this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication");
+        };
+        var item = new Item();
+        item.build(), item.setPosition(windowWidth, windowHeight / 2), this.layer.addChild(item), 
+        this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication");
     },
     benchmark: function() {
         function addEntity() {

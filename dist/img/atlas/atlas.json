@@ -2,7 +2,7 @@
 
 "belga.png":
 {
-	"frame": {"x":231,"y":2,"w":77,"h":76},
+	"frame": {"x":132,"y":2,"w":77,"h":76},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":77,"h":76},
@@ -36,9 +36,18 @@
 	"sourceSize": {"w":34,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"ceu1.png":
+{
+	"frame": {"x":781,"y":169,"w":800,"h":312},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":312},
+	"sourceSize": {"w":800,"h":312},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "env1.png":
 {
-	"frame": {"x":133,"y":138,"w":674,"h":165},
+	"frame": {"x":838,"y":2,"w":674,"h":165},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":674,"h":165},
@@ -47,7 +56,7 @@
 },
 "env2.png":
 {
-	"frame": {"x":809,"y":138,"w":777,"h":183},
+	"frame": {"x":2,"y":169,"w":777,"h":183},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":777,"h":183},
@@ -56,7 +65,7 @@
 },
 "env3.png":
 {
-	"frame": {"x":707,"y":2,"w":894,"h":134},
+	"frame": {"x":2,"y":483,"w":894,"h":134},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":894,"h":134},
@@ -65,7 +74,7 @@
 },
 "env4.png":
 {
-	"frame": {"x":2,"y":323,"w":1586,"h":233},
+	"frame": {"x":2,"y":619,"w":1586,"h":233},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":1586,"h":233},
@@ -74,7 +83,7 @@
 },
 "feter.png":
 {
-	"frame": {"x":2,"y":138,"w":129,"h":158},
+	"frame": {"x":397,"y":2,"w":129,"h":158},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":129,"h":158},
@@ -83,7 +92,7 @@
 },
 "lambecu.png":
 {
-	"frame": {"x":310,"y":2,"w":85,"h":83},
+	"frame": {"x":211,"y":2,"w":85,"h":83},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":83},
@@ -92,7 +101,7 @@
 },
 "neto.png":
 {
-	"frame": {"x":563,"y":2,"w":142,"h":122},
+	"frame": {"x":528,"y":2,"w":142,"h":122},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":142,"h":122},
@@ -101,7 +110,7 @@
 },
 "piangersN.png":
 {
-	"frame": {"x":397,"y":2,"w":164,"h":121},
+	"frame": {"x":672,"y":2,"w":164,"h":121},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":121},
@@ -110,7 +119,7 @@
 },
 "roxo.png":
 {
-	"frame": {"x":132,"y":2,"w":97,"h":75},
+	"frame": {"x":298,"y":2,"w":97,"h":75},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":97,"h":75},
@@ -131,8 +140,8 @@
 	"version": "1.0",
 	"image": "atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":1603,"h":582},
+	"size": {"w":1590,"h":854},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2957a56914c38b2dbd902787b1eeb314:df591136f31f63ea3f95c1cb9208e7cf:cbce6b53f0f49e0bf15173c25c41f876$"
+	"smartupdate": "$TexturePacker:SmartUpdate:aa116c020ec0f0ef1a2ff0f30c37084c:d409eede317699c48d04eef9e3f9679c:cbce6b53f0f49e0bf15173c25c41f876$"
 }
 }

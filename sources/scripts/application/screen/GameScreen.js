@@ -225,11 +225,16 @@ var GameScreen = AbstractScreen.extend({
     initApplication:function(){
         console.log('INIT APLICATION');
         this.initApp = true;
-
+        this.sky = new SimpleSprite('ceu1.png');
+        this.addChild(this.sky);
+        this.sky.container.width = windowWidth;
+        this.sky.container.height = windowHeight * 0.9;
         var environment = new Environment(windowWidth, windowHeight);
         environment.build(['env1.png','env2.png','env3.png','env4.png']);
         environment.velocity.x = -1;
         this.addChild(environment);
+
+
 
         this.layerManager = new LayerManager();
         this.layerManager.build('Main');
@@ -275,6 +280,11 @@ var GameScreen = AbstractScreen.extend({
         this.returnButton.clickCallback = function(){
             self.screenManager.prevScreen();
         };
+
+        var item = new Item();
+        item.build();
+        item.setPosition(windowWidth, windowHeight / 2);
+        this.layer.addChild(item);
 
         // if(possibleFullscreen()){
         //     this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
