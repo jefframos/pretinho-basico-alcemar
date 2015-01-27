@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var Bullet = Entity.extend({
-    init:function(vel, timeLive){
+    init:function(vel, timeLive, power, bulletSource){
         this._super( true );
         this.updateable = false;
         this.deading = false;
@@ -14,9 +14,10 @@ var Bullet = Entity.extend({
         this.velocity.x = vel.x;
         this.velocity.y = vel.y;
         this.timeLive = timeLive;
-        this.power = 1;
+        this.power = power;
         this.defaultVelocity = 1;
-        this.imgSource = 'bullet.png';
+        console.log(bulletSource);
+        this.imgSource = bulletSource;
 
     },
     build: function(){
@@ -49,8 +50,8 @@ var Bullet = Entity.extend({
         if(this.collidable){
             if(arrayCollide[0].type === 'bird'){
                 console.log(arrayCollide[0].type);
-                this.kill = true;//preKill();
-                arrayCollide[0].preKill();
+                this.preKill();
+                arrayCollide[0].hurt(this.power);
                 // arrayCollide[0].hurt(this.power, this.fireType);
             }
         }

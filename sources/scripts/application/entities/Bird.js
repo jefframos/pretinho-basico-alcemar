@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var Bird = Entity.extend({
-    init:function(vel, timeLive){
+    init:function(birdModel){
         this._super( true );
         this.updateable = false;
         this.deading = false;
@@ -10,24 +10,30 @@ var Bird = Entity.extend({
         this.type = 'bird';
         this.target = 'enemy';
         this.fireType = 'physical';
-        this.node = null;
 
-        // this.velocity.x = vel.x;
-        // this.velocity.y = vel.y;
-        // this.timeLive = timeLive;
+        this.birdModel = birdModel;
+        this.vel = birdModel.vel;
 
-        this.velocity.y = -0.8;
-        this.velocity.x = -0.2;
+        this.velocity.x = -this.vel;
+        this.velocity.y = 0;
 
-        this.power = 1;
-        this.defaultVelocity = 1;
-        this.imgSource = 'belga.png';
-
-
-
+        this.demage = this.birdModel.demage;
+        this.hp = this.birdModel.hp;
+        this.defaultVelocity = this.birdModel.vel;
+        this.imgSource = this.birdModel.imgSource;
+        
+        this.acceleration = 0.1;
     },
-    build: function(){
+    hurt: function(demage){
+        this.hp -= demage;
+        this.velocity.x = 0;
+        if(this.hp <= 0){
+            this.preKill();
+        }
+    },
+    build: function(behaviour){
 
+        this.behaviour = behaviour;
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
 
         this.sprite.anchor.x = 0.5;
@@ -37,13 +43,20 @@ var Bird = Entity.extend({
         this.collidable = true;
 
         this.range = this.sprite.width;
-        // this.centerPosition.x = this.sprite.width/2;
-        // this.centerPosition.y = this.sprite.height/2;
+        // this.centerPosition.x = -this.sprite.width/2;
+        // this.centerPosition.y = -this.sprite.height/2;
 
         // console.log(this.range, this.centerPosition);
     },
     update: function(){
         this._super();
+        this.behaviour.update();
+
+        if(this.velocity.x > -this.vel){
+            this.velocity.x -= this.acceleration;
+        }else{
+            this.velocity.x = -this.vel;
+        }
         // this.timeLive --;
         // if(this.timeLive <= 0){
         //     this.preKill();

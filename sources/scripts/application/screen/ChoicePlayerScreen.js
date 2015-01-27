@@ -99,10 +99,12 @@ var ChoicePlayerScreen = AbstractScreen.extend({
     },
     updatePlayers:function()
     {
-        console.log(this.currentID, APP.getGameModel().currentID);
+        // console.log(this.currentID, APP.getGameModel().currentID);
         this.currentID = APP.getGameModel().currentID;
         if(this.playerImg && this.playerImg.getContent().parent){
+            console.log('REMOVEAsset');
             this.playerImg.getContent().parent.removeChild(this.playerImg.getContent());
+            this.removeChild(this.playerImg);
         }
         this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
 

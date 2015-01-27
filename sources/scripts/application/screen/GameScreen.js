@@ -86,7 +86,7 @@ var GameScreen = AbstractScreen.extend({
             var angle = self.red.rotation;
             var bullet = new Bullet({x:Math.cos(angle) * vel,
                 y:Math.sin(angle) * vel},
-                timeLive);
+                timeLive, self.playerModel.bulletForce, self.playerModel.bulletSource);
             bullet.build();
             //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
             bullet.setPosition(self.red.getPosition().x * 0.8, self.red.getPosition().y * 0.8);
@@ -130,7 +130,7 @@ var GameScreen = AbstractScreen.extend({
         };
         this.textAcc.setText(this.textAcc.text+'\nbuild');
 
-        this.spawner = 5;
+        this.spawner = 50;
     },
     onProgress:function(){
         this.textAcc.setText(this.textAcc.text+'\nonProgress');
@@ -183,11 +183,17 @@ var GameScreen = AbstractScreen.extend({
         }
 
         if(this.spawner <= 0){
-            var bird = new Bird();
-            bird.build();
+            var vel = -3;
+            var angle = Math.atan2(windowHeight / 2 - (this.red.getPosition().y + this.red.centerPosition.y), windowWidth - this.red.getPosition().x + this.red.centerPosition.x);
+// source, target, hp, demage, vel, timeLive
+            var birdModel = new BirdModel('belga.png', this.red, 4, 0.1, 3, 110);
+
+            var bird = new Bird(birdModel);
+            bird.build(new BirdBehaviourDefault(bird, {sinAcc:0.1}));
             this.layer.addChild(bird);
-            bird.setPosition(windowWidth/2 + (100 * Math.random()),windowHeight);
-            this.spawner = 500;
+            // bird.setPosition(windowWidth/2 + (100 * Math.random()),windowHeight);
+            bird.setPosition(windowWidth ,windowHeight / 2);
+            this.spawner = 250;
         }else{
             this.spawner --;
         }
@@ -201,8 +207,9 @@ var GameScreen = AbstractScreen.extend({
     updateParticles:function(){
         if(this.particleAccum < 0){
             this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 8;
-            var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke.png', -0.01);
+            var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke.png', -0.02 * Math.random() + 0.01);
             particle.build();
+            particle.alphadecress = 0.01;
             particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5,
                 this.red.getPosition().y- this.red.getContent().height / 2 + 25);
             this.addChild(particle);
@@ -214,19 +221,7 @@ var GameScreen = AbstractScreen.extend({
     initApplication:function(){
         console.log('INIT APLICATION');
         this.initApp = true;
-        // var paralaxLayer1 = new Paralax(this.canvasArea.x);
-        // paralaxLayer1.build('tree2.png', 100);
-        // this.addChild(paralaxLayer1);
-        // paralaxLayer1.velocity.x = -0.5;
-        // paralaxLayer1.getContent().position.y = 420;
-        // this.textAcc.setText(this.textAcc.text+'\ninitApplication');
 
-        // var paralaxLayer2 = new Paralax(this.canvasArea.x);
-        // paralaxLayer2.build('tree3.png', 150);
-        // this.addChild(paralaxLayer2);
-        // paralaxLayer2.velocity.x = -0.2;
-        // paralaxLayer2.getContent().position.y = 460;
-        // this.textAcc.setText(this.textAcc.text+'\ninitApplication');
         var environment = new Environment(windowWidth, windowHeight);
         environment.build(['env1.png','env2.png','env3.png','env4.png']);
         environment.velocity.x = -1;

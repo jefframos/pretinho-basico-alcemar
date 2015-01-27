@@ -278,10 +278,20 @@ var Application = AbstractApplication.extend({
     init: function() {
         this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(12580351), 
         this.stage.removeChild(this.loadText), this.isMobile = testMobile(), this.appContainer = document.getElementById("rect"), 
-        this.id = parseInt(1e11 * Math.random()), this.gameModel = new AppModel();
+        this.id = parseInt(1e11 * Math.random()), this.gameModel = new AppModel(), this.objCounter = new PIXI.Text("", {
+            font: "15px Arial"
+        }), this.stage.addChild(this.objCounter), this.objCounter.position.y = 20, this.objCounter.position.x = windowWidth - 150;
     },
     update: function() {
-        this._super();
+        this._super(), this.screenManager && this.screenManager.currentScreen && (this.childsCounter = 1, 
+        this.recursiveCounter(this.screenManager.currentScreen), this.objCounter.setText(this.childsCounter));
+    },
+    recursiveCounter: function(obj) {
+        if (obj.children) for (j = obj.children.length - 1; j >= 0; j--) this.childsCounter++, 
+        this.recursiveCounter(obj.children[j]); else {
+            if (!obj.childs) return;
+            for (j = obj.childs.length - 1; j >= 0; j--) this.childsCounter++, this.recursiveCounter(obj.childs[j]);
+        }
     },
     build: function() {
         this._super();
@@ -304,7 +314,7 @@ var Application = AbstractApplication.extend({
         this.endGameScreen = new EndGameScreen("EndGame"), this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), 
         this.screenManager.addScreen(this.waitScreen), this.screenManager.addScreen(this.gameScreen), 
         this.screenManager.addScreen(this.endGameScreen), this.screenManager.addScreen(this.choicePlayerScreen), 
-        this.screenManager.change("Wait");
+        this.screenManager.change("Wait"), console.log(this.screenManager.container);
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -350,18 +360,24 @@ var Application = AbstractApplication.extend({
         this.container.position.x = x, this.container.position.y = y;
     }
 }), Bird = Entity.extend({
-    init: function() {
+    init: function(birdModel) {
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
         this.height = 1, this.type = "bird", this.target = "enemy", this.fireType = "physical", 
-        this.node = null, this.velocity.y = -.8, this.velocity.x = -.2, this.power = 1, 
-        this.defaultVelocity = 1, this.imgSource = "belga.png";
+        this.birdModel = birdModel, this.vel = birdModel.vel, this.velocity.x = -this.vel, 
+        this.velocity.y = 0, this.demage = this.birdModel.demage, this.hp = this.birdModel.hp, 
+        this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
+        this.acceleration = .1;
     },
-    build: function() {
-        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
+    hurt: function(demage) {
+        this.hp -= demage, this.velocity.x = 0, this.hp <= 0 && this.preKill();
+    },
+    build: function(behaviour) {
+        this.behaviour = behaviour, this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), 
+        this.sprite.anchor.x = .5, this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, 
+        this.range = this.sprite.width;
     },
     update: function() {
-        this._super();
+        this._super(), this.behaviour.update(), this.velocity.x > -this.vel ? this.velocity.x -= this.acceleration : this.velocity.x = -this.vel;
     },
     collide: function(arrayCollide) {
         this.parent && this.parent.textAcc && this.parent.textAcc.setText("COLIDIU"), this.collidable && "bullet" === arrayCollide[0].type && this.preKill();
@@ -370,11 +386,11 @@ var Application = AbstractApplication.extend({
         this.kill = !0;
     }
 }), Bullet = Entity.extend({
-    init: function(vel, timeLive) {
+    init: function(vel, timeLive, power, bulletSource) {
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
         this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = 1, this.defaultVelocity = 1, this.imgSource = "bullet.png";
+        this.power = power, this.defaultVelocity = 1, console.log(bulletSource), this.imgSource = bulletSource;
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -389,7 +405,7 @@ var Application = AbstractApplication.extend({
     },
     collide: function(arrayCollide) {
         console.log("fireCollide", arrayCollide[0]), this.collidable && "bird" === arrayCollide[0].type && (console.log(arrayCollide[0].type), 
-        this.kill = !0, arrayCollide[0].preKill());
+        this.preKill(), arrayCollide[0].hurt(this.power));
     },
     preKill: function() {
         if (this.collidable) {
@@ -456,26 +472,46 @@ var Application = AbstractApplication.extend({
         }), this.spritesheet = new Spritesheet(), this.spritesheet.addAnimation(motionIdle), 
         this.spritesheet.play("idle"), this.screen = screen, this.defaultVel = 50 * gameScale, 
         this.upVel = this.playerModel.velocity * gameScale, this.spritesheet.texture.anchor.x = .5, 
-        this.spritesheet.texture.anchor.y = .5, this.rotation = 0;
+        this.spritesheet.texture.anchor.y = .5, this.rotation = 0, this.centerPosition.x = -this.spritesheet.texture.width / 2, 
+        this.centerPosition.y = -this.spritesheet.texture.height / 2, this.acceleration = .5, 
+        this.side = 0;
     },
     setTarget: function(pos) {
-        this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? this.velocity.y = -this.upVel : this.target > this.getPosition().y && (this.velocity.y = this.upVel));
+        this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? (1 === this.side && (this.velocity.y /= 2), 
+        this.side = -1) : this.target > this.getPosition().y && (-1 === this.side && (this.velocity.y /= 2), 
+        this.side = 1));
     },
     update: function() {
         this.gameOver || (this.getPosition().y > windowHeight && this.velocity.y > 0 ? this.velocity.y = 0 : this.getPosition().y < 0 && this.velocity.y < 0 && (this.velocity.y = 0), 
-        pointDistance(0, this.getPosition().y, 0, this.target) < 4 && (this.velocity.y = 0)), 
+        pointDistance(0, this.getPosition().y, 0, this.target) < 4 ? this.velocity.y = 0 : Math.abs(this.velocity.y) < Math.abs(this.upVel) && (this.velocity.y += this.side * this.acceleration)), 
         this._super(), this.spritesheet.texture.anchor.x = .5, this.spritesheet.texture.anchor.y = .5, 
         this.spritesheet.texture.rotation = this.rotation, this.rotation > 360 && (this.rotation = 0), 
-        TweenLite.to(this, .3, {
+        pointDistance(0, this.getPosition().y, 0, this.target) > 10 ? TweenLite.to(this, .3, {
             rotation: 5 * this.velocity.y * Math.PI / 180
-        }), this.getPosition().x > windowWidth + 50 && this.preKill();
+        }) : TweenLite.to(this, .3, {
+            rotation: 0
+        }), this.layer.collideChilds(this), this.getPosition().x > windowWidth + 50 && this.preKill();
+    },
+    collide: function(arrayCollide) {
+        this.collidable && "bullet" !== arrayCollide[0].type && (this.playerModel.currentEnergy -= arrayCollide[0].demage * this.playerModel.maxEnergy, 
+        arrayCollide[0].preKill());
     },
     destroy: function() {
         this._super();
     }
+}), BirdBehaviourDefault = Class.extend({
+    init: function(entity, props) {
+        this.entity = entity, this.props = props, this.sin = 0;
+    },
+    update: function() {
+        this.entity.velocity.y = Math.sin(this.sin) * this.entity.vel, this.sin += this.props.sinAcc;
+    },
+    build: function() {},
+    destroy: function() {},
+    serialize: function() {}
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .2, 2, 8, 1), new PlayerModel("feter.png", 3, .4, 1.5, 4, 2), new PlayerModel("neto.png", .05, .5, 2, 2, 4) ], 
+        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .2, 2, 8, 1, "bulletSmall.png"), new PlayerModel("feter.png", .03, .4, 1.5, 4, 2, "bullet.png"), new PlayerModel("neto.png", .05, .5, 2, 2, 4, "bullet.png") ], 
         this.setModel(0);
     },
     setModel: function(id) {
@@ -484,13 +520,20 @@ var Application = AbstractApplication.extend({
     build: function() {},
     destroy: function() {},
     serialize: function() {}
+}), BirdModel = Class.extend({
+    init: function(source, target, hp, demage, vel, timeLive) {
+        this.imgSource = source ? source : "belga.png", this.demage = demage, this.vel = vel, 
+        this.hp = hp, this.target = target, this.timeLive = timeLive;
+    },
+    serialize: function() {}
 }), PlayerModel = Class.extend({
-    init: function(source, ecoast, bcoast, vel, bvel, bforce) {
+    init: function(source, ecoast, bcoast, vel, bvel, bforce, bullet) {
         this.range = 40, this.maxEnergy = 100, this.maxBulletEnergy = 100, this.currentEnergy = 100, 
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
         this.currentBulletForce = 100, this.recoverEnergy = .5, this.imgSource = source ? source : "piangersN.png", 
-        this.energyCoast = ecoast ? ecoast : .002, this.bulletCoast = bcoast ? bcoast : .2, 
-        this.velocity = vel ? vel : 2, this.bulletVel = bvel ? bvel : 8, this.bulletForce = bforce ? bforce : 1;
+        this.bulletSource = bullet ? bullet : "bullet.png", this.energyCoast = ecoast ? ecoast : .002, 
+        this.bulletCoast = bcoast ? bcoast : .2, this.velocity = vel ? vel : 2, this.bulletVel = bvel ? bvel : 8, 
+        this.bulletForce = bforce ? bforce : 1;
     },
     reset: function() {
         this.currentEnergy = this.maxEnergy, this.currentBulletEnergy = this.maxBulletEnergy;
@@ -564,8 +607,8 @@ var Application = AbstractApplication.extend({
         }, this.updatePlayers();
     },
     updatePlayers: function() {
-        console.log(this.currentID, APP.getGameModel().currentID), this.currentID = APP.getGameModel().currentID, 
-        this.playerImg && this.playerImg.getContent().parent && this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
+        this.currentID = APP.getGameModel().currentID, this.playerImg && this.playerImg.getContent().parent && (console.log("REMOVEAsset"), 
+        this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), this.removeChild(this.playerImg)), 
         this.playerImg = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource), 
         this.playerImg.container.anchor.x = .5, this.playerImg.container.anchor.y = .5, 
         this.addChild(this.playerImg), this.playerImg.setPosition(windowWidth / 2, 250 - this.playerImg.container.height / 2), 
@@ -635,7 +678,7 @@ var Application = AbstractApplication.extend({
                 var percent = self.playerModel.currentBulletForce / self.playerModel.maxBulletEnergy, fireForce = percent * self.playerModel.range, timeLive = self.red.getContent().width / self.playerModel.bulletVel + fireForce, vel = self.playerModel.bulletVel + self.playerModel.bulletVel * percent, angle = self.red.rotation, bullet = new Bullet({
                     x: Math.cos(angle) * vel,
                     y: Math.sin(angle) * vel
-                }, timeLive);
+                }, timeLive, self.playerModel.bulletForce, self.playerModel.bulletSource);
                 bullet.build(), bullet.setPosition(.8 * self.red.getPosition().x, .8 * self.red.getPosition().y), 
                 self.layer.addChild(bullet);
                 {
@@ -650,7 +693,7 @@ var Application = AbstractApplication.extend({
             self.gameOver;
         }, this.hitTouch.touchmove = function(touchData) {
             self.gameOver || self.red && self.red.setTarget(touchData.global.y);
-        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 5;
+        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 50;
     },
     onProgress: function() {
         this.textAcc.setText(this.textAcc.text + "\nonProgress"), this._super();
@@ -667,9 +710,12 @@ var Application = AbstractApplication.extend({
             this.screenManager.change("EndGame"))), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
             this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
             this.spawner <= 0) {
-                var bird = new Bird();
-                bird.build(), this.layer.addChild(bird), bird.setPosition(windowWidth / 2 + 100 * Math.random(), windowHeight), 
-                this.spawner = 500;
+                var birdModel = (Math.atan2(windowHeight / 2 - (this.red.getPosition().y + this.red.centerPosition.y), windowWidth - this.red.getPosition().x + this.red.centerPosition.x), 
+                new BirdModel("belga.png", this.red, 4, .1, 3, 110)), bird = new Bird(birdModel);
+                bird.build(new BirdBehaviourDefault(bird, {
+                    sinAcc: .1
+                })), this.layer.addChild(bird), bird.setPosition(windowWidth, windowHeight / 2), 
+                this.spawner = 250;
             } else this.spawner--;
             this.updateParticles();
         }
@@ -680,8 +726,8 @@ var Application = AbstractApplication.extend({
             var particle = new Particles({
                 x: -.9,
                 y: -(.2 * Math.random() + .7)
-            }, 110, "smoke.png", -.01);
-            particle.build(), particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
+            }, 110, "smoke.png", -.02 * Math.random() + .01);
+            particle.build(), particle.alphadecress = .01, particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
             this.addChild(particle);
         } else this.particleAccum--;
     },
@@ -748,7 +794,7 @@ var Application = AbstractApplication.extend({
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        console.log(this.btnBenchmark.build), this.btnBenchmark.build(300, 100), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 
+        this.btnBenchmark.build(300, 100), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Jogar", {
             align: "center",
             font: "60px Arial",
@@ -884,22 +930,22 @@ var Application = AbstractApplication.extend({
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 40, this.width = 1, 
         this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = 1, this.defaultVelocity = 1, this.imgSource = label, rotation && (this.rotation = rotation);
+        this.power = 1, this.defaultVelocity = 1, this.imgSource = label, this.alphadecress = .03, 
+        this.scaledecress = .03, this.gravity = 0, rotation && (this.rotation = rotation);
     },
     build: function() {
         this.updateable = !0, this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.sprite.alpha = 0, this.sprite.scale.x = .2, this.sprite.scale.y = .2, 
-        TweenLite.to(this.sprite, .5, {
-            alpha: 1
-        });
+        this.sprite.anchor.y = .5, this.sprite.alpha = 1, this.sprite.scale.x = .2, this.sprite.scale.y = .2, 
+        this.getContent().rotation = this.rotation;
     },
     update: function() {
-        this._super(), this.timeLive--, this.timeLive <= 0 && this.preKill(), this.range = this.width, 
-        this.rotation && (this.getContent().rotation += this.rotation), this.sprite.alpha >= .03 && (this.sprite.alpha -= .03), 
-        this.sprite.scale.x >= 1 || (this.sprite.scale.x += .03, this.sprite.scale.y += .03);
+        this._super(), 0 !== this.gravity && (this.velocity.y += this.gravity), this.timeLive--, 
+        this.timeLive <= 0 && this.preKill(), this.range = this.width, this.rotation && (this.getContent().rotation += this.rotation), 
+        this.sprite.alpha > 0 && (this.sprite.alpha -= this.alphadecress, this.sprite.alpha <= 0 && this.preKill()), 
+        this.sprite.scale.x >= 1 || (this.sprite.scale.x += this.scaledecress, this.sprite.scale.y += this.scaledecress);
     },
     preKill: function() {
-        this.updateable = !0, this.kill = !0;
+        this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
     }
 }), meter = new FPSMeter(), resizeProportional = !0, windowWidth = 820, windowHeight = 600, realWindowWidth = 820, realWindowHeight = 600, gameScale = 1.8;
 

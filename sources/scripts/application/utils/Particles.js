@@ -17,7 +17,9 @@ var Particles = Entity.extend({
         this.power = 1;
         this.defaultVelocity = 1;
         this.imgSource = label;
-        
+        this.alphadecress = 0.03;
+        this.scaledecress = 0.03;
+        this.gravity = 0;
         if(rotation){
             this.rotation = rotation;
         }
@@ -28,13 +30,17 @@ var Particles = Entity.extend({
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
         this.sprite.anchor.x = 0.5;
         this.sprite.anchor.y = 0.5;
-        this.sprite.alpha = 0;
+        this.sprite.alpha = 1;
         this.sprite.scale.x = 0.2;
         this.sprite.scale.y = 0.2;
-        TweenLite.to(this.sprite, 0.5, {alpha:1});
+        this.getContent().rotation = this.rotation;
+        // TweenLite.to(this.sprite, 0.5, {alpha:1});
     },
     update: function(){
         this._super();
+        if(this.gravity !== 0){
+            this.velocity.y += this.gravity;
+        }
         this.timeLive --;
         if(this.timeLive <= 0){
             this.preKill();
@@ -44,19 +50,23 @@ var Particles = Entity.extend({
             this.getContent().rotation += this.rotation;
         }
 
-        if(this.sprite.alpha >= 0.03){
-            this.sprite.alpha -=0.03;
+        if(this.sprite.alpha > 0){
+            this.sprite.alpha -=this.alphadecress;
+            if(this.sprite.alpha <= 0){
+                this.preKill();
+            }
         }
 
         if(this.sprite.scale.x >= 1){
             return;
         }
-        this.sprite.scale.x +=0.03;
-        this.sprite.scale.y += 0.03;
+        this.sprite.scale.x += this.scaledecress;
+        this.sprite.scale.y += this.scaledecress;
     },
     preKill:function(){
         //this._super();
         var self = this;
+        this.sprite.alpha = 0;
         this.updateable = true;
         this.kill = true;
         //TweenLite.to(this.getContent(), 0.3, {alpha:0, onComplete:function(){self.kill = true;}});

@@ -38,7 +38,7 @@ var WaitScreen = AbstractScreen.extend({
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        console.log(this.btnBenchmark.build);
+        // console.log(this.btnBenchmark.build);
         this.btnBenchmark.build(300,100);
         this.btnBenchmark.setPosition( windowWidth / 2 - this.btnBenchmark.width / 2,windowHeight / 2);
         this.addChild(this.btnBenchmark);
