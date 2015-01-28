@@ -8,7 +8,7 @@ var BirdBehaviourDefault = Class.extend({
 		return new BirdBehaviourDefault(this.props);
 	},
 	update:function(entity){
-		entity.velocity.x = -entity.vel;
+		//entity.velocity.x = -entity.vel;
 	},
 	build:function(){
 

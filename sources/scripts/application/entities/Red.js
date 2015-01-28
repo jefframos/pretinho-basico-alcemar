@@ -44,6 +44,8 @@ var Red = SpritesheetEntity.extend({
 		this.acceleration = 0.5;
 
 		this.side = 0;
+
+		this.particleAccum = 50;
 		// console.log(this.spritesheet.texture);
 	},
 	setTarget:function(pos){
@@ -114,6 +116,8 @@ var Red = SpritesheetEntity.extend({
 		if(this.getPosition().x > windowWidth + 50){
 			this.preKill();
 		}
+
+		// this.updateParticles();
 	},
 	collide:function(arrayCollide){
 		if(this.collidable){
@@ -132,6 +136,26 @@ var Red = SpritesheetEntity.extend({
 			}
 		}
 	},
+	// updateParticles:function(){
+	// 	if(this.particleAccum < 0){
+	// 		console.log('particula');
+	// 		this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 8;
+	// 		var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 1100, 'smoke.png', -0.02 * Math.random() + 0.01);
+	// 		particle.build();
+	// 		// particle.alphadecress = 0.01;
+	// 		// particle.setPosition(this.getPosition().x - this.getContent().width + 5 + 10 * Math.random(),
+	// 		// 	this.getPosition().y- this.getContent().height / 2 + 25);
+
+	// 		// particle.setPosition(this.getPosition().x, this.getPosition().y);
+
+	// 		particle.setPosition(this.getPosition().x, windowHeight / 2);
+
+	// 		this.layer.addChild(particle);
+
+	// 	}else{
+	// 		this.particleAccum --;
+	// 	}
+	// },
 	destroy:function(){
 		this._super();
 	}

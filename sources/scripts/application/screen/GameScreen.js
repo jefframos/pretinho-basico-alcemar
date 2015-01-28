@@ -55,7 +55,7 @@ var GameScreen = AbstractScreen.extend({
         
 
         
-       
+        
         var self = this;
 
 
@@ -122,7 +122,7 @@ var GameScreen = AbstractScreen.extend({
     shoot:function() {
         var percent = (this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy);
         var fireForce = percent * this.playerModel.range;
-        var timeLive = (this.red.getContent().width/ this.playerModel.bulletVel) + (fireForce);
+        var timeLive = (this.red.getContent().width/ this.playerModel.bulletVel) + (fireForce) + 100;
 
         var vel = this.playerModel.bulletVel + this.playerModel.bulletVel*percent;
         var angle = this.red.rotation;
@@ -189,6 +189,9 @@ var GameScreen = AbstractScreen.extend({
 
         this.updateBirds();
         this.updateParticles();
+        if(this.pointsLabel){
+            this.pointsLabel.setText(this.points);
+        }
 
     },
     updateBirds:function(){
@@ -214,7 +217,7 @@ var GameScreen = AbstractScreen.extend({
             var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke.png', -0.02 * Math.random() + 0.01);
             particle.build();
             particle.alphadecress = 0.01;
-            particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5,
+            particle.setPosition(this.red.getPosition().x - this.red.getContent().width - Math.random() * 10 + 15,
                 this.red.getPosition().y- this.red.getContent().height / 2 + 25);
             this.addChild(particle);
 
@@ -224,6 +227,8 @@ var GameScreen = AbstractScreen.extend({
     },
     initApplication:function(){
         console.log('INIT APLICATION');
+
+        this.points = 0;
         this.initApp = true;
         this.sky = new SimpleSprite('ceu1.png');
         this.addChild(this.sky);
@@ -301,7 +306,19 @@ var GameScreen = AbstractScreen.extend({
 
         this.textAcc.setText(this.textAcc.text+'\nendinitApplication');
 
+
+        this.gameHUD = new PIXI.DisplayObjectContainer();
+        this.addChild(this.gameHUD);
+
+        this.pointsLabel = new PIXI.Text('', {font:'25px Arial'});
+        this.gameHUD.addChild(this.pointsLabel);
+        this.pointsLabel.position.y = 20;
+        this.pointsLabel.position.x = windowWidth / 2;
+
         
+    },
+    updatePoints:function(value){
+        this.points += value;
     },
     benchmark:function()
     {

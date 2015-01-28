@@ -1,4 +1,4 @@
-/*! jefframos 27-01-2015 */
+/*! jefframos 28-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -287,6 +287,7 @@ var Application = AbstractApplication.extend({
         this.recursiveCounter(this.screenManager.currentScreen), this.objCounter.setText(this.childsCounter));
     },
     recursiveCounter: function(obj) {
+        var j = 0;
         if (obj.children) for (j = obj.children.length - 1; j >= 0; j--) this.childsCounter++, 
         this.recursiveCounter(obj.children[j]); else {
             if (!obj.childs) return;
@@ -305,6 +306,9 @@ var Application = AbstractApplication.extend({
                 console.log("onProgress");
             }, this.assetsLoader.load();
         } else this.onAssetsLoaded();
+    },
+    updatePoints: function(value) {
+        this.gameScreen.updatePoints(value);
     },
     getGameModel: function() {
         return this.gameModel;
@@ -369,7 +373,8 @@ var Application = AbstractApplication.extend({
         this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1;
     },
     hurt: function(demage) {
-        this.hp -= demage, this.velocity.x = 0, this.hp <= 0 && this.preKill();
+        this.hp -= demage, this.velocity.x = -Math.abs(.4 * this.vel), this.hp <= 0 && (APP.updatePoints(5), 
+        this.preKill()), this.getContent().tint = 16711680;
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -377,10 +382,10 @@ var Application = AbstractApplication.extend({
     },
     update: function() {
         this._super(), this.behaviour.update(this), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
-        this.range = .7 * this.sprite.height, this.collideArea;
+        this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
     },
     preKill: function() {
-        for (var i = 4; i >= 0; i--) {
+        for (var i = 3; i >= 0; i--) {
             var particle = new Particles({
                 x: 4 * Math.random() - 2,
                 y: -(2 * Math.random() + 1)
@@ -504,7 +509,7 @@ var Application = AbstractApplication.extend({
         this.upVel = this.playerModel.velocity * gameScale, this.spritesheet.texture.anchor.x = .5, 
         this.spritesheet.texture.anchor.y = .5, this.rotation = 0, this.centerPosition.x = -this.spritesheet.texture.width / 2, 
         this.centerPosition.y = -this.spritesheet.texture.height / 2, this.acceleration = .5, 
-        this.side = 0;
+        this.side = 0, this.particleAccum = 50;
     },
     setTarget: function(pos) {
         this.target = pos, pointDistance(0, this.getPosition().y, 0, this.target) < 4 || (this.target < this.getPosition().y ? (1 === this.side && (this.velocity.y /= 2), 
@@ -545,9 +550,7 @@ var Application = AbstractApplication.extend({
     clone: function() {
         return new BirdBehaviourDefault(this.props);
     },
-    update: function(entity) {
-        entity.velocity.x = -entity.vel;
-    },
+    update: function() {},
     build: function() {},
     destroy: function() {},
     serialize: function() {}
@@ -562,7 +565,7 @@ var Application = AbstractApplication.extend({
         return this.props.accX = .02 * Math.random() + .005, new BirdBehaviourDiag(this.props);
     },
     update: function(entity) {
-        this.acc += this.props.accX, entity.velocity.x = -Math.abs(entity.vel), entity.velocity.y = entity.vel + this.acc, 
+        this.acc += this.props.accX, entity.acceleration = 1, entity.velocity.y = entity.vel + this.acc, 
         entity.velocity.y > 0 && (entity.velocity.y = 0);
     },
     build: function() {},
@@ -602,7 +605,7 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .1, 2, 8, 1, "bulletSmall.png"), new PlayerModel("feter.png", .03, .2, 1.5, 4, 2, "bullet.png"), new PlayerModel("neto.png", .05, .25, 2, 2, 4, "bullet.png") ], 
+        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", .04, .1, 2, 8, 1, "bulletSmall.png"), new PlayerModel("feter.png", .03, .2, 1.5, 5, 2, "bullet.png"), new PlayerModel("alcemar.png", .05, .25, 2, 4, 4, "bullet.png"), new PlayerModel("jeso.png", .05, .25, 2, 4, 4, "bullet.png"), new PlayerModel("pi.png", .05, .25, 2, 4, 4, "bullet.png"), new PlayerModel("pora.png", .05, .25, 2, 4, 4, "bullet.png"), new PlayerModel("arthur.png", .05, .25, 2, 4, 4, "bullet.png"), new PlayerModel("poter.png", .05, .25, 2, 4, 4, "bullet.png"), new PlayerModel("neto.png", .05, .25, 2, 4, 4, "bullet.png"), new PlayerModel("rodaika.png", .05, .25, 2, 4, 4, "bullet.png") ], 
         this.birdModels = [ new BirdModel("belga.png", null, 4, .1, 3, new BirdBehaviourSinoid({
             sinAcc: .05
         }), 120, .1), new BirdModel("roxo.png", null, 6, .2, -3, new BirdBehaviourDiag({
@@ -666,7 +669,7 @@ var Application = AbstractApplication.extend({
     initApplication: function() {
         var self = this, scale = scaleConverter(70, windowHeight, .1);
         console.log(scale), this.char1 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.char1.build(300 * scale, 70 * scale), this.char1.setPosition(windowWidth / 2 - this.char1.width / 2, windowHeight / 2), 
+        this.char1.build(300 * scale, 70 * scale), this.char1.setPosition(windowWidth / 2 - this.char1.width, windowHeight / 2), 
         this.addChild(this.char1), this.currentID = APP.getGameModel().currentID, this.char1.addLabel(new PIXI.Text("Piangers", {
             align: "center",
             font: "25px Arial",
@@ -675,7 +678,7 @@ var Application = AbstractApplication.extend({
         }), 20, 15), this.char1.clickCallback = function() {
             0 !== self.currentID && (APP.getGameModel().setModel(0), self.updatePlayers());
         }, this.char2 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.char2.build(300 * scale, 70 * scale), this.char2.setPosition(windowWidth / 2 - this.char2.width / 2, this.char1.getContent().position.y + 70 * scale + 5), 
+        this.char2.build(300 * scale, 70 * scale), this.char2.setPosition(windowWidth / 2 - this.char2.width, this.char1.getContent().position.y + 70 * scale + 5), 
         this.addChild(this.char2), this.char2.addLabel(new PIXI.Text("Feter", {
             align: "center",
             font: "25px Arial",
@@ -684,14 +687,59 @@ var Application = AbstractApplication.extend({
         }), 15, 15), this.char2.clickCallback = function() {
             1 !== self.currentID && (APP.getGameModel().setModel(1), self.updatePlayers());
         }, this.char3 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
-        this.char3.build(300 * scale, 70 * scale), this.char3.setPosition(windowWidth / 2 - this.char3.width / 2, this.char2.getContent().position.y + 70 * scale + 5), 
-        this.addChild(this.char3), this.char3.addLabel(new PIXI.Text("Neto", {
+        this.char3.build(300 * scale, 70 * scale), this.char3.setPosition(windowWidth / 2 - this.char3.width, this.char2.getContent().position.y + 70 * scale + 5), 
+        this.addChild(this.char3), this.char3.addLabel(new PIXI.Text("Alcemar", {
             align: "center",
             font: "25px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
         }), 15, 15), this.char3.clickCallback = function() {
             2 !== self.currentID && (APP.getGameModel().setModel(2), self.updatePlayers());
+        }, this.char4 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char4.build(300 * scale, 70 * scale), this.char4.setPosition(windowWidth / 2 - this.char4.width, this.char3.getContent().position.y + 70 * scale + 5), 
+        this.addChild(this.char4), this.char4.addLabel(new PIXI.Text("Jeiso", {
+            align: "center",
+            font: "25px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 15, 15), this.char4.clickCallback = function() {
+            3 !== self.currentID && (APP.getGameModel().setModel(3), self.updatePlayers());
+        }, this.char5 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char5.build(300 * scale, 70 * scale), this.char5.setPosition(windowWidth / 2, windowHeight / 2), 
+        this.addChild(this.char5), this.currentID = APP.getGameModel().currentID, this.char5.addLabel(new PIXI.Text("Pi", {
+            align: "center",
+            font: "25px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 20, 15), this.char5.clickCallback = function() {
+            4 !== self.currentID && (APP.getGameModel().setModel(4), self.updatePlayers());
+        }, this.char6 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char6.build(300 * scale, 70 * scale), this.char6.setPosition(windowWidth / 2, this.char5.getContent().position.y + 70 * scale + 5), 
+        this.addChild(this.char6), this.char6.addLabel(new PIXI.Text("Pora", {
+            align: "center",
+            font: "25px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 15, 15), this.char6.clickCallback = function() {
+            5 !== self.currentID && (APP.getGameModel().setModel(5), self.updatePlayers());
+        }, this.char7 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char7.build(300 * scale, 70 * scale), this.char7.setPosition(windowWidth / 2, this.char6.getContent().position.y + 70 * scale + 5), 
+        this.addChild(this.char7), this.char7.addLabel(new PIXI.Text("Arthur", {
+            align: "center",
+            font: "25px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 15, 15), this.char7.clickCallback = function() {
+            6 !== self.currentID && (APP.getGameModel().setModel(6), self.updatePlayers());
+        }, this.char8 = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.char8.build(300 * scale, 70 * scale), this.char8.setPosition(windowWidth / 2, this.char7.getContent().position.y + 70 * scale + 5), 
+        this.addChild(this.char8), this.char8.addLabel(new PIXI.Text("Poter", {
+            align: "center",
+            font: "25px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 15, 15), this.char8.clickCallback = function() {
+            7 !== self.currentID && (APP.getGameModel().setModel(7), self.updatePlayers());
         }, this.play = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
         this.play.build(120, 70), this.play.setPosition(.95 * windowWidth - this.play.width, windowHeight / 2 + 120), 
         this.addChild(this.play), this.play.addLabel(new PIXI.Text("PLAY", {
@@ -717,7 +765,7 @@ var Application = AbstractApplication.extend({
             var scale = 1;
             scale = this.playerImg.container.width > this.playerImg.container.height ? scaleConverter(this.playerImg.container.width, windowWidth, .2) : scaleConverter(this.playerImg.container.height, windowHeight, .4), 
             this.playerImg.container.scale.x = scale, this.playerImg.container.scale.y = scale, 
-            this.addChild(this.playerImg), this.playerImg.setPosition(windowWidth / 2, windowHeight / 2 - this.playerImg.container.height / 2), 
+            this.addChild(this.playerImg), this.playerImg.setPosition(windowWidth / 2, windowHeight / 2 - this.playerImg.container.height / 2 - 10), 
             TweenLite.from(this.playerImg.getContent().position, .8, {
                 x: windowWidth / 2 - .1 * windowWidth,
                 y: .1 * windowHeight
@@ -798,7 +846,7 @@ var Application = AbstractApplication.extend({
         this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
     },
     shoot: function() {
-        var percent = this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy, fireForce = percent * this.playerModel.range, timeLive = this.red.getContent().width / this.playerModel.bulletVel + fireForce, vel = this.playerModel.bulletVel + this.playerModel.bulletVel * percent, angle = this.red.rotation, bullet = new Bullet({
+        var percent = this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy, fireForce = percent * this.playerModel.range, timeLive = this.red.getContent().width / this.playerModel.bulletVel + fireForce + 100, vel = this.playerModel.bulletVel + this.playerModel.bulletVel * percent, angle = this.red.rotation, bullet = new Bullet({
             x: Math.cos(angle) * vel,
             y: Math.sin(angle) * vel
         }, timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource);
@@ -816,7 +864,7 @@ var Application = AbstractApplication.extend({
         this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && (console.log("GAME OVER"), 
         this.screenManager.change("EndGame"))), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
         this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
-        this.updateBirds(), this.updateParticles());
+        this.updateBirds(), this.updateParticles(), this.pointsLabel && this.pointsLabel.setText(this.points));
     },
     updateBirds: function() {
         if (this.spawner <= 0) {
@@ -834,12 +882,12 @@ var Application = AbstractApplication.extend({
                 x: -.9,
                 y: -(.2 * Math.random() + .7)
             }, 110, "smoke.png", -.02 * Math.random() + .01);
-            particle.build(), particle.alphadecress = .01, particle.setPosition(this.red.getPosition().x - this.red.getContent().width + 5, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
+            particle.build(), particle.alphadecress = .01, particle.setPosition(this.red.getPosition().x - this.red.getContent().width - 10 * Math.random() + 15, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
             this.addChild(particle);
         } else this.particleAccum--;
     },
     initApplication: function() {
-        console.log("INIT APLICATION"), this.initApp = !0, this.sky = new SimpleSprite("ceu1.png"), 
+        console.log("INIT APLICATION"), this.points = 0, this.initApp = !0, this.sky = new SimpleSprite("ceu1.png"), 
         this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight;
         var environment = new Environment(windowWidth, windowHeight);
         environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -1, 
@@ -867,7 +915,13 @@ var Application = AbstractApplication.extend({
         };
         var item = new Item();
         item.build(), item.setPosition(windowWidth, windowHeight / 2), this.layer.addChild(item), 
-        this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication");
+        this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication"), 
+        this.gameHUD = new PIXI.DisplayObjectContainer(), this.addChild(this.gameHUD), this.pointsLabel = new PIXI.Text("", {
+            font: "25px Arial"
+        }), this.gameHUD.addChild(this.pointsLabel), this.pointsLabel.position.y = 20, this.pointsLabel.position.x = windowWidth / 2;
+    },
+    updatePoints: function(value) {
+        this.points += value;
     },
     benchmark: function() {
         function addEntity() {

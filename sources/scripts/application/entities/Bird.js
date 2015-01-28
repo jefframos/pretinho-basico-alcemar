@@ -26,10 +26,12 @@ var Bird = Entity.extend({
     },
     hurt: function(demage){
         this.hp -= demage;
-        this.velocity.x = 0;
+        this.velocity.x = -Math.abs(this.vel * 0.4);
         if(this.hp <= 0){
+            APP.updatePoints(5);
             this.preKill();
         }
+        this.getContent().tint = 0xFF0000;
     },
     build: function(){
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
@@ -45,6 +47,7 @@ var Bird = Entity.extend({
         
         // this.centerPosition.x = -this.sprite.width/2;
         // this.centerPosition.y = -this.sprite.height/2;
+       
     },
     update: function(){
         this._super();
@@ -64,13 +67,17 @@ var Bird = Entity.extend({
         if(this.collideArea){
             return;
         }
+
+        if(this.getContent().tint === 0xFF0000){
+            this.getContent().tint = 0xFFFFFF;
+        }
         // this.collideArea = new PIXI.Graphics();
         // this.collideArea.lineStyle(1,0x665544);
         // this.collideArea.drawCircle(this.centerPosition.x,this.centerPosition.y,this.range);
         // this.getContent().addChild(this.collideArea);
     },
     preKill:function(){
-        for (var i = 4; i >= 0; i--) {
+        for (var i = 3; i >= 0; i--) {
             var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'smoke.png', Math.random() * 0.1);
             particle.build();
             particle.gravity = 0.1 * Math.random();

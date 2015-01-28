@@ -11,7 +11,8 @@ var BirdBehaviourDiag = Class.extend({
 	},
 	update:function(entity){
 		this.acc += this.props.accX;
-		entity.velocity.x = -Math.abs(entity.vel);
+		// entity.velocity.x = -Math.abs(entity.vel);
+		entity.acceleration = 1;
 		entity.velocity.y = entity.vel + this.acc;
 		if(entity.velocity.y > 0){
 			entity.velocity.y = 0;

@@ -12,8 +12,15 @@ var AppModel = Class.extend({
 
 		this.playerModels = [
 			new PlayerModel('piangersN.png', 0.04,0.1,2,8,1,'bulletSmall.png'),
-			new PlayerModel('feter.png', 0.03,0.2,1.5,4,2,'bullet.png'),
-			new PlayerModel('neto.png', 0.05,0.25,2,2,4,'bullet.png'),
+			new PlayerModel('feter.png', 0.03,0.2,1.5,5,2,'bullet.png'),
+			new PlayerModel('alcemar.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('jeso.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('pi.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('pora.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('arthur.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('poter.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('neto.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('rodaika.png', 0.05,0.25,2,4,4,'bullet.png'),
 		];
 
 		this.birdModels = [

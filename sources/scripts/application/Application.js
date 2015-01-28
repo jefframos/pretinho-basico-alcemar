@@ -29,7 +29,7 @@ var Application = AbstractApplication.extend({
         this.objCounter.setText(this.childsCounter);
     },
     recursiveCounter:function(obj){
-
+        var j = 0;
         if(obj.children){
             for (j = obj.children.length - 1; j >= 0; j--) {
                 this.childsCounter ++;
@@ -63,6 +63,9 @@ var Application = AbstractApplication.extend({
         }else{
             this.onAssetsLoaded();
         }
+    },
+    updatePoints:function(value){
+        this.gameScreen.updatePoints(value);
     },
     getGameModel:function(){
         return this.gameModel;
