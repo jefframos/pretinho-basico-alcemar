@@ -1,0 +1,39 @@
+{"frames": {
+
+"btnHUD.png":
+{
+	"frame": {"x":2,"y":2,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"simpleButtonOver.png":
+{
+	"frame": {"x":2,"y":104,"w":87,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":31},
+	"sourceSize": {"w":87,"h":31},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"simpleButtonUp.png":
+{
+	"frame": {"x":2,"y":137,"w":87,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":31},
+	"sourceSize": {"w":87,"h":31},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "HUD.png",
+	"format": "RGBA8888",
+	"size": {"w":104,"h":170},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:b6931fa4f83078c21b3279ec86adfdcf:fe2dbd3acb9c3569012d240b7b9d6b21:ab8edaf43021c39a73bb7d040bcb4897$"
+}
+}

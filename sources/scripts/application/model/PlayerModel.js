@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var PlayerModel = Class.extend({
-	init:function(source, ecoast, bcoast, vel, bvel, bforce, bullet){
+	init:function(source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet){
 		this.range = 40;
 		this.maxEnergy = 100;
 		this.maxBulletEnergy = 100;
@@ -12,6 +12,7 @@ var PlayerModel = Class.extend({
 		this.recoverEnergy = 0.5;
 					
 		this.imgSource = source?source:'piangersN.png';
+		this.imgSourceGame = sourceGame?sourceGame:'piangersNGame.png';
 		this.bulletSource = bullet?bullet:'bullet.png';
 		this.energyCoast = ecoast?ecoast:0.002;
 		this.bulletCoast = bcoast?bcoast:0.2;

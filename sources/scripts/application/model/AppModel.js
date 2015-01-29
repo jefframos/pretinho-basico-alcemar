@@ -11,16 +11,16 @@ var AppModel = Class.extend({
 		// bullet force
 
 		this.playerModels = [
-			new PlayerModel('piangersN.png', 0.04,0.1,2,8,1,'bulletSmall.png'),
-			new PlayerModel('feter.png', 0.03,0.2,1.5,5,2,'bullet.png'),
-			new PlayerModel('alcemar.png', 0.05,0.25,2,4,4,'bullet.png'),
-			new PlayerModel('jeso.png', 0.05,0.25,2,4,4,'bullet.png'),
-			new PlayerModel('pi.png', 0.05,0.25,2,4,4,'bullet.png'),
-			new PlayerModel('pora.png', 0.05,0.25,2,4,4,'bullet.png'),
-			new PlayerModel('arthur.png', 0.05,0.25,2,4,4,'bullet.png'),
-			new PlayerModel('poter.png', 0.05,0.25,2,4,4,'bullet.png'),
-			new PlayerModel('neto.png', 0.05,0.25,2,4,4,'bullet.png'),
-			new PlayerModel('rodaika.png', 0.05,0.25,2,4,4,'bullet.png'),
+			new PlayerModel('piangersN.png', 'piangersNGame.png',0.04,0.1,2,9,1,'bulletSmall.png'),
+			new PlayerModel('feter.png', 'feterGame.png',0.03,0.2,1.5,6,2,'bullet.png'),
+			new PlayerModel('alcemar.png', 'alcemarGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('jeso.png', 'jesoGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('pi.png', 'piGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('pora.png', 'poraGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('arthur.png', 'arthurGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('poter.png', 'poterGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('neto.png', 'netoGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('rodaika.png', 'rodaikaGame.png',0.05,0.25,2,6,4,'bullet.png'),
 		];
 
 		this.birdModels = [

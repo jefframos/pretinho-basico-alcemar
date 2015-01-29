@@ -13,8 +13,8 @@ var WaitScreen = AbstractScreen.extend({
 
         var assetsToLoader = ['dist/img/ease.png',
         'dist/img/atlas/atlas.json',
-        'dist/img/UI/simpleButtonOver.png',
-        'dist/img/UI/simpleButtonUp.png'];
+        'dist/img/atlas/atlas1.json',
+        'dist/img/UI/HUD.json'];
 
 
         if(assetsToLoader.length > 0){
@@ -37,7 +37,7 @@ var WaitScreen = AbstractScreen.extend({
         this.addChild(this.easeImg);
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
-        this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.btnBenchmark = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         // console.log(this.btnBenchmark.build);
         this.btnBenchmark.build(300,100);
         this.btnBenchmark.setPosition( windowWidth / 2 - this.btnBenchmark.width / 2,windowHeight / 2);
@@ -51,7 +51,7 @@ var WaitScreen = AbstractScreen.extend({
         };
 
         if(possibleFullscreen()){
-            this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+            this.fullScreen = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
             this.fullScreen.build(40, 20);
             this.fullScreen.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 35);
             this.addChild(this.fullScreen);

@@ -11,7 +11,7 @@ var GameScreen = AbstractScreen.extend({
     build: function () {
         console.log(this.gameOver);
 
-        this.particleAccum = 50;
+        this.particleAccum = 100;
         this.gameOver = false;
 
         this._super();
@@ -213,7 +213,7 @@ var GameScreen = AbstractScreen.extend({
     },
     updateParticles:function(){
         if(this.particleAccum < 0){
-            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 50 + 8;
+            this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 100 + 8;
             var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke.png', -0.02 * Math.random() + 0.01);
             particle.build();
             particle.alphadecress = 0.01;
@@ -230,10 +230,10 @@ var GameScreen = AbstractScreen.extend({
 
         this.points = 0;
         this.initApp = true;
-        this.sky = new SimpleSprite('ceu1.png');
-        this.addChild(this.sky);
-        this.sky.container.width = windowWidth;
-        this.sky.container.height = windowHeight * 0.9;
+        // this.sky = new SimpleSprite('ceu1.png');
+        // this.addChild(this.sky);
+        // this.sky.container.width = windowWidth;
+        // this.sky.container.height = windowHeight * 0.9;
         var environment = new Environment(windowWidth, windowHeight);
         environment.build(['env1.png','env2.png','env3.png','env4.png']);
         environment.velocity.x = -1;

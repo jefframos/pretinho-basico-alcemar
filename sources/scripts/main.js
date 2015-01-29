@@ -9,14 +9,14 @@ windowHeight = 640;
 
 var realWindowWidth = 1136,
 realWindowHeight = 640;
-var gameScale = 1.8;
+var gameScale = 1.5;
 if(testMobile()){
 	windowWidth = window.innerWidth * gameScale;//640;
 	windowHeight = window.innerHeight * gameScale;//960;
 	// alert(windowWidth +' - '+windowHeight);
 	// windowWidth = window.screen.height;//640;
 	// windowHeight = window.screen.width;//960;
-
+	// alert(windowWidth +' - '+ windowHeight);
 	realWindowWidth = windowWidth;
 	realWindowHeight = windowHeight;
 }

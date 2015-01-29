@@ -36,8 +36,9 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         var self = this;
         var scale = scaleConverter(70, windowHeight, 0.1);
         console.log(scale);
-        this.char1 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        this.char1.build(300 * scale,70 * scale);
+        this.char1 = new DefaultButton('btnHUD.png', 'btnHUD.png');
+        // this.char1.build(300 * scale,70 * scale);
+        this.char1.build();
         this.char1.setPosition( windowWidth / 2 - this.char1.width,windowHeight / 2);
         this.addChild(this.char1);
 
@@ -52,7 +53,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char2 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char2 = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.char2.build(300 * scale,70 * scale);
         this.char2.setPosition( windowWidth / 2 - this.char2.width,this.char1.getContent().position.y + 70 * scale + 5);
         this.addChild(this.char2);
@@ -65,7 +66,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char3 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char3 = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.char3.build(300 * scale,70 * scale);
         this.char3.setPosition( windowWidth / 2 - this.char3.width,this.char2.getContent().position.y + 70 * scale + 5);
         this.addChild(this.char3);
@@ -78,7 +79,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char4 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char4 = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.char4.build(300 * scale,70 * scale);
         this.char4.setPosition( windowWidth / 2 - this.char4.width,this.char3.getContent().position.y + 70 * scale + 5);
         this.addChild(this.char4);
@@ -92,7 +93,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char5 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char5 = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.char5.build(300 * scale,70 * scale);
         this.char5.setPosition( windowWidth / 2 ,windowHeight / 2);
         this.addChild(this.char5);
@@ -108,7 +109,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char6 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char6 = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.char6.build(300 * scale,70 * scale);
         this.char6.setPosition( windowWidth / 2 ,this.char5.getContent().position.y + 70 * scale + 5);
         this.addChild(this.char6);
@@ -121,7 +122,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char7 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char7 = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.char7.build(300 * scale,70 * scale);
         this.char7.setPosition( windowWidth / 2 ,this.char6.getContent().position.y + 70 * scale + 5);
         this.addChild(this.char7);
@@ -134,7 +135,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char8 = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.char8 = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.char8.build(300 * scale,70 * scale);
         this.char8.setPosition( windowWidth / 2 ,this.char7.getContent().position.y + 70 * scale + 5);
         this.addChild(this.char8);
@@ -149,7 +150,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
 
 
-        this.play = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.play = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.play.build(120,70);
         this.play.setPosition( windowWidth * 0.95 - this.play.width,windowHeight / 2 + 120);
         this.addChild(this.play);
@@ -159,7 +160,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.screenManager.change('Game');
         };
 
-        this.returnButton = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.returnButton = new DefaultButton('btnHUD.png', 'btnHUD.png');
         this.returnButton.build(60, 80);
         this.returnButton.setPosition( windowWidth * 0.05,windowHeight * 0.95 - 65);
         this.addChild(this.returnButton);
