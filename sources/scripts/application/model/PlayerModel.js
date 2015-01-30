@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var PlayerModel = Class.extend({
-	init:function(source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet){
+	init:function(source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet, color, thumb){
 		this.range = 40;
 		this.maxEnergy = 100;
 		this.maxBulletEnergy = 100;
@@ -11,6 +11,11 @@ var PlayerModel = Class.extend({
 		this.currentBulletForce = 100;
 		this.recoverEnergy = 0.5;
 					
+
+		this.thumb = thumb?thumb:'thumb_jeiso';
+		this.thumbColor = this.thumb + '_color.png';
+		this.thumbGray = this.thumb + '_gray.png';
+		this.color = color?color:0x002233;
 		this.imgSource = source?source:'piangersN.png';
 		this.imgSourceGame = sourceGame?sourceGame:'piangersNGame.png';
 		this.bulletSource = bullet?bullet:'bullet.png';

@@ -44,20 +44,33 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.backgroundImage.container.width = windowWidth;
         this.backgroundImage.container.height = windowHeight;
 
-        var pointsMask = [[515 / 1136 * windowWidth, 0],
+        this.pointsMask = [[515 / 1136 * windowWidth, 0],
         [1035 / 1136 * windowWidth, 0],
         [465 / 1136 * windowWidth, windowHeight],
         [25 / 1136 * windowWidth, windowHeight]];
 
 
         this.faceContainer = new PIXI.DisplayObjectContainer();
+
+
         this.faceMask = new PIXI.Graphics();
         this.faceMask.beginFill(0x660055);
-        this.faceMask.moveTo(pointsMask[0][0],pointsMask[0][1]);
-        this.faceMask.lineTo(pointsMask[1][0],pointsMask[1][1]);
-        this.faceMask.lineTo(pointsMask[2][0],pointsMask[2][1]);
-        this.faceMask.lineTo(pointsMask[3][0],pointsMask[3][1]);
+        this.faceMask.moveTo(this.pointsMask[0][0],this.pointsMask[0][1]);
+        this.faceMask.lineTo(this.pointsMask[1][0],this.pointsMask[1][1]);
+        this.faceMask.lineTo(this.pointsMask[2][0],this.pointsMask[2][1]);
+        this.faceMask.lineTo(this.pointsMask[3][0],this.pointsMask[3][1]);
         this.faceContainer.addChild(this.faceMask);
+
+        
+
+        this.faceColorBlink = new PIXI.Graphics();
+        this.faceColorBlink.beginFill(0xFFFFFF);
+        this.faceColorBlink.moveTo(this.pointsMask[0][0],this.pointsMask[0][1]);
+        this.faceColorBlink.lineTo(this.pointsMask[1][0],this.pointsMask[1][1]);
+        this.faceColorBlink.lineTo(this.pointsMask[2][0],this.pointsMask[2][1]);
+        this.faceColorBlink.lineTo(this.pointsMask[3][0],this.pointsMask[3][1]);
+        this.faceContainer.addChild(this.faceColorBlink);
+
         this.addChild(this.faceContainer);
         this.faceContainer.mask = this.faceMask;
 
@@ -69,14 +82,16 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.pista.getContent().scale.y = pistaScale;
         this.pista.setPosition(windowWidth  - this.pista.getContent().width - windowWidth * 0.05 , windowHeight - this.pista.getContent().height / 2);
 
-        this.char1 = new DefaultButton('out.png', 'selected.png');
+        this.char1 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         // this.char1.build();
         this.char1.build(sizeScale,sizeScale);
         this.char1.setPosition( windowWidth * 0.02,windowHeight * 0.08);
         this.addChild(this.char1);
 
         this.currentID = APP.getGameModel().currentID;
-        this.char1.addLabel(new PIXI.Text('Piangers', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
+
+        this.arrButtons = [];
+        // this.char1.addLabel(new PIXI.Text('Piangers', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
         this.char1.clickCallback = function(){
             if(self.currentID === 0){
                 return;
@@ -86,11 +101,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char2 = new DefaultButton('out.png', 'selected.png');
+        this.char2 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         this.char2.build(sizeScale,sizeScale);
         this.char2.setPosition( windowWidth * 0.02 ,this.char1.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char2);
-        this.char2.addLabel(new PIXI.Text('Feter', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char2.addLabel(new PIXI.Text('Feter', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char2.clickCallback = function(){
             if(self.currentID === 1){
                 return;
@@ -99,11 +114,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char3 = new DefaultButton('out.png', 'selected.png');
+        this.char3 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         this.char3.build(sizeScale,sizeScale);
         this.char3.setPosition( windowWidth * 0.02 ,this.char2.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char3);
-        this.char3.addLabel(new PIXI.Text('Alcemar', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char3.addLabel(new PIXI.Text('Alcemar', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char3.clickCallback = function(){
             if(self.currentID === 2){
                 return;
@@ -112,11 +127,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char4 = new DefaultButton('out.png', 'selected.png');
+        this.char4 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         this.char4.build(sizeScale,sizeScale);
         this.char4.setPosition( this.char1.getContent().position.x + sizeScale + spacing,this.char1.getContent().position.y);
         this.addChild(this.char4);
-        this.char4.addLabel(new PIXI.Text('Jeiso', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char4.addLabel(new PIXI.Text('Jeiso', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char4.clickCallback = function(){
             if(self.currentID === 3){
                 return;
@@ -126,13 +141,13 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char5 = new DefaultButton('out.png', 'selected.png');
+        this.char5 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         this.char5.build(sizeScale,sizeScale);
         this.char5.setPosition( this.char4.getContent().position.x,this.char2.getContent().position.y);
         this.addChild(this.char5);
 
         this.currentID = APP.getGameModel().currentID;
-        this.char5.addLabel(new PIXI.Text('Pi', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
+        // this.char5.addLabel(new PIXI.Text('Pi', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
         this.char5.clickCallback = function(){
             if(self.currentID === 4){
                 return;
@@ -142,11 +157,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char6 = new DefaultButton('out.png', 'selected.png');
+        this.char6 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         this.char6.build(sizeScale,sizeScale);
         this.char6.setPosition( this.char5.getContent().position.x,this.char3.getContent().position.y);
         this.addChild(this.char6);
-        this.char6.addLabel(new PIXI.Text('Pora', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char6.addLabel(new PIXI.Text('Pora', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char6.clickCallback = function(){
             if(self.currentID === 5){
                 return;
@@ -155,11 +170,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char7 = new DefaultButton('out.png', 'selected.png');
+        this.char7 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         this.char7.build(sizeScale,sizeScale);
         this.char7.setPosition( this.char5.getContent().position.x + sizeScale + spacing,this.char5.getContent().position.y);
         this.addChild(this.char7);
-        this.char7.addLabel(new PIXI.Text('Arthur', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char7.addLabel(new PIXI.Text('Arthur', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char7.clickCallback = function(){
             if(self.currentID === 6){
                 return;
@@ -168,11 +183,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char8 = new DefaultButton('out.png', 'selected.png');
+        this.char8 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
         this.char8.build(sizeScale,sizeScale);
         this.char8.setPosition( this.char6.getContent().position.x + sizeScale + spacing,this.char6.getContent().position.y);
         this.addChild(this.char8);
-        this.char8.addLabel(new PIXI.Text('Poter', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char8.addLabel(new PIXI.Text('Poter', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char8.clickCallback = function(){
             if(self.currentID === 7){
                 return;
@@ -181,7 +196,49 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
+        this.char9 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char9.build(sizeScale,sizeScale);
+        this.char9.setPosition(this.char6.getContent().position.x,this.char6.getContent().position.y + sizeScale + spacing);
+        this.addChild(this.char9);
+        // this.char9.addLabel(new PIXI.Text('Neto', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        this.char9.clickCallback = function(){
+            if(self.currentID === 8){
+                return;
+            }
+            APP.getGameModel().setModel(8);
+            self.updatePlayers();
+        };
 
+        this.char10 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char10.build(sizeScale,sizeScale);
+        this.char10.setPosition(this.char8.getContent().position.x,this.char8.getContent().position.y + sizeScale + spacing);
+        this.addChild(this.char10);
+        // this.char10.addLabel(new PIXI.Text('Rodaika', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        this.char10.clickCallback = function(){
+            if(self.currentID === 9){
+                return;
+            }
+            APP.getGameModel().setModel(9);
+            self.updatePlayers();
+        };
+
+        this.arrButtons.push(this.char1);
+        this.arrButtons.push(this.char2);
+        this.arrButtons.push(this.char3);
+        this.arrButtons.push(this.char4);
+        this.arrButtons.push(this.char5);
+        this.arrButtons.push(this.char6);
+        this.arrButtons.push(this.char7);
+        this.arrButtons.push(this.char8);
+        this.arrButtons.push(this.char9);
+        this.arrButtons.push(this.char10);
+
+        for (var i = this.arrButtons.length - 1; i >= 0; i--) {
+            this.arrButtons[i].parent = this;
+            this.arrButtons[i].color = APP.getGameModel().playerModels[i].color;
+            this.arrButtons[i].addThumb(APP.getGameModel().playerModels[i].thumbColor, APP.getGameModel().playerModels[i].thumbGray);
+            this.arrButtons[i].mouseUpCallback = this.resetButtons;
+        }
 
         this.play = new DefaultButton('out.png', 'selected.png');
         this.play.build(120,70);
@@ -203,6 +260,14 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
         this.updatePlayers();
+        this.char1.selectedFunction();
+    },
+    resetButtons:function(){
+        for (var i = this.parent.arrButtons.length - 1; i >= 0; i--) {
+            if(this !== this.parent.arrButtons[i]){
+                this.parent.arrButtons[i].resetTextures();
+            }
+        }
     },
     updatePlayers:function()
     {
@@ -211,6 +276,20 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         //this.faceContainer
 
         this.currentID = APP.getGameModel().currentID;
+
+        if(this.faceColor && this.faceColor.parent){
+            this.faceColor.parent.removeChild(this.faceColor);
+            // this.removeChild(this.playerImgBig);
+        }
+
+        this.faceColor = new PIXI.Graphics();
+        this.faceColor.beginFill(APP.getGameModel().currentPlayerModel.color);
+        this.faceColor.moveTo(this.pointsMask[0][0],this.pointsMask[0][1]);
+        this.faceColor.lineTo(this.pointsMask[1][0],this.pointsMask[1][1]);
+        this.faceColor.lineTo(this.pointsMask[2][0],this.pointsMask[2][1]);
+        this.faceColor.lineTo(this.pointsMask[3][0],this.pointsMask[3][1]);
+        this.faceContainer.addChildAt(this.faceColor, 0);
+
 
         if(this.playerImgBig && this.playerImgBig.getContent().parent){
             this.playerImgBig.getContent().parent.removeChild(this.playerImgBig.getContent());
@@ -222,7 +301,16 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.faceContainer.addChild(this.playerImgBig.getContent());
         this.playerImgBig.container.scale.x = 0.8;
         this.playerImgBig.container.scale.y = 0.8;
+        //this.playerImgBig.container.filters = [new PIXI.GrayFilter()];
 
+
+
+        
+
+
+        // this.faceColor.tint = APP.getGameModel().currentPlayerModel.color;
+        this.faceColorBlink.alpha = 1;
+        TweenLite.to(this.faceColorBlink, 0.3, {alpha:0});
         TweenLite.from(this.playerImgBig.getContent().position, 0.8, {x: this.playerImgBig.getContent().position.x + windowWidth * 0.1});
         TweenLite.from(this.playerImgBig.getContent(), 0.3, {alpha:  0});
 

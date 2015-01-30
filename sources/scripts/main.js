@@ -14,8 +14,8 @@ if(testMobile()){
 	windowWidth = window.innerWidth * gameScale;//640;
 	windowHeight = window.innerHeight * gameScale;//960;
 	// alert(windowWidth +' - '+windowHeight);
-	// windowWidth = window.screen.height;//640;
-	// windowHeight = window.screen.width;//960;
+	windowWidth = window.screen.height * gameScale;//640;
+	windowHeight = window.screen.width * gameScale;//960;
 	// alert(windowWidth +' - '+ windowHeight)
 	realWindowWidth = windowWidth;
 	realWindowHeight = windowHeight;

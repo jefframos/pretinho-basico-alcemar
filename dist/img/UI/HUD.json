@@ -2,7 +2,7 @@
 
 "btnHUD.png":
 {
-	"frame": {"x":180,"y":2,"w":100,"h":100},
+	"frame": {"x":2,"y":2,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
@@ -11,7 +11,7 @@
 },
 "out.png":
 {
-	"frame": {"x":396,"y":2,"w":112,"h":112},
+	"frame": {"x":104,"y":2,"w":112,"h":112},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":112},
@@ -20,7 +20,7 @@
 },
 "pista.png":
 {
-	"frame": {"x":2,"y":116,"w":463,"h":301},
+	"frame": {"x":218,"y":2,"w":463,"h":301},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":463,"h":301},
@@ -29,7 +29,16 @@
 },
 "selected.png":
 {
-	"frame": {"x":282,"y":2,"w":112,"h":112},
+	"frame": {"x":2,"y":305,"w":112,"h":112},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":112},
+	"sourceSize": {"w":112,"h":112},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"selectedInner.png":
+{
+	"frame": {"x":116,"y":305,"w":112,"h":112},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":112},
@@ -38,7 +47,7 @@
 },
 "simpleButtonOver.png":
 {
-	"frame": {"x":91,"y":2,"w":87,"h":31},
+	"frame": {"x":230,"y":305,"w":87,"h":31},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":31},
@@ -47,11 +56,29 @@
 },
 "simpleButtonUp.png":
 {
-	"frame": {"x":2,"y":2,"w":87,"h":31},
+	"frame": {"x":319,"y":305,"w":87,"h":31},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":31},
 	"sourceSize": {"w":87,"h":31},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"thumb_jeiso_color.png":
+{
+	"frame": {"x":408,"y":305,"w":112,"h":110},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":110},
+	"sourceSize": {"w":112,"h":110},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"thumb_jeiso_gray.png":
+{
+	"frame": {"x":522,"y":305,"w":112,"h":110},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":110},
+	"sourceSize": {"w":112,"h":110},
 	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
@@ -59,8 +86,8 @@
 	"version": "1.0",
 	"image": "HUD.png",
 	"format": "RGBA8888",
-	"size": {"w":510,"h":419},
+	"size": {"w":683,"h":419},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:779b61c365064e1965130817f9b006dd:4996d17dd791bf967f954267182d1208:ab8edaf43021c39a73bb7d040bcb4897$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0c05fda4166332b24159266e16960e76:e656d56817eb688b06a9b052165e3c71:ab8edaf43021c39a73bb7d040bcb4897$"
 }
 }

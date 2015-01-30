@@ -11,16 +11,16 @@ var AppModel = Class.extend({
 		// bullet force
 
 		this.playerModels = [
-			new PlayerModel('piangersN.png', 'piangersNGame.png',0.04,0.1,2,9,1,'bulletSmall.png'),
-			new PlayerModel('feter.png', 'feterGame.png',0.03,0.2,1.5,6,2,'bullet.png'),
-			new PlayerModel('alcemar.png', 'alcemarGame.png',0.05,0.25,2,6,4,'bullet.png'),
-			new PlayerModel('jeso.png', 'jesoGame.png',0.05,0.25,2,6,4,'bullet.png'),
-			new PlayerModel('pi.png', 'piGame.png',0.05,0.25,2,6,4,'bullet.png'),
-			new PlayerModel('pora.png', 'poraGame.png',0.05,0.25,2,6,4,'bullet.png'),
-			new PlayerModel('arthur.png', 'arthurGame.png',0.05,0.25,2,6,4,'bullet.png'),
-			new PlayerModel('poter.png', 'poterGame.png',0.05,0.25,2,6,4,'bullet.png'),
-			new PlayerModel('neto.png', 'netoGame.png',0.05,0.25,2,6,4,'bullet.png'),
-			new PlayerModel('rodaika.png', 'rodaikaGame.png',0.05,0.25,2,6,4,'bullet.png'),
+			new PlayerModel('piangersN.png', 'piangersNGame.png',0.04,0.1,2,9,1,'bulletSmall.png',0x74CDDF),
+			new PlayerModel('feter.png', 'feterGame.png',0.03,0.2,1.5,6,2,'bullet.png', 0xEE4323),
+			new PlayerModel('alcemar.png', 'alcemarGame.png',0.05,0.25,2,6,4,'bullet.png', 0xB2D464),
+			new PlayerModel('jeso.png', 'jesoGame.png',0.05,0.25,2,6,4,'bullet.png', 0x88C440),
+			new PlayerModel('pi.png', 'piGame.png',0.05,0.25,2,6,4,'bullet.png', 0x8F6DAF),
+			new PlayerModel('pora.png', 'poraGame.png',0.05,0.25,2,6,4,'bullet.png', 0xFDCE07),
+			new PlayerModel('arthur.png', 'arthurGame.png',0.05,0.25,2,6,4,'bullet.png', 0xB383B9),
+			new PlayerModel('poter.png', 'poterGame.png',0.05,0.25,2,6,4,'bullet.png', 0xFAAF4C),
+			new PlayerModel('neto.png', 'netoGame.png',0.05,0.25,2,6,4,'bullet.png', 0xB3A170),
+			new PlayerModel('rodaika.png', 'rodaikaGame.png',0.05,0.25,2,6,4,'bullet.png', 0xF284AA),
 		];
 
 		this.birdModels = [

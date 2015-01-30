@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>atlas.png</filename>
+        <filename>atlas1.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -86,9 +86,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>1024</int>
             <key>height</key>
-            <int>2048</int>
+            <int>1024</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>atlas.json</filename>
+                <filename>atlas1.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -194,12 +194,27 @@
             <filename>roxo.png</filename>
             <filename>bullet.png</filename>
             <filename>piangersN.png</filename>
-            <filename>env3.png</filename>
-            <filename>env4.png</filename>
-            <filename>env1.png</filename>
-            <filename>env2.png</filename>
             <filename>feter.png</filename>
             <filename>neto.png</filename>
+            <filename>jeso.png</filename>
+            <filename>pi.png</filename>
+            <filename>pora.png</filename>
+            <filename>poter.png</filename>
+            <filename>rodaika.png</filename>
+            <filename>alcemar.png</filename>
+            <filename>arthur.png</filename>
+            <filename>bulletParticle.png</filename>
+            <filename>bulletSmall.png</filename>
+            <filename>netoGame.png</filename>
+            <filename>rodaikaGame.png</filename>
+            <filename>arthurGame.png</filename>
+            <filename>alcemarGame.png</filename>
+            <filename>jesoGame.png</filename>
+            <filename>piangersNGame.png</filename>
+            <filename>poterGame.png</filename>
+            <filename>poraGame.png</filename>
+            <filename>piGame.png</filename>
+            <filename>feterGame.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
