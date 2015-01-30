@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/atlas/atlasEnv.tps</string>
+        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/UI/UI.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>atlas.png</filename>
+        <filename>HUD.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -86,7 +86,7 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>1024</int>
             <key>height</key>
             <int>1024</int>
         </QSize>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>atlas.json</filename>
+                <filename>HUD.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -188,10 +188,15 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>env1.png</filename>
-            <filename>env2.png</filename>
-            <filename>env3.png</filename>
-            <filename>env4.png</filename>
+            <filename>simpleButtonOver.png</filename>
+            <filename>simpleButtonUp.png</filename>
+            <filename>btnHUD.png</filename>
+            <filename>selected.png</filename>
+            <filename>out.png</filename>
+            <filename>pista.png</filename>
+            <filename>selectedInner.png</filename>
+            <filename>thumb_jeiso_gray.png</filename>
+            <filename>thumb_jeiso_color.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
