@@ -2,16 +2,43 @@
 
 "btnHUD.png":
 {
-	"frame": {"x":2,"y":2,"w":100,"h":100},
+	"frame": {"x":180,"y":2,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
 	"sourceSize": {"w":100,"h":100},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"out.png":
+{
+	"frame": {"x":396,"y":2,"w":112,"h":112},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":112},
+	"sourceSize": {"w":112,"h":112},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"pista.png":
+{
+	"frame": {"x":2,"y":116,"w":463,"h":301},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":463,"h":301},
+	"sourceSize": {"w":463,"h":301},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"selected.png":
+{
+	"frame": {"x":282,"y":2,"w":112,"h":112},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":112},
+	"sourceSize": {"w":112,"h":112},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "simpleButtonOver.png":
 {
-	"frame": {"x":2,"y":104,"w":87,"h":31},
+	"frame": {"x":91,"y":2,"w":87,"h":31},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":31},
@@ -20,7 +47,7 @@
 },
 "simpleButtonUp.png":
 {
-	"frame": {"x":2,"y":137,"w":87,"h":31},
+	"frame": {"x":2,"y":2,"w":87,"h":31},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":31},
@@ -32,8 +59,8 @@
 	"version": "1.0",
 	"image": "HUD.png",
 	"format": "RGBA8888",
-	"size": {"w":104,"h":170},
+	"size": {"w":510,"h":419},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b6931fa4f83078c21b3279ec86adfdcf:fe2dbd3acb9c3569012d240b7b9d6b21:ab8edaf43021c39a73bb7d040bcb4897$"
+	"smartupdate": "$TexturePacker:SmartUpdate:779b61c365064e1965130817f9b006dd:4996d17dd791bf967f954267182d1208:ab8edaf43021c39a73bb7d040bcb4897$"
 }
 }

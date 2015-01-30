@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                     '<%= globalConfig.src %>scripts/plugins/pixi.js',
                     '<%= globalConfig.src %>scripts/plugins/modernizr-2.7.1.min.js',
                     '<%= globalConfig.src %>scripts/plugins/hideAddressbar.min.js',
-                    '<%= globalConfig.src %>scripts/plugins/soundjs-0.6.0.min.js',
+                    '<%= globalConfig.src %>scripts/plugins/soundmanager2-nodebug-jsmin.js',
                     '<%= globalConfig.src %>scripts/plugins/class.js',
                     '<%= globalConfig.src %>scripts/plugins/easegame/**/*.js'
                 ]

@@ -1,4 +1,4 @@
-/*! jefframos 29-01-2015 */
+/*! jefframos 30-01-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -86,12 +86,12 @@ function testMobile() {
 }
 
 function update() {
-    requestAnimFrame(update), meter.tickStart();
+    requestAnimFrame(update);
     var tempRation = window.innerHeight / windowHeight, ratioRez = resizeProportional ? tempRation < window.innerWidth / realWindowWidth ? tempRation : window.innerWidth / realWindowWidth : 1;
     windowWidthVar = realWindowWidth * ratioRez * ratio, windowHeightVar = realWindowHeight * ratioRez * ratio, 
     windowWidthVar > realWindowWidth && (windowWidthVar = realWindowWidth), windowHeightVar > realWindowHeight && (windowHeightVar = realWindowHeight), 
     renderer.view.style.width = windowWidthVar + "px", renderer.view.style.height = windowHeightVar + "px", 
-    APP.update(), renderer.render(APP.stage), meter.tick();
+    APP.update(), renderer.render(APP.stage);
 }
 
 function possibleFullscreen() {
@@ -650,17 +650,31 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         var self = this, scale = scaleConverter(70, windowHeight, .1);
-        console.log(scale), this.char1 = new DefaultButton("btnHUD.png", "btnHUD.png"), 
-        this.char1.build(), this.char1.setPosition(windowWidth / 2 - this.char1.width, windowHeight / 2), 
-        this.addChild(this.char1), this.currentID = APP.getGameModel().currentID, this.char1.addLabel(new PIXI.Text("Piangers", {
+        console.log(scale);
+        var sizeScale = 135 / 640 * windowHeight, spacing = 5 / 640 * windowHeight;
+        this.backgroundImage = new SimpleSprite("dist/img/UI/bgChoice.png"), this.addChild(this.backgroundImage), 
+        this.backgroundImage.container.width = windowWidth, this.backgroundImage.container.height = windowHeight;
+        var pointsMask = [ [ 515 / 1136 * windowWidth, 0 ], [ 1035 / 1136 * windowWidth, 0 ], [ 465 / 1136 * windowWidth, windowHeight ], [ 25 / 1136 * windowWidth, windowHeight ] ];
+        this.faceContainer = new PIXI.DisplayObjectContainer(), this.faceMask = new PIXI.Graphics(), 
+        this.faceMask.beginFill(6684757), this.faceMask.moveTo(pointsMask[0][0], pointsMask[0][1]), 
+        this.faceMask.lineTo(pointsMask[1][0], pointsMask[1][1]), this.faceMask.lineTo(pointsMask[2][0], pointsMask[2][1]), 
+        this.faceMask.lineTo(pointsMask[3][0], pointsMask[3][1]), this.faceContainer.addChild(this.faceMask), 
+        this.addChild(this.faceContainer), this.faceContainer.mask = this.faceMask, this.pista = new SimpleSprite("pista.png"), 
+        this.addChild(this.pista);
+        var pistaScale = scaleConverter(this.pista.getContent().width, windowWidth, .4);
+        this.pista.getContent().scale.x = pistaScale, this.pista.getContent().scale.y = pistaScale, 
+        this.pista.setPosition(windowWidth - this.pista.getContent().width - .05 * windowWidth, windowHeight - this.pista.getContent().height / 2), 
+        this.char1 = new DefaultButton("out.png", "selected.png"), this.char1.build(sizeScale, sizeScale), 
+        this.char1.setPosition(.02 * windowWidth, .08 * windowHeight), this.addChild(this.char1), 
+        this.currentID = APP.getGameModel().currentID, this.char1.addLabel(new PIXI.Text("Piangers", {
             align: "center",
             font: "25px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
         }), 20, 15), this.char1.clickCallback = function() {
             0 !== self.currentID && (APP.getGameModel().setModel(0), self.updatePlayers());
-        }, this.char2 = new DefaultButton("btnHUD.png", "btnHUD.png"), this.char2.build(300 * scale, 70 * scale), 
-        this.char2.setPosition(windowWidth / 2 - this.char2.width, this.char1.getContent().position.y + 70 * scale + 5), 
+        }, this.char2 = new DefaultButton("out.png", "selected.png"), this.char2.build(sizeScale, sizeScale), 
+        this.char2.setPosition(.02 * windowWidth, this.char1.getContent().position.y + sizeScale + spacing), 
         this.addChild(this.char2), this.char2.addLabel(new PIXI.Text("Feter", {
             align: "center",
             font: "25px Arial",
@@ -668,8 +682,8 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 15, 15), this.char2.clickCallback = function() {
             1 !== self.currentID && (APP.getGameModel().setModel(1), self.updatePlayers());
-        }, this.char3 = new DefaultButton("btnHUD.png", "btnHUD.png"), this.char3.build(300 * scale, 70 * scale), 
-        this.char3.setPosition(windowWidth / 2 - this.char3.width, this.char2.getContent().position.y + 70 * scale + 5), 
+        }, this.char3 = new DefaultButton("out.png", "selected.png"), this.char3.build(sizeScale, sizeScale), 
+        this.char3.setPosition(.02 * windowWidth, this.char2.getContent().position.y + sizeScale + spacing), 
         this.addChild(this.char3), this.char3.addLabel(new PIXI.Text("Alcemar", {
             align: "center",
             font: "25px Arial",
@@ -677,8 +691,8 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 15, 15), this.char3.clickCallback = function() {
             2 !== self.currentID && (APP.getGameModel().setModel(2), self.updatePlayers());
-        }, this.char4 = new DefaultButton("btnHUD.png", "btnHUD.png"), this.char4.build(300 * scale, 70 * scale), 
-        this.char4.setPosition(windowWidth / 2 - this.char4.width, this.char3.getContent().position.y + 70 * scale + 5), 
+        }, this.char4 = new DefaultButton("out.png", "selected.png"), this.char4.build(sizeScale, sizeScale), 
+        this.char4.setPosition(this.char1.getContent().position.x + sizeScale + spacing, this.char1.getContent().position.y), 
         this.addChild(this.char4), this.char4.addLabel(new PIXI.Text("Jeiso", {
             align: "center",
             font: "25px Arial",
@@ -686,17 +700,17 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 15, 15), this.char4.clickCallback = function() {
             3 !== self.currentID && (APP.getGameModel().setModel(3), self.updatePlayers());
-        }, this.char5 = new DefaultButton("btnHUD.png", "btnHUD.png"), this.char5.build(300 * scale, 70 * scale), 
-        this.char5.setPosition(windowWidth / 2, windowHeight / 2), this.addChild(this.char5), 
-        this.currentID = APP.getGameModel().currentID, this.char5.addLabel(new PIXI.Text("Pi", {
+        }, this.char5 = new DefaultButton("out.png", "selected.png"), this.char5.build(sizeScale, sizeScale), 
+        this.char5.setPosition(this.char4.getContent().position.x, this.char2.getContent().position.y), 
+        this.addChild(this.char5), this.currentID = APP.getGameModel().currentID, this.char5.addLabel(new PIXI.Text("Pi", {
             align: "center",
             font: "25px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
         }), 20, 15), this.char5.clickCallback = function() {
             4 !== self.currentID && (APP.getGameModel().setModel(4), self.updatePlayers());
-        }, this.char6 = new DefaultButton("btnHUD.png", "btnHUD.png"), this.char6.build(300 * scale, 70 * scale), 
-        this.char6.setPosition(windowWidth / 2, this.char5.getContent().position.y + 70 * scale + 5), 
+        }, this.char6 = new DefaultButton("out.png", "selected.png"), this.char6.build(sizeScale, sizeScale), 
+        this.char6.setPosition(this.char5.getContent().position.x, this.char3.getContent().position.y), 
         this.addChild(this.char6), this.char6.addLabel(new PIXI.Text("Pora", {
             align: "center",
             font: "25px Arial",
@@ -704,8 +718,8 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 15, 15), this.char6.clickCallback = function() {
             5 !== self.currentID && (APP.getGameModel().setModel(5), self.updatePlayers());
-        }, this.char7 = new DefaultButton("btnHUD.png", "btnHUD.png"), this.char7.build(300 * scale, 70 * scale), 
-        this.char7.setPosition(windowWidth / 2, this.char6.getContent().position.y + 70 * scale + 5), 
+        }, this.char7 = new DefaultButton("out.png", "selected.png"), this.char7.build(sizeScale, sizeScale), 
+        this.char7.setPosition(this.char5.getContent().position.x + sizeScale + spacing, this.char5.getContent().position.y), 
         this.addChild(this.char7), this.char7.addLabel(new PIXI.Text("Arthur", {
             align: "center",
             font: "25px Arial",
@@ -713,8 +727,8 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 15, 15), this.char7.clickCallback = function() {
             6 !== self.currentID && (APP.getGameModel().setModel(6), self.updatePlayers());
-        }, this.char8 = new DefaultButton("btnHUD.png", "btnHUD.png"), this.char8.build(300 * scale, 70 * scale), 
-        this.char8.setPosition(windowWidth / 2, this.char7.getContent().position.y + 70 * scale + 5), 
+        }, this.char8 = new DefaultButton("out.png", "selected.png"), this.char8.build(sizeScale, sizeScale), 
+        this.char8.setPosition(this.char6.getContent().position.x + sizeScale + spacing, this.char6.getContent().position.y), 
         this.addChild(this.char8), this.char8.addLabel(new PIXI.Text("Poter", {
             align: "center",
             font: "25px Arial",
@@ -722,17 +736,17 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 15, 15), this.char8.clickCallback = function() {
             7 !== self.currentID && (APP.getGameModel().setModel(7), self.updatePlayers());
-        }, this.play = new DefaultButton("btnHUD.png", "btnHUD.png"), this.play.build(120, 70), 
-        this.play.setPosition(.95 * windowWidth - this.play.width, windowHeight / 2 + 120), 
-        this.addChild(this.play), this.play.addLabel(new PIXI.Text("PLAY", {
+        }, this.play = new DefaultButton("out.png", "selected.png"), this.play.build(120, 70), 
+        this.play.setPosition(windowWidth - this.play.width, windowHeight - 70), this.addChild(this.play), 
+        this.play.addLabel(new PIXI.Text("PLAY", {
             align: "center",
             font: "35px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
         }), 15, 15), this.play.clickCallback = function() {
             self.screenManager.change("Game");
-        }, this.returnButton = new DefaultButton("btnHUD.png", "btnHUD.png"), this.returnButton.build(60, 80), 
-        this.returnButton.setPosition(.05 * windowWidth, .95 * windowHeight - 65), this.addChild(this.returnButton), 
+        }, this.returnButton = new DefaultButton("out.png", "selected.png"), this.returnButton.build(60, 70), 
+        this.returnButton.setPosition(0, windowHeight - 70), this.addChild(this.returnButton), 
         this.returnButton.addLabel(new PIXI.Text("<", {
             font: "70px Arial"
         }), 5, 5), this.returnButton.clickCallback = function() {
@@ -740,19 +754,29 @@ var Application = AbstractApplication.extend({
         }, this.updatePlayers();
     },
     updatePlayers: function() {
-        if (this.currentID = APP.getGameModel().currentID, this.playerImg && this.playerImg.getContent().parent && (this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
+        if (this.currentID = APP.getGameModel().currentID, this.playerImgBig && this.playerImgBig.getContent().parent && (this.playerImgBig.getContent().parent.removeChild(this.playerImgBig.getContent()), 
+        this.removeChild(this.playerImgBig)), this.playerImgBig = new SimpleSprite("dist/img/UI/jeisoGrande.png"), 
+        this.playerImgBig.setPosition(windowWidth / 2 - .8 * this.playerImgBig.getContent().width / 2, windowHeight / 2 - .8 * this.playerImgBig.getContent().height / 2), 
+        this.faceContainer.addChild(this.playerImgBig.getContent()), this.playerImgBig.container.scale.x = .8, 
+        this.playerImgBig.container.scale.y = .8, TweenLite.from(this.playerImgBig.getContent().position, .8, {
+            x: this.playerImgBig.getContent().position.x + .1 * windowWidth
+        }), TweenLite.from(this.playerImgBig.getContent(), .3, {
+            alpha: 0
+        }), this.playerImg && this.playerImg.getContent().parent && (this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
         this.removeChild(this.playerImg)), this.playerImg = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource), 
         this.playerImg) {
             this.playerImg.container.anchor.x = .5, this.playerImg.container.anchor.y = .5;
             var scale = 1;
             scale = this.playerImg.container.width > this.playerImg.container.height ? scaleConverter(this.playerImg.container.width, windowWidth, .2) : scaleConverter(this.playerImg.container.height, windowHeight, .4), 
             this.playerImg.container.scale.x = scale, this.playerImg.container.scale.y = scale, 
-            this.addChild(this.playerImg), this.playerImg.setPosition(windowWidth / 2, windowHeight / 2 - this.playerImg.container.height / 2 - 10), 
+            this.addChild(this.playerImg), this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2), 
             TweenLite.from(this.playerImg.getContent().position, .8, {
-                x: windowWidth / 2 - .1 * windowWidth,
-                y: .1 * windowHeight
-            }), TweenLite.from(this.playerImg.getContent(), .5, {
+                x: this.playerImg.getContent().position.x - .2 * windowWidth,
+                y: this.playerImg.getContent().position.y - .2 * windowHeight
+            }), TweenLite.from(this.playerImg.getContent(), .3, {
                 alpha: 0
+            }), this.playerImg.getContent().rotation = .2, TweenLite.to(this.playerImg.getContent(), .5, {
+                rotation: 0
             });
         }
     }
@@ -925,7 +949,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/ease.png", "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/HUD.json" ];
+        var assetsToLoader = [ "dist/img/ease.png", "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/HUD.json" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded();
     },
@@ -954,7 +978,7 @@ var Application = AbstractApplication.extend({
             font: "10px Arial"
         }), 5, 5), this.fullScreen.clickCallback = function() {
             fullscreen();
-        });
+        }), self.screenManager.change("Choice");
     }
 }), FirebaseSocket = SmartSocket.extend({
     init: function(url) {
@@ -1093,7 +1117,7 @@ var Application = AbstractApplication.extend({
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
     }
-}), meter = new FPSMeter(), resizeProportional = !0, windowWidth = 1136, windowHeight = 640, realWindowWidth = 1136, realWindowHeight = 640, gameScale = 1.5;
+}), resizeProportional = !0, windowWidth = 1136, windowHeight = 640, realWindowWidth = 1136, realWindowHeight = 640, gameScale = 1.5;
 
 testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
 realWindowWidth = windowWidth, realWindowHeight = windowHeight);

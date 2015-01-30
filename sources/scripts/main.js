@@ -1,5 +1,5 @@
 /*jshint undef:false */
-var meter = new FPSMeter();
+// var meter = new FPSMeter();
 function testMobile() {
 	return Modernizr.touch;// || window.innerWidth < 600;//true;// Modernizr.touch || window.innerWidth < 600;
 }
@@ -16,7 +16,7 @@ if(testMobile()){
 	// alert(windowWidth +' - '+windowHeight);
 	// windowWidth = window.screen.height;//640;
 	// windowHeight = window.screen.width;//960;
-	// alert(windowWidth +' - '+ windowHeight);
+	// alert(windowWidth +' - '+ windowHeight)
 	realWindowWidth = windowWidth;
 	realWindowHeight = windowHeight;
 }
@@ -40,7 +40,7 @@ var ratio = 1;//devicePixelRatio / backingStoreRatio;
 
 function update() {
 	requestAnimFrame(update );
-	meter.tickStart();
+	// meter.tickStart();
 	var tempRation =  (window.innerHeight/windowHeight);
 	var ratioRez = resizeProportional ? tempRation < (window.innerWidth/realWindowWidth)?tempRation:(window.innerWidth/realWindowWidth) : 1;
 	windowWidthVar = realWindowWidth * ratioRez * ratio;
@@ -60,7 +60,7 @@ function update() {
 	
 	APP.update();
 	renderer.render(APP.stage);
-	meter.tick();
+	// meter.tick();
 }
 
 

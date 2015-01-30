@@ -5384,1319 +5384,966 @@
             }();
         }
     };
-}(this), this.createjs = this.createjs || {}, function() {
-    var a = createjs.SoundJS = createjs.SoundJS || {};
-    a.version = "0.6.0", a.buildDate = "Thu, 11 Dec 2014 23:32:09 GMT";
-}(), this.createjs = this.createjs || {}, createjs.extend = function(a, b) {
-    "use strict";
-    function c() {
-        this.constructor = a;
-    }
-    return c.prototype = b.prototype, a.prototype = new c();
-}, this.createjs = this.createjs || {}, createjs.promote = function(a, b) {
-    "use strict";
-    var c = a.prototype, d = Object.getPrototypeOf && Object.getPrototypeOf(c) || c.__proto__;
-    if (d) {
-        c[(b += "_") + "constructor"] = d.constructor;
-        for (var e in d) c.hasOwnProperty(e) && "function" == typeof d[e] && (c[b + e] = d[e]);
-    }
-    return a;
-}, this.createjs = this.createjs || {}, createjs.indexOf = function(a, b) {
-    "use strict";
-    for (var c = 0, d = a.length; d > c; c++) if (b === a[c]) return c;
-    return -1;
-}, this.createjs = this.createjs || {}, function() {
-    "use strict";
-    createjs.proxy = function(a, b) {
-        var c = Array.prototype.slice.call(arguments, 2);
-        return function() {
-            return a.apply(b, Array.prototype.slice.call(arguments, 0).concat(c));
-        };
-    };
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    var a = Object.defineProperty ? !0 : !1, b = {};
-    try {
-        Object.defineProperty(b, "bar", {
-            get: function() {
-                return this._bar;
+}(this), function(g, h) {
+    function G(F, G) {
+        function W(b) {
+            return c.preferFlash && v && !c.ignoreFlash && c.flash[b] !== h && c.flash[b];
+        }
+        function r(b) {
+            return function(c) {
+                var d = this._s;
+                return d && d._a ? b.call(this, c) : null;
+            };
+        }
+        this.setupOptions = {
+            url: F || null,
+            flashVersion: 8,
+            debugMode: !0,
+            debugFlash: !1,
+            useConsole: !0,
+            consoleOnly: !0,
+            waitForWindowLoad: !1,
+            bgColor: "#ffffff",
+            useHighPerformance: !1,
+            flashPollingInterval: null,
+            html5PollingInterval: null,
+            flashLoadTimeout: 1e3,
+            wmode: null,
+            allowScriptAccess: "always",
+            useFlashBlock: !1,
+            useHTML5Audio: !0,
+            html5Test: /^(probably|maybe)$/i,
+            preferFlash: !1,
+            noSWFCache: !1,
+            idPrefix: "sound"
+        }, this.defaultOptions = {
+            autoLoad: !1,
+            autoPlay: !1,
+            from: null,
+            loops: 1,
+            onid3: null,
+            onload: null,
+            whileloading: null,
+            onplay: null,
+            onpause: null,
+            onresume: null,
+            whileplaying: null,
+            onposition: null,
+            onstop: null,
+            onfailure: null,
+            onfinish: null,
+            multiShot: !0,
+            multiShotEvents: !1,
+            position: null,
+            pan: 0,
+            stream: !0,
+            to: null,
+            type: null,
+            usePolicyFile: !1,
+            volume: 100
+        }, this.flash9Options = {
+            isMovieStar: null,
+            usePeakData: !1,
+            useWaveformData: !1,
+            useEQData: !1,
+            onbufferchange: null,
+            ondataerror: null
+        }, this.movieStarOptions = {
+            bufferTime: 3,
+            serverURL: null,
+            onconnect: null,
+            duration: null
+        }, this.audioFormats = {
+            mp3: {
+                type: [ 'audio/mpeg; codecs="mp3"', "audio/mpeg", "audio/mp3", "audio/MPA", "audio/mpa-robust" ],
+                required: !0
             },
-            set: function(a) {
-                this._bar = a;
+            mp4: {
+                related: [ "aac", "m4a", "m4b" ],
+                type: [ 'audio/mp4; codecs="mp4a.40.2"', "audio/aac", "audio/x-m4a", "audio/MP4A-LATM", "audio/mpeg4-generic" ],
+                required: !1
+            },
+            ogg: {
+                type: [ "audio/ogg; codecs=vorbis" ],
+                required: !1
+            },
+            opus: {
+                type: [ "audio/ogg; codecs=opus", "audio/opus" ],
+                required: !1
+            },
+            wav: {
+                type: [ 'audio/wav; codecs="1"', "audio/wav", "audio/wave", "audio/x-wav" ],
+                required: !1
             }
-        });
-    } catch (c) {
-        a = !1;
-    }
-    createjs.definePropertySupported = a;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a() {
-        throw "BrowserDetect cannot be instantiated";
-    }
-    var b = a.agent = window.navigator.userAgent;
-    a.isWindowPhone = b.indexOf("IEMobile") > -1 || b.indexOf("Windows Phone") > -1, 
-    a.isFirefox = b.indexOf("Firefox") > -1, a.isOpera = null != window.opera, a.isChrome = b.indexOf("Chrome") > -1, 
-    a.isIOS = (b.indexOf("iPod") > -1 || b.indexOf("iPhone") > -1 || b.indexOf("iPad") > -1) && !a.isWindowPhone, 
-    a.isAndroid = b.indexOf("Android") > -1 && !a.isWindowPhone, a.isBlackberry = b.indexOf("Blackberry") > -1, 
-    createjs.BrowserDetect = a;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a() {
-        this._listeners = null, this._captureListeners = null;
-    }
-    var b = a.prototype;
-    a.initialize = function(a) {
-        a.addEventListener = b.addEventListener, a.on = b.on, a.removeEventListener = a.off = b.removeEventListener, 
-        a.removeAllEventListeners = b.removeAllEventListeners, a.hasEventListener = b.hasEventListener, 
-        a.dispatchEvent = b.dispatchEvent, a._dispatchEvent = b._dispatchEvent, a.willTrigger = b.willTrigger;
-    }, b.addEventListener = function(a, b, c) {
-        var d;
-        d = c ? this._captureListeners = this._captureListeners || {} : this._listeners = this._listeners || {};
-        var e = d[a];
-        return e && this.removeEventListener(a, b, c), e = d[a], e ? e.push(b) : d[a] = [ b ], 
-        b;
-    }, b.on = function(a, b, c, d, e, f) {
-        return b.handleEvent && (c = c || b, b = b.handleEvent), c = c || this, this.addEventListener(a, function(a) {
-            b.call(c, a, e), d && a.remove();
-        }, f);
-    }, b.removeEventListener = function(a, b, c) {
-        var d = c ? this._captureListeners : this._listeners;
-        if (d) {
-            var e = d[a];
-            if (e) for (var f = 0, g = e.length; g > f; f++) if (e[f] == b) {
-                1 == g ? delete d[a] : e.splice(f, 1);
+        }, this.movieID = "sm2-container", this.id = G || "sm2movie", this.debugID = "soundmanager-debug", 
+        this.debugURLParam = /([#?&])debug=1/i, this.versionNumber = "V2.97a.20140901", 
+        this.altURL = this.movieURL = this.version = null, this.enabled = this.swfLoaded = !1, 
+        this.oMC = null, this.sounds = {}, this.soundIDs = [], this.didFlashBlock = this.muted = !1, 
+        this.filePattern = null, this.filePatterns = {
+            flash8: /\.mp3(\?.*)?$/i,
+            flash9: /\.mp3(\?.*)?$/i
+        }, this.features = {
+            buffering: !1,
+            peakData: !1,
+            waveformData: !1,
+            eqData: !1,
+            movieStar: !1
+        }, this.sandbox = {}, this.html5 = {
+            usingFlash: null
+        }, this.flash = {}, this.ignoreFlash = this.html5Only = !1;
+        var Ja, X, la, Ma, ma, n, O, w, oa, Y, pa, D, H, I, Na, qa, ra, Z, sa, $, ta, E, ua, P, va, aa, J, Oa, wa, Pa, xa, Qa, R, za, K, ba, ca, q, Ra, Sa, Ta, ea, U, Va, fa, V, z, ga, Ba, Wa, s, Ca, v, Da, Xa, B, ha, c = this, Ka = null, k = null, t = navigator.userAgent, La = g.location.href.toString(), p = document, x = [], M = !1, N = !1, m = !1, y = !1, na = !1, Q = null, ya = null, S = !1, Aa = !1, da = 0, T = null, Ua = [], u = null, fb = Array.prototype.slice, A = !1, Ya = 0, ia = t.match(/(ipad|iphone|ipod)/i), Za = t.match(/android/i), C = t.match(/msie/i), gb = t.match(/webkit/i), ja = t.match(/safari/i) && !t.match(/chrome/i), Ea = t.match(/opera/i), Fa = t.match(/(mobile|pre\/|xoom)/i) || ia || Za, $a = !La.match(/usehtml5audio/i) && !La.match(/sm2\-ignorebadua/i) && ja && !t.match(/silk/i) && t.match(/OS X 10_6_([3-7])/i), Ga = p.hasFocus !== h ? p.hasFocus() : null, ka = ja && (p.hasFocus === h || !p.hasFocus()), ab = !ka, bb = /(mp3|mp4|mpa|m4a|m4b)/i, Ha = p.location ? p.location.protocol.match(/http/i) : null, cb = Ha ? "" : "http://", db = /^\s*audio\/(?:x-)?(?:mpeg4|aac|flv|mov|mp4||m4v|m4a|m4b|mp4v|3gp|3g2)\s*(?:$|;)/i, eb = "mpeg4 aac flv mov mp4 m4v f4v m4a m4b mp4v 3gp 3g2".split(" "), hb = RegExp("\\.(" + eb.join("|") + ")(\\?.*)?$", "i");
+        this.mimePattern = /^\s*audio\/(?:x-)?(?:mp(?:eg|3))\s*(?:$|;)/i, this.useAltURL = !Ha;
+        var Ia;
+        try {
+            Ia = Audio !== h && (Ea && opera !== h && 10 > opera.version() ? new Audio(null) : new Audio()).canPlayType !== h;
+        } catch (ib) {
+            Ia = !1;
+        }
+        this.hasHTML5 = Ia, this.setup = function(b) {
+            var e = !c.url;
+            return b !== h && m && u && c.ok(), oa(b), b && (e && P && b.url !== h && c.beginDelayedInit(), 
+            !P && b.url !== h && "complete" === p.readyState && setTimeout(E, 1)), c;
+        }, this.supported = this.ok = function() {
+            return u ? m && !y : c.useHTML5Audio && c.hasHTML5;
+        }, this.getMovie = function(b) {
+            return X(b) || p[b] || g[b];
+        }, this.createSound = function(b, e) {
+            function d() {
+                return a = ba(a), c.sounds[a.id] = new Ja(a), c.soundIDs.push(a.id), c.sounds[a.id];
+            }
+            var a, f = null;
+            if (!m || !c.ok()) return !1;
+            if (e !== h && (b = {
+                id: b,
+                url: e
+            }), a = w(b), a.url = ea(a.url), void 0 === a.id && (a.id = c.setupOptions.idPrefix + Ya++), 
+            q(a.id, !0)) return c.sounds[a.id];
+            if (fa(a)) f = d(), f._setup_html5(a); else {
+                if (c.html5Only || c.html5.usingFlash && a.url && a.url.match(/data\:/i)) return d();
+                n > 8 && null === a.isMovieStar && (a.isMovieStar = !(!a.serverURL && !(a.type && a.type.match(db) || a.url && a.url.match(hb)))), 
+                a = ca(a, void 0), f = d(), 8 === n ? k._createSound(a.id, a.loops || 1, a.usePolicyFile) : (k._createSound(a.id, a.url, a.usePeakData, a.useWaveformData, a.useEQData, a.isMovieStar, a.isMovieStar ? a.bufferTime : !1, a.loops || 1, a.serverURL, a.duration || null, a.autoPlay, !0, a.autoLoad, a.usePolicyFile), 
+                a.serverURL || (f.connected = !0, a.onconnect && a.onconnect.apply(f))), !a.serverURL && (a.autoLoad || a.autoPlay) && f.load(a);
+            }
+            return !a.serverURL && a.autoPlay && f.play(), f;
+        }, this.destroySound = function(b, e) {
+            if (!q(b)) return !1;
+            var a, d = c.sounds[b];
+            for (d._iO = {}, d.stop(), d.unload(), a = 0; a < c.soundIDs.length; a++) if (c.soundIDs[a] === b) {
+                c.soundIDs.splice(a, 1);
                 break;
             }
-        }
-    }, b.off = b.removeEventListener, b.removeAllEventListeners = function(a) {
-        a ? (this._listeners && delete this._listeners[a], this._captureListeners && delete this._captureListeners[a]) : this._listeners = this._captureListeners = null;
-    }, b.dispatchEvent = function(a) {
-        if ("string" == typeof a) {
-            var b = this._listeners;
-            if (!b || !b[a]) return !1;
-            a = new createjs.Event(a);
-        } else a.target && a.clone && (a = a.clone());
-        try {
-            a.target = this;
-        } catch (c) {}
-        if (a.bubbles && this.parent) {
-            for (var d = this, e = [ d ]; d.parent; ) e.push(d = d.parent);
-            var f, g = e.length;
-            for (f = g - 1; f >= 0 && !a.propagationStopped; f--) e[f]._dispatchEvent(a, 1 + (0 == f));
-            for (f = 1; g > f && !a.propagationStopped; f++) e[f]._dispatchEvent(a, 3);
-        } else this._dispatchEvent(a, 2);
-        return a.defaultPrevented;
-    }, b.hasEventListener = function(a) {
-        var b = this._listeners, c = this._captureListeners;
-        return !!(b && b[a] || c && c[a]);
-    }, b.willTrigger = function(a) {
-        for (var b = this; b; ) {
-            if (b.hasEventListener(a)) return !0;
-            b = b.parent;
-        }
-        return !1;
-    }, b.toString = function() {
-        return "[EventDispatcher]";
-    }, b._dispatchEvent = function(a, b) {
-        var c, d = 1 == b ? this._captureListeners : this._listeners;
-        if (a && d) {
-            var e = d[a.type];
-            if (!e || !(c = e.length)) return;
-            try {
-                a.currentTarget = this;
-            } catch (f) {}
-            try {
-                a.eventPhase = b;
-            } catch (f) {}
-            a.removed = !1, e = e.slice();
-            for (var g = 0; c > g && !a.immediatePropagationStopped; g++) {
-                var h = e[g];
-                h.handleEvent ? h.handleEvent(a) : h(a), a.removed && (this.off(a.type, h, 1 == b), 
-                a.removed = !1);
+            return e || d.destruct(!0), delete c.sounds[b], !0;
+        }, this.load = function(b, e) {
+            return q(b) ? c.sounds[b].load(e) : !1;
+        }, this.unload = function(b) {
+            return q(b) ? c.sounds[b].unload() : !1;
+        }, this.onposition = this.onPosition = function(b, e, d, a) {
+            return q(b) ? c.sounds[b].onposition(e, d, a) : !1;
+        }, this.clearOnPosition = function(b, e, d) {
+            return q(b) ? c.sounds[b].clearOnPosition(e, d) : !1;
+        }, this.start = this.play = function(b, e) {
+            var d = null, a = e && !(e instanceof Object);
+            if (!m || !c.ok()) return !1;
+            if (q(b, a)) a && (e = {
+                url: e
+            }); else {
+                if (!a) return !1;
+                a && (e = {
+                    url: e
+                }), e && e.url && (e.id = b, d = c.createSound(e).play());
             }
-        }
-    }, createjs.EventDispatcher = a;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, c) {
-        this.type = a, this.target = null, this.currentTarget = null, this.eventPhase = 0, 
-        this.bubbles = !!b, this.cancelable = !!c, this.timeStamp = new Date().getTime(), 
-        this.defaultPrevented = !1, this.propagationStopped = !1, this.immediatePropagationStopped = !1, 
-        this.removed = !1;
-    }
-    var b = a.prototype;
-    b.preventDefault = function() {
-        this.defaultPrevented = this.cancelable && !0;
-    }, b.stopPropagation = function() {
-        this.propagationStopped = !0;
-    }, b.stopImmediatePropagation = function() {
-        this.immediatePropagationStopped = this.propagationStopped = !0;
-    }, b.remove = function() {
-        this.removed = !0;
-    }, b.clone = function() {
-        return new a(this.type, this.bubbles, this.cancelable);
-    }, b.set = function(a) {
-        for (var b in a) this[b] = a[b];
-        return this;
-    }, b.toString = function() {
-        return "[Event (type=" + this.type + ")]";
-    }, createjs.Event = a;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, c) {
-        this.Event_constructor("error"), this.title = a, this.message = b, this.data = c;
-    }
-    var b = createjs.extend(a, createjs.Event);
-    b.clone = function() {
-        return new createjs.ErrorEvent(this.title, this.message, this.data);
-    }, createjs.ErrorEvent = createjs.promote(a, "Event");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b) {
-        this.Event_constructor("progress"), this.loaded = a, this.total = null == b ? 1 : b, 
-        this.progress = 0 == b ? 0 : this.loaded / this.total;
-    }
-    var b = createjs.extend(a, createjs.Event);
-    b.clone = function() {
-        return new createjs.ProgressEvent(this.loaded, this.total);
-    }, createjs.ProgressEvent = createjs.promote(a, "Event");
-}(window), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a() {
-        this.src = null, this.type = null, this.id = null, this.maintainOrder = !1, this.callback = null, 
-        this.data = null, this.method = createjs.LoadItem.GET, this.values = null, this.headers = null, 
-        this.withCredentials = !1, this.mimeType = null, this.crossOrigin = "Anonymous", 
-        this.loadTimeout = 8e3;
-    }
-    var b = a.prototype = {}, c = a;
-    c.create = function(b) {
-        if ("string" == typeof b) {
-            var d = new a();
-            return d.src = b, d;
-        }
-        if (b instanceof c) return b;
-        if (b instanceof Object) return b;
-        throw new Error("Type not recognized.");
-    }, b.set = function(a) {
-        for (var b in a) this[b] = a[b];
-        return this;
-    }, createjs.LoadItem = c;
-}(), function() {
-    var a = {};
-    a.ABSOLUTE_PATT = /^(?:\w+:)?\/{2}/i, a.RELATIVE_PATT = /^[./]*?\//i, a.EXTENSION_PATT = /\/?[^/]+\.(\w{1,5})$/i, 
-    a.parseURI = function(b) {
-        var c = {
-            absolute: !1,
-            relative: !1
-        };
-        if (null == b) return c;
-        var d = b.indexOf("?");
-        d > -1 && (b = b.substr(0, d));
-        var e;
-        return a.ABSOLUTE_PATT.test(b) ? c.absolute = !0 : a.RELATIVE_PATT.test(b) && (c.relative = !0), 
-        (e = b.match(a.EXTENSION_PATT)) && (c.extension = e[1].toLowerCase()), c;
-    }, a.formatQueryString = function(a, b) {
-        if (null == a) throw new Error("You must specify data.");
-        var c = [];
-        for (var d in a) c.push(d + "=" + escape(a[d]));
-        return b && (c = c.concat(b)), c.join("&");
-    }, a.buildPath = function(a, b) {
-        if (null == b) return a;
-        var c = [], d = a.indexOf("?");
-        if (-1 != d) {
-            var e = a.slice(d + 1);
-            c = c.concat(e.split("&"));
-        }
-        return -1 != d ? a.slice(0, d) + "?" + this._formatQueryString(b, c) : a + "?" + this._formatQueryString(b, c);
-    }, a.isCrossDomain = function(a) {
-        var b = document.createElement("a");
-        b.href = a.src;
-        var c = document.createElement("a");
-        c.href = location.href;
-        var d = "" != b.hostname && (b.port != c.port || b.protocol != c.protocol || b.hostname != c.hostname);
-        return d;
-    }, a.isLocal = function(a) {
-        var b = document.createElement("a");
-        return b.href = a.src, "" == b.hostname && "file:" == b.protocol;
-    }, a.isBinary = function(a) {
-        switch (a) {
-          case createjs.AbstractLoader.IMAGE:
-          case createjs.AbstractLoader.BINARY:
+            return null === d && (d = c.sounds[b].play(e)), d;
+        }, this.setPosition = function(b, e) {
+            return q(b) ? c.sounds[b].setPosition(e) : !1;
+        }, this.stop = function(b) {
+            return q(b) ? c.sounds[b].stop() : !1;
+        }, this.stopAll = function() {
+            for (var b in c.sounds) c.sounds.hasOwnProperty(b) && c.sounds[b].stop();
+        }, this.pause = function(b) {
+            return q(b) ? c.sounds[b].pause() : !1;
+        }, this.pauseAll = function() {
+            var b;
+            for (b = c.soundIDs.length - 1; b >= 0; b--) c.sounds[c.soundIDs[b]].pause();
+        }, this.resume = function(b) {
+            return q(b) ? c.sounds[b].resume() : !1;
+        }, this.resumeAll = function() {
+            var b;
+            for (b = c.soundIDs.length - 1; b >= 0; b--) c.sounds[c.soundIDs[b]].resume();
+        }, this.togglePause = function(b) {
+            return q(b) ? c.sounds[b].togglePause() : !1;
+        }, this.setPan = function(b, e) {
+            return q(b) ? c.sounds[b].setPan(e) : !1;
+        }, this.setVolume = function(b, e) {
+            return q(b) ? c.sounds[b].setVolume(e) : !1;
+        }, this.mute = function(b) {
+            var e = 0;
+            if (b instanceof String && (b = null), b) return q(b) ? c.sounds[b].mute() : !1;
+            for (e = c.soundIDs.length - 1; e >= 0; e--) c.sounds[c.soundIDs[e]].mute();
+            return c.muted = !0;
+        }, this.muteAll = function() {
+            c.mute();
+        }, this.unmute = function(b) {
+            if (b instanceof String && (b = null), b) return q(b) ? c.sounds[b].unmute() : !1;
+            for (b = c.soundIDs.length - 1; b >= 0; b--) c.sounds[c.soundIDs[b]].unmute();
+            return c.muted = !1, !0;
+        }, this.unmuteAll = function() {
+            c.unmute();
+        }, this.toggleMute = function(b) {
+            return q(b) ? c.sounds[b].toggleMute() : !1;
+        }, this.getMemoryUse = function() {
+            var b = 0;
+            return k && 8 !== n && (b = parseInt(k._getMemoryUse(), 10)), b;
+        }, this.disable = function(b) {
+            var e;
+            if (b === h && (b = !1), y) return !1;
+            for (y = !0, e = c.soundIDs.length - 1; e >= 0; e--) Pa(c.sounds[c.soundIDs[e]]);
+            return O(b), s.remove(g, "load", H), !0;
+        }, this.canPlayMIME = function(b) {
+            var e;
+            return c.hasHTML5 && (e = V({
+                type: b
+            })), !e && u && (e = b && c.ok() ? !!(n > 8 && b.match(db) || b.match(c.mimePattern)) : null), 
+            e;
+        }, this.canPlayURL = function(b) {
+            var e;
+            return c.hasHTML5 && (e = V({
+                url: b
+            })), !e && u && (e = b && c.ok() ? !!b.match(c.filePattern) : null), e;
+        }, this.canPlayLink = function(b) {
+            return b.type !== h && b.type && c.canPlayMIME(b.type) ? !0 : c.canPlayURL(b.href);
+        }, this.getSoundById = function(b) {
+            return b ? c.sounds[b] : null;
+        }, this.onready = function(b, c) {
+            if ("function" != typeof b) throw R("needFunction", "onready");
+            return c || (c = g), pa("onready", b, c), D(), !0;
+        }, this.ontimeout = function(b, c) {
+            if ("function" != typeof b) throw R("needFunction", "ontimeout");
+            return c || (c = g), pa("ontimeout", b, c), D({
+                type: "ontimeout"
+            }), !0;
+        }, this._wD = this._writeDebug = function() {
             return !0;
-
-          default:
+        }, this._debug = function() {}, this.reboot = function(b, e) {
+            var d, a, f;
+            for (d = c.soundIDs.length - 1; d >= 0; d--) c.sounds[c.soundIDs[d]].destruct();
+            if (k) try {
+                C && (ya = k.innerHTML), Q = k.parentNode.removeChild(k);
+            } catch (h) {}
+            if (ya = Q = u = k = null, c.enabled = P = m = S = Aa = M = N = y = A = c.swfLoaded = !1, 
+            c.soundIDs = [], c.sounds = {}, Ya = 0, b) x = []; else for (d in x) if (x.hasOwnProperty(d)) for (a = 0, 
+            f = x[d].length; f > a; a++) x[d][a].fired = !1;
+            return c.html5 = {
+                usingFlash: null
+            }, c.flash = {}, c.html5Only = !1, c.ignoreFlash = !1, g.setTimeout(function() {
+                ta(), e || c.beginDelayedInit();
+            }, 20), c;
+        }, this.reset = function() {
+            return c.reboot(!0, !0);
+        }, this.getMoviePercent = function() {
+            return k && "PercentLoaded" in k ? k.PercentLoaded() : null;
+        }, this.beginDelayedInit = function() {
+            na = !0, E(), setTimeout(function() {
+                return Aa ? !1 : (aa(), $(), Aa = !0);
+            }, 20), I();
+        }, this.destruct = function() {
+            c.disable(!0);
+        }, Ja = function(b) {
+            var e, d, f, l, L, g, p, r, x, y, z, a = this, t = !1, m = [], u = 0, v = null;
+            d = e = null, this.sID = this.id = b.id, this.url = b.url, this._iO = this.instanceOptions = this.options = w(b), 
+            this.pan = this.options.pan, this.volume = this.options.volume, this.isHTML5 = !1, 
+            this._a = null, z = this.url ? !1 : !0, this.id3 = {}, this._debug = function() {}, 
+            this.load = function(b) {
+                var d, e = null;
+                if (b !== h ? a._iO = w(b, a.options) : (b = a.options, a._iO = b, v && v !== a.url && (a._iO.url = a.url, 
+                a.url = null)), a._iO.url || (a._iO.url = a.url), a._iO.url = ea(a._iO.url), d = a.instanceOptions = a._iO, 
+                !d.url && !a.url) return a;
+                if (d.url === a.url && 0 !== a.readyState && 2 !== a.readyState) return 3 === a.readyState && d.onload && ha(a, function() {
+                    d.onload.apply(a, [ !!a.duration ]);
+                }), a;
+                if (a.loaded = !1, a.readyState = 1, a.playState = 0, a.id3 = {}, fa(d)) e = a._setup_html5(d), 
+                e._called_load || (a._html5_canplay = !1, a.url !== d.url && (a._a.src = d.url, 
+                a.setPosition(0)), a._a.autobuffer = "auto", a._a.preload = "auto", a._a._called_load = !0); else {
+                    if (c.html5Only || a._iO.url && a._iO.url.match(/data\:/i)) return a;
+                    try {
+                        a.isHTML5 = !1, a._iO = ca(ba(d)), a._iO.autoPlay && (a._iO.position || a._iO.from) && (a._iO.autoPlay = !1), 
+                        d = a._iO, 8 === n ? k._load(a.id, d.url, d.stream, d.autoPlay, d.usePolicyFile) : k._load(a.id, d.url, !!d.stream, !!d.autoPlay, d.loops || 1, !!d.autoLoad, d.usePolicyFile);
+                    } catch (f) {
+                        J({
+                            type: "SMSOUND_LOAD_JS_EXCEPTION",
+                            fatal: !0
+                        });
+                    }
+                }
+                return a.url = d.url, a;
+            }, this.unload = function() {
+                return 0 !== a.readyState && (a.isHTML5 ? (g(), a._a && (a._a.pause(), v = ga(a._a))) : 8 === n ? k._unload(a.id, "about:blank") : k._unload(a.id), 
+                f()), a;
+            }, this.destruct = function(b) {
+                a.isHTML5 ? (g(), a._a && (a._a.pause(), ga(a._a), A || L(), a._a._s = null, a._a = null)) : (a._iO.onfailure = null, 
+                k._destroySound(a.id)), b || c.destroySound(a.id, !0);
+            }, this.start = this.play = function(b, e) {
+                var d, f, l, g, L;
+                if (f = !0, f = null, e = e === h ? !0 : e, b || (b = {}), a.url && (a._iO.url = a.url), 
+                a._iO = w(a._iO, a.options), a._iO = w(b, a._iO), a._iO.url = ea(a._iO.url), a.instanceOptions = a._iO, 
+                !a.isHTML5 && a._iO.serverURL && !a.connected) return a.getAutoPlay() || a.setAutoPlay(!0), 
+                a;
+                if (fa(a._iO) && (a._setup_html5(a._iO), p()), 1 === a.playState && !a.paused && (d = a._iO.multiShot, 
+                d || (a.isHTML5 && a.setPosition(a._iO.position), f = a)), null !== f) return f;
+                if (b.url && b.url !== a.url && (a.readyState || a.isHTML5 || 8 !== n || !z ? a.load(a._iO) : z = !1), 
+                a.loaded || (0 === a.readyState ? (a.isHTML5 || c.html5Only ? a.isHTML5 ? a.load(a._iO) : f = a : (a._iO.autoPlay = !0, 
+                a.load(a._iO)), a.instanceOptions = a._iO) : 2 === a.readyState && (f = a)), null !== f) return f;
+                if (!a.isHTML5 && 9 === n && 0 < a.position && a.position === a.duration && (b.position = 0), 
+                a.paused && 0 <= a.position && (!a._iO.serverURL || 0 < a.position)) a.resume(); else {
+                    if (a._iO = w(b, a._iO), (!a.isHTML5 && null !== a._iO.position && 0 < a._iO.position || null !== a._iO.from && 0 < a._iO.from || null !== a._iO.to) && 0 === a.instanceCount && 0 === a.playState && !a._iO.serverURL) {
+                        if (d = function() {
+                            a._iO = w(b, a._iO), a.play(a._iO);
+                        }, a.isHTML5 && !a._html5_canplay ? (a.load({
+                            _oncanplay: d
+                        }), f = !1) : a.isHTML5 || a.loaded || a.readyState && 2 === a.readyState || (a.load({
+                            onload: d
+                        }), f = !1), null !== f) return f;
+                        a._iO = y();
+                    }
+                    (!a.instanceCount || a._iO.multiShotEvents || a.isHTML5 && a._iO.multiShot && !A || !a.isHTML5 && n > 8 && !a.getAutoPlay()) && a.instanceCount++, 
+                    a._iO.onposition && 0 === a.playState && r(a), a.playState = 1, a.paused = !1, a.position = a._iO.position === h || isNaN(a._iO.position) ? 0 : a._iO.position, 
+                    a.isHTML5 || (a._iO = ca(ba(a._iO))), a._iO.onplay && e && (a._iO.onplay.apply(a), 
+                    t = !0), a.setVolume(a._iO.volume, !0), a.setPan(a._iO.pan, !0), a.isHTML5 ? 2 > a.instanceCount ? (p(), 
+                    f = a._setup_html5(), a.setPosition(a._iO.position), f.play()) : (l = new Audio(a._iO.url), 
+                    g = function() {
+                        s.remove(l, "ended", g), a._onfinish(a), ga(l), l = null;
+                    }, L = function() {
+                        s.remove(l, "canplay", L);
+                        try {
+                            l.currentTime = a._iO.position / 1e3;
+                        } catch (b) {}
+                        l.play();
+                    }, s.add(l, "ended", g), void 0 !== a._iO.volume && (l.volume = Math.max(0, Math.min(1, a._iO.volume / 100))), 
+                    a.muted && (l.muted = !0), a._iO.position ? s.add(l, "canplay", L) : l.play()) : (f = k._start(a.id, a._iO.loops || 1, 9 === n ? a.position : a.position / 1e3, a._iO.multiShot || !1), 
+                    9 === n && !f && a._iO.onplayerror && a._iO.onplayerror.apply(a));
+                }
+                return a;
+            }, this.stop = function(b) {
+                var c = a._iO;
+                return 1 === a.playState && (a._onbufferchange(0), a._resetOnPosition(0), a.paused = !1, 
+                a.isHTML5 || (a.playState = 0), x(), c.to && a.clearOnPosition(c.to), a.isHTML5 ? a._a && (b = a.position, 
+                a.setPosition(0), a.position = b, a._a.pause(), a.playState = 0, a._onTimer(), g()) : (k._stop(a.id, b), 
+                c.serverURL && a.unload()), a.instanceCount = 0, a._iO = {}, c.onstop && c.onstop.apply(a)), 
+                a;
+            }, this.setAutoPlay = function(b) {
+                a._iO.autoPlay = b, a.isHTML5 || (k._setAutoPlay(a.id, b), b && !a.instanceCount && 1 === a.readyState && a.instanceCount++);
+            }, this.getAutoPlay = function() {
+                return a._iO.autoPlay;
+            }, this.setPosition = function(b) {
+                b === h && (b = 0);
+                var c = a.isHTML5 ? Math.max(b, 0) : Math.min(a.duration || a._iO.duration, Math.max(b, 0));
+                if (a.position = c, b = a.position / 1e3, a._resetOnPosition(a.position), a._iO.position = c, 
+                a.isHTML5) {
+                    if (a._a) {
+                        if (a._html5_canplay) {
+                            if (a._a.currentTime !== b) try {
+                                a._a.currentTime = b, (0 === a.playState || a.paused) && a._a.pause();
+                            } catch (e) {}
+                        } else if (b) return a;
+                        a.paused && a._onTimer(!0);
+                    }
+                } else b = 9 === n ? a.position : b, a.readyState && 2 !== a.readyState && k._setPosition(a.id, b, a.paused || !a.playState, a._iO.multiShot);
+                return a;
+            }, this.pause = function(b) {
+                return a.paused || 0 === a.playState && 1 !== a.readyState ? a : (a.paused = !0, 
+                a.isHTML5 ? (a._setup_html5().pause(), g()) : (b || b === h) && k._pause(a.id, a._iO.multiShot), 
+                a._iO.onpause && a._iO.onpause.apply(a), a);
+            }, this.resume = function() {
+                var b = a._iO;
+                return a.paused ? (a.paused = !1, a.playState = 1, a.isHTML5 ? (a._setup_html5().play(), 
+                p()) : (b.isMovieStar && !b.serverURL && a.setPosition(a.position), k._pause(a.id, b.multiShot)), 
+                !t && b.onplay ? (b.onplay.apply(a), t = !0) : b.onresume && b.onresume.apply(a), 
+                a) : a;
+            }, this.togglePause = function() {
+                return 0 === a.playState ? (a.play({
+                    position: 9 !== n || a.isHTML5 ? a.position / 1e3 : a.position
+                }), a) : (a.paused ? a.resume() : a.pause(), a);
+            }, this.setPan = function(b, c) {
+                return b === h && (b = 0), c === h && (c = !1), a.isHTML5 || k._setPan(a.id, b), 
+                a._iO.pan = b, c || (a.pan = b, a.options.pan = b), a;
+            }, this.setVolume = function(b, e) {
+                return b === h && (b = 100), e === h && (e = !1), a.isHTML5 ? a._a && (c.muted && !a.muted && (a.muted = !0, 
+                a._a.muted = !0), a._a.volume = Math.max(0, Math.min(1, b / 100))) : k._setVolume(a.id, c.muted && !a.muted || a.muted ? 0 : b), 
+                a._iO.volume = b, e || (a.volume = b, a.options.volume = b), a;
+            }, this.mute = function() {
+                return a.muted = !0, a.isHTML5 ? a._a && (a._a.muted = !0) : k._setVolume(a.id, 0), 
+                a;
+            }, this.unmute = function() {
+                a.muted = !1;
+                var b = a._iO.volume !== h;
+                return a.isHTML5 ? a._a && (a._a.muted = !1) : k._setVolume(a.id, b ? a._iO.volume : a.options.volume), 
+                a;
+            }, this.toggleMute = function() {
+                return a.muted ? a.unmute() : a.mute();
+            }, this.onposition = this.onPosition = function(b, c, e) {
+                return m.push({
+                    position: parseInt(b, 10),
+                    method: c,
+                    scope: e !== h ? e : a,
+                    fired: !1
+                }), a;
+            }, this.clearOnPosition = function(a, b) {
+                var c;
+                if (a = parseInt(a, 10), isNaN(a)) return !1;
+                for (c = 0; c < m.length; c++) a !== m[c].position || b && b !== m[c].method || (m[c].fired && u--, 
+                m.splice(c, 1));
+            }, this._processOnPosition = function() {
+                var b, c;
+                if (b = m.length, !b || !a.playState || u >= b) return !1;
+                for (b -= 1; b >= 0; b--) c = m[b], !c.fired && a.position >= c.position && (c.fired = !0, 
+                u++, c.method.apply(c.scope, [ c.position ]));
+                return !0;
+            }, this._resetOnPosition = function(a) {
+                var b, c;
+                if (b = m.length, !b) return !1;
+                for (b -= 1; b >= 0; b--) c = m[b], c.fired && a <= c.position && (c.fired = !1, 
+                u--);
+                return !0;
+            }, y = function() {
+                var d, f, b = a._iO, c = b.from, e = b.to;
+                return f = function() {
+                    a.clearOnPosition(e, f), a.stop();
+                }, d = function() {
+                    null === e || isNaN(e) || a.onPosition(e, f);
+                }, null !== c && !isNaN(c) && (b.position = c, b.multiShot = !1, d()), b;
+            }, r = function() {
+                var b, c = a._iO.onposition;
+                if (c) for (b in c) c.hasOwnProperty(b) && a.onPosition(parseInt(b, 10), c[b]);
+            }, x = function() {
+                var b, c = a._iO.onposition;
+                if (c) for (b in c) c.hasOwnProperty(b) && a.clearOnPosition(parseInt(b, 10));
+            }, p = function() {
+                a.isHTML5 && Ra(a);
+            }, g = function() {
+                a.isHTML5 && Sa(a);
+            }, f = function(b) {
+                b || (m = [], u = 0), t = !1, a._hasTimer = null, a._a = null, a._html5_canplay = !1, 
+                a.bytesLoaded = null, a.bytesTotal = null, a.duration = a._iO && a._iO.duration ? a._iO.duration : null, 
+                a.durationEstimate = null, a.buffered = [], a.eqData = [], a.eqData.left = [], a.eqData.right = [], 
+                a.failures = 0, a.isBuffering = !1, a.instanceOptions = {}, a.instanceCount = 0, 
+                a.loaded = !1, a.metadata = {}, a.readyState = 0, a.muted = !1, a.paused = !1, a.peakData = {
+                    left: 0,
+                    right: 0
+                }, a.waveformData = {
+                    left: [],
+                    right: []
+                }, a.playState = 0, a.position = null, a.id3 = {};
+            }, f(), this._onTimer = function(b) {
+                var c, f = !1, l = {};
+                return a._hasTimer || b ? (a._a && (b || (0 < a.playState || 1 === a.readyState) && !a.paused) && (c = a._get_html5_duration(), 
+                c !== e && (e = c, a.duration = c, f = !0), a.durationEstimate = a.duration, c = 1e3 * a._a.currentTime || 0, 
+                c !== d && (d = c, f = !0), (f || b) && a._whileplaying(c, l, l, l, l)), f) : void 0;
+            }, this._get_html5_duration = function() {
+                var b = a._iO;
+                return (b = a._a && a._a.duration ? 1e3 * a._a.duration : b && b.duration ? b.duration : null) && !isNaN(b) && 1/0 !== b ? b : null;
+            }, this._apply_loop = function(a, b) {
+                a.loop = b > 1 ? "loop" : "";
+            }, this._setup_html5 = function(b) {
+                b = w(a._iO, b);
+                var d, c = A ? Ka : a._a, e = decodeURI(b.url);
+                if (A ? e === decodeURI(Ca) && (d = !0) : e === decodeURI(v) && (d = !0), c) {
+                    if (c._s) if (A) c._s && c._s.playState && !d && c._s.stop(); else if (!A && e === decodeURI(v)) return a._apply_loop(c, b.loops), 
+                    c;
+                    d || (v && f(!1), c.src = b.url, Ca = v = a.url = b.url, c._called_load = !1);
+                } else b.autoLoad || b.autoPlay ? (a._a = new Audio(b.url), a._a.load()) : a._a = Ea && 10 > opera.version() ? new Audio(null) : new Audio(), 
+                c = a._a, c._called_load = !1, A && (Ka = c);
+                return a.isHTML5 = !0, a._a = c, c._s = a, l(), a._apply_loop(c, b.loops), b.autoLoad || b.autoPlay ? a.load() : (c.autobuffer = !1, 
+                c.preload = "auto"), c;
+            }, l = function() {
+                if (a._a._added_events) return !1;
+                var b;
+                a._a._added_events = !0;
+                for (b in B) B.hasOwnProperty(b) && a._a && a._a.addEventListener(b, B[b], !1);
+                return !0;
+            }, L = function() {
+                var b;
+                a._a._added_events = !1;
+                for (b in B) B.hasOwnProperty(b) && a._a && a._a.removeEventListener(b, B[b], !1);
+            }, this._onload = function(b) {
+                var c = !!b || !a.isHTML5 && 8 === n && a.duration;
+                return a.loaded = c, a.readyState = c ? 3 : 2, a._onbufferchange(0), a._iO.onload && ha(a, function() {
+                    a._iO.onload.apply(a, [ c ]);
+                }), !0;
+            }, this._onbufferchange = function(b) {
+                return 0 === a.playState || b && a.isBuffering || !b && !a.isBuffering ? !1 : (a.isBuffering = 1 === b, 
+                a._iO.onbufferchange && a._iO.onbufferchange.apply(a, [ b ]), !0);
+            }, this._onsuspend = function() {
+                return a._iO.onsuspend && a._iO.onsuspend.apply(a), !0;
+            }, this._onfailure = function(b, c, e) {
+                a.failures++, a._iO.onfailure && 1 === a.failures && a._iO.onfailure(b, c, e);
+            }, this._onwarning = function(b, c, e) {
+                a._iO.onwarning && a._iO.onwarning(b, c, e);
+            }, this._onfinish = function() {
+                var b = a._iO.onfinish;
+                a._onbufferchange(0), a._resetOnPosition(0), a.instanceCount && (a.instanceCount--, 
+                a.instanceCount || (x(), a.playState = 0, a.paused = !1, a.instanceCount = 0, a.instanceOptions = {}, 
+                a._iO = {}, g(), a.isHTML5 && (a.position = 0)), (!a.instanceCount || a._iO.multiShotEvents) && b && ha(a, function() {
+                    b.apply(a);
+                }));
+            }, this._whileloading = function(b, c, e, d) {
+                var f = a._iO;
+                a.bytesLoaded = b, a.bytesTotal = c, a.duration = Math.floor(e), a.bufferLength = d, 
+                a.durationEstimate = a.isHTML5 || f.isMovieStar ? a.duration : f.duration ? a.duration > f.duration ? a.duration : f.duration : parseInt(a.bytesTotal / a.bytesLoaded * a.duration, 10), 
+                a.isHTML5 || (a.buffered = [ {
+                    start: 0,
+                    end: a.duration
+                } ]), (3 !== a.readyState || a.isHTML5) && f.whileloading && f.whileloading.apply(a);
+            }, this._whileplaying = function(b, c, e, d, f) {
+                var l = a._iO;
+                return isNaN(b) || null === b ? !1 : (a.position = Math.max(0, b), a._processOnPosition(), 
+                !a.isHTML5 && n > 8 && (l.usePeakData && c !== h && c && (a.peakData = {
+                    left: c.leftPeak,
+                    right: c.rightPeak
+                }), l.useWaveformData && e !== h && e && (a.waveformData = {
+                    left: e.split(","),
+                    right: d.split(",")
+                }), l.useEQData && f !== h && f && f.leftEQ && (b = f.leftEQ.split(","), a.eqData = b, 
+                a.eqData.left = b, f.rightEQ !== h && f.rightEQ && (a.eqData.right = f.rightEQ.split(",")))), 
+                1 === a.playState && (!a.isHTML5 && 8 === n && !a.position && a.isBuffering && a._onbufferchange(0), 
+                l.whileplaying && l.whileplaying.apply(a)), !0);
+            }, this._oncaptiondata = function(b) {
+                a.captiondata = b, a._iO.oncaptiondata && a._iO.oncaptiondata.apply(a, [ b ]);
+            }, this._onmetadata = function(b, c) {
+                var d, f, e = {};
+                for (d = 0, f = b.length; f > d; d++) e[b[d]] = c[d];
+                a.metadata = e, console.log("updated metadata", a.metadata), a._iO.onmetadata && a._iO.onmetadata.call(a, a.metadata);
+            }, this._onid3 = function(b, c) {
+                var d, f, e = [];
+                for (d = 0, f = b.length; f > d; d++) e[b[d]] = c[d];
+                a.id3 = w(a.id3, e), a._iO.onid3 && a._iO.onid3.apply(a);
+            }, this._onconnect = function(b) {
+                b = 1 === b, (a.connected = b) && (a.failures = 0, q(a.id) && (a.getAutoPlay() ? a.play(h, a.getAutoPlay()) : a._iO.autoLoad && a.load()), 
+                a._iO.onconnect && a._iO.onconnect.apply(a, [ b ]));
+            }, this._ondataerror = function() {
+                0 < a.playState && a._iO.ondataerror && a._iO.ondataerror.apply(a);
+            };
+        }, va = function() {
+            return p.body || p.getElementsByTagName("div")[0];
+        }, X = function(b) {
+            return p.getElementById(b);
+        }, w = function(b, e) {
+            var a, f, d = b || {};
+            a = e === h ? c.defaultOptions : e;
+            for (f in a) a.hasOwnProperty(f) && d[f] === h && (d[f] = "object" != typeof a[f] || null === a[f] ? a[f] : w(d[f], a[f]));
+            return d;
+        }, ha = function(b, c) {
+            b.isHTML5 || 8 !== n ? c() : g.setTimeout(c, 0);
+        }, Y = {
+            onready: 1,
+            ontimeout: 1,
+            defaultOptions: 1,
+            flash9Options: 1,
+            movieStarOptions: 1
+        }, oa = function(b, e) {
+            var d, a = !0, f = e !== h, l = c.setupOptions;
+            for (d in b) if (b.hasOwnProperty(d)) if ("object" != typeof b[d] || null === b[d] || b[d] instanceof Array || b[d] instanceof RegExp) f && Y[e] !== h ? c[e][d] = b[d] : l[d] !== h ? (c.setupOptions[d] = b[d], 
+            c[d] = b[d]) : Y[d] === h ? a = !1 : c[d] instanceof Function ? c[d].apply(c, b[d] instanceof Array ? b[d] : [ b[d] ]) : c[d] = b[d]; else {
+                if (Y[d] !== h) return oa(b[d], d);
+                a = !1;
+            }
+            return a;
+        }, s = function() {
+            function b(a) {
+                a = fb.call(a);
+                var b = a.length;
+                return d ? (a[1] = "on" + a[1], b > 3 && a.pop()) : 3 === b && a.push(!1), a;
+            }
+            function c(b, e) {
+                var h = b.shift(), g = [ a[e] ];
+                d ? h[g](b[0], b[1]) : h[g].apply(h, b);
+            }
+            var d = g.attachEvent, a = {
+                add: d ? "attachEvent" : "addEventListener",
+                remove: d ? "detachEvent" : "removeEventListener"
+            };
+            return {
+                add: function() {
+                    c(b(arguments), "add");
+                },
+                remove: function() {
+                    c(b(arguments), "remove");
+                }
+            };
+        }(), B = {
+            abort: r(function() {}),
+            canplay: r(function() {
+                var c, b = this._s;
+                if (b._html5_canplay) return !0;
+                if (b._html5_canplay = !0, b._onbufferchange(0), c = b._iO.position === h || isNaN(b._iO.position) ? null : b._iO.position / 1e3, 
+                this.currentTime !== c) try {
+                    this.currentTime = c;
+                } catch (d) {}
+                b._iO._oncanplay && b._iO._oncanplay();
+            }),
+            canplaythrough: r(function() {
+                var b = this._s;
+                b.loaded || (b._onbufferchange(0), b._whileloading(b.bytesLoaded, b.bytesTotal, b._get_html5_duration()), 
+                b._onload(!0));
+            }),
+            durationchange: r(function() {
+                var c, b = this._s;
+                c = b._get_html5_duration(), !isNaN(c) && c !== b.duration && (b.durationEstimate = b.duration = c);
+            }),
+            ended: r(function() {
+                this._s._onfinish();
+            }),
+            error: r(function() {
+                this._s._onload(!1);
+            }),
+            loadeddata: r(function() {
+                var b = this._s;
+                !b._loaded && !ja && (b.duration = b._get_html5_duration());
+            }),
+            loadedmetadata: r(function() {}),
+            loadstart: r(function() {
+                this._s._onbufferchange(1);
+            }),
+            play: r(function() {
+                this._s._onbufferchange(0);
+            }),
+            playing: r(function() {
+                this._s._onbufferchange(0);
+            }),
+            progress: r(function(b) {
+                var d, a, c = this._s, f = 0, f = b.target.buffered;
+                d = b.loaded || 0;
+                var l = b.total || 1;
+                if (c.buffered = [], f && f.length) {
+                    for (d = 0, a = f.length; a > d; d++) c.buffered.push({
+                        start: 1e3 * f.start(d),
+                        end: 1e3 * f.end(d)
+                    });
+                    f = 1e3 * (f.end(0) - f.start(0)), d = Math.min(1, f / (1e3 * b.target.duration));
+                }
+                isNaN(d) || (c._whileloading(d, l, c._get_html5_duration()), d && l && d === l && B.canplaythrough.call(this, b));
+            }),
+            ratechange: r(function() {}),
+            suspend: r(function(b) {
+                var c = this._s;
+                B.progress.call(this, b), c._onsuspend();
+            }),
+            stalled: r(function() {}),
+            timeupdate: r(function() {
+                this._s._onTimer();
+            }),
+            waiting: r(function() {
+                this._s._onbufferchange(1);
+            })
+        }, fa = function(b) {
+            return b && (b.type || b.url || b.serverURL) ? b.serverURL || b.type && W(b.type) ? !1 : b.type ? V({
+                type: b.type
+            }) : V({
+                url: b.url
+            }) || c.html5Only || b.url.match(/data\:/i) : !1;
+        }, ga = function(b) {
+            var e;
+            return b && (e = ja ? "about:blank" : c.html5.canPlayType("audio/wav") ? "data:audio/wave;base64,/UklGRiYAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQIAAAD//w==" : "about:blank", 
+            b.src = e, void 0 !== b._called_unload && (b._called_load = !1)), A && (Ca = null), 
+            e;
+        }, V = function(b) {
+            if (!c.useHTML5Audio || !c.hasHTML5) return !1;
+            var e = b.url || null;
+            b = b.type || null;
+            var a, d = c.audioFormats;
+            if (b && c.html5[b] !== h) return c.html5[b] && !W(b);
+            if (!z) {
+                z = [];
+                for (a in d) d.hasOwnProperty(a) && (z.push(a), d[a].related && (z = z.concat(d[a].related)));
+                z = RegExp("\\.(" + z.join("|") + ")(\\?.*)?$", "i");
+            }
+            return a = e ? e.toLowerCase().match(z) : null, a && a.length ? a = a[1] : b && (e = b.indexOf(";"), 
+            a = (-1 !== e ? b.substr(0, e) : b).substr(6)), a && c.html5[a] !== h ? e = c.html5[a] && !W(a) : (b = "audio/" + a, 
+            e = c.html5.canPlayType({
+                type: b
+            }), e = (c.html5[a] = e) && c.html5[b] && !W(b)), e;
+        }, Wa = function() {
+            function b(a) {
+                var b, d = b = !1;
+                if (!e || "function" != typeof e.canPlayType) return b;
+                if (a instanceof Array) {
+                    for (g = 0, b = a.length; b > g; g++) (c.html5[a[g]] || e.canPlayType(a[g]).match(c.html5Test)) && (d = !0, 
+                    c.html5[a[g]] = !0, c.flash[a[g]] = !!a[g].match(bb));
+                    b = d;
+                } else a = e && "function" == typeof e.canPlayType ? e.canPlayType(a) : !1, b = !(!a || !a.match(c.html5Test));
+                return b;
+            }
+            if (!c.useHTML5Audio || !c.hasHTML5) return u = c.html5.usingFlash = !0, !1;
+            var d, a, l, g, e = Audio !== h ? Ea && 10 > opera.version() ? new Audio(null) : new Audio() : null, f = {};
+            l = c.audioFormats;
+            for (d in l) if (l.hasOwnProperty(d) && (a = "audio/" + d, f[d] = b(l[d].type), 
+            f[a] = f[d], d.match(bb) ? (c.flash[d] = !0, c.flash[a] = !0) : (c.flash[d] = !1, 
+            c.flash[a] = !1), l[d] && l[d].related)) for (g = l[d].related.length - 1; g >= 0; g--) f["audio/" + l[d].related[g]] = f[d], 
+            c.html5[l[d].related[g]] = f[d], c.flash[l[d].related[g]] = f[d];
+            return f.canPlayType = e ? b : null, c.html5 = w(c.html5, f), c.html5.usingFlash = Va(), 
+            u = c.html5.usingFlash, !0;
+        }, sa = {}, R = function() {}, ba = function(b) {
+            return 8 === n && 1 < b.loops && b.stream && (b.stream = !1), b;
+        }, ca = function(b) {
+            return b && !b.usePolicyFile && (b.onid3 || b.usePeakData || b.useWaveformData || b.useEQData) && (b.usePolicyFile = !0), 
+            b;
+        }, la = function() {
             return !1;
-        }
-    }, a.isImageTag = function(a) {
-        return a instanceof HTMLImageElement;
-    }, a.isAudioTag = function(a) {
-        return window.HTMLAudioElement ? a instanceof HTMLAudioElement : !1;
-    }, a.isVideoTag = function(a) {
-        return window.HTMLVideoElement ? a instanceof HTMLVideoElement : void 0;
-    }, a.isText = function(a) {
-        switch (a) {
-          case createjs.AbstractLoader.TEXT:
-          case createjs.AbstractLoader.JSON:
-          case createjs.AbstractLoader.MANIFEST:
-          case createjs.AbstractLoader.XML:
-          case createjs.AbstractLoader.CSS:
-          case createjs.AbstractLoader.SVG:
-          case createjs.AbstractLoader.JAVASCRIPT:
+        }, Pa = function(b) {
+            for (var c in b) b.hasOwnProperty(c) && "function" == typeof b[c] && (b[c] = la);
+        }, xa = function(b) {
+            b === h && (b = !1), (y || b) && c.disable(b);
+        }, Qa = function(b) {
+            var e = null;
+            if (b) if (b.match(/\.swf(\?.*)?$/i)) {
+                if (e = b.substr(b.toLowerCase().lastIndexOf(".swf?") + 4)) return b;
+            } else b.lastIndexOf("/") !== b.length - 1 && (b += "/");
+            return b = (b && -1 !== b.lastIndexOf("/") ? b.substr(0, b.lastIndexOf("/") + 1) : "./") + c.movieURL, 
+            c.noSWFCache && (b += "?ts=" + new Date().getTime()), b;
+        }, ra = function() {
+            n = parseInt(c.flashVersion, 10), 8 !== n && 9 !== n && (c.flashVersion = n = 8);
+            var b = c.debugMode || c.debugFlash ? "_debug.swf" : ".swf";
+            c.useHTML5Audio && !c.html5Only && c.audioFormats.mp4.required && 9 > n && (c.flashVersion = n = 9), 
+            c.version = c.versionNumber + (c.html5Only ? " (HTML5-only mode)" : 9 === n ? " (AS3/Flash 9)" : " (AS2/Flash 8)"), 
+            n > 8 ? (c.defaultOptions = w(c.defaultOptions, c.flash9Options), c.features.buffering = !0, 
+            c.defaultOptions = w(c.defaultOptions, c.movieStarOptions), c.filePatterns.flash9 = RegExp("\\.(mp3|" + eb.join("|") + ")(\\?.*)?$", "i"), 
+            c.features.movieStar = !0) : c.features.movieStar = !1, c.filePattern = c.filePatterns[8 !== n ? "flash9" : "flash8"], 
+            c.movieURL = (8 === n ? "soundmanager2.swf" : "soundmanager2_flash9.swf").replace(".swf", b), 
+            c.features.peakData = c.features.waveformData = c.features.eqData = n > 8;
+        }, Oa = function(b, c) {
+            return k ? void k._setPolling(b, c) : !1;
+        }, wa = function() {}, q = this.getSoundById, K = function() {
+            var b = [];
+            return c.debugMode && b.push("sm2_debug"), c.debugFlash && b.push("flash_debug"), 
+            c.useHighPerformance && b.push("high_performance"), b.join(" ");
+        }, za = function() {
+            R("fbHandler");
+            var b = c.getMoviePercent(), e = {
+                type: "FLASHBLOCK"
+            };
+            return c.html5Only ? !1 : void (c.ok() ? c.oMC && (c.oMC.className = [ K(), "movieContainer", "swf_loaded" + (c.didFlashBlock ? " swf_unblocked" : "") ].join(" ")) : (u && (c.oMC.className = K() + " movieContainer " + (null === b ? "swf_timedout" : "swf_error")), 
+            c.didFlashBlock = !0, D({
+                type: "ontimeout",
+                ignoreInit: !0,
+                error: e
+            }), J(e)));
+        }, pa = function(b, c, d) {
+            x[b] === h && (x[b] = []), x[b].push({
+                method: c,
+                scope: d || null,
+                fired: !1
+            });
+        }, D = function(b) {
+            if (b || (b = {
+                type: c.ok() ? "onready" : "ontimeout"
+            }), !m && b && !b.ignoreInit || "ontimeout" === b.type && (c.ok() || y && !b.ignoreInit)) return !1;
+            var f, e = {
+                success: b && b.ignoreInit ? c.ok() : !y
+            }, d = b && b.type ? x[b.type] || [] : [], a = [], e = [ e ], g = u && !c.ok();
+            for (b.error && (e[0].error = b.error), b = 0, f = d.length; f > b; b++) !0 !== d[b].fired && a.push(d[b]);
+            if (a.length) for (b = 0, f = a.length; f > b; b++) a[b].scope ? a[b].method.apply(a[b].scope, e) : a[b].method.apply(this, e), 
+            g || (a[b].fired = !0);
             return !0;
-
-          default:
-            return !1;
-        }
-    }, a.getTypeByExtension = function(a) {
-        if (null == a) return createjs.AbstractLoader.TEXT;
-        switch (a.toLowerCase()) {
-          case "jpeg":
-          case "jpg":
-          case "gif":
-          case "png":
-          case "webp":
-          case "bmp":
-            return createjs.AbstractLoader.IMAGE;
-
-          case "ogg":
-          case "mp3":
-          case "webm":
-            return createjs.AbstractLoader.SOUND;
-
-          case "mp4":
-          case "webm":
-          case "ts":
-            return createjs.AbstractLoader.VIDEO;
-
-          case "json":
-            return createjs.AbstractLoader.JSON;
-
-          case "xml":
-            return createjs.AbstractLoader.XML;
-
-          case "css":
-            return createjs.AbstractLoader.CSS;
-
-          case "js":
-            return createjs.AbstractLoader.JAVASCRIPT;
-
-          case "svg":
-            return createjs.AbstractLoader.SVG;
-
-          default:
-            return createjs.AbstractLoader.TEXT;
-        }
-    }, createjs.RequestUtils = a;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, c) {
-        this.EventDispatcher_constructor(), this.loaded = !1, this.canceled = !1, this.progress = 0, 
-        this.type = c, this.resultFormatter = null, this._item = a ? createjs.LoadItem.create(a) : null, 
-        this._preferXHR = b, this._result = null, this._rawResult = null, this._loadedItems = null, 
-        this._tagSrcAttribute = null, this._tag = null;
-    }
-    var b = createjs.extend(a, createjs.EventDispatcher), c = a;
-    c.POST = "POST", c.GET = "GET", c.BINARY = "binary", c.CSS = "css", c.IMAGE = "image", 
-    c.JAVASCRIPT = "javascript", c.JSON = "json", c.JSONP = "jsonp", c.MANIFEST = "manifest", 
-    c.SOUND = "sound", c.VIDEO = "video", c.SPRITESHEET = "spritesheet", c.SVG = "svg", 
-    c.TEXT = "text", c.XML = "xml", b.getItem = function() {
-        return this._item;
-    }, b.getResult = function(a) {
-        return a ? this._rawResult : this._result;
-    }, b.getTag = function() {
-        return this._tag;
-    }, b.setTag = function(a) {
-        this._tag = a;
-    }, b.load = function() {
-        this._createRequest(), this._request.on("complete", this, this), this._request.on("progress", this, this), 
-        this._request.on("loadStart", this, this), this._request.on("abort", this, this), 
-        this._request.on("timeout", this, this), this._request.on("error", this, this);
-        var a = new createjs.Event("initialize");
-        a.loader = this._request, this.dispatchEvent(a), this._request.load();
-    }, b.cancel = function() {
-        this.canceled = !0, this.destroy();
-    }, b.destroy = function() {
-        this._request && (this._request.removeAllEventListeners(), this._request.destroy()), 
-        this._request = null, this._item = null, this._rawResult = null, this._result = null, 
-        this._loadItems = null, this.removeAllEventListeners();
-    }, b.getLoadedItems = function() {
-        return this._loadedItems;
-    }, b._createRequest = function() {
-        this._request = this._preferXHR ? new createjs.XHRRequest(this._item) : new createjs.TagRequest(this._item, this._tag || this._createTag(), this._tagSrcAttribute);
-    }, b._createTag = function() {
-        return null;
-    }, b._sendLoadStart = function() {
-        this._isCanceled() || this.dispatchEvent("loadstart");
-    }, b._sendProgress = function(a) {
-        if (!this._isCanceled()) {
-            var b = null;
-            "number" == typeof a ? (this.progress = a, b = new createjs.ProgressEvent(this.progress)) : (b = a, 
-            this.progress = a.loaded / a.total, b.progress = this.progress, (isNaN(this.progress) || 1 / 0 == this.progress) && (this.progress = 0)), 
-            this.hasEventListener("progress") && this.dispatchEvent(b);
-        }
-    }, b._sendComplete = function() {
-        if (!this._isCanceled()) {
-            this.loaded = !0;
-            var a = new createjs.Event("complete");
-            a.rawResult = this._rawResult, null != this._result && (a.result = this._result), 
-            this.dispatchEvent(a);
-        }
-    }, b._sendError = function(a) {
-        !this._isCanceled() && this.hasEventListener("error") && (null == a && (a = new createjs.ErrorEvent("PRELOAD_ERROR_EMPTY")), 
-        this.dispatchEvent(a));
-    }, b._isCanceled = function() {
-        return null == window.createjs || this.canceled ? !0 : !1;
-    }, b.resultFormatter = null, b.handleEvent = function(a) {
-        switch (a.type) {
-          case "complete":
-            this._rawResult = a.target._response;
-            var b = this.resultFormatter && this.resultFormatter(this), c = this;
-            b instanceof Function ? b(function(a) {
-                c._result = a, c._sendComplete();
-            }) : (this._result = b || this._rawResult, this._sendComplete());
-            break;
-
-          case "progress":
-            this._sendProgress(a);
-            break;
-
-          case "error":
-            this._sendError(a);
-            break;
-
-          case "loadstart":
-            this._sendLoadStart();
-            break;
-
-          case "abort":
-          case "timeout":
-            this._isCanceled() || this.dispatchEvent(a.type);
-        }
-    }, b.buildPath = function(a, b) {
-        return createjs.RequestUtils.buildPath(a, b);
-    }, b.toString = function() {
-        return "[PreloadJS AbstractLoader]";
-    }, createjs.AbstractLoader = createjs.promote(a, "EventDispatcher");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, c) {
-        this.AbstractLoader_constructor(a, b, c), this.resultFormatter = this._formatResult, 
-        this._tagSrcAttribute = "src";
-    }
-    var b = createjs.extend(a, createjs.AbstractLoader);
-    b.load = function() {
-        this._tag || (this._tag = this._createTag(this._item.src)), this._tag.preload = "auto", 
-        this._tag.load(), this.AbstractLoader_load();
-    }, b._createTag = function() {}, b._createRequest = function() {
-        this._request = this._preferXHR ? new createjs.XHRRequest(this._item) : new createjs.MediaTagRequest(this._item, this._tag || this._createTag(), this._tagSrcAttribute);
-    }, b._formatResult = function(a) {
-        return this._tag.removeEventListener && this._tag.removeEventListener("canplaythrough", this._loadedHandler), 
-        this._tag.onstalled = null, this._preferXHR && (a.getTag().src = a.getResult(!0)), 
-        a.getTag();
-    }, createjs.AbstractMediaLoader = createjs.promote(a, "AbstractLoader");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    var a = function(a) {
-        this._item = a;
-    }, b = createjs.extend(a, createjs.EventDispatcher);
-    b.load = function() {}, b.destroy = function() {}, b.cancel = function() {}, createjs.AbstractRequest = createjs.promote(a, "EventDispatcher");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, c) {
-        this.AbstractRequest_constructor(a), this._tag = b, this._tagSrcAttribute = c, this._loadedHandler = createjs.proxy(this._handleTagComplete, this), 
-        this._addedToDOM = !1, this._startTagVisibility = null;
-    }
-    var b = createjs.extend(a, createjs.AbstractRequest);
-    b.load = function() {
-        null == this._tag.parentNode && (window.document.body.appendChild(this._tag), this._addedToDOM = !0), 
-        this._tag.onload = createjs.proxy(this._handleTagComplete, this), this._tag.onreadystatechange = createjs.proxy(this._handleReadyStateChange, this);
-        var a = new createjs.Event("initialize");
-        a.loader = this._tag, this.dispatchEvent(a), this._hideTag(), this._tag[this._tagSrcAttribute] = this._item.src;
-    }, b.destroy = function() {
-        this._clean(), this._tag = null, this.AbstractRequest_destroy();
-    }, b._handleReadyStateChange = function() {
-        clearTimeout(this._loadTimeout);
-        var a = this._tag;
-        ("loaded" == a.readyState || "complete" == a.readyState) && this._handleTagComplete();
-    }, b._handleTagComplete = function() {
-        this._rawResult = this._tag, this._result = this.resultFormatter && this.resultFormatter(this) || this._rawResult, 
-        this._clean(), this._showTag(), this.dispatchEvent("complete");
-    }, b._clean = function() {
-        this._tag.onload = null, this._tag.onreadystatechange = null, this._addedToDOM && null != this._tag.parentNode && this._tag.parentNode.removeChild(this._tag);
-    }, b._hideTag = function() {
-        this._startTagVisibility = this._tag.style.visibility, this._tag.style.visibility = "hidden";
-    }, b._showTag = function() {
-        this._tag.style.visibility = this._startTagVisibility;
-    }, b._handleStalled = function() {}, createjs.TagRequest = createjs.promote(a, "AbstractRequest");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, c) {
-        this.AbstractRequest_constructor(a), this._tag = b, this._tagSrcAttribute = c, this._loadedHandler = createjs.proxy(this._handleTagComplete, this);
-    }
-    var b = createjs.extend(a, createjs.TagRequest);
-    b.load = function() {
-        this._tag.onstalled = createjs.proxy(this._handleStalled, this), this._tag.onprogress = createjs.proxy(this._handleProgress, this), 
-        this._tag.addEventListener && this._tag.addEventListener("canplaythrough", this._loadedHandler, !1), 
-        this.TagRequest_load();
-    }, b._handleReadyStateChange = function() {
-        clearTimeout(this._loadTimeout);
-        var a = this._tag;
-        ("loaded" == a.readyState || "complete" == a.readyState) && this._handleTagComplete();
-    }, b._handleStalled = function() {}, b._handleProgress = function(a) {
-        if (a && !(a.loaded > 0 && 0 == a.total)) {
-            var b = new createjs.ProgressEvent(a.loaded, a.total);
-            this.dispatchEvent(b);
-        }
-    }, b._clean = function() {
-        this._tag.removeEventListener && this._tag.removeEventListener("canplaythrough", this._loadedHandler), 
-        this._tag.onstalled = null, this._tag.onprogress = null, this.TagRequest__clean();
-    }, createjs.MediaTagRequest = createjs.promote(a, "TagRequest");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a) {
-        this.AbstractRequest_constructor(a), this._request = null, this._loadTimeout = null, 
-        this._xhrLevel = 1, this._response = null, this._rawResponse = null, this._canceled = !1, 
-        this._handleLoadStartProxy = createjs.proxy(this._handleLoadStart, this), this._handleProgressProxy = createjs.proxy(this._handleProgress, this), 
-        this._handleAbortProxy = createjs.proxy(this._handleAbort, this), this._handleErrorProxy = createjs.proxy(this._handleError, this), 
-        this._handleTimeoutProxy = createjs.proxy(this._handleTimeout, this), this._handleLoadProxy = createjs.proxy(this._handleLoad, this), 
-        this._handleReadyStateChangeProxy = createjs.proxy(this._handleReadyStateChange, this), 
-        !this._createXHR(a);
-    }
-    var b = createjs.extend(a, createjs.AbstractRequest);
-    a.ACTIVEX_VERSIONS = [ "Msxml2.XMLHTTP.6.0", "Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP", "Microsoft.XMLHTTP" ], 
-    b.getResult = function(a) {
-        return a && this._rawResponse ? this._rawResponse : this._response;
-    }, b.cancel = function() {
-        this.canceled = !0, this._clean(), this._request.abort();
-    }, b.load = function() {
-        if (null == this._request) return void this._handleError();
-        this._request.addEventListener("loadstart", this._handleLoadStartProxy, !1), this._request.addEventListener("progress", this._handleProgressProxy, !1), 
-        this._request.addEventListener("abort", this._handleAbortProxy, !1), this._request.addEventListener("error", this._handleErrorProxy, !1), 
-        this._request.addEventListener("timeout", this._handleTimeoutProxy, !1), this._request.addEventListener("load", this._handleLoadProxy, !1), 
-        this._request.addEventListener("readystatechange", this._handleReadyStateChangeProxy, !1), 
-        1 == this._xhrLevel && (this._loadTimeout = setTimeout(createjs.proxy(this._handleTimeout, this), this._item.loadTimeout));
-        try {
-            this._item.values && this._item.method != createjs.AbstractLoader.GET ? this._item.method == createjs.AbstractLoader.POST && this._request.send(createjs.RequestUtils.formatQueryString(this._item.values)) : this._request.send();
-        } catch (a) {
-            this.dispatchEvent(new createjs.ErrorEvent("XHR_SEND", null, a));
-        }
-    }, b.setResponseType = function(a) {
-        this._request.responseType = a;
-    }, b.getAllResponseHeaders = function() {
-        return this._request.getAllResponseHeaders instanceof Function ? this._request.getAllResponseHeaders() : null;
-    }, b.getResponseHeader = function(a) {
-        return this._request.getResponseHeader instanceof Function ? this._request.getResponseHeader(a) : null;
-    }, b._handleProgress = function(a) {
-        if (a && !(a.loaded > 0 && 0 == a.total)) {
-            var b = new createjs.ProgressEvent(a.loaded, a.total);
-            this.dispatchEvent(b);
-        }
-    }, b._handleLoadStart = function() {
-        clearTimeout(this._loadTimeout), this.dispatchEvent("loadstart");
-    }, b._handleAbort = function(a) {
-        this._clean(), this.dispatchEvent(new createjs.ErrorEvent("XHR_ABORTED", null, a));
-    }, b._handleError = function(a) {
-        this._clean(), this.dispatchEvent(new createjs.ErrorEvent(a.message));
-    }, b._handleReadyStateChange = function() {
-        4 == this._request.readyState && this._handleLoad();
-    }, b._handleLoad = function() {
-        if (!this.loaded) {
-            this.loaded = !0;
-            var a = this._checkError();
-            if (a) return void this._handleError(a);
-            this._response = this._getResponse(), this._clean(), this.dispatchEvent(new createjs.Event("complete"));
-        }
-    }, b._handleTimeout = function(a) {
-        this._clean(), this.dispatchEvent(new createjs.ErrorEvent("PRELOAD_TIMEOUT", null, a));
-    }, b._checkError = function() {
-        var a = parseInt(this._request.status);
-        switch (a) {
-          case 404:
-          case 0:
-            return new Error(a);
-        }
-        return null;
-    }, b._getResponse = function() {
-        if (null != this._response) return this._response;
-        if (null != this._request.response) return this._request.response;
-        try {
-            if (null != this._request.responseText) return this._request.responseText;
-        } catch (a) {}
-        try {
-            if (null != this._request.responseXML) return this._request.responseXML;
-        } catch (a) {}
-        return null;
-    }, b._createXHR = function(a) {
-        var b = createjs.RequestUtils.isCrossDomain(a), c = {}, d = null;
-        if (window.XMLHttpRequest) d = new XMLHttpRequest(), b && void 0 === d.withCredentials && window.XDomainRequest && (d = new XDomainRequest()); else {
-            for (var e = 0, f = s.ACTIVEX_VERSIONS.length; f > e; e++) {
-                s.ACTIVEX_VERSIONS[e];
+        }, H = function() {
+            g.setTimeout(function() {
+                c.useFlashBlock && za(), D(), "function" == typeof c.onload && c.onload.apply(g), 
+                c.waitForWindowLoad && s.add(g, "load", H);
+            }, 1);
+        }, Da = function() {
+            if (v !== h) return v;
+            var a, b = !1, c = navigator, d = c.plugins, f = g.ActiveXObject;
+            if (d && d.length) (c = c.mimeTypes) && c["application/x-shockwave-flash"] && c["application/x-shockwave-flash"].enabledPlugin && c["application/x-shockwave-flash"].enabledPlugin.description && (b = !0); else if (f !== h && !t.match(/MSAppHost/i)) {
                 try {
-                    d = new ActiveXObject(axVersions);
+                    a = new f("ShockwaveFlash.ShockwaveFlash");
+                } catch (l) {
+                    a = null;
+                }
+                b = !!a;
+            }
+            return v = b;
+        }, Va = function() {
+            var b, e, d = c.audioFormats;
+            if (ia && t.match(/os (1|2|3_0|3_1)\s/i) ? (c.hasHTML5 = !1, c.html5Only = !0, c.oMC && (c.oMC.style.display = "none")) : !c.useHTML5Audio || c.html5 && c.html5.canPlayType || (c.hasHTML5 = !1), 
+            c.useHTML5Audio && c.hasHTML5) for (e in U = !0, d) d.hasOwnProperty(e) && d[e].required && (c.html5.canPlayType(d[e].type) ? c.preferFlash && (c.flash[e] || c.flash[d[e].type]) && (b = !0) : (U = !1, 
+            b = !0));
+            return c.ignoreFlash && (b = !1, U = !0), c.html5Only = c.hasHTML5 && c.useHTML5Audio && !b, 
+            !c.html5Only;
+        }, ea = function(b) {
+            var e, d, a = 0;
+            if (b instanceof Array) {
+                for (e = 0, d = b.length; d > e; e++) if (b[e] instanceof Object) {
+                    if (c.canPlayMIME(b[e].type)) {
+                        a = e;
+                        break;
+                    }
+                } else if (c.canPlayURL(b[e])) {
+                    a = e;
                     break;
-                } catch (g) {}
+                }
+                b[a].url && (b[a] = b[a].url), b = b[a];
             }
-            if (null == d) return !1;
-        }
-        a.mimeType && d.overrideMimeType && d.overrideMimeType(a.mimeType), this._xhrLevel = "string" == typeof d.responseType ? 2 : 1;
-        var h = null;
-        if (h = a.method == createjs.AbstractLoader.GET ? createjs.RequestUtils.buildPath(a.src, a.values) : a.src, 
-        d.open(a.method || createjs.AbstractLoader.GET, h, !0), b && d instanceof XMLHttpRequest && 1 == this._xhrLevel && (c.Origin = location.origin), 
-        a.values && a.method == createjs.AbstractLoader.POST && (c["Content-Type"] = "application/x-www-form-urlencoded"), 
-        b || c["X-Requested-With"] || (c["X-Requested-With"] = "XMLHttpRequest"), a.headers) for (var i in a.headers) c[i] = a.headers[i];
-        for (i in c) d.setRequestHeader(i, c[i]);
-        return d instanceof XMLHttpRequest && void 0 !== a.withCredentials && (d.withCredentials = a.withCredentials), 
-        this._request = d, !0;
-    }, b._clean = function() {
-        clearTimeout(this._loadTimeout), this._request.removeEventListener("loadstart", this._handleLoadStartProxy), 
-        this._request.removeEventListener("progress", this._handleProgressProxy), this._request.removeEventListener("abort", this._handleAbortProxy), 
-        this._request.removeEventListener("error", this._handleErrorProxy), this._request.removeEventListener("timeout", this._handleTimeoutProxy), 
-        this._request.removeEventListener("load", this._handleLoadProxy), this._request.removeEventListener("readystatechange", this._handleReadyStateChangeProxy);
-    }, b.toString = function() {
-        return "[PreloadJS XHRRequest]";
-    }, createjs.XHRRequest = createjs.promote(a, "AbstractRequest");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b) {
-        this.AbstractMediaLoader_constructor(a, b, createjs.AbstractLoader.SOUND), createjs.RequestUtils.isAudioTag(a) ? this._tag = a : createjs.RequestUtils.isAudioTag(a.src) ? this._tag = a : createjs.RequestUtils.isAudioTag(a.tag) && (this._tag = createjs.RequestUtils.isAudioTag(a) ? a : a.src), 
-        null != this._tag && (this._preferXHR = !1);
-    }
-    var b = createjs.extend(a, createjs.AbstractMediaLoader), c = a;
-    c.canLoadItem = function(a) {
-        return a.type == createjs.AbstractLoader.SOUND;
-    }, b._createTag = function(a) {
-        var b = document.createElement("audio");
-        return b.autoplay = !1, b.preload = "none", b.src = a, b;
-    }, createjs.SoundLoader = createjs.promote(a, "AbstractMediaLoader");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a() {
-        throw "Sound cannot be instantiated";
-    }
-    function b(a, b) {
-        this.init(a, b);
-    }
-    var c = a;
-    c.INTERRUPT_ANY = "any", c.INTERRUPT_EARLY = "early", c.INTERRUPT_LATE = "late", 
-    c.INTERRUPT_NONE = "none", c.PLAY_INITED = "playInited", c.PLAY_SUCCEEDED = "playSucceeded", 
-    c.PLAY_INTERRUPTED = "playInterrupted", c.PLAY_FINISHED = "playFinished", c.PLAY_FAILED = "playFailed", 
-    c.SUPPORTED_EXTENSIONS = [ "mp3", "ogg", "mpeg", "wav", "m4a", "mp4", "aiff", "wma", "mid" ], 
-    c.EXTENSION_MAP = {
-        m4a: "mp4"
-    }, c.FILE_PATTERN = /^(?:(\w+:)\/{2}(\w+(?:\.\w+)*\/?))?([/.]*?(?:[^?]+)?\/)?((?:[^/?]+)\.(\w+))(?:\?(\S+)?)?$/, 
-    c.defaultInterruptBehavior = c.INTERRUPT_NONE, c.alternateExtensions = [], c.activePlugin = null, 
-    c._pluginsRegistered = !1, c._lastID = 0, c._masterVolume = 1, c._masterMute = !1, 
-    c._instances = [], c._idHash = {}, c._preloadHash = {}, c.addEventListener = null, 
-    c.removeEventListener = null, c.removeAllEventListeners = null, c.dispatchEvent = null, 
-    c.hasEventListener = null, c._listeners = null, createjs.EventDispatcher.initialize(c), 
-    c.getPreloadHandlers = function() {
-        return {
-            callback: createjs.proxy(c.initLoad, c),
-            types: [ "sound" ],
-            extensions: c.SUPPORTED_EXTENSIONS
-        };
-    }, c._handleLoadComplete = function(a) {
-        var b = a.target.getItem().src;
-        if (c._preloadHash[b]) for (var d = 0, e = c._preloadHash[b].length; e > d; d++) {
-            var f = c._preloadHash[b][d];
-            if (c._preloadHash[b][d] = !0, c.hasEventListener("fileload")) {
-                var a = new createjs.Event("fileload");
-                a.src = f.src, a.id = f.id, a.data = f.data, a.sprite = f.sprite, c.dispatchEvent(a);
+            return b;
+        }, Ra = function(b) {
+            b._hasTimer || (b._hasTimer = !0, !Fa && c.html5PollingInterval && (null === T && 0 === da && (T = setInterval(Ta, c.html5PollingInterval)), 
+            da++));
+        }, Sa = function(b) {
+            b._hasTimer && (b._hasTimer = !1, !Fa && c.html5PollingInterval && da--);
+        }, Ta = function() {
+            var b;
+            if (null !== T && !da) return clearInterval(T), T = null, !1;
+            for (b = c.soundIDs.length - 1; b >= 0; b--) c.sounds[c.soundIDs[b]].isHTML5 && c.sounds[c.soundIDs[b]]._hasTimer && c.sounds[c.soundIDs[b]]._onTimer();
+        }, J = function(b) {
+            b = b !== h ? b : {}, "function" == typeof c.onerror && c.onerror.apply(g, [ {
+                type: b.type !== h ? b.type : null
+            } ]), b.fatal !== h && b.fatal && c.disable();
+        }, Xa = function() {
+            if (!$a || !Da()) return !1;
+            var e, d, b = c.audioFormats;
+            for (d in b) if (b.hasOwnProperty(d) && ("mp3" === d || "mp4" === d) && (c.html5[d] = !1, 
+            b[d] && b[d].related)) for (e = b[d].related.length - 1; e >= 0; e--) c.html5[b[d].related[e]] = !1;
+        }, this._setSandboxType = function() {}, this._externalInterfaceOK = function() {
+            return c.swfLoaded ? !1 : (c.swfLoaded = !0, ka = !1, $a && Xa(), void setTimeout(ma, C ? 100 : 1));
+        }, aa = function(b, e) {
+            function d(a, b) {
+                return '<param name="' + a + '" value="' + b + '" />';
             }
-        }
-    }, c._handleLoadError = function(a) {
-        var b = a.target.getItem().src;
-        if (c._preloadHash[b]) for (var d = 0, e = c._preloadHash[b].length; e > d; d++) {
-            var f = c._preloadHash[b][d];
-            if (c._preloadHash[b][d] = !1, c.hasEventListener("fileerror")) {
-                var a = new createjs.Event("fileerror");
-                a.src = f.src, a.id = f.id, a.data = f.data, a.sprite = f.sprite, c.dispatchEvent(a);
+            if (M && N) return !1;
+            if (c.html5Only) return ra(), c.oMC = X(c.movieID), ma(), N = M = !0, !1;
+            var m, r, q, a = e || c.url, f = c.altURL || a, g = va(), k = K(), n = null, n = p.getElementsByTagName("html")[0], n = n && n.dir && n.dir.match(/rtl/i);
+            if (b = b === h ? c.id : b, ra(), c.url = Qa(Ha ? a : f), e = c.url, c.wmode = !c.wmode && c.useHighPerformance ? "transparent" : c.wmode, 
+            null !== c.wmode && (t.match(/msie 8/i) || !C && !c.useHighPerformance) && navigator.platform.match(/win32|win64/i) && (Ua.push(sa.spcWmode), 
+            c.wmode = null), g = {
+                name: b,
+                id: b,
+                src: e,
+                quality: "high",
+                allowScriptAccess: c.allowScriptAccess,
+                bgcolor: c.bgColor,
+                pluginspage: cb + "www.macromedia.com/go/getflashplayer",
+                title: "JS/Flash audio component (SoundManager 2)",
+                type: "application/x-shockwave-flash",
+                wmode: c.wmode,
+                hasPriority: "true"
+            }, c.debugFlash && (g.FlashVars = "debug=1"), c.wmode || delete g.wmode, C) a = p.createElement("div"), 
+            r = [ '<object id="' + b + '" data="' + e + '" type="' + g.type + '" title="' + g.title + '" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="' + cb + 'download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">', d("movie", e), d("AllowScriptAccess", c.allowScriptAccess), d("quality", g.quality), c.wmode ? d("wmode", c.wmode) : "", d("bgcolor", c.bgColor), d("hasPriority", "true"), c.debugFlash ? d("FlashVars", g.FlashVars) : "", "</object>" ].join(""); else for (m in a = p.createElement("embed"), 
+            g) g.hasOwnProperty(m) && a.setAttribute(m, g[m]);
+            if (wa(), k = K(), g = va()) if (c.oMC = X(c.movieID) || p.createElement("div"), 
+            c.oMC.id) q = c.oMC.className, c.oMC.className = (q ? q + " " : "movieContainer") + (k ? " " + k : ""), 
+            c.oMC.appendChild(a), C && (m = c.oMC.appendChild(p.createElement("div")), m.className = "sm2-object-box", 
+            m.innerHTML = r), N = !0; else {
+                if (c.oMC.id = c.movieID, c.oMC.className = "movieContainer " + k, m = k = null, 
+                c.useFlashBlock || (c.useHighPerformance ? k = {
+                    position: "fixed",
+                    width: "8px",
+                    height: "8px",
+                    bottom: "0px",
+                    left: "0px",
+                    overflow: "hidden"
+                } : (k = {
+                    position: "absolute",
+                    width: "6px",
+                    height: "6px",
+                    top: "-9999px",
+                    left: "-9999px"
+                }, n && (k.left = Math.abs(parseInt(k.left, 10)) + "px"))), gb && (c.oMC.style.zIndex = 1e4), 
+                !c.debugFlash) for (q in k) k.hasOwnProperty(q) && (c.oMC.style[q] = k[q]);
+                try {
+                    C || c.oMC.appendChild(a), g.appendChild(c.oMC), C && (m = c.oMC.appendChild(p.createElement("div")), 
+                    m.className = "sm2-object-box", m.innerHTML = r), N = !0;
+                } catch (s) {
+                    throw Error(R("domError") + " \n" + s.toString());
+                }
             }
-        }
-    }, c._registerPlugin = function(a) {
-        return a.isSupported() ? (c.activePlugin = new a(), !0) : !1;
-    }, c.registerPlugins = function(a) {
-        c._pluginsRegistered = !0;
-        for (var b = 0, d = a.length; d > b; b++) if (c._registerPlugin(a[b])) return !0;
-        return !1;
-    }, c.initializeDefaultPlugins = function() {
-        return null != c.activePlugin ? !0 : c._pluginsRegistered ? !1 : c.registerPlugins([ createjs.WebAudioPlugin, createjs.HTMLAudioPlugin ]) ? !0 : !1;
-    }, c.isReady = function() {
-        return null != c.activePlugin;
-    }, c.getCapabilities = function() {
-        return null == c.activePlugin ? null : c.activePlugin._capabilities;
-    }, c.getCapability = function(a) {
-        return null == c.activePlugin ? null : c.activePlugin._capabilities[a];
-    }, c.initLoad = function(a) {
-        return c._registerSound(a);
-    }, c._registerSound = function(a) {
-        if (!c.initializeDefaultPlugins()) return !1;
-        var d = c._parsePath(a.src);
-        if (null == d) return !1;
-        a.src = d.src, a.type = "sound";
-        var e = a.data, f = c.activePlugin.defaultNumChannels || null;
-        if (null != e && (isNaN(e.channels) ? isNaN(e) || (f = parseInt(e)) : f = parseInt(e.channels), 
-        e.audioSprite)) for (var g, h = e.audioSprite.length; h--; ) g = e.audioSprite[h], 
-        c._idHash[g.id] = {
-            src: a.src,
-            startTime: parseInt(g.startTime),
-            duration: parseInt(g.duration)
-        };
-        null != a.id && (c._idHash[a.id] = {
-            src: a.src
-        });
-        var i = c.activePlugin.register(a, f);
-        return b.create(a.src, f), null != e && isNaN(e) ? a.data.channels = f || b.maxPerChannel() : a.data = f || b.maxPerChannel(), 
-        i.type && (a.type = i.type), i;
-    }, c.registerSound = function(a, b, d, e) {
-        var f = {
-            src: a,
-            id: b,
-            data: d
-        };
-        a instanceof Object && (e = b, f = a), f = createjs.LoadItem.create(f), null != e && (f.src = e + a);
-        var g = c._registerSound(f);
-        if (!g) return !1;
-        if (c._preloadHash[f.src] || (c._preloadHash[f.src] = []), c._preloadHash[f.src].push(f), 
-        1 == c._preloadHash[f.src].length) g.on("complete", createjs.proxy(this._handleLoadComplete, this)), 
-        g.on("error", createjs.proxy(this._handleLoadError, this)), c.activePlugin.preload(g); else if (1 == c._preloadHash[f.src][0]) return !0;
-        return f;
-    }, c.registerSounds = function(a, b) {
-        var c = [];
-        a.path && (b ? b += a.path : b = a.path);
-        for (var d = 0, e = a.length; e > d; d++) c[d] = createjs.Sound.registerSound(a[d].src, a[d].id, a[d].data, b);
-        return c;
-    }, c.registerManifest = function(a, b) {
-        try {
-            console.log("createjs.Sound.registerManifest is deprecated, please use createjs.Sound.registerSounds.");
-        } catch (c) {}
-        return this.registerSounds(a, b);
-    }, c.removeSound = function(a, d) {
-        if (null == c.activePlugin) return !1;
-        a instanceof Object && (a = a.src), a = c._getSrcById(a).src, null != d && (a = d + a);
-        var e = c._parsePath(a);
-        if (null == e) return !1;
-        a = e.src;
-        for (var f in c._idHash) c._idHash[f].src == a && delete c._idHash[f];
-        return b.removeSrc(a), delete c._preloadHash[a], c.activePlugin.removeSound(a), 
-        !0;
-    }, c.removeSounds = function(a, b) {
-        var c = [];
-        a.path && (b ? b += a.path : b = a.path);
-        for (var d = 0, e = a.length; e > d; d++) c[d] = createjs.Sound.removeSound(a[d].src, b);
-        return c;
-    }, c.removeManifest = function(a, b) {
-        try {
-            console.log("createjs.Sound.removeManifest is deprecated, please use createjs.Sound.removeSounds.");
-        } catch (d) {}
-        return c.removeSounds(a, b);
-    }, c.removeAllSounds = function() {
-        c._idHash = {}, c._preloadHash = {}, b.removeAll(), c.activePlugin && c.activePlugin.removeAllSounds();
-    }, c.loadComplete = function(a) {
-        if (!c.isReady()) return !1;
-        var b = c._parsePath(a);
-        return a = b ? c._getSrcById(b.src).src : c._getSrcById(a).src, 1 == c._preloadHash[a][0];
-    }, c._parsePath = function(a) {
-        "string" != typeof a && (a = a.toString());
-        var b = a.match(c.FILE_PATTERN);
-        if (null == b) return !1;
-        for (var d = b[4], e = b[5], f = c.getCapabilities(), g = 0; !f[e]; ) if (e = c.alternateExtensions[g++], 
-        g > c.alternateExtensions.length) return null;
-        a = a.replace("." + b[5], "." + e);
-        var h = {
-            name: d,
-            src: a,
-            extension: e
-        };
-        return h;
-    }, c.play = function(a, b, d, e, f, g, h, i, j) {
-        b instanceof Object && (d = b.delay, e = b.offset, f = b.loop, g = b.volume, h = b.pan, 
-        i = b.startTime, j = b.duration, b = b.interrupt);
-        var k = c.createInstance(a, i, j), l = c._playInstance(k, b, d, e, f, g, h);
-        return l || k._playFailed(), k;
-    }, c.createInstance = function(a, d, e) {
-        if (!c.initializeDefaultPlugins()) return new createjs.DefaultSoundInstance(a, d, e);
-        a = c._getSrcById(a);
-        var f = c._parsePath(a.src), g = null;
-        return null != f && null != f.src ? (b.create(f.src), null == d && (d = a.startTime), 
-        g = c.activePlugin.create(f.src, d, e || a.duration)) : g = new createjs.DefaultSoundInstance(a, d, e), 
-        g.uniqueId = c._lastID++, g;
-    }, c.setVolume = function(a) {
-        if (null == Number(a)) return !1;
-        if (a = Math.max(0, Math.min(1, a)), c._masterVolume = a, !this.activePlugin || !this.activePlugin.setVolume || !this.activePlugin.setVolume(a)) for (var b = this._instances, d = 0, e = b.length; e > d; d++) b[d].setMasterVolume(a);
-    }, c.getVolume = function() {
-        return c._masterVolume;
-    }, c.setMute = function(a) {
-        if (null == a) return !1;
-        if (this._masterMute = a, !this.activePlugin || !this.activePlugin.setMute || !this.activePlugin.setMute(a)) for (var b = this._instances, c = 0, d = b.length; d > c; c++) b[c].setMasterMute(a);
-        return !0;
-    }, c.getMute = function() {
-        return this._masterMute;
-    }, c.stop = function() {
-        for (var a = this._instances, b = a.length; b--; ) a[b].stop();
-    }, c._playInstance = function(a, b, d, e, f, g, h) {
-        if (b instanceof Object && (d = b.delay, e = b.offset, f = b.loop, g = b.volume, 
-        h = b.pan, b = b.interrupt), b = b || c.defaultInterruptBehavior, null == d && (d = 0), 
-        null == e && (e = a.getPosition()), null == f && (f = a.loop), null == g && (g = a.volume), 
-        null == h && (h = a.pan), 0 == d) {
-            var i = c._beginPlaying(a, b, e, f, g, h);
-            if (!i) return !1;
-        } else {
-            var j = setTimeout(function() {
-                c._beginPlaying(a, b, e, f, g, h);
-            }, d);
-            a.delayTimeoutId = j;
-        }
-        return this._instances.push(a), !0;
-    }, c._beginPlaying = function(a, c, d, e, f, g) {
-        if (!b.add(a, c)) return !1;
-        var h = a._beginPlaying(d, e, f, g);
-        if (!h) {
-            var i = createjs.indexOf(this._instances, a);
-            return i > -1 && this._instances.splice(i, 1), !1;
-        }
-        return !0;
-    }, c._getSrcById = function(a) {
-        return c._idHash[a] || {
-            src: a
-        };
-    }, c._playFinished = function(a) {
-        b.remove(a);
-        var c = createjs.indexOf(this._instances, a);
-        c > -1 && this._instances.splice(c, 1);
-    }, createjs.Sound = a, b.channels = {}, b.create = function(a, c) {
-        var d = b.get(a);
-        return null == d ? (b.channels[a] = new b(a, c), !0) : !1;
-    }, b.removeSrc = function(a) {
-        var c = b.get(a);
-        return null == c ? !1 : (c._removeAll(), delete b.channels[a], !0);
-    }, b.removeAll = function() {
-        for (var a in b.channels) b.channels[a]._removeAll();
-        b.channels = {};
-    }, b.add = function(a, c) {
-        var d = b.get(a.src);
-        return null == d ? !1 : d._add(a, c);
-    }, b.remove = function(a) {
-        var c = b.get(a.src);
-        return null == c ? !1 : (c._remove(a), !0);
-    }, b.maxPerChannel = function() {
-        return d.maxDefault;
-    }, b.get = function(a) {
-        return b.channels[a];
-    };
-    var d = b.prototype;
-    d.constructor = b, d.src = null, d.max = null, d.maxDefault = 100, d.length = 0, 
-    d.init = function(a, b) {
-        this.src = a, this.max = b || this.maxDefault, -1 == this.max && (this.max = this.maxDefault), 
-        this._instances = [];
-    }, d._get = function(a) {
-        return this._instances[a];
-    }, d._add = function(a, b) {
-        return this._getSlot(b, a) ? (this._instances.push(a), this.length++, !0) : !1;
-    }, d._remove = function(a) {
-        var b = createjs.indexOf(this._instances, a);
-        return -1 == b ? !1 : (this._instances.splice(b, 1), this.length--, !0);
-    }, d._removeAll = function() {
-        for (var a = this.length - 1; a >= 0; a--) this._instances[a].stop();
-    }, d._getSlot = function(b) {
-        var c, d;
-        if (b != a.INTERRUPT_NONE && (d = this._get(0), null == d)) return !0;
-        for (var e = 0, f = this.max; f > e; e++) {
-            if (c = this._get(e), null == c) return !0;
-            if (c.playState == a.PLAY_FINISHED || c.playState == a.PLAY_INTERRUPTED || c.playState == a.PLAY_FAILED) {
-                d = c;
-                break;
-            }
-            b != a.INTERRUPT_NONE && (b == a.INTERRUPT_EARLY && c.getPosition() < d.getPosition() || b == a.INTERRUPT_LATE && c.getPosition() > d.getPosition()) && (d = c);
-        }
-        return null != d ? (d._interrupt(), this._remove(d), !0) : !1;
-    }, d.toString = function() {
-        return "[Sound SoundChannel]";
-    };
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    var a = function(a, b, c, d) {
-        this.EventDispatcher_constructor(), this.src = a, this.uniqueId = -1, this.playState = null, 
-        this.delayTimeoutId = null, this._startTime = Math.max(0, b || 0), this._volume = 1, 
-        createjs.definePropertySupported && Object.defineProperty(this, "volume", {
-            get: this.getVolume,
-            set: this.setVolume
-        }), this._pan = 0, createjs.definePropertySupported && Object.defineProperty(this, "pan", {
-            get: this.getPan,
-            set: this.setPan
-        }), this._duration = Math.max(0, c || 0), createjs.definePropertySupported && Object.defineProperty(this, "duration", {
-            get: this.getDuration,
-            set: this.setDuration
-        }), this._playbackResource = null, createjs.definePropertySupported && Object.defineProperty(this, "playbackResource", {
-            get: this.getPlaybackResource,
-            set: this.setPlaybackResource
-        }), d !== !1 && d !== !0 && this.setPlaybackResource(d), this._position = 0, createjs.definePropertySupported && Object.defineProperty(this, "position", {
-            get: this.getPosition,
-            set: this.setPosition
-        }), this._loop = 0, createjs.definePropertySupported && Object.defineProperty(this, "loop", {
-            get: this.getLoop,
-            set: this.setLoop
-        }), this._muted = !1, createjs.definePropertySupported && Object.defineProperty(this, "muted", {
-            get: this.getMuted,
-            set: this.setMuted
-        }), this._paused = !1, createjs.definePropertySupported && Object.defineProperty(this, "paused", {
-            get: this.getPaused,
-            set: this.setPaused
-        });
-    }, b = createjs.extend(a, createjs.EventDispatcher);
-    b.play = function(a, b, c, d, e, f) {
-        return this.playState == createjs.Sound.PLAY_SUCCEEDED ? (a instanceof Object && (c = a.offset, 
-        d = a.loop, e = a.volume, f = a.pan), null != c && this.setPosition(c), null != d && this.setLoop(d), 
-        null != e && this.setVolume(e), null != f && this.setPan(f), void (this._paused && this.setPaused(!1))) : (this._cleanUp(), 
-        createjs.Sound._playInstance(this, a, b, c, d, e, f), this);
-    }, b.pause = function() {
-        return this._paused || this.playState != createjs.Sound.PLAY_SUCCEEDED ? !1 : (this.setPaused(!0), 
-        !0);
-    }, b.resume = function() {
-        return this._paused ? (this.setPaused(!1), !0) : !1;
-    }, b.stop = function() {
-        return this._position = 0, this._paused = !1, this._handleStop(), this._cleanUp(), 
-        this.playState = createjs.Sound.PLAY_FINISHED, this;
-    }, b.destroy = function() {
-        this._cleanUp(), this.src = null, this.playbackResource = null, this.removeAllEventListeners();
-    }, b.toString = function() {
-        return "[AbstractSoundInstance]";
-    }, b.getPaused = function() {
-        return this._paused;
-    }, b.setPaused = function(a) {
-        return a !== !0 && a !== !1 || this._paused == a || 1 == a && this.playState != createjs.Sound.PLAY_SUCCEEDED ? void 0 : (this._paused = a, 
-        a ? this._pause() : this._resume(), clearTimeout(this.delayTimeoutId), this);
-    }, b.setVolume = function(a) {
-        return a == this._volume ? this : (this._volume = Math.max(0, Math.min(1, a)), this._muted || this._updateVolume(), 
-        this);
-    }, b.getVolume = function() {
-        return this._volume;
-    }, b.setMute = function(a) {
-        this.setMuted(a);
-    }, b.getMute = function() {
-        return this._muted;
-    }, b.setMuted = function(a) {
-        return a === !0 || a === !1 ? (this._muted = a, this._updateVolume(), this) : void 0;
-    }, b.getMuted = function() {
-        return this._muted;
-    }, b.setPan = function(a) {
-        return a == this._pan ? this : (this._pan = Math.max(-1, Math.min(1, a)), this._updatePan(), 
-        this);
-    }, b.getPan = function() {
-        return this._pan;
-    }, b.getPosition = function() {
-        return this._paused || this.playState != createjs.Sound.PLAY_SUCCEEDED ? this._position : this._calculateCurrentPosition();
-    }, b.setPosition = function(a) {
-        return this._position = Math.max(0, a), this.playState == createjs.Sound.PLAY_SUCCEEDED && this._updatePosition(), 
-        this;
-    }, b.getDuration = function() {
-        return this._duration;
-    }, b.setDuration = function(a) {
-        return a == this._duration ? this : (this._duration = Math.max(0, a || 0), this._updateDuration(), 
-        this);
-    }, b.setPlaybackResource = function(a) {
-        return this._playbackResource = a, 0 == this._duration && this._setDurationFromSource(), 
-        this;
-    }, b.getPlaybackResource = function() {
-        return this._playbackResource;
-    }, b.getLoop = function() {
-        return this._loop;
-    }, b.setLoop = function(a) {
-        null != this._playbackResource && (0 != this._loop && 0 == a && this._removeLooping(a), 
-        0 == this._loop && 0 != a && this._addLooping(a)), this._loop = a;
-    }, b._sendEvent = function(a) {
-        var b = new createjs.Event(a);
-        this.dispatchEvent(b);
-    }, b._cleanUp = function() {
-        clearTimeout(this.delayTimeoutId), this._handleCleanUp(), this._paused = !1, createjs.Sound._playFinished(this);
-    }, b._interrupt = function() {
-        this._cleanUp(), this.playState = createjs.Sound.PLAY_INTERRUPTED, this._sendEvent("interrupted");
-    }, b._beginPlaying = function(a, b, c, d) {
-        return this.setPosition(a), this.setLoop(b), this.setVolume(c), this.setPan(d), 
-        null != this._playbackResource && this._position < this._duration ? (this._paused = !1, 
-        this._handleSoundReady(), this.playState = createjs.Sound.PLAY_SUCCEEDED, this._sendEvent("succeeded"), 
-        !0) : (this._playFailed(), !1);
-    }, b._playFailed = function() {
-        this._cleanUp(), this.playState = createjs.Sound.PLAY_FAILED, this._sendEvent("failed");
-    }, b._handleSoundComplete = function() {
-        return this._position = 0, 0 != this._loop ? (this._loop--, this._handleLoop(), 
-        void this._sendEvent("loop")) : (this._cleanUp(), this.playState = createjs.Sound.PLAY_FINISHED, 
-        void this._sendEvent("complete"));
-    }, b._handleSoundReady = function() {}, b._updateVolume = function() {}, b._updatePan = function() {}, 
-    b._updateDuration = function() {}, b._setDurationFromSource = function() {}, b._calculateCurrentPosition = function() {}, 
-    b._updatePosition = function() {}, b._removeLooping = function() {}, b._addLooping = function() {}, 
-    b._pause = function() {}, b._resume = function() {}, b._handleStop = function() {}, 
-    b._handleCleanUp = function() {}, b._handleLoop = function() {}, createjs.AbstractSoundInstance = createjs.promote(a, "EventDispatcher"), 
-    createjs.DefaultSoundInstance = createjs.AbstractSoundInstance;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    var a = function() {
-        this._capabilities = null, this._loaders = {}, this._audioSources = {}, this._soundInstances = {}, 
-        this._loaderClass, this._soundInstanceClass;
-    }, b = a.prototype;
-    a._capabilities = null, a.isSupported = function() {
-        return !0;
-    }, b.register = function(a) {
-        if (this._audioSources[a.src] = !0, this._soundInstances[a.src] = [], this._loaders[a.src]) return this._loaders[a.src];
-        var b = new this._loaderClass(a);
-        return b.on("complete", createjs.proxy(this._handlePreloadComplete, this)), this._loaders[a.src] = b, 
-        b;
-    }, b.preload = function(a) {
-        a.on("error", createjs.proxy(this._handlePreloadError, this)), a.load();
-    }, b.isPreloadStarted = function(a) {
-        return null != this._audioSources[a];
-    }, b.isPreloadComplete = function(a) {
-        return !(null == this._audioSources[a] || 1 == this._audioSources[a]);
-    }, b.removeSound = function(a) {
-        if (this._soundInstances[a]) {
-            for (var b = this._soundInstances[a].length; b--; ) {
-                var c = this._soundInstances[a][b];
-                c.destroy();
-            }
-            delete this._soundInstances[a], delete this._audioSources[a], this._loaders[a] && this._loaders[a].destroy(), 
-            delete this._loaders[a];
-        }
-    }, b.removeAllSounds = function() {
-        for (var a in this._audioSources) this.removeSound(a);
-    }, b.create = function(a, b, c) {
-        this.isPreloadStarted(a) || this.preload(this.register(a));
-        var d = new this._soundInstanceClass(a, b, c, this._audioSources[a]);
-        return this._soundInstances[a].push(d), d;
-    }, b.setVolume = function(a) {
-        return this._volume = a, this._updateVolume(), !0;
-    }, b.getVolume = function() {
-        return this._volume;
-    }, b.setMute = function() {
-        return this._updateVolume(), !0;
-    }, b.toString = function() {
-        return "[AbstractPlugin]";
-    }, b._handlePreloadComplete = function(a) {
-        var b = a.target.getItem().src;
-        this._audioSources[b] = a.result;
-        for (var c = 0, d = this._soundInstances[b].length; d > c; c++) {
-            var e = this._soundInstances[b][c];
-            e.setPlaybackResource(this._audioSources[b]);
-        }
-    }, b._handlePreloadError = function() {}, b._updateVolume = function() {}, createjs.AbstractPlugin = a;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a) {
-        this.AbstractLoader_constructor(a, !0, createjs.AbstractLoader.SOUND);
-    }
-    var b = createjs.extend(a, createjs.AbstractLoader);
-    a.context = null, b.toString = function() {
-        return "[WebAudioLoader]";
-    }, b._createRequest = function() {
-        this._request = new createjs.XHRRequest(this._item, !1), this._request.setResponseType("arraybuffer");
-    }, b._sendComplete = function() {
-        a.context.decodeAudioData(this._rawResult, createjs.proxy(this._handleAudioDecoded, this), createjs.proxy(this._handleError, this));
-    }, b._handleAudioDecoded = function(a) {
-        this._result = a, this.AbstractLoader__sendComplete();
-    }, createjs.WebAudioLoader = createjs.promote(a, "AbstractLoader");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, d, e) {
-        this.AbstractSoundInstance_constructor(a, b, d, e), this.gainNode = c.context.createGain(), 
-        this.panNode = c.context.createPanner(), this.panNode.panningModel = c._panningModel, 
-        this.panNode.connect(this.gainNode), this.sourceNode = null, this._soundCompleteTimeout = null, 
-        this._sourceNodeNext = null, this._playbackStartTime = 0, this._endedHandler = createjs.proxy(this._handleSoundComplete, this);
-    }
-    var b = createjs.extend(a, createjs.AbstractSoundInstance), c = a;
-    c.context = null, c.destinationNode = null, c._panningModel = "equalpower", b.destroy = function() {
-        this.AbstractSoundInstance_destroy(), this.panNode.disconnect(0), this.panNode = null, 
-        this.gainNode.disconnect(0), this.gainNode = null;
-    }, b.toString = function() {
-        return "[WebAudioSoundInstance]";
-    }, b._updatePan = function() {
-        this.panNode.setPosition(this._pan, 0, -.5);
-    }, b._removeLooping = function() {
-        this._sourceNodeNext = this._cleanUpAudioNode(this._sourceNodeNext);
-    }, b._addLooping = function() {
-        this.playState == createjs.Sound.PLAY_SUCCEEDED && (this._sourceNodeNext = this._createAndPlayAudioNode(this._playbackStartTime, 0));
-    }, b._setDurationFromSource = function() {
-        this._duration = 1e3 * this.playbackResource.duration;
-    }, b._handleCleanUp = function() {
-        this.sourceNode && this.playState == createjs.Sound.PLAY_SUCCEEDED && (this.sourceNode = this._cleanUpAudioNode(this.sourceNode), 
-        this._sourceNodeNext = this._cleanUpAudioNode(this._sourceNodeNext)), 0 != this.gainNode.numberOfOutputs && this.gainNode.disconnect(0), 
-        clearTimeout(this._soundCompleteTimeout), this._playbackStartTime = 0;
-    }, b._cleanUpAudioNode = function(a) {
-        return a && (a.stop(0), a.disconnect(0), a = null), a;
-    }, b._handleSoundReady = function() {
-        this.gainNode.connect(c.destinationNode);
-        var a = .001 * this._duration, b = .001 * this._position;
-        this.sourceNode = this._createAndPlayAudioNode(c.context.currentTime - a, b), this._playbackStartTime = this.sourceNode.startTime - b, 
-        this._soundCompleteTimeout = setTimeout(this._endedHandler, 1e3 * (a - b)), 0 != this._loop && (this._sourceNodeNext = this._createAndPlayAudioNode(this._playbackStartTime, 0));
-    }, b._createAndPlayAudioNode = function(a, b) {
-        var d = c.context.createBufferSource();
-        d.buffer = this.playbackResource, d.connect(this.panNode);
-        var e = .001 * this._duration;
-        return d.startTime = a + e, d.start(d.startTime, b + .001 * this._startTime, e - b), 
-        d;
-    }, b._pause = function() {
-        this._position = 1e3 * (c.context.currentTime - this._playbackStartTime), this.sourceNode = this._cleanUpAudioNode(this.sourceNode), 
-        this._sourceNodeNext = this._cleanUpAudioNode(this._sourceNodeNext), 0 != this.gainNode.numberOfOutputs && this.gainNode.disconnect(0), 
-        clearTimeout(this._soundCompleteTimeout);
-    }, b._resume = function() {
-        this._handleSoundReady();
-    }, b._updateVolume = function() {
-        var a = this._muted ? 0 : this._volume;
-        a != this.gainNode.gain.value && (this.gainNode.gain.value = a);
-    }, b._calculateCurrentPosition = function() {
-        return 1e3 * (c.context.currentTime - this._playbackStartTime);
-    }, b._updatePosition = function() {
-        this.sourceNode = this._cleanUpAudioNode(this.sourceNode), this._sourceNodeNext = this._cleanUpAudioNode(this._sourceNodeNext), 
-        clearTimeout(this._soundCompleteTimeout), this._paused || this._handleSoundReady();
-    }, b._handleLoop = function() {
-        this._cleanUpAudioNode(this.sourceNode), this.sourceNode = this._sourceNodeNext, 
-        this._playbackStartTime = this.sourceNode.startTime, this._sourceNodeNext = this._createAndPlayAudioNode(this._playbackStartTime, 0), 
-        this._soundCompleteTimeout = setTimeout(this._endedHandler, this._duration);
-    }, b._updateDuration = function() {
-        this._pause(), this._resume();
-    }, createjs.WebAudioSoundInstance = createjs.promote(a, "AbstractSoundInstance");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a() {
-        this.AbstractPlugin_constructor(), this._panningModel = c._panningModel, this._volume = 1, 
-        this.context = c.context, this.dynamicsCompressorNode = this.context.createDynamicsCompressor(), 
-        this.dynamicsCompressorNode.connect(this.context.destination), this.gainNode = this.context.createGain(), 
-        this.gainNode.connect(this.dynamicsCompressorNode), createjs.WebAudioSoundInstance.destinationNode = this.gainNode, 
-        this._capabilities = c._capabilities, this._loaderClass = createjs.WebAudioLoader, 
-        this._soundInstanceClass = createjs.WebAudioSoundInstance, this._addPropsToClasses();
-    }
-    var b = createjs.extend(a, createjs.AbstractPlugin), c = a;
-    c._capabilities = null, c._panningModel = "equalpower", c.context = null, c.isSupported = function() {
-        var a = createjs.BrowserDetect.isIOS || createjs.BrowserDetect.isAndroid || createjs.BrowserDetect.isBlackberry;
-        return "file:" != location.protocol || a || this._isFileXHRSupported() ? (c._generateCapabilities(), 
-        null == c.context ? !1 : !0) : !1;
-    }, c.playEmptySound = function() {
-        var a = c.context.createBufferSource();
-        a.buffer = c.context.createBuffer(1, 1, 22050), a.connect(c.context.destination), 
-        a.start(0, 0, 0);
-    }, c._isFileXHRSupported = function() {
-        var a = !0, b = new XMLHttpRequest();
-        try {
-            b.open("GET", "WebAudioPluginTest.fail", !1);
-        } catch (c) {
-            return a = !1;
-        }
-        b.onerror = function() {
-            a = !1;
-        }, b.onload = function() {
-            a = 404 == this.status || 200 == this.status || 0 == this.status && "" != this.response;
-        };
-        try {
-            b.send();
-        } catch (c) {
-            a = !1;
-        }
-        return a;
-    }, c._generateCapabilities = function() {
-        if (null == c._capabilities) {
-            var a = document.createElement("audio");
-            if (null == a.canPlayType) return null;
-            if (null == c.context) if (window.AudioContext) c.context = new AudioContext(); else {
-                if (!window.webkitAudioContext) return null;
-                c.context = new webkitAudioContext();
-            }
-            c._compatibilitySetUp(), c.playEmptySound(), c._capabilities = {
-                panning: !0,
-                volume: !0,
-                tracks: -1
-            };
-            for (var b = createjs.Sound.SUPPORTED_EXTENSIONS, d = createjs.Sound.EXTENSION_MAP, e = 0, f = b.length; f > e; e++) {
-                var g = b[e], h = d[g] || g;
-                c._capabilities[g] = "no" != a.canPlayType("audio/" + g) && "" != a.canPlayType("audio/" + g) || "no" != a.canPlayType("audio/" + h) && "" != a.canPlayType("audio/" + h);
-            }
-            c.context.destination.numberOfChannels < 2 && (c._capabilities.panning = !1);
-        }
-    }, c._compatibilitySetUp = function() {
-        if (c._panningModel = "equalpower", !c.context.createGain) {
-            c.context.createGain = c.context.createGainNode;
-            var a = c.context.createBufferSource();
-            a.__proto__.start = a.__proto__.noteGrainOn, a.__proto__.stop = a.__proto__.noteOff, 
-            c._panningModel = 0;
-        }
-    }, b.toString = function() {
-        return "[WebAudioPlugin]";
-    }, b._addPropsToClasses = function() {
-        var a = this._soundInstanceClass;
-        a.context = this.context, a.destinationNode = this.gainNode, a._panningModel = this._panningModel, 
-        this._loaderClass.context = this.context;
-    }, b._updateVolume = function() {
-        var a = createjs.Sound._masterMute ? 0 : this._volume;
-        a != this.gainNode.gain.value && (this.gainNode.gain.value = a);
-    }, createjs.WebAudioPlugin = createjs.promote(a, "AbstractPlugin");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a) {
-        this.src = a, this.length = 0, this.available = 0, this.tags = [], this.duration = 0;
-    }
-    var b = a.prototype;
-    b.constructor = a;
-    var c = a;
-    c.tags = {}, c.get = function(b) {
-        var d = c.tags[b];
-        return null == d && (d = c.tags[b] = new a(b)), d;
-    }, c.remove = function(a) {
-        var b = c.tags[a];
-        return null == b ? !1 : (b.removeAll(), delete c.tags[a], !0);
-    }, c.getInstance = function(a) {
-        var b = c.tags[a];
-        return null == b ? null : b.get();
-    }, c.setInstance = function(a, b) {
-        var d = c.tags[a];
-        return null == d ? null : d.set(b);
-    }, c.getDuration = function(a) {
-        var b = c.tags[a];
-        return null == b ? 0 : b.getDuration();
-    }, b.add = function(a) {
-        this.tags.push(a), this.length++, this.available++;
-    }, b.removeAll = function() {
-        for (var a; this.length--; ) a = this.tags[this.length], a.parentNode && a.parentNode.removeChild(a), 
-        delete this.tags[this.length];
-        this.src = null, this.tags.length = 0;
-    }, b.get = function() {
-        if (0 == this.tags.length) return null;
-        this.available = this.tags.length;
-        var a = this.tags.pop();
-        return null == a.parentNode && document.body.appendChild(a), a;
-    }, b.set = function(a) {
-        var b = createjs.indexOf(this.tags, a);
-        -1 == b && this.tags.push(a), this.available = this.tags.length;
-    }, b.getDuration = function() {
-        return this.duration || (this.duration = 1e3 * this.tags[this.tags.length - 1].duration), 
-        this.duration;
-    }, b.toString = function() {
-        return "[HTMLAudioTagPool]";
-    }, createjs.HTMLAudioTagPool = a;
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a(a, b, c, d) {
-        this.AbstractSoundInstance_constructor(a, b, c, d), this._audioSpriteStopTime = null, 
-        this._delayTimeoutId = null, this._endedHandler = createjs.proxy(this._handleSoundComplete, this), 
-        this._readyHandler = createjs.proxy(this._handleTagReady, this), this._stalledHandler = createjs.proxy(this.playFailed, this), 
-        this._audioSpriteEndHandler = createjs.proxy(this._handleAudioSpriteLoop, this), 
-        this._loopHandler = createjs.proxy(this._handleSoundComplete, this), c ? this._audioSpriteStopTime = .001 * (b + c) : this._duration = createjs.HTMLAudioTagPool.getDuration(this.src);
-    }
-    var b = createjs.extend(a, createjs.AbstractSoundInstance);
-    b.setMasterVolume = function() {
-        this._updateVolume();
-    }, b.setMasterMute = function() {
-        this._updateVolume();
-    }, b.toString = function() {
-        return "[HTMLAudioSoundInstance]";
-    }, b._removeLooping = function() {
-        null != this._playbackResource && (this._playbackResource.loop = !1, this._playbackResource.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1));
-    }, b._addLooping = function() {
-        null == this._playbackResource || this._audioSpriteStopTime || (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), 
-        this._playbackResource.loop = !0);
-    }, b._handleCleanUp = function() {
-        var a = this._playbackResource;
-        if (null != a) {
-            a.pause(), a.loop = !1, a.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_ENDED, this._endedHandler, !1), 
-            a.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_READY, this._readyHandler, !1), 
-            a.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_STALLED, this._stalledHandler, !1), 
-            a.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), 
-            a.removeEventListener(createjs.HTMLAudioPlugin._TIME_UPDATE, this._audioSpriteEndHandler, !1);
+            return M = !0;
+        }, $ = function() {
+            return c.html5Only ? (aa(), !1) : k || !c.url ? !1 : (k = c.getMovie(c.id), k || (Q ? (C ? c.oMC.innerHTML = ya : c.oMC.appendChild(Q), 
+            Q = null, M = !0) : aa(c.id, c.url), k = c.getMovie(c.id)), "function" == typeof c.oninitmovie && setTimeout(c.oninitmovie, 1), 
+            !0);
+        }, I = function() {
+            setTimeout(Na, 1e3);
+        }, qa = function() {
+            g.setTimeout(function() {
+                c.setup({
+                    preferFlash: !1
+                }).reboot(), c.didFlashBlock = !0, c.beginDelayedInit();
+            }, 1);
+        }, Na = function() {
+            var b, e = !1;
+            return !c.url || S ? !1 : (S = !0, s.remove(g, "load", I), v && ka && !Ga ? !1 : (m || (b = c.getMoviePercent(), 
+            b > 0 && 100 > b && (e = !0)), void setTimeout(function() {
+                return b = c.getMoviePercent(), e ? (S = !1, g.setTimeout(I, 1), !1) : void (!m && ab && (null === b ? c.useFlashBlock || 0 === c.flashLoadTimeout ? c.useFlashBlock && za() : !c.useFlashBlock && U ? qa() : D({
+                    type: "ontimeout",
+                    ignoreInit: !0,
+                    error: {
+                        type: "INIT_FLASHBLOCK"
+                    }
+                }) : 0 !== c.flashLoadTimeout && (!c.useFlashBlock && U ? qa() : xa(!0))));
+            }, c.flashLoadTimeout)));
+        }, Z = function() {
+            return Ga || !ka ? (s.remove(g, "focus", Z), !0) : (Ga = ab = !0, S = !1, I(), s.remove(g, "focus", Z), 
+            !0);
+        }, O = function(b) {
+            if (m) return !1;
+            if (c.html5Only) return m = !0, H(), !0;
+            var d, e = !0;
+            return c.useFlashBlock && c.flashLoadTimeout && !c.getMoviePercent() || (m = !0), 
+            d = {
+                type: !v && u ? "NO_FLASH" : "INIT_TIMEOUT"
+            }, (y || b) && (c.useFlashBlock && c.oMC && (c.oMC.className = K() + " " + (null === c.getMoviePercent() ? "swf_timedout" : "swf_error")), 
+            D({
+                type: "ontimeout",
+                error: d,
+                ignoreInit: !0
+            }), J(d), e = !1), y || (c.waitForWindowLoad && !na ? s.add(g, "load", H) : H()), 
+            e;
+        }, Ma = function() {
+            var b, e = c.setupOptions;
+            for (b in e) e.hasOwnProperty(b) && (c[b] === h ? c[b] = e[b] : c[b] !== e[b] && (c.setupOptions[b] = c[b]));
+        }, ma = function() {
+            if (m) return !1;
+            if (c.html5Only) return m || (s.remove(g, "load", c.beginDelayedInit), c.enabled = !0, 
+            O()), !0;
+            $();
             try {
-                a.currentTime = this._startTime;
-            } catch (b) {}
-            createjs.HTMLAudioTagPool.setInstance(this.src, a), this._playbackResource = null;
-        }
-    }, b._beginPlaying = function(a, b, c, d) {
-        return this._playbackResource = createjs.HTMLAudioTagPool.getInstance(this.src), 
-        this.AbstractSoundInstance__beginPlaying(a, b, c, d);
-    }, b._handleSoundReady = function() {
-        if (4 !== this._playbackResource.readyState) {
-            var a = this._playbackResource;
-            return a.addEventListener(createjs.HTMLAudioPlugin._AUDIO_READY, this._readyHandler, !1), 
-            a.addEventListener(createjs.HTMLAudioPlugin._AUDIO_STALLED, this._stalledHandler, !1), 
-            a.preload = "auto", void a.load();
-        }
-        this._updateVolume(), this._playbackResource.currentTime = .001 * (this._startTime + this._position), 
-        this._audioSpriteStopTime ? this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._TIME_UPDATE, this._audioSpriteEndHandler, !1) : (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_ENDED, this._endedHandler, !1), 
-        0 != this._loop && (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), 
-        this._playbackResource.loop = !0)), this._playbackResource.play();
-    }, b._handleTagReady = function() {
-        this._playbackResource.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_READY, this._readyHandler, !1), 
-        this._playbackResource.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_STALLED, this._stalledHandler, !1), 
-        this._handleSoundReady();
-    }, b._pause = function() {
-        this._playbackResource.pause();
-    }, b._resume = function() {
-        this._playbackResource.play();
-    }, b._updateVolume = function() {
-        if (null != this._playbackResource) {
-            var a = this._muted || createjs.Sound._masterMute ? 0 : this._volume * createjs.Sound._masterVolume;
-            a != this._playbackResource.volume && (this._playbackResource.volume = a);
-        }
-    }, b._calculateCurrentPosition = function() {
-        return 1e3 * this._playbackResource.currentTime - this._startTime;
-    }, b._updatePosition = function() {
-        this._playbackResource.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), 
-        this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._handleSetPositionSeek, !1);
-        try {
-            this._playbackResource.currentTime = .001 * (this._position + this._startTime);
-        } catch (a) {
-            this._handleSetPositionSeek(null);
-        }
-    }, b._handleSetPositionSeek = function() {
-        null != this._playbackResource && (this._playbackResource.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._handleSetPositionSeek, !1), 
-        this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1));
-    }, b._handleAudioSpriteLoop = function() {
-        this._playbackResource.currentTime <= this._audioSpriteStopTime || (this._playbackResource.pause(), 
-        0 == this._loop ? this._handleSoundComplete(null) : (this._position = 0, this._loop--, 
-        this._playbackResource.currentTime = .001 * this._startTime, this._paused || this._playbackResource.play(), 
-        this._sendEvent("loop")));
-    }, b._handleLoop = function() {
-        0 == this._loop && (this._playbackResource.loop = !1, this._playbackResource.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1));
-    }, b._updateDuration = function() {
-        this._audioSpriteStopTime = .001 * (startTime + duration), this.playState == createjs.Sound.PLAY_SUCCEEDED && (this._playbackResource.removeEventListener(createjs.HTMLAudioPlugin._AUDIO_ENDED, this._endedHandler, !1), 
-        this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._TIME_UPDATE, this._audioSpriteEndHandler, !1));
-    }, createjs.HTMLAudioSoundInstance = createjs.promote(a, "AbstractSoundInstance");
-}(), this.createjs = this.createjs || {}, function() {
-    "use strict";
-    function a() {
-        this.AbstractPlugin_constructor(), this.defaultNumChannels = 2, this._capabilities = c._capabilities, 
-        this._loaderClass = createjs.SoundLoader, this._soundInstanceClass = createjs.HTMLAudioSoundInstance;
-    }
-    var b = createjs.extend(a, createjs.AbstractPlugin), c = a;
-    c.MAX_INSTANCES = 30, c._AUDIO_READY = "canplaythrough", c._AUDIO_ENDED = "ended", 
-    c._AUDIO_SEEKED = "seeked", c._AUDIO_STALLED = "stalled", c._TIME_UPDATE = "timeupdate", 
-    c._capabilities = null, c.enableIOS = !1, c.isSupported = function() {
-        return c._generateCapabilities(), null == c._capabilities ? !1 : !0;
-    }, c._generateCapabilities = function() {
-        if (null == c._capabilities) {
-            var a = document.createElement("audio");
-            if (null == a.canPlayType) return null;
-            c._capabilities = {
-                panning: !0,
-                volume: !0,
-                tracks: -1
-            };
-            for (var b = createjs.Sound.SUPPORTED_EXTENSIONS, d = createjs.Sound.EXTENSION_MAP, e = 0, f = b.length; f > e; e++) {
-                var g = b[e], h = d[g] || g;
-                c._capabilities[g] = "no" != a.canPlayType("audio/" + g) && "" != a.canPlayType("audio/" + g) || "no" != a.canPlayType("audio/" + h) && "" != a.canPlayType("audio/" + h);
+                k._externalInterfaceTest(!1), Oa(!0, c.flashPollingInterval || (c.useHighPerformance ? 10 : 50)), 
+                c.debugMode || k._disableDebug(), c.enabled = !0, c.html5Only || s.add(g, "unload", la);
+            } catch (b) {
+                return J({
+                    type: "JS_TO_FLASH_EXCEPTION",
+                    fatal: !0
+                }), xa(!0), O(), !1;
             }
-        }
-    }, b.register = function(a, b) {
-        for (var c = createjs.HTMLAudioTagPool.get(a.src), d = null, e = 0; b > e; e++) d = this._createTag(a.src), 
-        c.add(d);
-        var f = this.AbstractPlugin_register(a, b);
-        return f.setTag(d), f;
-    }, b.removeSound = function(a) {
-        this.AbstractPlugin_removeSound(a), createjs.HTMLAudioTagPool.remove(a);
-    }, b.create = function(a, b, c) {
-        var d = this.AbstractPlugin_create(a, b, c);
-        return d.setPlaybackResource(null), d;
-    }, b.toString = function() {
-        return "[HTMLAudioPlugin]";
-    }, b.setVolume = b.getVolume = b.setMute = null, b._createTag = function(a) {
-        var b = document.createElement("audio");
-        return b.autoplay = !1, b.preload = "none", b.src = a, b;
-    }, createjs.HTMLAudioPlugin = createjs.promote(a, "AbstractPlugin");
-}(), function() {
+            return O(), s.remove(g, "load", c.beginDelayedInit), !0;
+        }, E = function() {
+            return P ? !1 : (P = !0, Ma(), wa(), !v && c.hasHTML5 && c.setup({
+                useHTML5Audio: !0,
+                preferFlash: !1
+            }), Wa(), !v && u && (Ua.push(sa.needFlash), c.setup({
+                flashLoadTimeout: 1
+            })), p.removeEventListener && p.removeEventListener("DOMContentLoaded", E, !1), 
+            $(), !0);
+        }, Ba = function() {
+            return "complete" === p.readyState && (E(), p.detachEvent("onreadystatechange", Ba)), 
+            !0;
+        }, ua = function() {
+            na = !0, E(), s.remove(g, "load", ua);
+        }, ta = function() {
+            Fa && (c.setupOptions.useHTML5Audio = !0, c.setupOptions.preferFlash = !1, ia || Za && !t.match(/android\s2\.3/i)) && (ia && (c.ignoreFlash = !0), 
+            A = !0);
+        }, ta(), Da(), s.add(g, "focus", Z), s.add(g, "load", I), s.add(g, "load", ua), 
+        p.addEventListener ? p.addEventListener("DOMContentLoaded", E, !1) : p.attachEvent ? p.attachEvent("onreadystatechange", Ba) : J({
+            type: "NO_DOM2_EVENTS",
+            fatal: !0
+        });
+    }
+    if (!g || !g.document) throw Error("SoundManager requires a browser with window and document objects.");
+    var F = null;
+    void 0 !== g.SM2_DEFER && SM2_DEFER || (F = new G()), "object" == typeof module && module && "object" == typeof module.exports ? (g.soundManager = F, 
+    module.exports.SoundManager = G, module.exports.soundManager = F) : "function" == typeof define && define.amd ? define("SoundManager", [], function() {
+        return {
+            SoundManager: G,
+            soundManager: F
+        };
+    }) : (g.SoundManager = G, g.soundManager = F);
+}(window), function() {
     var initializing = !1, fnTest = /xyz/.test(function() {
         xyz;
     }) ? /\b_super\b/ : /.*/;

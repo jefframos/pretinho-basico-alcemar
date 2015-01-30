@@ -14,6 +14,8 @@ var WaitScreen = AbstractScreen.extend({
         var assetsToLoader = ['dist/img/ease.png',
         'dist/img/atlas/atlas.json',
         'dist/img/atlas/atlas1.json',
+        'dist/img/UI/bgChoice.png',
+        'dist/img/UI/jeisoGrande.png',
         'dist/img/UI/HUD.json'];
 
 
@@ -33,6 +35,25 @@ var WaitScreen = AbstractScreen.extend({
         this.initApplication();
     },
     initApplication:function(){
+
+        // createjs.Sound.registerSound('dist/img/Roteirista.mp3', 'soundID');
+        // createjs.Sound.play('soundID');
+
+
+        // soundManager.onready(function() {
+        //     soundManager.createSound({
+        //         id: 'mySound',
+        //         url: 'dist/img/Roteirista.mp3',
+        //         autoLoad: true,
+        //         autoPlay: false,
+        //         onload: function() {
+        //             soundManager.play('mySound');
+        //         },
+        //         volume: 50
+        //     });
+        // });
+        
+
         this.easeImg = new SimpleSprite('dist/img/ease.png');
         this.addChild(this.easeImg);
         this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
@@ -60,5 +81,9 @@ var WaitScreen = AbstractScreen.extend({
                 fullscreen();
             };
         }
+        // setTimeout(function(){
+
+        self.screenManager.change('Choice');
+        // }, 1000);
     }
 });
