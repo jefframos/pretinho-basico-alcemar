@@ -1155,7 +1155,6 @@ var Application = AbstractApplication.extend({
 }), resizeProportional = !0, windowWidth = 1136, windowHeight = 640, realWindowWidth = 1136, realWindowHeight = 640, gameScale = 1.5;
 
 testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
-windowWidth = window.screen.height * gameScale, windowHeight = window.screen.width * gameScale, 
 realWindowWidth = windowWidth, realWindowHeight = windowHeight);
 
 var windowWidthVar = window.innerWidth, windowHeightVar = window.innerHeight, renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, !1, !0);
