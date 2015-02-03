@@ -434,6 +434,15 @@ var Application = AbstractApplication.extend({
         this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
     },
     preKill: function() {
+        for (var i = 2; i >= 0; i--) {
+            var particle = new Particles({
+                x: 4 * Math.random() - 2,
+                y: -(2 * Math.random() + 1)
+            }, 120, "smoke.png", .1 * Math.random());
+            particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
+            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+            this.layer.addChild(particle);
+        }
         this.collidable = !1, this.kill = !0;
     }
 }), Bullet = Entity.extend({
@@ -459,6 +468,15 @@ var Application = AbstractApplication.extend({
         this.preKill(), arrayCollide[0].hurt(this.power));
     },
     preKill: function() {
+        for (var i = 2; i >= 0; i--) {
+            var particle = new Particles({
+                x: 4 * Math.random() - 2,
+                y: -(2 * Math.random() + 1)
+            }, 120, "bulletParticle.png", .1 * Math.random());
+            particle.build(), particle.gravity = .1 * Math.random() + .2, particle.alphadecres = .08, 
+            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+            this.layer.addChild(particle);
+        }
         this.collidable = !1, this.kill = !0;
     },
     pointDistance: function(x, y, x0, y0) {
@@ -643,7 +661,7 @@ var Application = AbstractApplication.extend({
             color: 7654879,
             thumb: "thumb_jeiso"
         }, {
-            energyCoast: 1,
+            energyCoast: 1.5,
             vel: 2.5,
             bulletForce: 1.5,
             bulletCoast: .1,
@@ -655,11 +673,11 @@ var Application = AbstractApplication.extend({
             color: 15614755,
             thumb: "thumb_jeiso"
         }, {
-            energyCoast: 1,
+            energyCoast: 2,
             vel: 1.5,
             bulletForce: 2.5,
             bulletVel: 6,
-            bulletCoast: .2
+            bulletCoast: .1
         }), new PlayerModel({
             outGame: "alcemar.png",
             inGame: "alcemarGame.png",
@@ -667,10 +685,10 @@ var Application = AbstractApplication.extend({
             color: 11719780,
             thumb: "thumb_jeiso"
         }, {
-            energyCoast: .5,
+            energyCoast: 1,
             vel: 1,
             bulletForce: 2.5,
-            bulletCoast: .2,
+            bulletCoast: .1,
             bulletVel: 6
         }), new PlayerModel({
             outGame: "jeso.png",
@@ -694,7 +712,7 @@ var Application = AbstractApplication.extend({
             energyCoast: 3,
             vel: 1,
             bulletForce: 1,
-            bulletCoast: .2,
+            bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
             outGame: "pora.png",
@@ -706,7 +724,7 @@ var Application = AbstractApplication.extend({
             energyCoast: 2.5,
             vel: 1.5,
             bulletForce: 1,
-            bulletCoast: .2,
+            bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
             outGame: "arthur.png",
@@ -718,7 +736,7 @@ var Application = AbstractApplication.extend({
             energyCoast: 2,
             vel: 1,
             bulletForce: 2,
-            bulletCoast: .2,
+            bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
             outGame: "poter.png",
@@ -730,7 +748,7 @@ var Application = AbstractApplication.extend({
             energyCoast: 1.5,
             vel: 2,
             bulletForce: 1.5,
-            bulletCoast: .2,
+            bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
             outGame: "neto.png",
@@ -739,10 +757,10 @@ var Application = AbstractApplication.extend({
             color: 11772272,
             thumb: "thumb_jeiso"
         }, {
-            energyCoast: 2,
+            energyCoast: 2.5,
             vel: 2,
             bulletForce: 2,
-            bulletCoast: .2,
+            bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
             outGame: "rodaika.png",
@@ -754,7 +772,7 @@ var Application = AbstractApplication.extend({
             energyCoast: 3,
             vel: 2,
             bulletForce: 1,
-            bulletCoast: .2,
+            bulletCoast: .1,
             bulletVel: 5
         }) ], this.birdModels = [ new BirdModel("belga.png", null, 4, .1, 3, new BirdBehaviourSinoid({
             sinAcc: .05
@@ -784,14 +802,15 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), PlayerModel = Class.extend({
     init: function(graphicsObject, statsObject) {
-        this.range = 40, this.maxEnergy = 3e3, this.currentEnergy = 3e3, this.maxBulletEnergy = 100, 
+        this.range = 40, this.maxEnergy = 5e3, this.currentEnergy = 5e3, this.maxBulletEnergy = 100, 
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
         this.currentBulletForce = 100, this.recoverEnergy = .5, this.thumb = graphicsObject.thumb ? graphicsObject.thumb : "thumb_jeiso", 
         this.thumbColor = this.thumb + "_color.png", this.thumbGray = this.thumb + "_gray.png", 
         this.color = graphicsObject.color ? graphicsObject.color : 8755, this.imgSource = graphicsObject.outGame ? graphicsObject.outGame : "piangersN.png", 
         this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
         this.bulletSource = graphicsObject.bullet ? graphicsObject.bullet : "bullet.png", 
-        this.energyCoast = 4 - statsObject.energyCoast ? statsObject.energyCoast : 1, this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
+        this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 5.5 - this.energyCoast * this.energyCoast / 2, 
+        console.log(this.energyCoast), this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
         this.velocity = statsObject.vel ? statsObject.vel : 2, this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, 
         this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1;
     },
@@ -887,20 +906,18 @@ var Application = AbstractApplication.extend({
         for (var i = this.arrButtons.length - 1; i >= 0; i--) this.arrButtons[i].parent = this, 
         this.arrButtons[i].color = APP.getGameModel().playerModels[i].color, this.arrButtons[i].addThumb(APP.getGameModel().playerModels[i].thumbColor, APP.getGameModel().playerModels[i].thumbGray), 
         this.arrButtons[i].mouseUpCallback = this.resetButtons;
-        this.play = new DefaultButton("out.png", "selected.png"), this.play.build(120, 70), 
-        this.play.setPosition(windowWidth - this.play.width, windowHeight - 70), this.addChild(this.play), 
-        this.play.addLabel(new PIXI.Text("PLAY", {
+        this.play = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), this.play.build(120, 60), 
+        this.play.setPosition(windowWidth - this.play.width - 10, windowHeight - this.play.height - 10), 
+        this.addChild(this.play), this.play.addLabel(new PIXI.Text("PLAY", {
             align: "center",
             font: "35px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
         }), 15, 15), this.play.clickCallback = function() {
             self.screenManager.change("Game");
-        }, this.returnButton = new DefaultButton("out.png", "selected.png"), this.returnButton.build(60, 70), 
-        this.returnButton.setPosition(0, windowHeight - 70), this.addChild(this.returnButton), 
-        this.returnButton.addLabel(new PIXI.Text("<", {
-            font: "70px Arial"
-        }), 5, 5), this.returnButton.clickCallback = function() {
+        }, this.returnButton = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
+        this.returnButton.build(60, 60), this.returnButton.setPosition(10, windowHeight - this.play.height - 10), 
+        this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.char1.selectedFunction(), this.createStatsContainer(), this.updatePlayers();
     },
@@ -947,7 +964,7 @@ var Application = AbstractApplication.extend({
         for (var i = this.parent.arrButtons.length - 1; i >= 0; i--) this !== this.parent.arrButtons[i] && this.parent.arrButtons[i].resetTextures();
     },
     updateStatsBars: function() {
-        this.energyBar.updateBar(APP.getGameModel().currentPlayerModel.energyCoast, 3), 
+        this.energyBar.updateBar(1, APP.getGameModel().currentPlayerModel.energyCoast), 
         this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3), this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);
     },
     updatePlayers: function() {
@@ -1005,7 +1022,7 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         var self = this;
-        this.btnBenchmark = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.btnBenchmark = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.btnBenchmark.build(300, 120), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("REINIT", {
             font: "50px Arial"
@@ -1021,15 +1038,14 @@ var Application = AbstractApplication.extend({
         this.initApp = !1, console.log("DESTROY"), this._super();
     },
     build: function() {
-        console.log(this.gameOver), this.particleAccum = 100, this.gameOver = !1, this._super(), 
-        this.textAcc = new PIXI.Text("", {
+        console.log(this.gameOver, "build"), this.particleAccum = 100, this.gameOver = !1, 
+        this._super(), this.textAcc = new PIXI.Text("", {
             font: "15px Arial"
         }), this.addChild(this.textAcc), this.textAcc.position.y = 20, this.textAcc.position.x = windowWidth - 150;
         var assetsToLoader = [ "dist/img/atlas/atlas.json" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
-        this.textAcc.setText(this.textAcc.text + "\ninitLoad"), this.initLoad()) : this.onAssetsLoaded(), 
-        this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), this.hitTouch.interactive = !0, 
-        this.hitTouch.beginFill(0), this.hitTouch.drawRect(0, 0, windowWidth, windowHeight), 
+        this.initLoad()) : this.onAssetsLoaded(), this.accelerometer = {}, this.hitTouch = new PIXI.Graphics(), 
+        this.hitTouch.interactive = !0, this.hitTouch.beginFill(0), this.hitTouch.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.hitTouch), this.hitTouch.alpha = 0, this.hitTouch.hitArea = new PIXI.Rectangle(0, 0, .7 * windowWidth, windowHeight), 
         this.hitTouchAttack = new PIXI.Graphics(), this.hitTouchAttack.interactive = !0, 
         this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
@@ -1047,13 +1063,16 @@ var Application = AbstractApplication.extend({
             self.gameOver;
         }, this.hitTouch.touchmove = function(touchData) {
             self.gameOver || self.red && self.red.setTarget(touchData.global.y + .8 * self.red.getContent().height);
-        }, this.textAcc.setText(this.textAcc.text + "\nbuild"), this.spawner = 0;
+        }, this.spawner = 0;
+    },
+    reset: function() {
+        this.destroy(), this.build();
     },
     onProgress: function() {
-        this.textAcc.setText(this.textAcc.text + "\nonProgress"), this._super();
+        this._super();
     },
     onAssetsLoaded: function() {
-        this.textAcc.setText(this.textAcc.text + "\nAssetsLoaded"), this.initApplication();
+        this.initApplication();
     },
     shoot: function() {
         var percent = this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy, fireForce = percent * this.playerModel.range, timeLive = this.red.getContent().width / this.playerModel.bulletVel + fireForce + 100, vel = this.playerModel.bulletVel + this.playerModel.bulletVel * percent, angle = this.red.rotation, bullet = new Bullet({
@@ -1067,14 +1086,15 @@ var Application = AbstractApplication.extend({
         this.playerModel.currentBulletEnergy < 0 && (this.playerModel.currentBulletEnergy = 0);
     },
     update: function() {
-        this._super(), this.playerModel && this.initApp && (!testMobile() && this.red && APP.stage.getMousePosition().y > 0 && APP.stage.getMousePosition().y < windowHeight && this.red.setTarget(APP.stage.getMousePosition().y + .8 * this.red.getContent().height), 
+        this.updateable && (this._super(), this.playerModel && this.initApp && (!testMobile() && this.red && APP.stage.getMousePosition().y > 0 && APP.stage.getMousePosition().y < windowHeight && this.red.setTarget(APP.stage.getMousePosition().y + .8 * this.red.getContent().height), 
         this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
         this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
         this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
         this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && (console.log("GAME OVER"), 
-        this.screenManager.change("EndGame"))), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
+        this.endModal.show())), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
         this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
-        this.updateBirds(), this.updateParticles(), this.pointsLabel && this.pointsLabel.setText(this.points));
+        this.updateBirds(), this.updateParticles(), this.pointsLabel && (this.pointsLabel.setText(this.points), 
+        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 30)));
     },
     updateBirds: function() {
         if (this.spawner <= 0) {
@@ -1115,19 +1135,34 @@ var Application = AbstractApplication.extend({
         this.bulletBar = new BarView(.1 * windowWidth, 10, 1, 1), this.addChild(this.bulletBar), 
         this.bulletBar.setPosition(250 + posHelper, posHelper), this.energyBar = new BarView(.1 * windowWidth, 10, 1, 1), 
         this.addChild(this.energyBar), this.energyBar.setPosition(250 + 2 * posHelper + this.bulletBar.width, posHelper), 
-        this.returnButton = new DefaultButton("dist/img/UI/simpleButtonUp.png", "dist/img/UI/simpleButtonOver.png"), 
+        this.returnButton = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.returnButton.build(60, 50), this.returnButton.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 65), 
         this.addChild(this.returnButton), this.returnButton.addLabel(new PIXI.Text("<", {
             font: "40px Arial"
         }), 5, 5), this.returnButton.clickCallback = function() {
             self.screenManager.prevScreen();
+        }, this.pauseButton = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
+        this.pauseButton.build(60, 50), this.pauseButton.setPosition(windowWidth / 2 - this.pauseButton.width / 2, .05 * windowHeight), 
+        this.addChild(this.pauseButton), this.pauseButton.addLabel(new PIXI.Text("||", {
+            font: "40px Arial"
+        }), 5, 5), this.pauseButton.clickCallback = function() {
+            self.endModal.show();
         };
         var item = new Item();
         item.build(), item.setPosition(windowWidth, windowHeight / 2), this.layer.addChild(item), 
-        this.initBench = !1, this.textAcc.setText(this.textAcc.text + "\nendinitApplication"), 
-        this.gameHUD = new PIXI.DisplayObjectContainer(), this.addChild(this.gameHUD), this.pointsLabel = new PIXI.Text("", {
-            font: "25px Arial"
-        }), this.gameHUD.addChild(this.pointsLabel), this.pointsLabel.position.y = 20, this.pointsLabel.position.x = windowWidth / 2;
+        this.initBench = !1, this.gameHUD = new PIXI.DisplayObjectContainer(), this.addChild(this.gameHUD), 
+        this.moneyContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.moneyContainer);
+        var moneyBg = new SimpleSprite("moneyContent.png");
+        this.moneyContainer.addChild(moneyBg.getContent()), this.pointsLabel = new PIXI.Text("", {
+            font: "25px Arial",
+            align: "right"
+        }), this.moneyContainer.addChild(this.pointsLabel), this.moneyContainer.position.y = 20, 
+        this.moneyContainer.position.x = windowWidth / 2;
+        var moneyScale = scaleConverter(this.moneyContainer.width, windowWidth, .25);
+        this.moneyContainer.scale.x = moneyScale, this.moneyContainer.scale.y = moneyScale, 
+        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 30, 
+        this.pointsLabel.position.y = 31, this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20, 
+        this.updateable = !0, this.endModal = new EndModal(this), this.pauseModal = new PauseModal(this);
     },
     updatePoints: function(value) {
         this.points += value;
@@ -1183,6 +1218,159 @@ var Application = AbstractApplication.extend({
         }), 5, 5), this.fullScreen.clickCallback = function() {
             fullscreen();
         }), self.screenManager.change("Choice");
+    }
+}), CreditsModal = Class.extend({
+    init: function(screen) {
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.boxContainer = new PIXI.DisplayObjectContainer(), 
+        this.bg = new PIXI.Graphics(), this.bg.beginFill(19784), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
+        this.bg.alpha = 0, this.container.addChild(this.bg), this.container.addChild(this.boxContainer), 
+        this.background = new SimpleSprite("credits.png"), this.boxContainer.addChild(this.background.container), 
+        this.background.container.position.x = windowWidth / 2 - this.background.getContent().width / 2, 
+        this.background.container.position.y = windowHeight / 2 - this.background.getContent().height / 2;
+        var bgPos = {
+            x: this.background.container.position.x + 70,
+            y: this.background.container.position.y + 14
+        }, self = this;
+        this.exitButton = new DefaultButton("close.png", "close.png"), this.exitButton.build(), 
+        this.exitButton.setPosition(bgPos.x + 815, bgPos.y - 28), this.boxContainer.addChild(this.exitButton.getContent()), 
+        this.exitButton.clickCallback = function() {
+            self.hide();
+        }, this.boxContainer.alpha = 0;
+    },
+    show: function() {
+        this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
+        this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
+            alpha: .8
+        }), TweenLite.to(this.boxContainer.position, 1, {
+            y: 0,
+            ease: "easeOutBack"
+        }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 1
+        });
+    },
+    hide: function(callback) {
+        TweenLite.to(this.bg, .5, {
+            alpha: 0,
+            onComplete: function() {
+                callback && callback();
+            }
+        }), TweenLite.to(this.boxContainer.position, 1, {
+            y: -this.boxContainer.height,
+            ease: "easeInBack"
+        }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 0
+        });
+    },
+    getContent: function() {
+        return this.container;
+    }
+}), EndModal = Class.extend({
+    init: function(screen) {
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.boxContainer = new PIXI.DisplayObjectContainer(), 
+        this.bg = new PIXI.Graphics(), this.bg.beginFill(19784), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
+        this.bg.alpha = 0, this.container.addChild(this.bg), this.container.addChild(this.boxContainer);
+        var self = this;
+        this.background = new SimpleSprite("endModalBg.png"), this.boxContainer.addChild(this.background.getContent()), 
+        this.exitButton = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
+        this.exitButton.build(), this.exitButton.setPosition(this.background.getContent().width / 2 - this.exitButton.width / 2, this.background.getContent().height - this.exitButton.height / 2), 
+        this.boxContainer.addChild(this.exitButton.getContent()), this.exitButton.clickCallback = function() {
+            self.hide(function() {
+                self.screen.updateable = !0, self.screen.reset();
+            });
+        }, this.boxContainer.addChild(this.exitButton.getContent()), this.boxContainer.alpha = 0, 
+        this.boxContainer.visible = !1, this.containerScale = scaleConverter(this.boxContainer.height, windowHeight, .85), 
+        this.boxContainer.scale.x = this.containerScale, this.boxContainer.scale.y = this.containerScale, 
+        this.boxContainer.position.x = windowWidth / 2 - this.background.getContent().width * this.containerScale / 2, 
+        this.boxContainer.position.y = windowHeight / 2 - this.background.getContent().height * this.containerScale / 2;
+        var i = 0, tempBirdContainer = null, birdContainer = null, bird = null, arrayBirds = [ "belga.png", "lambecu.png", "roxo.png", "belga.png", "lambecu.png", "roxo.png" ], cont = 0;
+        for (i = 1; 4 > i; i++) tempBirdContainer = new PIXI.DisplayObjectContainer(), birdContainer = new SimpleSprite("birdContainer.png"), 
+        bird = new SimpleSprite(arrayBirds[cont++]), tempBirdContainer.addChild(birdContainer.getContent()), 
+        tempBirdContainer.addChild(bird.getContent()), this.boxContainer.addChild(tempBirdContainer), 
+        tempBirdContainer.position.x = -50, tempBirdContainer.position.y = (birdContainer.getContent().height - 40) * (i - 1) + 40, 
+        i % 2 === 0 && (birdContainer.getContent().scale.x = -1, tempBirdContainer.position.x -= birdContainer.getContent().width), 
+        bird.getContent().position.y = birdContainer.getContent().height / 2 - bird.getContent().height / 2, 
+        bird.getContent().position.x = birdContainer.getContent().width / 2 - bird.getContent().width / 2 + 30 * birdContainer.getContent().scale.x;
+        for (i = 1; 4 > i; i++) tempBirdContainer = new PIXI.DisplayObjectContainer(), birdContainer = new SimpleSprite("birdContainer.png"), 
+        bird = new SimpleSprite(arrayBirds[cont++]), tempBirdContainer.addChild(birdContainer.getContent()), 
+        this.boxContainer.addChild(tempBirdContainer), tempBirdContainer.addChild(bird.getContent()), 
+        tempBirdContainer.position.x = 610, tempBirdContainer.position.y = (birdContainer.getContent().height - 40) * (i - 1) + 40, 
+        i % 2 !== 0 && (birdContainer.getContent().scale.x = -1, tempBirdContainer.position.x -= birdContainer.getContent().width), 
+        bird.getContent().position.y = birdContainer.getContent().height / 2 - bird.getContent().height / 2, 
+        bird.getContent().position.x = birdContainer.getContent().width / 2 - bird.getContent().width / 2 + 30 * birdContainer.getContent().scale.x;
+        var top = new SimpleSprite("gasoline.png");
+        this.boxContainer.addChild(top.getContent()), top.getContent().position.x = this.background.getContent().width / 2 - top.getContent().width / 2, 
+        top.getContent().position.y = -top.getContent().height / 2;
+    },
+    show: function() {
+        this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
+        this.boxContainer.visible = !0, this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
+            alpha: .8
+        }), TweenLite.to(this.boxContainer.position, 1, {
+            y: windowHeight / 2 - this.background.getContent().height * this.containerScale / 2,
+            ease: "easeOutBack"
+        }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 1
+        });
+    },
+    hide: function(callback) {
+        var self = this;
+        TweenLite.to(this.bg, .5, {
+            alpha: 0,
+            onComplete: function() {
+                callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));
+            }
+        }), TweenLite.to(this.boxContainer.position, 1, {
+            y: -this.boxContainer.height,
+            ease: "easeInBack"
+        }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 0
+        });
+    },
+    getContent: function() {
+        return this.container;
+    }
+}), PauseModal = Class.extend({
+    init: function(screen) {
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.boxContainer = new PIXI.DisplayObjectContainer(), 
+        this.bg = new PIXI.Graphics(), this.bg.beginFill(19784), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
+        this.bg.alpha = 0, this.container.addChild(this.bg), this.container.addChild(this.boxContainer);
+        var self = this;
+        this.exitButton = new DefaultButton("simpleButtonOver.png", "simpleButtonUp.png"), 
+        this.exitButton.build(.2 * windowWidth, .2 * windowHeight), this.exitButton.setPosition(windowWidth / 2 - this.exitButton.width / 2, windowHeight / 2 - this.exitButton.height / 2), 
+        this.boxContainer.addChild(this.exitButton.getContent()), this.exitButton.clickCallback = function() {
+            self.hide(function() {
+                self.screen.updateable = !0;
+            });
+        }, this.boxContainer.addChild(this.exitButton.getContent()), this.boxContainer.alpha = 0, 
+        this.boxContainer.visible = !1;
+    },
+    show: function() {
+        this.screen.addChild(this), this.boxContainer.visible = !0, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
+        this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
+            alpha: .8
+        }), TweenLite.to(this.boxContainer.position, 1, {
+            y: 0,
+            ease: "easeOutBack"
+        }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 1
+        });
+    },
+    hide: function(callback) {
+        var self = this;
+        TweenLite.to(this.bg, .5, {
+            alpha: 0,
+            onComplete: function() {
+                callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));
+            }
+        }), TweenLite.to(this.boxContainer.position, 1, {
+            y: -this.boxContainer.height,
+            ease: "easeInBack"
+        }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 0
+        });
+    },
+    getContent: function() {
+        return this.container;
     }
 }), FirebaseSocket = SmartSocket.extend({
     init: function(url) {

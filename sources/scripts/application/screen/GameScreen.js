@@ -9,7 +9,7 @@ var GameScreen = AbstractScreen.extend({
         this._super();
     },
     build: function () {
-        console.log(this.gameOver);
+        console.log(this.gameOver,'build');
 
         this.particleAccum = 100;
         this.gameOver = false;
@@ -26,7 +26,7 @@ var GameScreen = AbstractScreen.extend({
 
         if(assetsToLoader.length > 0){
             this.loader = new PIXI.AssetLoader(assetsToLoader);
-            this.textAcc.setText(this.textAcc.text+'\ninitLoad');
+            // this.textAcc.setText(this.textAcc.text+'\ninitLoad');
             this.initLoad();
         }else{
             this.onAssetsLoaded();
@@ -106,17 +106,21 @@ var GameScreen = AbstractScreen.extend({
                 self.red.setTarget(touchData.global.y + self.red.getContent().height * 0.8);
             }
         };
-        this.textAcc.setText(this.textAcc.text+'\nbuild');
+        // this.textAcc.setText(this.textAcc.text+'\nbuild');
 
         this.spawner = 0;
     },
+    reset:function(){
+        this.destroy();
+        this.build();
+    },
     onProgress:function(){
-        this.textAcc.setText(this.textAcc.text+'\nonProgress');
+        // this.textAcc.setText(this.textAcc.text+'\nonProgress');
         this._super();
     },
     onAssetsLoaded:function()
     {
-        this.textAcc.setText(this.textAcc.text+'\nAssetsLoaded');
+        // this.textAcc.setText(this.textAcc.text+'\nAssetsLoaded');
         this.initApplication();
     },
     shoot:function() {
@@ -142,6 +146,9 @@ var GameScreen = AbstractScreen.extend({
         }
     },
     update:function() {
+        if(!this.updateable){
+            return;
+        }
         this._super();
         if(!this.playerModel || !this.initApp)
         {
@@ -177,7 +184,7 @@ var GameScreen = AbstractScreen.extend({
             // console.log(this.red.getPosition().y);
             if(this.red.getPosition().y > windowHeight+ this.red.getContent().height){
                 console.log('GAME OVER');
-                this.screenManager.change('EndGame');
+                this.endModal.show();
             }
         }
         if(this.bulletBar){
@@ -191,6 +198,7 @@ var GameScreen = AbstractScreen.extend({
         this.updateParticles();
         if(this.pointsLabel){
             this.pointsLabel.setText(this.points);
+            this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 30;
         }
 
     },
@@ -277,13 +285,23 @@ var GameScreen = AbstractScreen.extend({
         this.energyBar.setPosition(250 + posHelper * 2 + this.bulletBar.width, posHelper);
 
 
-        this.returnButton = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.returnButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         this.returnButton.build(60, 50);
         this.returnButton.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 65);
         this.addChild(this.returnButton);
         this.returnButton.addLabel(new PIXI.Text('<', {font:'40px Arial'}),5,5);
         this.returnButton.clickCallback = function(){
             self.screenManager.prevScreen();
+        };
+
+        this.pauseButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        this.pauseButton.build(60, 50);
+        this.pauseButton.setPosition( windowWidth /2 - this.pauseButton.width / 2, windowHeight * 0.05);
+        this.addChild(this.pauseButton);
+        this.pauseButton.addLabel(new PIXI.Text('||', {font:'40px Arial'}),5,5);
+        this.pauseButton.clickCallback = function(){
+            // self.pauseModal.show();
+            self.endModal.show();
         };
 
         var item = new Item();
@@ -304,17 +322,39 @@ var GameScreen = AbstractScreen.extend({
 
         this.initBench = false;
 
-        this.textAcc.setText(this.textAcc.text+'\nendinitApplication');
+        // this.textAcc.setText(this.textAcc.text+'\nendinitApplication');
 
 
         this.gameHUD = new PIXI.DisplayObjectContainer();
         this.addChild(this.gameHUD);
 
-        this.pointsLabel = new PIXI.Text('', {font:'25px Arial'});
-        this.gameHUD.addChild(this.pointsLabel);
-        this.pointsLabel.position.y = 20;
-        this.pointsLabel.position.x = windowWidth / 2;
+        this.moneyContainer = new PIXI.DisplayObjectContainer();
+        this.addChild(this.moneyContainer);
 
+        var moneyBg = new SimpleSprite('moneyContent.png');
+        this.moneyContainer.addChild(moneyBg.getContent());
+
+        this.pointsLabel = new PIXI.Text('', {font:'25px Arial', align:'right'});
+        this.moneyContainer.addChild(this.pointsLabel);
+        this.moneyContainer.position.y = 20;
+        this.moneyContainer.position.x = windowWidth / 2;
+
+        var moneyScale = scaleConverter(this.moneyContainer.width, windowWidth, 0.25);
+        this.moneyContainer.scale.x = moneyScale;
+        this.moneyContainer.scale.y = moneyScale;
+
+        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 30;
+        this.pointsLabel.position.y = 31;
+
+        this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;//this.moneyContainer.width * 0.05;
+
+        this.updateable = true;
+
+        this.endModal = new EndModal(this);
+
+        this.pauseModal = new PauseModal(this);
+
+        
         
     },
     updatePoints:function(value){

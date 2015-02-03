@@ -20,7 +20,7 @@ var AppModel = Class.extend({
 				thumb:'thumb_jeiso'
 			},
 			{
-				energyCoast:1,
+				energyCoast:1.5,
 				vel:2.5,
 				bulletForce:1.5,
 				bulletCoast:0.1,
@@ -35,11 +35,11 @@ var AppModel = Class.extend({
 				thumb:'thumb_jeiso'
 			},
 			{
-				energyCoast:1,
+				energyCoast:2,
 				vel:1.5,
 				bulletForce:2.5,
 				bulletVel:6,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 			}
 			),
 			new PlayerModel({
@@ -50,10 +50,10 @@ var AppModel = Class.extend({
 				thumb:'thumb_jeiso'
 			},
 			{
-				energyCoast:0.5,
+				energyCoast:1,
 				vel:1,
 				bulletForce:2.5,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 				bulletVel:6,
 			}
 			),
@@ -83,7 +83,7 @@ var AppModel = Class.extend({
 				energyCoast:3,
 				vel:1,
 				bulletForce:1,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 				bulletVel:5,
 			}
 			),
@@ -98,7 +98,7 @@ var AppModel = Class.extend({
 				energyCoast:2.5,
 				vel:1.5,
 				bulletForce:1,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 				bulletVel:5,
 			}
 			),
@@ -113,7 +113,7 @@ var AppModel = Class.extend({
 				energyCoast:2,
 				vel:1,
 				bulletForce:2,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 				bulletVel:5,
 			}
 			),
@@ -128,7 +128,7 @@ var AppModel = Class.extend({
 				energyCoast:1.5,
 				vel:2,
 				bulletForce:1.5,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 				bulletVel:5,
 			}
 			),
@@ -140,10 +140,10 @@ var AppModel = Class.extend({
 				thumb:'thumb_jeiso'
 			},
 			{
-				energyCoast:2,
+				energyCoast:2.5,
 				vel:2,
 				bulletForce:2,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 				bulletVel:5,
 			}
 			),
@@ -158,7 +158,7 @@ var AppModel = Class.extend({
 				energyCoast:3,
 				vel:2,
 				bulletForce:1,
-				bulletCoast:0.2,
+				bulletCoast:0.1,
 				bulletVel:5,
 			}
 			)

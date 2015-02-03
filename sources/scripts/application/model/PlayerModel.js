@@ -2,8 +2,8 @@
 var PlayerModel = Class.extend({
 	init:function(graphicsObject, statsObject){//source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet, color, thumb){
 		this.range = 40;
-		this.maxEnergy = 3000;
-		this.currentEnergy = 3000;
+		this.maxEnergy = 5000;
+		this.currentEnergy = 5000;
 		this.maxBulletEnergy = 100;
 		this.currentBulletEnergy = 100;
 		this.recoverBulletEnergy = 0.5;
@@ -19,7 +19,9 @@ var PlayerModel = Class.extend({
 		this.imgSource = graphicsObject.outGame?graphicsObject.outGame:'piangersN.png';
 		this.imgSourceGame = graphicsObject.inGame?graphicsObject.inGame:'piangersNGame.png';
 		this.bulletSource = graphicsObject.bullet?graphicsObject.bullet:'bullet.png';
-		this.energyCoast = 4 - statsObject.energyCoast?statsObject.energyCoast:1;
+		this.energyCoast = statsObject.energyCoast?statsObject.energyCoast:1;
+		this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2;
+		console.log(this.energyCoast);
 		this.bulletCoast = statsObject.bulletCoast?statsObject.bulletCoast:0.2;
 		this.velocity = statsObject.vel?statsObject.vel:2;
 		this.bulletVel = statsObject.bulletVel?statsObject.bulletVel:8;

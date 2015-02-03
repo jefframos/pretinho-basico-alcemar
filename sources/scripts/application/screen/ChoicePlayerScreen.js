@@ -240,9 +240,9 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.arrButtons[i].mouseUpCallback = this.resetButtons;
         }
 
-        this.play = new DefaultButton('out.png', 'selected.png');
-        this.play.build(120,70);
-        this.play.setPosition( windowWidth - this.play.width,windowHeight - 70);
+        this.play = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        this.play.build(120,60);
+        this.play.setPosition( windowWidth - this.play.width - 10,windowHeight - this.play.height - 10);
         this.addChild(this.play);
 
         this.play.addLabel(new PIXI.Text('PLAY', { align:'center', font:'35px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
@@ -250,11 +250,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.screenManager.change('Game');
         };
 
-        this.returnButton = new DefaultButton('out.png', 'selected.png');
-        this.returnButton.build(60, 70);
-        this.returnButton.setPosition(0,windowHeight - 70);
+        this.returnButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        this.returnButton.build(60, 60);
+        this.returnButton.setPosition(10 ,windowHeight - this.play.height - 10);
         this.addChild(this.returnButton);
-        this.returnButton.addLabel(new PIXI.Text('<', {font:'70px Arial'}),5,5);
+        // this.returnButton.addLabel(new PIXI.Text('<', {font:'70px Arial'}),5,5);
         this.returnButton.clickCallback = function(){
             self.screenManager.change('Wait');
         };
@@ -329,7 +329,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         }
     },
     updateStatsBars:function(){
-        this.energyBar.updateBar(APP.getGameModel().currentPlayerModel.energyCoast, 3);
+        this.energyBar.updateBar(1, APP.getGameModel().currentPlayerModel.energyCoast);
         // console.log(APP.getGameModel().currentPlayerModel.velocity);
         this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3);
         this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);

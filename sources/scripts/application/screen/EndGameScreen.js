@@ -32,7 +32,7 @@ var EndGameScreen = AbstractScreen.extend({
     initApplication:function(){
        
         var self = this;
-        this.btnBenchmark = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
+        this.btnBenchmark = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         this.btnBenchmark.build(300,120);
         this.btnBenchmark.setPosition( windowWidth / 2 - this.btnBenchmark.width / 2,windowHeight / 2);
         this.addChild(this.btnBenchmark);

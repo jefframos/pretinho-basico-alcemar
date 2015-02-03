@@ -65,15 +65,15 @@ var Bullet = Entity.extend({
         }
     },
     preKill:function(){
-        // for (var i = 2; i >= 0; i--) {
-        //     var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'bulletParticle.png', Math.random() * 0.1);
-        //     particle.build();
-        //     particle.gravity = 0.1 * Math.random() + 0.2;
-        //     particle.alphadecres = 0.08;
-        //     particle.setPosition(this.getPosition().x - (Math.random() + this.getContent().width * 0.1) / 2,
-        //         this.getPosition().y);
-        //     this.layer.addChild(particle);
-        // }
+        for (var i = 2; i >= 0; i--) {
+            var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'bulletParticle.png', Math.random() * 0.1);
+            particle.build();
+            particle.gravity = 0.1 * Math.random() + 0.2;
+            particle.alphadecres = 0.08;
+            particle.setPosition(this.getPosition().x - (Math.random() + this.getContent().width * 0.1) / 2,
+                this.getPosition().y);
+            this.layer.addChild(particle);
+        }
         this.collidable = false;
         this.kill = true;
     },
