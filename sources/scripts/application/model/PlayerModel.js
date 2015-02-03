@@ -1,10 +1,10 @@
 /*jshint undef:false */
 var PlayerModel = Class.extend({
-	init:function(source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet, color, thumb){
+	init:function(graphicsObject, statsObject){//source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet, color, thumb){
 		this.range = 40;
-		this.maxEnergy = 100;
+		this.maxEnergy = 3000;
+		this.currentEnergy = 3000;
 		this.maxBulletEnergy = 100;
-		this.currentEnergy = 100;
 		this.currentBulletEnergy = 100;
 		this.recoverBulletEnergy = 0.5;
 		this.chargeBullet = 2;
@@ -12,18 +12,18 @@ var PlayerModel = Class.extend({
 		this.recoverEnergy = 0.5;
 					
 
-		this.thumb = thumb?thumb:'thumb_jeiso';
+		this.thumb = graphicsObject.thumb?graphicsObject.thumb:'thumb_jeiso';
 		this.thumbColor = this.thumb + '_color.png';
 		this.thumbGray = this.thumb + '_gray.png';
-		this.color = color?color:0x002233;
-		this.imgSource = source?source:'piangersN.png';
-		this.imgSourceGame = sourceGame?sourceGame:'piangersNGame.png';
-		this.bulletSource = bullet?bullet:'bullet.png';
-		this.energyCoast = ecoast?ecoast:0.002;
-		this.bulletCoast = bcoast?bcoast:0.2;
-		this.velocity = vel?vel:2;
-		this.bulletVel = bvel?bvel:8;
-		this.bulletForce = bforce?bforce:1;
+		this.color = graphicsObject.color?graphicsObject.color:0x002233;
+		this.imgSource = graphicsObject.outGame?graphicsObject.outGame:'piangersN.png';
+		this.imgSourceGame = graphicsObject.inGame?graphicsObject.inGame:'piangersNGame.png';
+		this.bulletSource = graphicsObject.bullet?graphicsObject.bullet:'bullet.png';
+		this.energyCoast = 4 - statsObject.energyCoast?statsObject.energyCoast:1;
+		this.bulletCoast = statsObject.bulletCoast?statsObject.bulletCoast:0.2;
+		this.velocity = statsObject.vel?statsObject.vel:2;
+		this.bulletVel = statsObject.bulletVel?statsObject.bulletVel:8;
+		this.bulletForce = statsObject.bulletForce?statsObject.bulletForce:1;
 		
 	},
 	reset:function(id){

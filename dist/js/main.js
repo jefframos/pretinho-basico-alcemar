@@ -1,4 +1,4 @@
-/*! jefframos 30-01-2015 */
+/*! jefframos 03-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -335,6 +335,10 @@ var Application = AbstractApplication.extend({
         this.frontShape.beginFill(65280), this.frontShape.drawRect(0, 0, width, height), 
         this.container.addChild(this.frontShape), this.frontShape.scale.x = this.currentValue / this.maxValue;
     },
+    addBackShape: function(color, size) {
+        this.back = new PIXI.Graphics(), this.back.beginFill(color), this.back.drawRect(-size / 2, -size / 2, this.width + size, this.height + size), 
+        this.container.addChildAt(this.back, 0);
+    },
     setFrontColor: function(color) {
         this.frontShape && this.container.removeChild(this.frontShape), this.frontShape = new PIXI.Graphics(), 
         this.frontShape.beginFill(color), this.frontShape.drawRect(0, 0, this.width, this.height), 
@@ -632,8 +636,127 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel("piangersN.png", "piangersNGame.png", .04, .1, 2, 9, 1, "bulletSmall.png", 7654879), new PlayerModel("feter.png", "feterGame.png", .03, .2, 1.5, 6, 2, "bullet.png", 15614755), new PlayerModel("alcemar.png", "alcemarGame.png", .05, .25, 2, 6, 4, "bullet.png", 11719780), new PlayerModel("jeso.png", "jesoGame.png", .05, .25, 2, 6, 4, "bullet.png", 8963136), new PlayerModel("pi.png", "piGame.png", .05, .25, 2, 6, 4, "bullet.png", 9399727), new PlayerModel("pora.png", "poraGame.png", .05, .25, 2, 6, 4, "bullet.png", 16633351), new PlayerModel("arthur.png", "arthurGame.png", .05, .25, 2, 6, 4, "bullet.png", 11764665), new PlayerModel("poter.png", "poterGame.png", .05, .25, 2, 6, 4, "bullet.png", 16428876), new PlayerModel("neto.png", "netoGame.png", .05, .25, 2, 6, 4, "bullet.png", 11772272), new PlayerModel("rodaika.png", "rodaikaGame.png", .05, .25, 2, 6, 4, "bullet.png", 15893674) ], 
-        this.birdModels = [ new BirdModel("belga.png", null, 4, .1, 3, new BirdBehaviourSinoid({
+        this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel({
+            outGame: "piangersN.png",
+            inGame: "piangersNGame.png",
+            bullet: "bulletSmall.png",
+            color: 7654879,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 1,
+            vel: 2.5,
+            bulletForce: 1.5,
+            bulletCoast: .1,
+            bulletVel: 9
+        }), new PlayerModel({
+            outGame: "feter.png",
+            inGame: "feterGame.png",
+            bullet: "bulletSmall.png",
+            color: 15614755,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 1,
+            vel: 1.5,
+            bulletForce: 2.5,
+            bulletVel: 6,
+            bulletCoast: .2
+        }), new PlayerModel({
+            outGame: "alcemar.png",
+            inGame: "alcemarGame.png",
+            bullet: "bulletSmall.png",
+            color: 11719780,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: .5,
+            vel: 1,
+            bulletForce: 2.5,
+            bulletCoast: .2,
+            bulletVel: 6
+        }), new PlayerModel({
+            outGame: "jeso.png",
+            inGame: "jesoGame.png",
+            bullet: "bulletSmall.png",
+            color: 8963136,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 1.5,
+            vel: 3,
+            bulletForce: .5,
+            bulletCoast: .1,
+            bulletVel: 8
+        }), new PlayerModel({
+            outGame: "pi.png",
+            inGame: "piGame.png",
+            bullet: "bulletSmall.png",
+            color: 9399727,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 3,
+            vel: 1,
+            bulletForce: 1,
+            bulletCoast: .2,
+            bulletVel: 5
+        }), new PlayerModel({
+            outGame: "pora.png",
+            inGame: "poraGame.png",
+            bullet: "bulletSmall.png",
+            color: 16633351,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 2.5,
+            vel: 1.5,
+            bulletForce: 1,
+            bulletCoast: .2,
+            bulletVel: 5
+        }), new PlayerModel({
+            outGame: "arthur.png",
+            inGame: "arthurGame.png",
+            bullet: "bulletSmall.png",
+            color: 11764665,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 2,
+            vel: 1,
+            bulletForce: 2,
+            bulletCoast: .2,
+            bulletVel: 5
+        }), new PlayerModel({
+            outGame: "poter.png",
+            inGame: "poterGame.png",
+            bullet: "bulletSmall.png",
+            color: 16428876,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 1.5,
+            vel: 2,
+            bulletForce: 1.5,
+            bulletCoast: .2,
+            bulletVel: 5
+        }), new PlayerModel({
+            outGame: "neto.png",
+            inGame: "netoGame.png",
+            bullet: "bulletSmall.png",
+            color: 11772272,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 2,
+            vel: 2,
+            bulletForce: 2,
+            bulletCoast: .2,
+            bulletVel: 5
+        }), new PlayerModel({
+            outGame: "rodaika.png",
+            inGame: "rodaikaGame.png",
+            bullet: "bulletSmall.png",
+            color: 15893674,
+            thumb: "thumb_jeiso"
+        }, {
+            energyCoast: 3,
+            vel: 2,
+            bulletForce: 1,
+            bulletCoast: .2,
+            bulletVel: 5
+        }) ], this.birdModels = [ new BirdModel("belga.png", null, 4, .1, 3, new BirdBehaviourSinoid({
             sinAcc: .05
         }), 120, .1), new BirdModel("roxo.png", null, 6, .2, -3, new BirdBehaviourDiag({
             accX: .02
@@ -660,15 +783,17 @@ var Application = AbstractApplication.extend({
     },
     serialize: function() {}
 }), PlayerModel = Class.extend({
-    init: function(source, sourceGame, ecoast, bcoast, vel, bvel, bforce, bullet, color, thumb) {
-        this.range = 40, this.maxEnergy = 100, this.maxBulletEnergy = 100, this.currentEnergy = 100, 
+    init: function(graphicsObject, statsObject) {
+        this.range = 40, this.maxEnergy = 3e3, this.currentEnergy = 3e3, this.maxBulletEnergy = 100, 
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
-        this.currentBulletForce = 100, this.recoverEnergy = .5, this.thumb = thumb ? thumb : "thumb_jeiso", 
+        this.currentBulletForce = 100, this.recoverEnergy = .5, this.thumb = graphicsObject.thumb ? graphicsObject.thumb : "thumb_jeiso", 
         this.thumbColor = this.thumb + "_color.png", this.thumbGray = this.thumb + "_gray.png", 
-        this.color = color ? color : 8755, this.imgSource = source ? source : "piangersN.png", 
-        this.imgSourceGame = sourceGame ? sourceGame : "piangersNGame.png", this.bulletSource = bullet ? bullet : "bullet.png", 
-        this.energyCoast = ecoast ? ecoast : .002, this.bulletCoast = bcoast ? bcoast : .2, 
-        this.velocity = vel ? vel : 2, this.bulletVel = bvel ? bvel : 8, this.bulletForce = bforce ? bforce : 1;
+        this.color = graphicsObject.color ? graphicsObject.color : 8755, this.imgSource = graphicsObject.outGame ? graphicsObject.outGame : "piangersN.png", 
+        this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
+        this.bulletSource = graphicsObject.bullet ? graphicsObject.bullet : "bullet.png", 
+        this.energyCoast = 4 - statsObject.energyCoast ? statsObject.energyCoast : 1, this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
+        this.velocity = statsObject.vel ? statsObject.vel : 2, this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, 
+        this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1;
     },
     reset: function() {
         this.currentEnergy = this.maxEnergy, this.currentBulletEnergy = this.maxBulletEnergy;
@@ -701,7 +826,7 @@ var Application = AbstractApplication.extend({
         var sizeScale = 135 / 640 * windowHeight, spacing = 5 / 640 * windowHeight;
         this.backgroundImage = new SimpleSprite("dist/img/UI/bgChoice.png"), this.addChild(this.backgroundImage), 
         this.backgroundImage.container.width = windowWidth, this.backgroundImage.container.height = windowHeight, 
-        this.pointsMask = [ [ 515 / 1136 * windowWidth, 0 ], [ 1035 / 1136 * windowWidth, 0 ], [ 465 / 1136 * windowWidth, windowHeight ], [ 25 / 1136 * windowWidth, windowHeight ] ], 
+        this.pointsMask = [ [ 510 / 1136 * windowWidth, 0 ], [ 1035 / 1136 * windowWidth, 0 ], [ 465 / 1136 * windowWidth, windowHeight ], [ 25 / 1136 * windowWidth, windowHeight ] ], 
         this.faceContainer = new PIXI.DisplayObjectContainer(), this.faceMask = new PIXI.Graphics(), 
         this.faceMask.beginFill(6684757), this.faceMask.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), 
         this.faceMask.lineTo(this.pointsMask[1][0], this.pointsMask[1][1]), this.faceMask.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), 
@@ -777,21 +902,65 @@ var Application = AbstractApplication.extend({
             font: "70px Arial"
         }), 5, 5), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
-        }, this.updatePlayers(), this.char1.selectedFunction();
+        }, this.char1.selectedFunction(), this.createStatsContainer(), this.updatePlayers();
+    },
+    createStatsContainer: function() {
+        this.statsContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.statsContainer), 
+        this.backBars = new SimpleSprite("backBars.png"), this.statsContainer.addChild(this.backBars.getContent());
+        var barX = 42.5, barY = 50, energyLabel = new PIXI.Text("ENERGIA", {
+            align: "center",
+            font: "20px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        });
+        this.statsContainer.addChild(energyLabel), energyLabel.position.x = 117.5 - energyLabel.width / 2, 
+        energyLabel.position.y = 20;
+        var velLabel = new PIXI.Text("VELOCIDADE", {
+            align: "center",
+            font: "20px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        });
+        this.statsContainer.addChild(velLabel), velLabel.position.x = 117.5 - velLabel.width / 2, 
+        velLabel.position.y = 80;
+        var tiroLabel = new PIXI.Text("TIRO", {
+            align: "center",
+            font: "20px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        });
+        this.statsContainer.addChild(tiroLabel), tiroLabel.position.x = 117.5 - tiroLabel.width / 2, 
+        tiroLabel.position.y = 140, this.energyBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.energyBar.getContent()), 
+        this.energyBar.setPosition(barX, 0 + barY), this.energyBar.setFrontColor(16158750), 
+        this.energyBar.setBackColor(0), this.energyBar.addBackShape(362607, 6), this.velBar = new BarView(150, 15, 1, 0), 
+        this.statsContainer.addChild(this.velBar.getContent()), this.velBar.setPosition(barX, 60 + barY), 
+        this.velBar.setFrontColor(16158750), this.velBar.setBackColor(0), this.velBar.addBackShape(362607, 6), 
+        this.powerBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.powerBar.getContent()), 
+        this.powerBar.setPosition(barX, 120 + barY), this.powerBar.setFrontColor(16158750), 
+        this.powerBar.setBackColor(0), this.powerBar.addBackShape(362607, 6);
+        var statsScale = scaleConverter(this.statsContainer.width, windowWidth, .2);
+        this.statsContainer.scale.x = statsScale, this.statsContainer.scale.y = statsScale, 
+        this.statsContainer.position.x = windowWidth - this.statsContainer.width - .1 * this.statsContainer.width, 
+        this.statsContainer.position.y = this.char1.getContent().position.y;
     },
     resetButtons: function() {
         for (var i = this.parent.arrButtons.length - 1; i >= 0; i--) this !== this.parent.arrButtons[i] && this.parent.arrButtons[i].resetTextures();
     },
+    updateStatsBars: function() {
+        this.energyBar.updateBar(APP.getGameModel().currentPlayerModel.energyCoast, 3), 
+        this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3), this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);
+    },
     updatePlayers: function() {
-        if (this.currentID = APP.getGameModel().currentID, this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
+        if (this.currentID = APP.getGameModel().currentID, this.updateStatsBars(), this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
         this.faceColor = new PIXI.Graphics(), this.faceColor.beginFill(APP.getGameModel().currentPlayerModel.color), 
         this.faceColor.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), this.faceColor.lineTo(this.pointsMask[1][0], this.pointsMask[1][1]), 
         this.faceColor.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), this.faceColor.lineTo(this.pointsMask[3][0], this.pointsMask[3][1]), 
-        this.faceContainer.addChildAt(this.faceColor, 0), this.playerImgBig && this.playerImgBig.getContent().parent && (this.playerImgBig.getContent().parent.removeChild(this.playerImgBig.getContent()), 
+        this.faceColor.blendMode = PIXI.blendModes.MULTIPLY, this.faceContainer.addChildAt(this.faceColor, 0), 
+        this.playerImgBig && this.playerImgBig.getContent().parent && (this.playerImgBig.getContent().parent.removeChild(this.playerImgBig.getContent()), 
         this.removeChild(this.playerImgBig)), this.playerImgBig = new SimpleSprite("dist/img/UI/jeisoGrande.png"), 
         this.playerImgBig.setPosition(windowWidth / 2 - .8 * this.playerImgBig.getContent().width / 2, windowHeight / 2 - .8 * this.playerImgBig.getContent().height / 2), 
         this.faceContainer.addChild(this.playerImgBig.getContent()), this.playerImgBig.container.scale.x = .8, 
-        this.playerImgBig.container.scale.y = .8, this.faceColorBlink.alpha = 1, TweenLite.to(this.faceColorBlink, .3, {
+        this.playerImgBig.container.scale.y = .8, this.faceColorBlink.alpha = 1, TweenLite.to(this.faceColorBlink, .2, {
             alpha: 0
         }), TweenLite.from(this.playerImgBig.getContent().position, .8, {
             x: this.playerImgBig.getContent().position.x + .1 * windowWidth

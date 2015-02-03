@@ -36,23 +36,6 @@ var WaitScreen = AbstractScreen.extend({
     },
     initApplication:function(){
 
-        // createjs.Sound.registerSound('dist/img/Roteirista.mp3', 'soundID');
-        // createjs.Sound.play('soundID');
-
-
-        // soundManager.onready(function() {
-        //     soundManager.createSound({
-        //         id: 'mySound',
-        //         url: 'dist/img/Roteirista.mp3',
-        //         autoLoad: true,
-        //         autoPlay: false,
-        //         onload: function() {
-        //             soundManager.play('mySound');
-        //         },
-        //         volume: 50
-        //     });
-        // });
-        
 
         this.easeImg = new SimpleSprite('dist/img/ease.png');
         this.addChild(this.easeImg);

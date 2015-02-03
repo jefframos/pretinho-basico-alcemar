@@ -44,7 +44,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.backgroundImage.container.width = windowWidth;
         this.backgroundImage.container.height = windowHeight;
 
-        this.pointsMask = [[515 / 1136 * windowWidth, 0],
+        this.pointsMask = [[510 / 1136 * windowWidth, 0],
         [1035 / 1136 * windowWidth, 0],
         [465 / 1136 * windowWidth, windowHeight],
         [25 / 1136 * windowWidth, windowHeight]];
@@ -259,8 +259,67 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.screenManager.change('Wait');
         };
 
-        this.updatePlayers();
         this.char1.selectedFunction();
+        
+        this.createStatsContainer();
+        this.updatePlayers();
+    },
+    createStatsContainer:function(){
+        this.statsContainer = new PIXI.DisplayObjectContainer();
+        this.addChild(this.statsContainer);
+
+
+        this.backBars = new SimpleSprite('backBars.png');
+        this.statsContainer.addChild(this.backBars.getContent());
+
+        var barX = 235 / 2 - 150 / 2;
+        var barY = 50;
+        var energyLabel = new PIXI.Text('ENERGIA', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        this.statsContainer.addChild(energyLabel);
+        energyLabel.position.x = 235 / 2 - energyLabel.width / 2;
+        energyLabel.position.y = 20;
+
+        var velLabel = new PIXI.Text('VELOCIDADE', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        this.statsContainer.addChild(velLabel);
+        velLabel.position.x = 235 / 2 - velLabel.width / 2;
+        velLabel.position.y = 80;
+
+
+        var tiroLabel = new PIXI.Text('TIRO', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        this.statsContainer.addChild(tiroLabel);
+        tiroLabel.position.x = 235 / 2 - tiroLabel.width / 2;
+        tiroLabel.position.y = 140;
+
+
+        this.energyBar = new BarView(150, 15, 1, 0);
+        this.statsContainer.addChild(this.energyBar.getContent());
+        this.energyBar.setPosition(barX, 0 + barY);
+        this.energyBar.setFrontColor(0xF6901E);
+        this.energyBar.setBackColor(0x000);
+        this.energyBar.addBackShape(0x05886F, 6);
+
+        this.velBar = new BarView(150, 15, 1, 0);
+        this.statsContainer.addChild(this.velBar.getContent());
+        this.velBar.setPosition(barX, 60 + barY);
+        this.velBar.setFrontColor(0xF6901E);
+        this.velBar.setBackColor(0x000);
+        this.velBar.addBackShape(0x05886F, 6);
+
+
+        this.powerBar = new BarView(150, 15, 1, 0);
+        this.statsContainer.addChild(this.powerBar.getContent());
+        this.powerBar.setPosition(barX, 120 + barY);
+        this.powerBar.setFrontColor(0xF6901E);
+        this.powerBar.setBackColor(0x000);
+        this.powerBar.addBackShape(0x05886F, 6);
+
+
+        var statsScale = scaleConverter(this.statsContainer.width, windowWidth, 0.2);
+        this.statsContainer.scale.x = statsScale;
+        this.statsContainer.scale.y = statsScale;
+
+        this.statsContainer.position.x = windowWidth - this.statsContainer.width - this.statsContainer.width * 0.1;
+        this.statsContainer.position.y = this.char1.getContent().position.y;
     },
     resetButtons:function(){
         for (var i = this.parent.arrButtons.length - 1; i >= 0; i--) {
@@ -269,13 +328,19 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             }
         }
     },
+    updateStatsBars:function(){
+        this.energyBar.updateBar(APP.getGameModel().currentPlayerModel.energyCoast, 3);
+        // console.log(APP.getGameModel().currentPlayerModel.velocity);
+        this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3);
+        this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);
+    },
     updatePlayers:function()
     {
         // console.log(this.currentID, APP.getGameModel().currentID);
 
         //this.faceContainer
-
         this.currentID = APP.getGameModel().currentID;
+        this.updateStatsBars();
 
         if(this.faceColor && this.faceColor.parent){
             this.faceColor.parent.removeChild(this.faceColor);
@@ -288,6 +353,8 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.faceColor.lineTo(this.pointsMask[1][0],this.pointsMask[1][1]);
         this.faceColor.lineTo(this.pointsMask[2][0],this.pointsMask[2][1]);
         this.faceColor.lineTo(this.pointsMask[3][0],this.pointsMask[3][1]);
+        this.faceColor.blendMode = PIXI.blendModes.MULTIPLY;
+
         this.faceContainer.addChildAt(this.faceColor, 0);
 
 
@@ -301,18 +368,14 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.faceContainer.addChild(this.playerImgBig.getContent());
         this.playerImgBig.container.scale.x = 0.8;
         this.playerImgBig.container.scale.y = 0.8;
-        //this.playerImgBig.container.filters = [new PIXI.GrayFilter()];
-
-
-
-        
 
 
         // this.faceColor.tint = APP.getGameModel().currentPlayerModel.color;
         this.faceColorBlink.alpha = 1;
-        TweenLite.to(this.faceColorBlink, 0.3, {alpha:0});
+        TweenLite.to(this.faceColorBlink, 0.2, {alpha:0});
         TweenLite.from(this.playerImgBig.getContent().position, 0.8, {x: this.playerImgBig.getContent().position.x + windowWidth * 0.1});
         TweenLite.from(this.playerImgBig.getContent(), 0.3, {alpha:  0});
+
 
         if(this.playerImg && this.playerImg.getContent().parent){
             this.playerImg.getContent().parent.removeChild(this.playerImg.getContent());

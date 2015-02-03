@@ -4,23 +4,164 @@ var AppModel = Class.extend({
 		this.currentPlayerModel = {};
 
 		// source,
-		// energy coast,
+		// energy coast, 1 / 3
 		// bullet coast,
-		// vel,
+		// vel, 1 / 3
 		// bullet vel,
-		// bullet force
+		// bullet force 1 / 3
 
 		this.playerModels = [
-			new PlayerModel('piangersN.png', 'piangersNGame.png',0.04,0.1,2,9,1,'bulletSmall.png',0x74CDDF),
-			new PlayerModel('feter.png', 'feterGame.png',0.03,0.2,1.5,6,2,'bullet.png', 0xEE4323),
-			new PlayerModel('alcemar.png', 'alcemarGame.png',0.05,0.25,2,6,4,'bullet.png', 0xB2D464),
-			new PlayerModel('jeso.png', 'jesoGame.png',0.05,0.25,2,6,4,'bullet.png', 0x88C440),
-			new PlayerModel('pi.png', 'piGame.png',0.05,0.25,2,6,4,'bullet.png', 0x8F6DAF),
-			new PlayerModel('pora.png', 'poraGame.png',0.05,0.25,2,6,4,'bullet.png', 0xFDCE07),
-			new PlayerModel('arthur.png', 'arthurGame.png',0.05,0.25,2,6,4,'bullet.png', 0xB383B9),
-			new PlayerModel('poter.png', 'poterGame.png',0.05,0.25,2,6,4,'bullet.png', 0xFAAF4C),
-			new PlayerModel('neto.png', 'netoGame.png',0.05,0.25,2,6,4,'bullet.png', 0xB3A170),
-			new PlayerModel('rodaika.png', 'rodaikaGame.png',0.05,0.25,2,6,4,'bullet.png', 0xF284AA),
+
+			new PlayerModel({
+				outGame:'piangersN.png',
+				inGame:'piangersNGame.png',
+				bullet:'bulletSmall.png',
+				color:0x74CDDF,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:1,
+				vel:2.5,
+				bulletForce:1.5,
+				bulletCoast:0.1,
+				bulletVel:9,
+			}
+			),
+			new PlayerModel({
+				outGame:'feter.png',
+				inGame:'feterGame.png',
+				bullet:'bulletSmall.png',
+				color:0xEE4323,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:1,
+				vel:1.5,
+				bulletForce:2.5,
+				bulletVel:6,
+				bulletCoast:0.2,
+			}
+			),
+			new PlayerModel({
+				outGame:'alcemar.png',
+				inGame:'alcemarGame.png',
+				bullet:'bulletSmall.png',
+				color:0xB2D464,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:0.5,
+				vel:1,
+				bulletForce:2.5,
+				bulletCoast:0.2,
+				bulletVel:6,
+			}
+			),
+			new PlayerModel({
+				outGame:'jeso.png',
+				inGame:'jesoGame.png',
+				bullet:'bulletSmall.png',
+				color:0x88C440,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:1.5,
+				vel:3,
+				bulletForce:0.5,
+				bulletCoast:0.1,
+				bulletVel:8,
+			}
+			),
+			new PlayerModel({
+				outGame:'pi.png',
+				inGame:'piGame.png',
+				bullet:'bulletSmall.png',
+				color:0x8F6DAF,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:3,
+				vel:1,
+				bulletForce:1,
+				bulletCoast:0.2,
+				bulletVel:5,
+			}
+			),
+			new PlayerModel({
+				outGame:'pora.png',
+				inGame:'poraGame.png',
+				bullet:'bulletSmall.png',
+				color:0xFDCE07,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:2.5,
+				vel:1.5,
+				bulletForce:1,
+				bulletCoast:0.2,
+				bulletVel:5,
+			}
+			),
+			new PlayerModel({
+				outGame:'arthur.png',
+				inGame:'arthurGame.png',
+				bullet:'bulletSmall.png',
+				color:0xB383B9,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:2,
+				vel:1,
+				bulletForce:2,
+				bulletCoast:0.2,
+				bulletVel:5,
+			}
+			),
+			new PlayerModel({
+				outGame:'poter.png',
+				inGame:'poterGame.png',
+				bullet:'bulletSmall.png',
+				color:0xFAAF4C,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:1.5,
+				vel:2,
+				bulletForce:1.5,
+				bulletCoast:0.2,
+				bulletVel:5,
+			}
+			),
+			new PlayerModel({
+				outGame:'neto.png',
+				inGame:'netoGame.png',
+				bullet:'bulletSmall.png',
+				color:0xB3A170,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:2,
+				vel:2,
+				bulletForce:2,
+				bulletCoast:0.2,
+				bulletVel:5,
+			}
+			),
+			new PlayerModel({
+				outGame:'rodaika.png',
+				inGame:'rodaikaGame.png',
+				bullet:'bulletSmall.png',
+				color:0xF284AA,
+				thumb:'thumb_jeiso'
+			},
+			{
+				energyCoast:3,
+				vel:2,
+				bulletForce:1,
+				bulletCoast:0.2,
+				bulletVel:5,
+			}
+			)
 		];
 
 		this.birdModels = [

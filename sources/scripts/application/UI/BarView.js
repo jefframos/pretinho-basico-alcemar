@@ -21,6 +21,12 @@ var BarView = Class.extend({
 
 		this.frontShape.scale.x = this.currentValue/this.maxValue;
 	},
+	addBackShape: function(color, size){
+		this.back = new PIXI.Graphics();
+		this.back.beginFill(color);
+		this.back.drawRect(-size/2,-size/2,this.width + size, this.height + size);
+		this.container.addChildAt(this.back, 0);
+	},
 	setFrontColor: function(color){
 		if(this.frontShape){
 			this.container.removeChild(this.frontShape);
