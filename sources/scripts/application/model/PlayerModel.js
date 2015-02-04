@@ -18,6 +18,7 @@ var PlayerModel = Class.extend({
 		this.color = graphicsObject.color?graphicsObject.color:0x002233;
 		this.imgSource = graphicsObject.outGame?graphicsObject.outGame:'piangersN.png';
 		this.imgSourceGame = graphicsObject.inGame?graphicsObject.inGame:'piangersNGame.png';
+		this.coverSource = graphicsObject.coverSource?graphicsObject.coverSource:'dist/img/UI/jeisoGrande.png';
 		this.bulletSource = graphicsObject.bullet?graphicsObject.bullet:'bullet.png';
 		this.energyCoast = statsObject.energyCoast?statsObject.energyCoast:1;
 		this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2;

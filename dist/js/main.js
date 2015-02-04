@@ -1,4 +1,4 @@
-/*! jefframos 03-02-2015 */
+/*! jefframos 04-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -79,6 +79,12 @@ function radiansToDegrees(rad) {
 
 function scaleConverter(current, max, scale) {
     return max * scale / current;
+}
+
+function shuffle(array) {
+    for (var temp, index, counter = array.length; counter > 0; ) index = Math.floor(Math.random() * counter), 
+    counter--, temp = array[counter], array[counter] = array[index], array[index] = temp;
+    return array;
 }
 
 function testMobile() {
@@ -280,7 +286,10 @@ var Application = AbstractApplication.extend({
         this.stage.removeChild(this.loadText), this.isMobile = testMobile(), this.appContainer = document.getElementById("rect"), 
         this.id = parseInt(1e11 * Math.random()), this.gameModel = new AppModel(), this.objCounter = new PIXI.Text("", {
             font: "15px Arial"
-        }), this.stage.addChild(this.objCounter), this.objCounter.position.y = 20, this.objCounter.position.x = windowWidth - 150;
+        }), this.stage.addChild(this.objCounter), this.objCounter.position.y = 20, this.objCounter.position.x = windowWidth - 150, 
+        this.labelDebug = new PIXI.Text("Debug", {
+            font: "15px Arial"
+        }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = 20, this.labelDebug.position.x = windowWidth - 250;
     },
     update: function() {
         this._super(), this.screenManager && this.screenManager.currentScreen && (this.childsCounter = 1, 
@@ -659,7 +668,8 @@ var Application = AbstractApplication.extend({
             inGame: "piangersNGame.png",
             bullet: "bulletSmall.png",
             color: 7654879,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/piangersGrande.png"
         }, {
             energyCoast: 1.5,
             vel: 2.5,
@@ -671,7 +681,8 @@ var Application = AbstractApplication.extend({
             inGame: "feterGame.png",
             bullet: "bulletSmall.png",
             color: 15614755,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/feterGrande.png"
         }, {
             energyCoast: 2,
             vel: 1.5,
@@ -683,7 +694,8 @@ var Application = AbstractApplication.extend({
             inGame: "alcemarGame.png",
             bullet: "bulletSmall.png",
             color: 11719780,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/alcemarGrande.png"
         }, {
             energyCoast: 1,
             vel: 1,
@@ -695,7 +707,8 @@ var Application = AbstractApplication.extend({
             inGame: "jesoGame.png",
             bullet: "bulletSmall.png",
             color: 8963136,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/jeisoGrande.png"
         }, {
             energyCoast: 1.5,
             vel: 3,
@@ -707,7 +720,8 @@ var Application = AbstractApplication.extend({
             inGame: "piGame.png",
             bullet: "bulletSmall.png",
             color: 9399727,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/piGrande.png"
         }, {
             energyCoast: 3,
             vel: 1,
@@ -719,7 +733,8 @@ var Application = AbstractApplication.extend({
             inGame: "poraGame.png",
             bullet: "bulletSmall.png",
             color: 16633351,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/poraGrande.png"
         }, {
             energyCoast: 2.5,
             vel: 1.5,
@@ -731,7 +746,8 @@ var Application = AbstractApplication.extend({
             inGame: "arthurGame.png",
             bullet: "bulletSmall.png",
             color: 11764665,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/arthurGrande.png"
         }, {
             energyCoast: 2,
             vel: 1,
@@ -743,7 +759,8 @@ var Application = AbstractApplication.extend({
             inGame: "poterGame.png",
             bullet: "bulletSmall.png",
             color: 16428876,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/poterGrande.png"
         }, {
             energyCoast: 1.5,
             vel: 2,
@@ -755,7 +772,8 @@ var Application = AbstractApplication.extend({
             inGame: "netoGame.png",
             bullet: "bulletSmall.png",
             color: 11772272,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/netoGrande.png"
         }, {
             energyCoast: 2.5,
             vel: 2,
@@ -767,7 +785,8 @@ var Application = AbstractApplication.extend({
             inGame: "rodaikaGame.png",
             bullet: "bulletSmall.png",
             color: 15893674,
-            thumb: "thumb_jeiso"
+            thumb: "thumb_jeiso",
+            coverSource: "dist/img/UI/rodaikaGrande.png"
         }, {
             energyCoast: 3,
             vel: 2,
@@ -808,6 +827,7 @@ var Application = AbstractApplication.extend({
         this.thumbColor = this.thumb + "_color.png", this.thumbGray = this.thumb + "_gray.png", 
         this.color = graphicsObject.color ? graphicsObject.color : 8755, this.imgSource = graphicsObject.outGame ? graphicsObject.outGame : "piangersN.png", 
         this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
+        this.coverSource = graphicsObject.coverSource ? graphicsObject.coverSource : "dist/img/UI/jeisoGrande.png", 
         this.bulletSource = graphicsObject.bullet ? graphicsObject.bullet : "bullet.png", 
         this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 5.5 - this.energyCoast * this.energyCoast / 2, 
         console.log(this.energyCoast), this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
@@ -968,16 +988,18 @@ var Application = AbstractApplication.extend({
         this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3), this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);
     },
     updatePlayers: function() {
-        if (this.currentID = APP.getGameModel().currentID, this.updateStatsBars(), this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
+        this.currentID = APP.getGameModel().currentID, this.updateStatsBars(), this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
         this.faceColor = new PIXI.Graphics(), this.faceColor.beginFill(APP.getGameModel().currentPlayerModel.color), 
         this.faceColor.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), this.faceColor.lineTo(this.pointsMask[1][0], this.pointsMask[1][1]), 
         this.faceColor.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), this.faceColor.lineTo(this.pointsMask[3][0], this.pointsMask[3][1]), 
         this.faceColor.blendMode = PIXI.blendModes.MULTIPLY, this.faceContainer.addChildAt(this.faceColor, 0), 
         this.playerImgBig && this.playerImgBig.getContent().parent && (this.playerImgBig.getContent().parent.removeChild(this.playerImgBig.getContent()), 
-        this.removeChild(this.playerImgBig)), this.playerImgBig = new SimpleSprite("dist/img/UI/jeisoGrande.png"), 
-        this.playerImgBig.setPosition(windowWidth / 2 - .8 * this.playerImgBig.getContent().width / 2, windowHeight / 2 - .8 * this.playerImgBig.getContent().height / 2), 
-        this.faceContainer.addChild(this.playerImgBig.getContent()), this.playerImgBig.container.scale.x = .8, 
-        this.playerImgBig.container.scale.y = .8, this.faceColorBlink.alpha = 1, TweenLite.to(this.faceColorBlink, .2, {
+        this.removeChild(this.playerImgBig)), this.playerImgBig = new SimpleSprite(APP.getGameModel().currentPlayerModel.coverSource);
+        var coverScale = scaleConverter(this.playerImgBig.getContent().height, windowHeight, .7);
+        if (this.playerImgBig.container.scale.x = coverScale, this.playerImgBig.container.scale.y = coverScale, 
+        this.playerImgBig.setPosition(windowWidth / 2 - this.playerImgBig.getContent().width / 2, windowHeight / 2 - this.playerImgBig.getContent().height / 2), 
+        this.faceContainer.addChild(this.playerImgBig.getContent()), this.faceColorBlink.alpha = 1, 
+        TweenLite.to(this.faceColorBlink, .2, {
             alpha: 0
         }), TweenLite.from(this.playerImgBig.getContent().position, .8, {
             x: this.playerImgBig.getContent().position.x + .1 * windowWidth
@@ -1188,12 +1210,12 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/ease.png", "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/HUD.json" ];
+        var assetsToLoader = [ "dist/img/ease.png", "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/HUD.json" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded();
     },
     onProgress: function() {
-        this._super();
+        this._super(), APP.labelDebug.setText(Math.floor(100 * this.loadPercent)), console.log(this.loadPercent);
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -1217,7 +1239,7 @@ var Application = AbstractApplication.extend({
             font: "10px Arial"
         }), 5, 5), this.fullScreen.clickCallback = function() {
             fullscreen();
-        }), self.screenManager.change("Choice");
+        });
     }
 }), CreditsModal = Class.extend({
     init: function(screen) {

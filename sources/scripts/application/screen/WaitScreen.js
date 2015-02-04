@@ -16,6 +16,15 @@ var WaitScreen = AbstractScreen.extend({
         'dist/img/atlas/atlas1.json',
         'dist/img/UI/bgChoice.png',
         'dist/img/UI/jeisoGrande.png',
+        'dist/img/UI/arthurGrande.png',
+        'dist/img/UI/piGrande.png',
+        'dist/img/UI/rodaikaGrande.png',
+        'dist/img/UI/poterGrande.png',
+        'dist/img/UI/poraGrande.png',
+        'dist/img/UI/feterGrande.png',
+        'dist/img/UI/alcemarGrande.png',
+        'dist/img/UI/netoGrande.png',
+        'dist/img/UI/piangersGrande.png',
         'dist/img/UI/HUD.json'];
 
 
@@ -29,6 +38,8 @@ var WaitScreen = AbstractScreen.extend({
     },
     onProgress:function(){
         this._super();
+        APP.labelDebug.setText(Math.floor(this.loadPercent * 100));
+        console.log(this.loadPercent);
     },
     onAssetsLoaded:function()
     {
@@ -66,7 +77,7 @@ var WaitScreen = AbstractScreen.extend({
         }
         // setTimeout(function(){
 
-        self.screenManager.change('Choice');
+        // self.screenManager.change('Choice');
         // }, 1000);
     }
 });

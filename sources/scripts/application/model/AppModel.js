@@ -17,7 +17,8 @@ var AppModel = Class.extend({
 				inGame:'piangersNGame.png',
 				bullet:'bulletSmall.png',
 				color:0x74CDDF,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/piangersGrande.png'
 			},
 			{
 				energyCoast:1.5,
@@ -32,7 +33,8 @@ var AppModel = Class.extend({
 				inGame:'feterGame.png',
 				bullet:'bulletSmall.png',
 				color:0xEE4323,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/feterGrande.png'
 			},
 			{
 				energyCoast:2,
@@ -47,7 +49,8 @@ var AppModel = Class.extend({
 				inGame:'alcemarGame.png',
 				bullet:'bulletSmall.png',
 				color:0xB2D464,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/alcemarGrande.png'
 			},
 			{
 				energyCoast:1,
@@ -62,7 +65,8 @@ var AppModel = Class.extend({
 				inGame:'jesoGame.png',
 				bullet:'bulletSmall.png',
 				color:0x88C440,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/jeisoGrande.png'
 			},
 			{
 				energyCoast:1.5,
@@ -77,7 +81,8 @@ var AppModel = Class.extend({
 				inGame:'piGame.png',
 				bullet:'bulletSmall.png',
 				color:0x8F6DAF,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/piGrande.png'
 			},
 			{
 				energyCoast:3,
@@ -92,7 +97,8 @@ var AppModel = Class.extend({
 				inGame:'poraGame.png',
 				bullet:'bulletSmall.png',
 				color:0xFDCE07,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/poraGrande.png'
 			},
 			{
 				energyCoast:2.5,
@@ -107,7 +113,8 @@ var AppModel = Class.extend({
 				inGame:'arthurGame.png',
 				bullet:'bulletSmall.png',
 				color:0xB383B9,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/arthurGrande.png'
 			},
 			{
 				energyCoast:2,
@@ -122,7 +129,8 @@ var AppModel = Class.extend({
 				inGame:'poterGame.png',
 				bullet:'bulletSmall.png',
 				color:0xFAAF4C,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/poterGrande.png'
 			},
 			{
 				energyCoast:1.5,
@@ -137,7 +145,8 @@ var AppModel = Class.extend({
 				inGame:'netoGame.png',
 				bullet:'bulletSmall.png',
 				color:0xB3A170,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/netoGrande.png'
 			},
 			{
 				energyCoast:2.5,
@@ -152,7 +161,8 @@ var AppModel = Class.extend({
 				inGame:'rodaikaGame.png',
 				bullet:'bulletSmall.png',
 				color:0xF284AA,
-				thumb:'thumb_jeiso'
+				thumb:'thumb_jeiso',
+				coverSource:'dist/img/UI/rodaikaGrande.png'
 			},
 			{
 				energyCoast:3,

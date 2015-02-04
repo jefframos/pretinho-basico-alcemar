@@ -362,12 +362,13 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.playerImgBig.getContent().parent.removeChild(this.playerImgBig.getContent());
             this.removeChild(this.playerImgBig);
         }
-        this.playerImgBig  = new SimpleSprite('dist/img/UI/jeisoGrande.png');
-        this.playerImgBig.setPosition(windowWidth / 2 - this.playerImgBig.getContent().width* 0.8 / 2,
-            windowHeight / 2 - this.playerImgBig.getContent().height* 0.8 / 2);
+        this.playerImgBig  = new SimpleSprite(APP.getGameModel().currentPlayerModel.coverSource);
+        var coverScale = scaleConverter(this.playerImgBig.getContent().height, windowHeight, 0.7);
+        this.playerImgBig.container.scale.x = coverScale;
+        this.playerImgBig.container.scale.y = coverScale;
+        this.playerImgBig.setPosition(windowWidth / 2 - this.playerImgBig.getContent().width / 2,
+            windowHeight / 2 - this.playerImgBig.getContent().height / 2);
         this.faceContainer.addChild(this.playerImgBig.getContent());
-        this.playerImgBig.container.scale.x = 0.8;
-        this.playerImgBig.container.scale.y = 0.8;
 
 
         // this.faceColor.tint = APP.getGameModel().currentPlayerModel.color;
