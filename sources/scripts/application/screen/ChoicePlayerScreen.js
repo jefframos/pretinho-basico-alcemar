@@ -259,8 +259,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.screenManager.change('Wait');
         };
 
-        this.char1.selectedFunction();
-        
+        // this.char1.selectedFunction();
+
+        this.arrButtons[APP.getGameModel().currentID].selectedFunction();
+
         this.createStatsContainer();
         this.updatePlayers();
     },
@@ -272,23 +274,8 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.backBars = new SimpleSprite('backBars.png');
         this.statsContainer.addChild(this.backBars.getContent());
 
-        var barX = 235 / 2 - 150 / 2;
-        var barY = 50;
-        var energyLabel = new PIXI.Text('ENERGIA', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
-        this.statsContainer.addChild(energyLabel);
-        energyLabel.position.x = 235 / 2 - energyLabel.width / 2;
-        energyLabel.position.y = 20;
-
-        var velLabel = new PIXI.Text('VELOCIDADE', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
-        this.statsContainer.addChild(velLabel);
-        velLabel.position.x = 235 / 2 - velLabel.width / 2;
-        velLabel.position.y = 80;
-
-
-        var tiroLabel = new PIXI.Text('TIRO', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
-        this.statsContainer.addChild(tiroLabel);
-        tiroLabel.position.x = 235 / 2 - tiroLabel.width / 2;
-        tiroLabel.position.y = 140;
+        var barX = this.backBars.getContent().width / 2 - 150 / 2;
+        var barY = 70;
 
 
         this.energyBar = new BarView(150, 15, 1, 0);
@@ -313,6 +300,21 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.powerBar.setBackColor(0x000);
         this.powerBar.addBackShape(0x05886F, 6);
 
+        var energyLabel = new PIXI.Text('ENERGIA', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        this.statsContainer.addChild(energyLabel);
+        energyLabel.position.x = this.backBars.getContent().width / 2 - energyLabel.width / 2;
+        energyLabel.position.y = this.energyBar.getContent().position.y - energyLabel.height;
+
+        var velLabel = new PIXI.Text('VELOCIDADE', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        this.statsContainer.addChild(velLabel);
+        velLabel.position.x = this.backBars.getContent().width / 2 - velLabel.width / 2;
+        velLabel.position.y = this.velBar.getContent().position.y - velLabel.height;
+
+
+        var tiroLabel = new PIXI.Text('TIRO', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        this.statsContainer.addChild(tiroLabel);
+        tiroLabel.position.x = this.backBars.getContent().width / 2 - tiroLabel.width / 2;
+        tiroLabel.position.y = this.powerBar.getContent().position.y - tiroLabel.height;
 
         var statsScale = scaleConverter(this.statsContainer.width, windowWidth, 0.2);
         this.statsContainer.scale.x = statsScale;
@@ -336,6 +338,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
     },
     updatePlayers:function()
     {
+        
         // console.log(this.currentID, APP.getGameModel().currentID);
 
         //this.faceContainer
@@ -363,11 +366,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.removeChild(this.playerImgBig);
         }
         this.playerImgBig  = new SimpleSprite(APP.getGameModel().currentPlayerModel.coverSource);
-        var coverScale = scaleConverter(this.playerImgBig.getContent().height, windowHeight, 0.7);
+        var coverScale = scaleConverter(this.playerImgBig.getContent().height, windowHeight, 0.9);
         this.playerImgBig.container.scale.x = coverScale;
         this.playerImgBig.container.scale.y = coverScale;
         this.playerImgBig.setPosition(windowWidth / 2 - this.playerImgBig.getContent().width / 2,
-            windowHeight / 2 - this.playerImgBig.getContent().height / 2);
+            windowHeight- this.playerImgBig.getContent().height);
         this.faceContainer.addChild(this.playerImgBig.getContent());
 
 
@@ -405,5 +408,9 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         TweenLite.from(this.playerImg.getContent(), 0.3, {alpha:  0});
         this.playerImg.getContent().rotation = 0.2;
         TweenLite.to(this.playerImg.getContent(), 0.5, {rotation: 0});
+
+
+        // alert(document.cookie);
+        // document.cookie='currentId='+APP.getGameModel().currentID+'; expires=Thu, 5 Jan 2017 12:00:00 UTC';
     }
 });

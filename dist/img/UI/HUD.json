@@ -2,11 +2,11 @@
 
 "backBars.png":
 {
-	"frame": {"x":462,"y":123,"w":235,"h":235},
+	"frame": {"x":462,"y":123,"w":237,"h":258},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":235,"h":235},
-	"sourceSize": {"w":235,"h":235},
+	"spriteSourceSize": {"x":0,"y":0,"w":237,"h":258},
+	"sourceSize": {"w":237,"h":258},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "birdContainer.png":
@@ -56,7 +56,7 @@
 },
 "pista.png":
 {
-	"frame": {"x":699,"y":123,"w":463,"h":301},
+	"frame": {"x":701,"y":123,"w":463,"h":301},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":463,"h":301},
@@ -124,6 +124,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1187,"h":878},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:bdd185c94b37dff7e1964be82b3556c0:1eb565ffd734d1ce1d64e288fdf7814f:ab8edaf43021c39a73bb7d040bcb4897$"
+	"smartupdate": "$TexturePacker:SmartUpdate:00160eceb3030ff06f44272cb0b873f8:60a26274f7b08940badb51326dea43d7:ab8edaf43021c39a73bb7d040bcb4897$"
 }
 }

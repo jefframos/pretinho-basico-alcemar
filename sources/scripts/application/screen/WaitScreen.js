@@ -11,8 +11,7 @@ var WaitScreen = AbstractScreen.extend({
 
         
 
-        var assetsToLoader = ['dist/img/ease.png',
-        'dist/img/atlas/atlas.json',
+        var assetsToLoader = ['dist/img/atlas/atlas.json',
         'dist/img/atlas/atlas1.json',
         'dist/img/UI/bgChoice.png',
         'dist/img/UI/jeisoGrande.png',
@@ -47,10 +46,6 @@ var WaitScreen = AbstractScreen.extend({
     },
     initApplication:function(){
 
-
-        this.easeImg = new SimpleSprite('dist/img/ease.png');
-        this.addChild(this.easeImg);
-        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.btnBenchmark = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         // console.log(this.btnBenchmark.build);

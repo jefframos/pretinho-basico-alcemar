@@ -794,11 +794,11 @@ var Application = AbstractApplication.extend({
             bulletForce: 1,
             bulletCoast: .1,
             bulletVel: 5
-        }) ], this.birdModels = [ new BirdModel("belga.png", null, 4, .1, 3, new BirdBehaviourSinoid({
+        }) ], this.birdModels = [ new BirdModel("belga.png", null, 4, .1, 1.8, new BirdBehaviourSinoid({
             sinAcc: .05
-        }), 120, .1), new BirdModel("roxo.png", null, 6, .2, -3, new BirdBehaviourDiag({
+        }), 120, .1), new BirdModel("roxo.png", null, 6, .2, -1.8, new BirdBehaviourDiag({
             accX: .02
-        }), 200, .15), new BirdModel("lambecu.png", null, 6, .2, -2, new BirdBehaviourDefault(), 150, .1) ], 
+        }), 200, .15), new BirdModel("lambecu.png", null, 6, .2, -1.5, new BirdBehaviourDefault(), 150, .1) ], 
         this.setModel(0);
     },
     setModel: function(id) {
@@ -826,14 +826,13 @@ var Application = AbstractApplication.extend({
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
         this.currentBulletForce = 100, this.recoverEnergy = .5, this.thumb = graphicsObject.thumb ? graphicsObject.thumb : "thumb_jeiso", 
         this.thumbColor = this.thumb + "_color.png", this.thumbGray = this.thumb + "_gray.png", 
-        this.color = graphicsObject.color ? graphicsObject.color : 8755, this.imgSource = graphicsObject.outGame ? graphicsObject.outGame : "piangersN.png", 
-        this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
+        this.color = graphicsObject.color ? graphicsObject.color : 8755, this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
+        this.imgSource = graphicsObject.outGame ? graphicsObject.outGame : this.imgSourceGame, 
         this.coverSource = graphicsObject.coverSource ? graphicsObject.coverSource : "dist/img/UI/jeisoGrande.png", 
         this.bulletSource = graphicsObject.bullet ? graphicsObject.bullet : "bullet.png", 
         this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 5.5 - this.energyCoast * this.energyCoast / 2, 
-        console.log(this.energyCoast), this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
-        this.velocity = statsObject.vel ? statsObject.vel : 2, this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, 
-        this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1;
+        this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, this.velocity = statsObject.vel ? statsObject.vel : 2, 
+        this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1;
     },
     reset: function() {
         this.currentEnergy = this.maxEnergy, this.currentBulletEnergy = this.maxBulletEnergy;
@@ -940,35 +939,14 @@ var Application = AbstractApplication.extend({
         this.returnButton.build(60, 60), this.returnButton.setPosition(10, windowHeight - this.play.height - 10), 
         this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
-        }, this.char1.selectedFunction(), this.createStatsContainer(), this.updatePlayers();
+        }, this.arrButtons[APP.getGameModel().currentID].selectedFunction(), this.createStatsContainer(), 
+        this.updatePlayers();
     },
     createStatsContainer: function() {
         this.statsContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.statsContainer), 
         this.backBars = new SimpleSprite("backBars.png"), this.statsContainer.addChild(this.backBars.getContent());
-        var barX = 42.5, barY = 50, energyLabel = new PIXI.Text("ENERGIA", {
-            align: "center",
-            font: "20px Arial",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        });
-        this.statsContainer.addChild(energyLabel), energyLabel.position.x = 117.5 - energyLabel.width / 2, 
-        energyLabel.position.y = 20;
-        var velLabel = new PIXI.Text("VELOCIDADE", {
-            align: "center",
-            font: "20px Arial",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        });
-        this.statsContainer.addChild(velLabel), velLabel.position.x = 117.5 - velLabel.width / 2, 
-        velLabel.position.y = 80;
-        var tiroLabel = new PIXI.Text("TIRO", {
-            align: "center",
-            font: "20px Arial",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        });
-        this.statsContainer.addChild(tiroLabel), tiroLabel.position.x = 117.5 - tiroLabel.width / 2, 
-        tiroLabel.position.y = 140, this.energyBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.energyBar.getContent()), 
+        var barX = this.backBars.getContent().width / 2 - 75, barY = 70;
+        this.energyBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.energyBar.getContent()), 
         this.energyBar.setPosition(barX, 0 + barY), this.energyBar.setFrontColor(16158750), 
         this.energyBar.setBackColor(0), this.energyBar.addBackShape(362607, 6), this.velBar = new BarView(150, 15, 1, 0), 
         this.statsContainer.addChild(this.velBar.getContent()), this.velBar.setPosition(barX, 60 + barY), 
@@ -976,6 +954,30 @@ var Application = AbstractApplication.extend({
         this.powerBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.powerBar.getContent()), 
         this.powerBar.setPosition(barX, 120 + barY), this.powerBar.setFrontColor(16158750), 
         this.powerBar.setBackColor(0), this.powerBar.addBackShape(362607, 6);
+        var energyLabel = new PIXI.Text("ENERGIA", {
+            align: "center",
+            font: "20px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        });
+        this.statsContainer.addChild(energyLabel), energyLabel.position.x = this.backBars.getContent().width / 2 - energyLabel.width / 2, 
+        energyLabel.position.y = this.energyBar.getContent().position.y - energyLabel.height;
+        var velLabel = new PIXI.Text("VELOCIDADE", {
+            align: "center",
+            font: "20px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        });
+        this.statsContainer.addChild(velLabel), velLabel.position.x = this.backBars.getContent().width / 2 - velLabel.width / 2, 
+        velLabel.position.y = this.velBar.getContent().position.y - velLabel.height;
+        var tiroLabel = new PIXI.Text("TIRO", {
+            align: "center",
+            font: "20px Arial",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        });
+        this.statsContainer.addChild(tiroLabel), tiroLabel.position.x = this.backBars.getContent().width / 2 - tiroLabel.width / 2, 
+        tiroLabel.position.y = this.powerBar.getContent().position.y - tiroLabel.height;
         var statsScale = scaleConverter(this.statsContainer.width, windowWidth, .2);
         this.statsContainer.scale.x = statsScale, this.statsContainer.scale.y = statsScale, 
         this.statsContainer.position.x = windowWidth - this.statsContainer.width - .1 * this.statsContainer.width, 
@@ -996,9 +998,9 @@ var Application = AbstractApplication.extend({
         this.faceColor.blendMode = PIXI.blendModes.MULTIPLY, this.faceContainer.addChildAt(this.faceColor, 0), 
         this.playerImgBig && this.playerImgBig.getContent().parent && (this.playerImgBig.getContent().parent.removeChild(this.playerImgBig.getContent()), 
         this.removeChild(this.playerImgBig)), this.playerImgBig = new SimpleSprite(APP.getGameModel().currentPlayerModel.coverSource);
-        var coverScale = scaleConverter(this.playerImgBig.getContent().height, windowHeight, .7);
+        var coverScale = scaleConverter(this.playerImgBig.getContent().height, windowHeight, .9);
         if (this.playerImgBig.container.scale.x = coverScale, this.playerImgBig.container.scale.y = coverScale, 
-        this.playerImgBig.setPosition(windowWidth / 2 - this.playerImgBig.getContent().width / 2, windowHeight / 2 - this.playerImgBig.getContent().height / 2), 
+        this.playerImgBig.setPosition(windowWidth / 2 - this.playerImgBig.getContent().width / 2, windowHeight - this.playerImgBig.getContent().height), 
         this.faceContainer.addChild(this.playerImgBig.getContent()), this.faceColorBlink.alpha = 1, 
         TweenLite.to(this.faceColorBlink, .2, {
             alpha: 0
@@ -1213,7 +1215,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/ease.png", "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/HUD.json" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/HUD.json" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded();
     },
@@ -1224,8 +1226,6 @@ var Application = AbstractApplication.extend({
         this.initApplication();
     },
     initApplication: function() {
-        this.easeImg = new SimpleSprite("dist/img/ease.png"), this.addChild(this.easeImg), 
-        this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
         var self = this;
         this.btnBenchmark = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.btnBenchmark.build(300, 100), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 

@@ -16,13 +16,13 @@ var PlayerModel = Class.extend({
 		this.thumbColor = this.thumb + '_color.png';
 		this.thumbGray = this.thumb + '_gray.png';
 		this.color = graphicsObject.color?graphicsObject.color:0x002233;
-		this.imgSource = graphicsObject.outGame?graphicsObject.outGame:'piangersN.png';
 		this.imgSourceGame = graphicsObject.inGame?graphicsObject.inGame:'piangersNGame.png';
+		this.imgSource = graphicsObject.outGame?graphicsObject.outGame:this.imgSourceGame;
 		this.coverSource = graphicsObject.coverSource?graphicsObject.coverSource:'dist/img/UI/jeisoGrande.png';
 		this.bulletSource = graphicsObject.bullet?graphicsObject.bullet:'bullet.png';
 		this.energyCoast = statsObject.energyCoast?statsObject.energyCoast:1;
 		this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2;
-		console.log(this.energyCoast);
+		// console.log(this.energyCoast);
 		this.bulletCoast = statsObject.bulletCoast?statsObject.bulletCoast:0.2;
 		this.velocity = statsObject.vel?statsObject.vel:2;
 		this.bulletVel = statsObject.bulletVel?statsObject.bulletVel:8;
