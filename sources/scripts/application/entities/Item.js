@@ -9,10 +9,10 @@ var Item = Entity.extend({
         this.height = 1;
         this.type = 'item';
 
-        this.vel = 4;
+        this.vel = 2;
 
         this.velocity.x = -this.vel;
-        this.imgSource = 'bullet.png';
+        this.imgSource = 'gasoline.png';
     },
     build: function(){
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);

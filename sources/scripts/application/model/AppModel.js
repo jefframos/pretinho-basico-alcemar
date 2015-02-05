@@ -53,7 +53,7 @@ var AppModel = Class.extend({
 				coverSource:'dist/img/UI/alcemarGrande.png'
 			},
 			{
-				energyCoast:1,
+				energyCoast:2.5,
 				vel:1,
 				bulletForce:2.5,
 				bulletCoast:0.1,

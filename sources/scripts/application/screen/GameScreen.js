@@ -198,7 +198,7 @@ var GameScreen = AbstractScreen.extend({
         this.updateParticles();
         if(this.pointsLabel){
             this.pointsLabel.setText(this.points);
-            this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 30;
+            this.pointsLabel.position.x = this.moneyContainer.width /2;
         }
 
     },
@@ -275,14 +275,19 @@ var GameScreen = AbstractScreen.extend({
         TweenLite.to(this.red.spritesheet.position, 1,{x:windowWidth * 0.15 +this.red.getContent().width/2, y:windowHeight /2} );
         this.red.setScale( scale,scale);
         var self = this;
+
         var posHelper =  windowHeight * 0.05;
-        this.bulletBar = new BarView(windowWidth * 0.1, 10, 1, 1);
-        this.addChild(this.bulletBar);
-        this.bulletBar.setPosition(250 + posHelper, posHelper);
 
         this.energyBar = new BarView(windowWidth * 0.1, 10, 1, 1);
         this.addChild(this.energyBar);
-        this.energyBar.setPosition(250 + posHelper * 2 + this.bulletBar.width, posHelper);
+        this.energyBar.setPosition(20, posHelper);
+        this.energyBar.setFrontColor(0xE08A23);
+        
+        this.bulletBar = new BarView(windowWidth * 0.08, 10, 1, 1);
+        this.addChild(this.bulletBar);
+        this.bulletBar.setPosition(20, posHelper + 20);
+        this.bulletBar.setFrontColor(0x3B98B8);
+
 
 
         this.returnButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
@@ -295,10 +300,10 @@ var GameScreen = AbstractScreen.extend({
         };
 
         this.pauseButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.pauseButton.build(60, 50);
+        this.pauseButton.build(50, 50);
         this.pauseButton.setPosition( windowWidth /2 - this.pauseButton.width / 2, windowHeight * 0.05);
         this.addChild(this.pauseButton);
-        this.pauseButton.addLabel(new PIXI.Text('||', {font:'40px Arial'}),5,5);
+        this.pauseButton.addLabel(new PIXI.Text('', {font:'40px Arial'}),5,5);
         this.pauseButton.clickCallback = function(){
             // self.pauseModal.show();
             self.endModal.show();
@@ -308,6 +313,8 @@ var GameScreen = AbstractScreen.extend({
         item.build();
         item.setPosition(windowWidth, windowHeight / 2);
         this.layer.addChild(item);
+        var itemScale = scaleConverter(item.getContent().height, windowHeight, 0.1);
+        item.setScale(itemScale, itemScale);
 
         // if(possibleFullscreen()){
         //     this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
@@ -334,7 +341,7 @@ var GameScreen = AbstractScreen.extend({
         var moneyBg = new SimpleSprite('moneyContent.png');
         this.moneyContainer.addChild(moneyBg.getContent());
 
-        this.pointsLabel = new PIXI.Text('', {font:'25px Arial', align:'right'});
+        this.pointsLabel = new PIXI.Text('', {font:'25px Arial'});
         this.moneyContainer.addChild(this.pointsLabel);
         this.moneyContainer.position.y = 20;
         this.moneyContainer.position.x = windowWidth / 2;
@@ -343,7 +350,7 @@ var GameScreen = AbstractScreen.extend({
         this.moneyContainer.scale.x = moneyScale;
         this.moneyContainer.scale.y = moneyScale;
 
-        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 30;
+        this.pointsLabel.position.x = this.moneyContainer.width + this.pointsLabel.width / 2;
         this.pointsLabel.position.y = 31;
 
         this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;//this.moneyContainer.width * 0.05;

@@ -13,13 +13,13 @@ var Application = AbstractApplication.extend({
 
         this.objCounter = new PIXI.Text('', {font:'15px Arial'});
         this.stage.addChild(this.objCounter);
-        this.objCounter.position.y = 20;
-        this.objCounter.position.x = windowWidth - 150;
+        this.objCounter.position.y = windowHeight - 40;
+        this.objCounter.position.x = 20;
 
         this.labelDebug = new PIXI.Text('Debug', {font:'15px Arial'});
         this.stage.addChild(this.labelDebug);
-        this.labelDebug.position.y = 20;
-        this.labelDebug.position.x = windowWidth - 250;
+        this.labelDebug.position.y = windowHeight - 20;
+        this.labelDebug.position.x = 20;
 	},
     update:function(){
         this._super();
