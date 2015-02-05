@@ -86,9 +86,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>1024</int>
+            <int>2048</int>
             <key>height</key>
-            <int>1024</int>
+            <int>2048</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -190,13 +190,35 @@
         <array>
             <filename>simpleButtonOver.png</filename>
             <filename>simpleButtonUp.png</filename>
-            <filename>btnHUD.png</filename>
             <filename>selected.png</filename>
             <filename>out.png</filename>
             <filename>pista.png</filename>
             <filename>selectedInner.png</filename>
-            <filename>thumb_jeiso_gray.png</filename>
-            <filename>thumb_jeiso_color.png</filename>
+            <filename>backBars.png</filename>
+            <filename>birdContainer.png</filename>
+            <filename>endModalBg.png</filename>
+            <filename>gasoline.png</filename>
+            <filename>moneyContent.png</filename>
+            <filename>reducingPB/thumb_alcemar_gray.png</filename>
+            <filename>reducingPB/thumb_arthur_gray.png</filename>
+            <filename>reducingPB/thumb_feter_gray.png</filename>
+            <filename>reducingPB/thumb_jeiso_gray.png</filename>
+            <filename>reducingPB/thumb_neto_gray.png</filename>
+            <filename>reducingPB/thumb_pi_gray.png</filename>
+            <filename>reducingPB/thumb_piangers_gray.png</filename>
+            <filename>reducingPB/thumb_pora_gray.png</filename>
+            <filename>reducingPB/thumb_poter_gray.png</filename>
+            <filename>reducingPB/thumb_rodaika_gray.png</filename>
+            <filename>reducing/thumb_alcemar_color.png</filename>
+            <filename>reducing/thumb_arthur_color.png</filename>
+            <filename>reducing/thumb_feter_color.png</filename>
+            <filename>reducing/thumb_jeiso_color.png</filename>
+            <filename>reducing/thumb_neto_color.png</filename>
+            <filename>reducing/thumb_pi_color.png</filename>
+            <filename>reducing/thumb_piangers_color.png</filename>
+            <filename>reducing/thumb_pora_color.png</filename>
+            <filename>reducing/thumb_poter_color.png</filename>
+            <filename>reducing/thumb_rodaika_color.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

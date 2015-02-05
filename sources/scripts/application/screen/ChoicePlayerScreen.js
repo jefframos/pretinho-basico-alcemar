@@ -44,8 +44,15 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.backgroundImage.container.width = windowWidth;
         this.backgroundImage.container.height = windowHeight;
 
+        this.pista = new SimpleSprite('pista.png');
+        this.addChild(this.pista);
+        var pistaScale = scaleConverter(this.pista.getContent().width, windowWidth, 0.4);
+        this.pista.getContent().scale.x = pistaScale;
+        this.pista.getContent().scale.y = pistaScale;
+        this.pista.setPosition(windowWidth  - this.pista.getContent().width - windowWidth * 0.05 , windowHeight - this.pista.getContent().height / 2);
+
         this.pointsMask = [[510 / 1136 * windowWidth, 0],
-        [1035 / 1136 * windowWidth, 0],
+        [1038 / 1136 * windowWidth, 0],
         [465 / 1136 * windowWidth, windowHeight],
         [25 / 1136 * windowWidth, windowHeight]];
 
@@ -61,6 +68,18 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.faceMask.lineTo(this.pointsMask[3][0],this.pointsMask[3][1]);
         this.faceContainer.addChild(this.faceMask);
 
+
+        this.planeMask = new PIXI.Graphics();
+        this.planeMask.beginFill(0x660055);
+        // this.planeMask.moveTo(this.pointsMask[0][0],this.pointsMask[0][1]);
+        this.planeMask.moveTo(this.pointsMask[1][0],this.pointsMask[1][1]);
+        this.planeMask.lineTo(this.pointsMask[2][0],this.pointsMask[2][1]);
+        this.planeMask.lineTo(windowWidth,windowHeight);
+        this.planeMask.lineTo(windowWidth,0);
+        this.planeContainer = new PIXI.DisplayObjectContainer();
+        this.planeContainer.addChild(this.planeMask);
+        this.planeContainer.mask = this.planeMask;
+
         
 
         this.faceColorBlink = new PIXI.Graphics();
@@ -72,17 +91,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.faceContainer.addChild(this.faceColorBlink);
 
         this.addChild(this.faceContainer);
+        this.addChild(this.planeContainer);
         this.faceContainer.mask = this.faceMask;
 
 
-        this.pista = new SimpleSprite('pista.png');
-        this.addChild(this.pista);
-        var pistaScale = scaleConverter(this.pista.getContent().width, windowWidth, 0.4);
-        this.pista.getContent().scale.x = pistaScale;
-        this.pista.getContent().scale.y = pistaScale;
-        this.pista.setPosition(windowWidth  - this.pista.getContent().width - windowWidth * 0.05 , windowHeight - this.pista.getContent().height / 2);
-
-        this.char1 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char1 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         // this.char1.build();
         this.char1.build(sizeScale,sizeScale);
         this.char1.setPosition( windowWidth * 0.02,windowHeight * 0.08);
@@ -101,7 +114,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char2 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char2 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char2.build(sizeScale,sizeScale);
         this.char2.setPosition( windowWidth * 0.02 ,this.char1.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char2);
@@ -114,7 +127,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char3 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char3 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char3.build(sizeScale,sizeScale);
         this.char3.setPosition( windowWidth * 0.02 ,this.char2.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char3);
@@ -127,7 +140,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char4 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char4 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char4.build(sizeScale,sizeScale);
         this.char4.setPosition( this.char1.getContent().position.x + sizeScale + spacing,this.char1.getContent().position.y);
         this.addChild(this.char4);
@@ -141,7 +154,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char5 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char5 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char5.build(sizeScale,sizeScale);
         this.char5.setPosition( this.char4.getContent().position.x,this.char2.getContent().position.y);
         this.addChild(this.char5);
@@ -157,7 +170,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
 
-        this.char6 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char6 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char6.build(sizeScale,sizeScale);
         this.char6.setPosition( this.char5.getContent().position.x,this.char3.getContent().position.y);
         this.addChild(this.char6);
@@ -170,7 +183,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char7 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char7 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char7.build(sizeScale,sizeScale);
         this.char7.setPosition( this.char5.getContent().position.x + sizeScale + spacing,this.char5.getContent().position.y);
         this.addChild(this.char7);
@@ -183,7 +196,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char8 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char8 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char8.build(sizeScale,sizeScale);
         this.char8.setPosition( this.char6.getContent().position.x + sizeScale + spacing,this.char6.getContent().position.y);
         this.addChild(this.char8);
@@ -196,7 +209,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char9 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char9 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char9.build(sizeScale,sizeScale);
         this.char9.setPosition(this.char6.getContent().position.x,this.char6.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char9);
@@ -209,7 +222,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.updatePlayers();
         };
 
-        this.char10 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png');
+        this.char10 = new ChoiceButton('out.png', 'selectedInner.png', 'selected.png', 'border.png');
         this.char10.build(sizeScale,sizeScale);
         this.char10.setPosition(this.char8.getContent().position.x,this.char8.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char10);
@@ -275,7 +288,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.statsContainer.addChild(this.backBars.getContent());
 
         var barX = this.backBars.getContent().width / 2 - 150 / 2;
-        var barY = 70;
+        var barY = 60;
 
 
         this.energyBar = new BarView(150, 15, 1, 0);
@@ -283,14 +296,14 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.energyBar.setPosition(barX, 0 + barY);
         this.energyBar.setFrontColor(0xF6901E);
         this.energyBar.setBackColor(0x000);
-        this.energyBar.addBackShape(0x05886F, 6);
+        this.energyBar.addBackShape(0x83CAA4, 6);
 
         this.velBar = new BarView(150, 15, 1, 0);
         this.statsContainer.addChild(this.velBar.getContent());
         this.velBar.setPosition(barX, 60 + barY);
         this.velBar.setFrontColor(0xF6901E);
         this.velBar.setBackColor(0x000);
-        this.velBar.addBackShape(0x05886F, 6);
+        this.velBar.addBackShape(0x83CAA4, 6);
 
 
         this.powerBar = new BarView(150, 15, 1, 0);
@@ -298,7 +311,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.powerBar.setPosition(barX, 120 + barY);
         this.powerBar.setFrontColor(0xF6901E);
         this.powerBar.setBackColor(0x000);
-        this.powerBar.addBackShape(0x05886F, 6);
+        this.powerBar.addBackShape(0x83CAA4, 6);
 
         var energyLabel = new PIXI.Text('ENERGIA', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
         this.statsContainer.addChild(energyLabel);
@@ -402,12 +415,12 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.playerImg.container.scale.y = scale;
 
         // this.playerImg  = new PIXI.Sprite.fromFrame(this.imgSource);
-        this.addChild(this.playerImg);
+        this.planeContainer.addChild(this.playerImg.getContent());
         this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2);
-        TweenLite.from(this.playerImg.getContent().position, 0.8, {x: this.playerImg.getContent().position.x - windowWidth * 0.2,y:  this.playerImg.getContent().position.y - windowHeight * 0.2});
-        TweenLite.from(this.playerImg.getContent(), 0.3, {alpha:  0});
-        this.playerImg.getContent().rotation = 0.2;
-        TweenLite.to(this.playerImg.getContent(), 0.5, {rotation: 0});
+        TweenLite.from(this.playerImg.getContent().position, 0.8, {ease:'easeOutBack', x: this.playerImg.getContent().position.x - windowWidth * 0.2,y:  this.playerImg.getContent().position.y - windowHeight * 0.2});
+        // TweenLite.from(this.playerImg.getContent(), 0.3, {alpha:  0});
+        // this.playerImg.getContent().rotation = 0.4;
+        // TweenLite.to(this.playerImg.getContent(), 0.5, {rotation: 0});
 
 
         // alert(document.cookie);

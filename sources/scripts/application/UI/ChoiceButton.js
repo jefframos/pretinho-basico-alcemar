@@ -1,9 +1,10 @@
 /*jshint undef:false */
 var ChoiceButton = DefaultButton.extend({
-	init:function(imgUp, imgOver, imgDown){
+	init:function(imgUp, imgOver, imgDown, imgBorder){
 		this._super(imgUp, imgOver, imgDown);
 		this.color = 0xFFFFFF;
 		this.background = new PIXI.Sprite(PIXI.Texture.fromImage(imgDown));
+		this.border = new PIXI.Sprite(PIXI.Texture.fromImage(imgBorder));
 	},
 	build:function( width, height)
 	{
@@ -52,7 +53,6 @@ var ChoiceButton = DefaultButton.extend({
 			this.isdown = false;
 			if(self.mouseUpCallback !== null){
 				self.mouseUpCallback();
-				console.log('mouseUpCallback');
 			}
 			
 			
@@ -68,24 +68,24 @@ var ChoiceButton = DefaultButton.extend({
 		};
 
 		// set the mouseover callback..
-		this.shapeButton.mouseover = function(data){
+		// this.shapeButton.mouseover = function(data){
 
-			// self.shapeButton.tint = 0xFF0000;
-			self.isOver = true;
-			self.shapeButton.setTexture(self.textureButtonOver);
-		};
+		// 	// self.shapeButton.tint = 0xFF0000;
+		// 	self.isOver = true;
+		// 	self.shapeButton.setTexture(self.textureButtonOver);
+		// };
 
-		// set the mouseout callback..
-		this.shapeButton.mouseout = function(data){
+		// // set the mouseout callback..
+		// this.shapeButton.mouseout = function(data){
 
-			self.isOver = false;
-			self.shapeButton.setTexture(self.textureButton);
+		// 	self.isOver = false;
+		// 	self.shapeButton.setTexture(self.textureButton);
 
-			self.mouseUpCallback();
-			// if(self.mouseUpCallback !== null){
-			// 	console.log('mouseUpCallback');
-			// }
-		};
+		// 	self.mouseUpCallback();
+		// 	// if(self.mouseUpCallback !== null){
+		// 	// 	console.log('mouseUpCallback');
+		// 	// }
+		// };
 
 		this.shapeButton.click = function(data){
 			// self.shapeButton.tint = 0xFF0000;
@@ -124,21 +124,36 @@ var ChoiceButton = DefaultButton.extend({
 			this.thumbGray.parent.removeChild(this.thumbGray);
 		}
 
+		this.containerThumbs = new PIXI.DisplayObjectContainer();
 		this.thumb = new PIXI.Sprite(PIXI.Texture.fromImage(thumb));
-		var scale = scaleConverter(this.thumb.width, this.width, 0.8);
+		var scale = scaleConverter(this.thumb.height, this.height, 0.8);
 		this.thumb.scale.x = this.thumb.scale.y = scale;
-		this.container.addChild(this.thumb);
+		this.containerThumbs.addChild(this.thumb);
 		this.thumb.position.x = this.width / 2 - this.thumb.width / 2;
-		this.thumb.position.y = this.height - this.thumb.height - 8;
+		this.thumb.position.y = this.height - this.thumb.height - 6;
 		this.thumb.visible = false;
 
 		this.thumbGray = new PIXI.Sprite(PIXI.Texture.fromImage(thumbGray));
-		var scaleGrey = scaleConverter(this.thumbGray.width, this.width, 0.8);
-		this.thumbGray.scale.x = this.thumbGray.scale.y = scaleGrey;
-		this.container.addChild(this.thumbGray);
+		// var scaleGrey = scaleConverter(this.thumbGray.width, this.width, 0.8);
+		this.thumbGray.scale.x = this.thumbGray.scale.y = scale;
+		this.containerThumbs.addChild(this.thumbGray);
 		this.thumbGray.position.x = this.width / 2 - this.thumbGray.width / 2;
-		this.thumbGray.position.y = this.height - this.thumbGray.height - 8;
+		this.thumbGray.position.y = this.height - this.thumbGray.height - 6;
 		this.thumbGray.visible = true;
+
+		this.maskButton = new PIXI.Graphics();
+		this.maskButton.beginFill(0x987653);
+		// this.maskButton.drawRoundedRect(4,4,this.width - 8,  this.height - 8,25);
+		this.maskButton.drawCircle(this.width/2,this.width/2,this.width / 2 + 6);
+		// this.maskButton.alpha = 0.5;
+		this.containerThumbs.addChild(this.maskButton);
+		this.containerThumbs.mask = this.maskButton;
+		this.container.addChild(this.containerThumbs);
+		this.container.addChild(this.border);
+		this.border.width = this.width;
+		this.border.height = this.height;
+
+
 
 	},
 	resetTextures:function()

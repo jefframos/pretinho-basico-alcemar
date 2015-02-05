@@ -378,8 +378,9 @@ var Application = AbstractApplication.extend({
         this.container.position.x = x, this.container.position.y = y;
     }
 }), ChoiceButton = DefaultButton.extend({
-    init: function(imgUp, imgOver, imgDown) {
-        this._super(imgUp, imgOver, imgDown), this.color = 16777215, this.background = new PIXI.Sprite(PIXI.Texture.fromImage(imgDown));
+    init: function(imgUp, imgOver, imgDown, imgBorder) {
+        this._super(imgUp, imgOver, imgDown), this.color = 16777215, this.background = new PIXI.Sprite(PIXI.Texture.fromImage(imgDown)), 
+        this.border = new PIXI.Sprite(PIXI.Texture.fromImage(imgBorder));
     },
     build: function(width, height) {
         var self = this;
@@ -390,11 +391,7 @@ var Application = AbstractApplication.extend({
         this.shapeButton.mousedown = this.shapeButton.touchstart = function() {
             self.selectedFunction();
         }, this.shapeButton.mouseup = this.shapeButton.touchend = this.shapeButton.touchoutside = this.shapeButton.mouseuoutside = this.shapeButton.touchendoutside = function() {
-            this.isdown = !1, null !== self.mouseUpCallback && (self.mouseUpCallback(), console.log("mouseUpCallback"));
-        }, this.shapeButton.mouseover = function() {
-            self.isOver = !0, self.shapeButton.setTexture(self.textureButtonOver);
-        }, this.shapeButton.mouseout = function() {
-            self.isOver = !1, self.shapeButton.setTexture(self.textureButton), self.mouseUpCallback();
+            this.isdown = !1, null !== self.mouseUpCallback && self.mouseUpCallback();
         }, this.shapeButton.click = function() {
             null !== self.clickCallback && self.clickCallback();
         }, this.shapeButton.tap = function() {
@@ -408,15 +405,18 @@ var Application = AbstractApplication.extend({
     },
     addThumb: function(thumb, thumbGray) {
         this.thumb && this.thumb.parent && this.thumb.parent.removeChild(this.thumb), this.thumbGray && this.thumbGray.parent && this.thumbGray.parent.removeChild(this.thumbGray), 
-        this.thumb = new PIXI.Sprite(PIXI.Texture.fromImage(thumb));
-        var scale = scaleConverter(this.thumb.width, this.width, .8);
-        this.thumb.scale.x = this.thumb.scale.y = scale, this.container.addChild(this.thumb), 
-        this.thumb.position.x = this.width / 2 - this.thumb.width / 2, this.thumb.position.y = this.height - this.thumb.height - 8, 
-        this.thumb.visible = !1, this.thumbGray = new PIXI.Sprite(PIXI.Texture.fromImage(thumbGray));
-        var scaleGrey = scaleConverter(this.thumbGray.width, this.width, .8);
-        this.thumbGray.scale.x = this.thumbGray.scale.y = scaleGrey, this.container.addChild(this.thumbGray), 
-        this.thumbGray.position.x = this.width / 2 - this.thumbGray.width / 2, this.thumbGray.position.y = this.height - this.thumbGray.height - 8, 
-        this.thumbGray.visible = !0;
+        this.containerThumbs = new PIXI.DisplayObjectContainer(), this.thumb = new PIXI.Sprite(PIXI.Texture.fromImage(thumb));
+        var scale = scaleConverter(this.thumb.height, this.height, .8);
+        this.thumb.scale.x = this.thumb.scale.y = scale, this.containerThumbs.addChild(this.thumb), 
+        this.thumb.position.x = this.width / 2 - this.thumb.width / 2, this.thumb.position.y = this.height - this.thumb.height - 6, 
+        this.thumb.visible = !1, this.thumbGray = new PIXI.Sprite(PIXI.Texture.fromImage(thumbGray)), 
+        this.thumbGray.scale.x = this.thumbGray.scale.y = scale, this.containerThumbs.addChild(this.thumbGray), 
+        this.thumbGray.position.x = this.width / 2 - this.thumbGray.width / 2, this.thumbGray.position.y = this.height - this.thumbGray.height - 6, 
+        this.thumbGray.visible = !0, this.maskButton = new PIXI.Graphics(), this.maskButton.beginFill(9991763), 
+        this.maskButton.drawCircle(this.width / 2, this.width / 2, this.width / 2 + 6), 
+        this.containerThumbs.addChild(this.maskButton), this.containerThumbs.mask = this.maskButton, 
+        this.container.addChild(this.containerThumbs), this.container.addChild(this.border), 
+        this.border.width = this.width, this.border.height = this.height;
     },
     resetTextures: function() {
         this.thumb.visible = !1, this.thumbGray.visible = !0, this.shapeButton.setTexture(this.textureButton), 
@@ -669,7 +669,7 @@ var Application = AbstractApplication.extend({
             inGame: "piangersNGame.png",
             bullet: "bulletSmall.png",
             color: 7654879,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_piangers",
             coverSource: "dist/img/UI/piangersGrande.png"
         }, {
             energyCoast: 1.5,
@@ -682,7 +682,7 @@ var Application = AbstractApplication.extend({
             inGame: "feterGame.png",
             bullet: "bulletSmall.png",
             color: 15614755,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_feter",
             coverSource: "dist/img/UI/feterGrande.png"
         }, {
             energyCoast: 2,
@@ -695,7 +695,7 @@ var Application = AbstractApplication.extend({
             inGame: "alcemarGame.png",
             bullet: "bulletSmall.png",
             color: 11719780,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_alcemar",
             coverSource: "dist/img/UI/alcemarGrande.png"
         }, {
             energyCoast: 2.5,
@@ -721,7 +721,7 @@ var Application = AbstractApplication.extend({
             inGame: "piGame.png",
             bullet: "bulletSmall.png",
             color: 9399727,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_pi",
             coverSource: "dist/img/UI/piGrande.png"
         }, {
             energyCoast: 3,
@@ -734,7 +734,7 @@ var Application = AbstractApplication.extend({
             inGame: "poraGame.png",
             bullet: "bulletSmall.png",
             color: 16633351,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_pora",
             coverSource: "dist/img/UI/poraGrande.png"
         }, {
             energyCoast: 2.5,
@@ -747,7 +747,7 @@ var Application = AbstractApplication.extend({
             inGame: "arthurGame.png",
             bullet: "bulletSmall.png",
             color: 11764665,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_arthur",
             coverSource: "dist/img/UI/arthurGrande.png"
         }, {
             energyCoast: 2,
@@ -760,7 +760,7 @@ var Application = AbstractApplication.extend({
             inGame: "poterGame.png",
             bullet: "bulletSmall.png",
             color: 16428876,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_poter",
             coverSource: "dist/img/UI/poterGrande.png"
         }, {
             energyCoast: 1.5,
@@ -773,7 +773,7 @@ var Application = AbstractApplication.extend({
             inGame: "netoGame.png",
             bullet: "bulletSmall.png",
             color: 11772272,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_neto",
             coverSource: "dist/img/UI/netoGrande.png"
         }, {
             energyCoast: 2.5,
@@ -786,7 +786,7 @@ var Application = AbstractApplication.extend({
             inGame: "rodaikaGame.png",
             bullet: "bulletSmall.png",
             color: 15893674,
-            thumb: "thumb_jeiso",
+            thumb: "thumb_rodaika",
             coverSource: "dist/img/UI/rodaikaGrande.png"
         }, {
             energyCoast: 3,
@@ -865,57 +865,61 @@ var Application = AbstractApplication.extend({
         var sizeScale = 135 / 640 * windowHeight, spacing = 5 / 640 * windowHeight;
         this.backgroundImage = new SimpleSprite("dist/img/UI/bgChoice.png"), this.addChild(this.backgroundImage), 
         this.backgroundImage.container.width = windowWidth, this.backgroundImage.container.height = windowHeight, 
-        this.pointsMask = [ [ 510 / 1136 * windowWidth, 0 ], [ 1035 / 1136 * windowWidth, 0 ], [ 465 / 1136 * windowWidth, windowHeight ], [ 25 / 1136 * windowWidth, windowHeight ] ], 
+        this.pista = new SimpleSprite("pista.png"), this.addChild(this.pista);
+        var pistaScale = scaleConverter(this.pista.getContent().width, windowWidth, .4);
+        this.pista.getContent().scale.x = pistaScale, this.pista.getContent().scale.y = pistaScale, 
+        this.pista.setPosition(windowWidth - this.pista.getContent().width - .05 * windowWidth, windowHeight - this.pista.getContent().height / 2), 
+        this.pointsMask = [ [ 510 / 1136 * windowWidth, 0 ], [ 1038 / 1136 * windowWidth, 0 ], [ 465 / 1136 * windowWidth, windowHeight ], [ 25 / 1136 * windowWidth, windowHeight ] ], 
         this.faceContainer = new PIXI.DisplayObjectContainer(), this.faceMask = new PIXI.Graphics(), 
         this.faceMask.beginFill(6684757), this.faceMask.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), 
         this.faceMask.lineTo(this.pointsMask[1][0], this.pointsMask[1][1]), this.faceMask.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), 
         this.faceMask.lineTo(this.pointsMask[3][0], this.pointsMask[3][1]), this.faceContainer.addChild(this.faceMask), 
+        this.planeMask = new PIXI.Graphics(), this.planeMask.beginFill(6684757), this.planeMask.moveTo(this.pointsMask[1][0], this.pointsMask[1][1]), 
+        this.planeMask.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), this.planeMask.lineTo(windowWidth, windowHeight), 
+        this.planeMask.lineTo(windowWidth, 0), this.planeContainer = new PIXI.DisplayObjectContainer(), 
+        this.planeContainer.addChild(this.planeMask), this.planeContainer.mask = this.planeMask, 
         this.faceColorBlink = new PIXI.Graphics(), this.faceColorBlink.beginFill(16777215), 
         this.faceColorBlink.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), this.faceColorBlink.lineTo(this.pointsMask[1][0], this.pointsMask[1][1]), 
         this.faceColorBlink.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), this.faceColorBlink.lineTo(this.pointsMask[3][0], this.pointsMask[3][1]), 
         this.faceContainer.addChild(this.faceColorBlink), this.addChild(this.faceContainer), 
-        this.faceContainer.mask = this.faceMask, this.pista = new SimpleSprite("pista.png"), 
-        this.addChild(this.pista);
-        var pistaScale = scaleConverter(this.pista.getContent().width, windowWidth, .4);
-        this.pista.getContent().scale.x = pistaScale, this.pista.getContent().scale.y = pistaScale, 
-        this.pista.setPosition(windowWidth - this.pista.getContent().width - .05 * windowWidth, windowHeight - this.pista.getContent().height / 2), 
-        this.char1 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), this.char1.build(sizeScale, sizeScale), 
-        this.char1.setPosition(.02 * windowWidth, .08 * windowHeight), this.addChild(this.char1), 
-        this.currentID = APP.getGameModel().currentID, this.arrButtons = [], this.char1.clickCallback = function() {
+        this.addChild(this.planeContainer), this.faceContainer.mask = this.faceMask, this.char1 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
+        this.char1.build(sizeScale, sizeScale), this.char1.setPosition(.02 * windowWidth, .08 * windowHeight), 
+        this.addChild(this.char1), this.currentID = APP.getGameModel().currentID, this.arrButtons = [], 
+        this.char1.clickCallback = function() {
             0 !== self.currentID && (APP.getGameModel().setModel(0), self.updatePlayers());
-        }, this.char2 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char2 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char2.build(sizeScale, sizeScale), this.char2.setPosition(.02 * windowWidth, this.char1.getContent().position.y + sizeScale + spacing), 
         this.addChild(this.char2), this.char2.clickCallback = function() {
             1 !== self.currentID && (APP.getGameModel().setModel(1), self.updatePlayers());
-        }, this.char3 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char3 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char3.build(sizeScale, sizeScale), this.char3.setPosition(.02 * windowWidth, this.char2.getContent().position.y + sizeScale + spacing), 
         this.addChild(this.char3), this.char3.clickCallback = function() {
             2 !== self.currentID && (APP.getGameModel().setModel(2), self.updatePlayers());
-        }, this.char4 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char4 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char4.build(sizeScale, sizeScale), this.char4.setPosition(this.char1.getContent().position.x + sizeScale + spacing, this.char1.getContent().position.y), 
         this.addChild(this.char4), this.char4.clickCallback = function() {
             3 !== self.currentID && (APP.getGameModel().setModel(3), self.updatePlayers());
-        }, this.char5 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char5 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char5.build(sizeScale, sizeScale), this.char5.setPosition(this.char4.getContent().position.x, this.char2.getContent().position.y), 
         this.addChild(this.char5), this.currentID = APP.getGameModel().currentID, this.char5.clickCallback = function() {
             4 !== self.currentID && (APP.getGameModel().setModel(4), self.updatePlayers());
-        }, this.char6 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char6 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char6.build(sizeScale, sizeScale), this.char6.setPosition(this.char5.getContent().position.x, this.char3.getContent().position.y), 
         this.addChild(this.char6), this.char6.clickCallback = function() {
             5 !== self.currentID && (APP.getGameModel().setModel(5), self.updatePlayers());
-        }, this.char7 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char7 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char7.build(sizeScale, sizeScale), this.char7.setPosition(this.char5.getContent().position.x + sizeScale + spacing, this.char5.getContent().position.y), 
         this.addChild(this.char7), this.char7.clickCallback = function() {
             6 !== self.currentID && (APP.getGameModel().setModel(6), self.updatePlayers());
-        }, this.char8 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char8 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char8.build(sizeScale, sizeScale), this.char8.setPosition(this.char6.getContent().position.x + sizeScale + spacing, this.char6.getContent().position.y), 
         this.addChild(this.char8), this.char8.clickCallback = function() {
             7 !== self.currentID && (APP.getGameModel().setModel(7), self.updatePlayers());
-        }, this.char9 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char9 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char9.build(sizeScale, sizeScale), this.char9.setPosition(this.char6.getContent().position.x, this.char6.getContent().position.y + sizeScale + spacing), 
         this.addChild(this.char9), this.char9.clickCallback = function() {
             8 !== self.currentID && (APP.getGameModel().setModel(8), self.updatePlayers());
-        }, this.char10 = new ChoiceButton("out.png", "selectedInner.png", "selected.png"), 
+        }, this.char10 = new ChoiceButton("out.png", "selectedInner.png", "selected.png", "border.png"), 
         this.char10.build(sizeScale, sizeScale), this.char10.setPosition(this.char8.getContent().position.x, this.char8.getContent().position.y + sizeScale + spacing), 
         this.addChild(this.char10), this.char10.clickCallback = function() {
             9 !== self.currentID && (APP.getGameModel().setModel(9), self.updatePlayers());
@@ -945,15 +949,15 @@ var Application = AbstractApplication.extend({
     createStatsContainer: function() {
         this.statsContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.statsContainer), 
         this.backBars = new SimpleSprite("backBars.png"), this.statsContainer.addChild(this.backBars.getContent());
-        var barX = this.backBars.getContent().width / 2 - 75, barY = 70;
+        var barX = this.backBars.getContent().width / 2 - 75, barY = 60;
         this.energyBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.energyBar.getContent()), 
         this.energyBar.setPosition(barX, 0 + barY), this.energyBar.setFrontColor(16158750), 
-        this.energyBar.setBackColor(0), this.energyBar.addBackShape(362607, 6), this.velBar = new BarView(150, 15, 1, 0), 
+        this.energyBar.setBackColor(0), this.energyBar.addBackShape(8637092, 6), this.velBar = new BarView(150, 15, 1, 0), 
         this.statsContainer.addChild(this.velBar.getContent()), this.velBar.setPosition(barX, 60 + barY), 
-        this.velBar.setFrontColor(16158750), this.velBar.setBackColor(0), this.velBar.addBackShape(362607, 6), 
+        this.velBar.setFrontColor(16158750), this.velBar.setBackColor(0), this.velBar.addBackShape(8637092, 6), 
         this.powerBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.powerBar.getContent()), 
         this.powerBar.setPosition(barX, 120 + barY), this.powerBar.setFrontColor(16158750), 
-        this.powerBar.setBackColor(0), this.powerBar.addBackShape(362607, 6);
+        this.powerBar.setBackColor(0), this.powerBar.addBackShape(8637092, 6);
         var energyLabel = new PIXI.Text("ENERGIA", {
             align: "center",
             font: "20px Arial",
@@ -1015,14 +1019,11 @@ var Application = AbstractApplication.extend({
             var scale = 1;
             scale = this.playerImg.container.width > this.playerImg.container.height ? scaleConverter(this.playerImg.container.width, windowWidth, .2) : scaleConverter(this.playerImg.container.height, windowHeight, .4), 
             this.playerImg.container.scale.x = scale, this.playerImg.container.scale.y = scale, 
-            this.addChild(this.playerImg), this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2), 
+            this.planeContainer.addChild(this.playerImg.getContent()), this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2), 
             TweenLite.from(this.playerImg.getContent().position, .8, {
+                ease: "easeOutBack",
                 x: this.playerImg.getContent().position.x - .2 * windowWidth,
                 y: this.playerImg.getContent().position.y - .2 * windowHeight
-            }), TweenLite.from(this.playerImg.getContent(), .3, {
-                alpha: 0
-            }), this.playerImg.getContent().rotation = .2, TweenLite.to(this.playerImg.getContent(), .5, {
-                rotation: 0
             });
         }
     }
