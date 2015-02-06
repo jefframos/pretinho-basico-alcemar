@@ -104,7 +104,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.currentID = APP.getGameModel().currentID;
 
         this.arrButtons = [];
-        // this.char1.addLabel(new PIXI.Text('Piangers', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
+        // this.char1.addLabel(new PIXI.Text('Piangers', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),20,15);
         this.char1.clickCallback = function(){
             if(self.currentID === 0){
                 return;
@@ -118,7 +118,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char2.build(sizeScale,sizeScale);
         this.char2.setPosition( windowWidth * 0.02 ,this.char1.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char2);
-        // this.char2.addLabel(new PIXI.Text('Feter', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char2.addLabel(new PIXI.Text('Feter', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char2.clickCallback = function(){
             if(self.currentID === 1){
                 return;
@@ -131,7 +131,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char3.build(sizeScale,sizeScale);
         this.char3.setPosition( windowWidth * 0.02 ,this.char2.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char3);
-        // this.char3.addLabel(new PIXI.Text('Alcemar', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char3.addLabel(new PIXI.Text('Alcemar', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char3.clickCallback = function(){
             if(self.currentID === 2){
                 return;
@@ -144,7 +144,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char4.build(sizeScale,sizeScale);
         this.char4.setPosition( this.char1.getContent().position.x + sizeScale + spacing,this.char1.getContent().position.y);
         this.addChild(this.char4);
-        // this.char4.addLabel(new PIXI.Text('Jeiso', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char4.addLabel(new PIXI.Text('Jeiso', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char4.clickCallback = function(){
             if(self.currentID === 3){
                 return;
@@ -160,7 +160,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.addChild(this.char5);
 
         this.currentID = APP.getGameModel().currentID;
-        // this.char5.addLabel(new PIXI.Text('Pi', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),20,15);
+        // this.char5.addLabel(new PIXI.Text('Pi', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),20,15);
         this.char5.clickCallback = function(){
             if(self.currentID === 4){
                 return;
@@ -174,7 +174,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char6.build(sizeScale,sizeScale);
         this.char6.setPosition( this.char5.getContent().position.x,this.char3.getContent().position.y);
         this.addChild(this.char6);
-        // this.char6.addLabel(new PIXI.Text('Pora', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char6.addLabel(new PIXI.Text('Pora', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char6.clickCallback = function(){
             if(self.currentID === 5){
                 return;
@@ -187,7 +187,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char7.build(sizeScale,sizeScale);
         this.char7.setPosition( this.char5.getContent().position.x + sizeScale + spacing,this.char5.getContent().position.y);
         this.addChild(this.char7);
-        // this.char7.addLabel(new PIXI.Text('Arthur', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char7.addLabel(new PIXI.Text('Arthur', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char7.clickCallback = function(){
             if(self.currentID === 6){
                 return;
@@ -200,7 +200,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char8.build(sizeScale,sizeScale);
         this.char8.setPosition( this.char6.getContent().position.x + sizeScale + spacing,this.char6.getContent().position.y);
         this.addChild(this.char8);
-        // this.char8.addLabel(new PIXI.Text('Poter', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char8.addLabel(new PIXI.Text('Poter', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char8.clickCallback = function(){
             if(self.currentID === 7){
                 return;
@@ -213,7 +213,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char9.build(sizeScale,sizeScale);
         this.char9.setPosition(this.char6.getContent().position.x,this.char6.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char9);
-        // this.char9.addLabel(new PIXI.Text('Neto', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char9.addLabel(new PIXI.Text('Neto', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char9.clickCallback = function(){
             if(self.currentID === 8){
                 return;
@@ -226,7 +226,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.char10.build(sizeScale,sizeScale);
         this.char10.setPosition(this.char8.getContent().position.x,this.char8.getContent().position.y + sizeScale + spacing);
         this.addChild(this.char10);
-        // this.char10.addLabel(new PIXI.Text('Rodaika', { align:'center', font:'25px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        // this.char10.addLabel(new PIXI.Text('Rodaika', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char10.clickCallback = function(){
             if(self.currentID === 9){
                 return;
@@ -258,7 +258,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.play.setPosition( windowWidth - this.play.width - 10,windowHeight - this.play.height - 10);
         this.addChild(this.play);
 
-        this.play.addLabel(new PIXI.Text('PLAY', { align:'center', font:'35px Arial', wordWrap:true, wordWrapWidth:300}),15,15);
+        this.play.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
         this.play.clickCallback = function(){
             self.screenManager.change('Game');
         };
@@ -267,7 +267,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.returnButton.build(60, 60);
         this.returnButton.setPosition(10 ,windowHeight - this.play.height - 10);
         this.addChild(this.returnButton);
-        // this.returnButton.addLabel(new PIXI.Text('<', {font:'70px Arial'}),5,5);
+        // this.returnButton.addLabel(new PIXI.Text('<', {font:'70px Luckiest Guy'}),5,5);
         this.returnButton.clickCallback = function(){
             self.screenManager.change('Wait');
         };
@@ -313,18 +313,18 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.powerBar.setBackColor(0x000);
         this.powerBar.addBackShape(0x83CAA4, 6);
 
-        var energyLabel = new PIXI.Text('ENERGIA', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        var energyLabel = new PIXI.Text('ENERGIA', { align:'center',fill:'#FFFFFF', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
         this.statsContainer.addChild(energyLabel);
         energyLabel.position.x = this.backBars.getContent().width / 2 - energyLabel.width / 2;
         energyLabel.position.y = this.energyBar.getContent().position.y - energyLabel.height;
 
-        var velLabel = new PIXI.Text('VELOCIDADE', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        var velLabel = new PIXI.Text('VELOCIDADE', { align:'center',fill:'#FFFFFF', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
         this.statsContainer.addChild(velLabel);
         velLabel.position.x = this.backBars.getContent().width / 2 - velLabel.width / 2;
         velLabel.position.y = this.velBar.getContent().position.y - velLabel.height;
 
 
-        var tiroLabel = new PIXI.Text('TIRO', { align:'center', font:'20px Arial', wordWrap:true, wordWrapWidth:300});
+        var tiroLabel = new PIXI.Text('TIRO', { align:'center',fill:'#FFFFFF', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
         this.statsContainer.addChild(tiroLabel);
         tiroLabel.position.x = this.backBars.getContent().width / 2 - tiroLabel.width / 2;
         tiroLabel.position.y = this.powerBar.getContent().position.y - tiroLabel.height;

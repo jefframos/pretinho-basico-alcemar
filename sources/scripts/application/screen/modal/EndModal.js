@@ -25,12 +25,8 @@ var EndModal = Class.extend({
 		this.boxContainer.addChild(this.exitButton.getContent());
 		this.exitButton.clickCallback = function(){
 			self.hide(function(){
-				//TODO: fazer o reinit
-				// self.screen.destroy();// = true;
-				// self.screen.build();// = true;
-
 				self.screen.updateable = true;
-				self.screen.reset();// = true;
+				self.screen.reset();
 			});
 		};
 		this.boxContainer.addChild(this.exitButton.getContent());

@@ -932,12 +932,13 @@ var Application = AbstractApplication.extend({
         this.arrButtons[i].mouseUpCallback = this.resetButtons;
         this.play = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), this.play.build(120, 60), 
         this.play.setPosition(windowWidth - this.play.width - 10, windowHeight - this.play.height - 10), 
-        this.addChild(this.play), this.play.addLabel(new PIXI.Text("PLAY", {
+        this.addChild(this.play), this.play.addLabel(new PIXI.Text("JOGAR", {
             align: "center",
-            font: "35px Arial",
+            fill: "#033E43",
+            font: "30px Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
-        }), 15, 15), this.play.clickCallback = function() {
+        }), 15, 12), this.play.clickCallback = function() {
             self.screenManager.change("Game");
         }, this.returnButton = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.returnButton.build(60, 60), this.returnButton.setPosition(10, windowHeight - this.play.height - 10), 
@@ -960,7 +961,8 @@ var Application = AbstractApplication.extend({
         this.powerBar.setBackColor(0), this.powerBar.addBackShape(8637092, 6);
         var energyLabel = new PIXI.Text("ENERGIA", {
             align: "center",
-            font: "20px Arial",
+            fill: "#FFFFFF",
+            font: "25px Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
         });
@@ -968,7 +970,8 @@ var Application = AbstractApplication.extend({
         energyLabel.position.y = this.energyBar.getContent().position.y - energyLabel.height;
         var velLabel = new PIXI.Text("VELOCIDADE", {
             align: "center",
-            font: "20px Arial",
+            fill: "#FFFFFF",
+            font: "25px Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
         });
@@ -976,7 +979,8 @@ var Application = AbstractApplication.extend({
         velLabel.position.y = this.velBar.getContent().position.y - velLabel.height;
         var tiroLabel = new PIXI.Text("TIRO", {
             align: "center",
-            font: "20px Arial",
+            fill: "#FFFFFF",
+            font: "25px Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
         });
@@ -1166,14 +1170,14 @@ var Application = AbstractApplication.extend({
         this.returnButton.build(60, 50), this.returnButton.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 65), 
         this.addChild(this.returnButton), this.returnButton.addLabel(new PIXI.Text("<", {
             font: "40px Arial"
-        }), 5, 5), this.returnButton.clickCallback = function() {
+        }), 15, 5), this.returnButton.clickCallback = function() {
             self.screenManager.prevScreen();
         }, this.pauseButton = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.pauseButton.build(50, 50), this.pauseButton.setPosition(windowWidth / 2 - this.pauseButton.width / 2, .05 * windowHeight), 
-        this.addChild(this.pauseButton), this.pauseButton.addLabel(new PIXI.Text("", {
-            font: "40px Arial"
-        }), 5, 5), this.pauseButton.clickCallback = function() {
-            self.endModal.show();
+        this.pauseButton.build(80, 50), this.pauseButton.setPosition(windowWidth / 2 - this.pauseButton.width / 2, .08 * windowHeight), 
+        this.addChild(this.pauseButton), this.pauseButton.addLabel(new PIXI.Text("PAUSE", {
+            font: "20px Luckiest Guy"
+        }), 5, 15), this.pauseButton.clickCallback = function() {
+            self.pauseModal.show();
         };
         var item = new Item();
         item.build(), item.setPosition(windowWidth, windowHeight / 2), this.layer.addChild(item);
@@ -1236,10 +1240,11 @@ var Application = AbstractApplication.extend({
         this.btnBenchmark.build(200, 100), this.btnBenchmark.setPosition(windowWidth - this.btnBenchmark.width - .05 * this.btnBenchmark.height, windowHeight - this.btnBenchmark.height - .05 * this.btnBenchmark.height), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Jogar", {
             align: "center",
-            font: "60px Arial",
+            fill: "#033E43",
+            font: "50px Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
-        }), 25, 15), this.btnBenchmark.clickCallback = function() {
+        }), 25, 18), this.btnBenchmark.clickCallback = function() {
             self.screenManager.change("Choice");
         }, possibleFullscreen() && (this.fullScreen = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 
@@ -1365,21 +1370,41 @@ var Application = AbstractApplication.extend({
         this.bg = new PIXI.Graphics(), this.bg.beginFill(19784), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
         this.bg.alpha = 0, this.container.addChild(this.bg), this.container.addChild(this.boxContainer);
         var self = this;
+        this.backBars = new SimpleSprite("backBars.png"), this.boxContainer.addChild(this.backBars.getContent()), 
         this.exitButton = new DefaultButton("simpleButtonOver.png", "simpleButtonUp.png"), 
-        this.exitButton.build(.2 * windowWidth, .2 * windowHeight), this.exitButton.setPosition(windowWidth / 2 - this.exitButton.width / 2, windowHeight / 2 - this.exitButton.height / 2), 
+        this.exitButton.build(this.backBars.getContent().width - 20, 60), this.exitButton.addLabel(new PIXI.Text("CONTINUE", {
+            align: "center",
+            fill: "#033E43",
+            font: "30px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 35, 12), this.exitButton.setPosition(this.backBars.getContent().width / 2 - this.exitButton.width / 2, this.backBars.getContent().height / 2 - this.exitButton.height / 2 - 10), 
         this.boxContainer.addChild(this.exitButton.getContent()), this.exitButton.clickCallback = function() {
             self.hide(function() {
                 self.screen.updateable = !0;
             });
-        }, this.boxContainer.addChild(this.exitButton.getContent()), this.boxContainer.alpha = 0, 
-        this.boxContainer.visible = !1;
+        }, this.restartButton = new DefaultButton("simpleButtonOver.png", "simpleButtonUp.png"), 
+        this.restartButton.build(this.exitButton.width, 60), this.restartButton.addLabel(new PIXI.Text("RESTART", {
+            align: "center",
+            fill: "#033E43",
+            font: "30px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 48, 12), this.restartButton.setPosition(this.backBars.getContent().width / 2 - this.restartButton.width / 2, this.backBars.getContent().height / 2 + this.restartButton.height / 2 + 10), 
+        this.boxContainer.addChild(this.restartButton.getContent()), this.restartButton.clickCallback = function() {
+            self.hide(function() {
+                self.screen.updateable = !0, self.screen.reset();
+            });
+        }, this.boxContainer.addChild(this.restartButton.getContent()), this.boxContainer.alpha = 0, 
+        this.boxContainer.visible = !1, this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2, 
+        this.boxContainer.position.y = this.boxContainer.height;
     },
     show: function() {
         this.screen.addChild(this), this.boxContainer.visible = !0, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
         this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
             alpha: .8
         }), TweenLite.to(this.boxContainer.position, 1, {
-            y: 0,
+            y: windowHeight / 2 - this.boxContainer.height / 2,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
             alpha: 1

@@ -294,19 +294,19 @@ var GameScreen = AbstractScreen.extend({
         this.returnButton.build(60, 50);
         this.returnButton.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 65);
         this.addChild(this.returnButton);
-        this.returnButton.addLabel(new PIXI.Text('<', {font:'40px Arial'}),5,5);
+        this.returnButton.addLabel(new PIXI.Text('<', {font:'40px Arial'}),15,5);
         this.returnButton.clickCallback = function(){
             self.screenManager.prevScreen();
         };
 
         this.pauseButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.pauseButton.build(50, 50);
-        this.pauseButton.setPosition( windowWidth /2 - this.pauseButton.width / 2, windowHeight * 0.05);
+        this.pauseButton.build(80, 50);
+        this.pauseButton.setPosition( windowWidth /2 - this.pauseButton.width / 2, windowHeight * 0.08);
         this.addChild(this.pauseButton);
-        this.pauseButton.addLabel(new PIXI.Text('', {font:'40px Arial'}),5,5);
+        this.pauseButton.addLabel(new PIXI.Text('PAUSE', {font:'20px Luckiest Guy'}),5,15);
         this.pauseButton.clickCallback = function(){
-            // self.pauseModal.show();
-            self.endModal.show();
+            self.pauseModal.show();
+            // self.endModal.show();
         };
 
         var item = new Item();

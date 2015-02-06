@@ -61,7 +61,7 @@ var WaitScreen = AbstractScreen.extend({
 
         // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
 
-        this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', font:'60px Arial', wordWrap:true, wordWrapWidth:300}),25,15);
+        this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
         this.btnBenchmark.clickCallback = function(){
             self.screenManager.change('Choice');
         };

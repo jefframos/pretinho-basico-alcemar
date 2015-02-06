@@ -67,6 +67,18 @@ module.exports = function(grunt) {
             }
         },
 
+        // css preprocessor compiler, compression and concatenation
+        stylus: {
+            options : {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+            },
+            compile: {
+                files: {
+                    '<%= globalConfig.dest %>/css/main.css': ['sources/styles/main.styl']
+                }
+            }
+        },
+
         // image compression
         // imagemin: {
         //     options: {
@@ -89,6 +101,12 @@ module.exports = function(grunt) {
         }, // watch
 
         watch: {
+            css: {
+                files: [
+                    'sources/styles/*.styl'
+                ],
+                tasks: ['stylus']
+            },
             js: {
                 files: ['<%= jshint.all %>'],
                 tasks: ['jshint','uglify:dist']
