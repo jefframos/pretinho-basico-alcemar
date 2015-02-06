@@ -1,4 +1,4 @@
-/*! jefframos 05-02-2015 */
+/*! jefframos 06-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1216,7 +1216,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/HUD.json" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/introScreen.jpg", "dist/img/UI/HUD.json" ];
         assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded();
     },
@@ -1227,15 +1227,19 @@ var Application = AbstractApplication.extend({
         this.initApplication();
     },
     initApplication: function() {
+        var background = new SimpleSprite("dist/img/UI/introScreen.jpg");
+        this.addChild(background.getContent());
+        var scaleBack = scaleConverter(background.getContent().width, windowWidth, 1);
+        background.getContent().scale.x = scaleBack, background.getContent().scale.y = scaleBack;
         var self = this;
         this.btnBenchmark = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.btnBenchmark.build(300, 100), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 
+        this.btnBenchmark.build(200, 100), this.btnBenchmark.setPosition(windowWidth - this.btnBenchmark.width - .05 * this.btnBenchmark.height, windowHeight - this.btnBenchmark.height - .05 * this.btnBenchmark.height), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Jogar", {
             align: "center",
             font: "60px Arial",
             wordWrap: !0,
             wordWrapWidth: 300
-        }), 70, 15), this.btnBenchmark.clickCallback = function() {
+        }), 25, 15), this.btnBenchmark.clickCallback = function() {
             self.screenManager.change("Choice");
         }, possibleFullscreen() && (this.fullScreen = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.fullScreen.build(40, 20), this.fullScreen.setPosition(.95 * windowWidth - 20, .95 * windowHeight - 35), 

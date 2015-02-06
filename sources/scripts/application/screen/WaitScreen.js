@@ -24,6 +24,7 @@ var WaitScreen = AbstractScreen.extend({
         'dist/img/UI/alcemarGrande.png',
         'dist/img/UI/netoGrande.png',
         'dist/img/UI/piangersGrande.png',
+        'dist/img/UI/introScreen.jpg',
         'dist/img/UI/HUD.json'];
 
 
@@ -46,16 +47,21 @@ var WaitScreen = AbstractScreen.extend({
     },
     initApplication:function(){
 
+        var background = new SimpleSprite('dist/img/UI/introScreen.jpg');
+        this.addChild(background.getContent());
+        var scaleBack = scaleConverter(background.getContent().width, windowWidth, 1);
+        background.getContent().scale.x = scaleBack;
+        background.getContent().scale.y = scaleBack;
         var self = this;
         this.btnBenchmark = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         // console.log(this.btnBenchmark.build);
-        this.btnBenchmark.build(300,100);
-        this.btnBenchmark.setPosition( windowWidth / 2 - this.btnBenchmark.width / 2,windowHeight / 2);
+        this.btnBenchmark.build(200,100);
+        this.btnBenchmark.setPosition( windowWidth - this.btnBenchmark.width  - this.btnBenchmark.height * 0.05, windowHeight - this.btnBenchmark.height - this.btnBenchmark.height * 0.05);
         this.addChild(this.btnBenchmark);
 
         // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
 
-        this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', font:'60px Arial', wordWrap:true, wordWrapWidth:300}),70,15);
+        this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', font:'60px Arial', wordWrap:true, wordWrapWidth:300}),25,15);
         this.btnBenchmark.clickCallback = function(){
             self.screenManager.change('Choice');
         };
