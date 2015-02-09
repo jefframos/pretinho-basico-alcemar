@@ -17,7 +17,7 @@ var Application = AbstractApplication.extend({
         // this.objCounter.position.x = 20;
 
         this.labelDebug = new PIXI.Text('Debug', {font:'15px Arial'});
-        // this.stage.addChild(this.labelDebug);
+        this.stage.addChild(this.labelDebug);
         this.labelDebug.position.y = windowHeight - 20;
         this.labelDebug.position.x = 20;
 	},

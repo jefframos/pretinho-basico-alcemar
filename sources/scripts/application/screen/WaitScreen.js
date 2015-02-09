@@ -45,6 +45,7 @@ var WaitScreen = AbstractScreen.extend({
     onAssetsLoaded:function()
     {
         this.initApplication();
+        APP.labelDebug.visible = false;
     },
     initApplication:function(){
 
@@ -69,10 +70,10 @@ var WaitScreen = AbstractScreen.extend({
 
         if(possibleFullscreen()){
             this.fullScreen = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-            this.fullScreen.build(100, 100);
-            this.fullScreen.setPosition( 20,windowHeight * 0.95 - 35);
+            this.fullScreen.build(200, 100);
+            this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.height - this.fullScreen.height * 0.05);
             this.addChild(this.fullScreen);
-            this.fullScreen.addLabel(new PIXI.Text('Full', {font:'10px Arial'}),5,5);
+            this.fullScreen.addLabel(new PIXI.Text('Fullscreen', { align:'center', fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,28);
             this.fullScreen.clickCallback = function(){
                 fullscreen();
             };

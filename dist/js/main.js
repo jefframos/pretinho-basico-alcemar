@@ -286,7 +286,8 @@ var Application = AbstractApplication.extend({
         this.stage.removeChild(this.loadText), this.isMobile = testMobile(), this.appContainer = document.getElementById("rect"), 
         this.id = parseInt(1e11 * Math.random()), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
-        }), this.labelDebug.position.y = windowHeight - 20, this.labelDebug.position.x = 20;
+        }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
+        this.labelDebug.position.x = 20;
     },
     update: function() {
         this._super(), this.screenManager && !this.screenManager.currentScreen;
@@ -1262,7 +1263,7 @@ var Application = AbstractApplication.extend({
         this._super(), APP.labelDebug.setText(Math.floor(100 * this.loadPercent)), console.log(this.loadPercent);
     },
     onAssetsLoaded: function() {
-        this.initApplication();
+        this.initApplication(), APP.labelDebug.visible = !1;
     },
     initApplication: function() {
         var background = new SimpleSprite("dist/img/UI/introScreen.jpg");
@@ -1281,10 +1282,14 @@ var Application = AbstractApplication.extend({
         }), 25, 18), this.btnBenchmark.clickCallback = function() {
             self.screenManager.change("Choice");
         }, possibleFullscreen() && (this.fullScreen = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.fullScreen.build(100, 100), this.fullScreen.setPosition(20, .95 * windowHeight - 35), 
-        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Full", {
-            font: "10px Arial"
-        }), 5, 5), this.fullScreen.clickCallback = function() {
+        this.fullScreen.build(200, 100), this.fullScreen.setPosition(20, windowHeight - this.fullScreen.height - .05 * this.fullScreen.height), 
+        this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Fullscreen", {
+            align: "center",
+            fill: "#033E43",
+            font: "28px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 25, 28), this.fullScreen.clickCallback = function() {
             fullscreen();
         });
     }
