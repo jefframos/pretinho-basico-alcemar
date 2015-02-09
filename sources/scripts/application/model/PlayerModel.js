@@ -12,6 +12,7 @@ var PlayerModel = Class.extend({
 		this.recoverEnergy = 0.5;
 					
 
+		this.label = graphicsObject.label?graphicsObject.label:'NOME';
 		this.thumb = graphicsObject.thumb?graphicsObject.thumb:'thumb_jeiso';
 		this.thumbColor = this.thumb + '_color.png';
 		this.thumbGray = this.thumb + '_gray.png';

@@ -13,6 +13,7 @@ var AppModel = Class.extend({
 		this.playerModels = [
 
 			new PlayerModel({
+				label:'PIANGERS',
 				outGame:'piangersN.png',
 				inGame:'piangersNGame.png',
 				bullet:'bulletSmall.png',
@@ -29,6 +30,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'FETER',
 				outGame:'feter.png',
 				inGame:'feterGame.png',
 				bullet:'bulletSmall.png',
@@ -45,6 +47,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'ALCEMAR',
 				outGame:'alcemar.png',
 				inGame:'alcemarGame.png',
 				bullet:'bulletSmall.png',
@@ -61,6 +64,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'JEISO',
 				outGame:'jeso.png',
 				inGame:'jesoGame.png',
 				bullet:'bulletSmall.png',
@@ -77,6 +81,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'Mr. PI',
 				outGame:'pi.png',
 				inGame:'piGame.png',
 				bullet:'bulletSmall.png',
@@ -93,6 +98,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'PORÃ',
 				outGame:'pora.png',
 				inGame:'poraGame.png',
 				bullet:'bulletSmall.png',
@@ -109,6 +115,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'ARTHUR',
 				outGame:'arthur.png',
 				inGame:'arthurGame.png',
 				bullet:'bulletSmall.png',
@@ -125,6 +132,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'POTTER',
 				outGame:'poter.png',
 				inGame:'poterGame.png',
 				bullet:'bulletSmall.png',
@@ -141,6 +149,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'NETO',
 				outGame:'neto.png',
 				inGame:'netoGame.png',
 				bullet:'bulletSmall.png',
@@ -157,6 +166,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
+				label:'RODAIKA',
 				outGame:'rodaika.png',
 				inGame:'rodaikaGame.png',
 				bullet:'bulletSmall.png',

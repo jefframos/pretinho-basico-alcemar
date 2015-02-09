@@ -278,7 +278,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.arrButtons[APP.getGameModel().currentID].selectedFunction();
 
         this.createStatsContainer();
-        this.updatePlayers();
+        this.updatePlayers(true);
     },
     createStatsContainer:function(){
         this.statsContainer = new PIXI.DisplayObjectContainer();
@@ -350,7 +350,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3);
         this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);
     },
-    updatePlayers:function()
+    updatePlayers:function(instant)
     {
         
         // console.log(this.currentID, APP.getGameModel().currentID);
@@ -359,6 +359,13 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.currentID = APP.getGameModel().currentID;
         this.updateStatsBars();
 
+        if(this.playerName && this.playerName.parent){
+            this.playerName.parent.removeChild(this.playerName);
+        }
+        this.playerName = new PIXI.Text(APP.getGameModel().currentPlayerModel.label, { align:'center',fill:'#FFFFFF', strokeThickness:3, stroke:'#033E43', font:'45px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+        this.playerName.position.x = windowWidth /2 - this.playerName.width / 2;
+        this.playerName.position.y = this.char1.getContent().position.y - 10;
+        this.addChild(this.playerName);
         if(this.faceColor && this.faceColor.parent){
             this.faceColor.parent.removeChild(this.faceColor);
             // this.removeChild(this.playerImgBig);
@@ -390,9 +397,9 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         // this.faceColor.tint = APP.getGameModel().currentPlayerModel.color;
         this.faceColorBlink.alpha = 1;
-        TweenLite.to(this.faceColorBlink, 0.2, {alpha:0});
-        TweenLite.from(this.playerImgBig.getContent().position, 0.8, {x: this.playerImgBig.getContent().position.x + windowWidth * 0.1});
-        TweenLite.from(this.playerImgBig.getContent(), 0.3, {alpha:  0});
+        TweenLite.to(this.faceColorBlink, instant?0:0.2, {alpha:0});
+        TweenLite.from(this.playerImgBig.getContent().position, instant?0:0.8, {x: this.playerImgBig.getContent().position.x + windowWidth * 0.1});
+        // TweenLite.from(this.playerImgBig.getContent(), instant?0:0.3, {alpha:  0});
 
 
         if(this.playerImg && this.playerImg.getContent().parent){
@@ -418,7 +425,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         // this.playerImg  = new PIXI.Sprite.fromFrame(this.imgSource);
         this.planeContainer.addChild(this.playerImg.getContent());
         this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2);
-        TweenLite.from(this.playerImg.getContent().position, 0.8, {ease:'easeOutBack', x: this.playerImg.getContent().position.x - windowWidth * 0.2,y:  this.playerImg.getContent().position.y - windowHeight * 0.2});
+        TweenLite.from(this.playerImg.getContent().position, instant?0:0.8, {ease:'easeOutBack', x: this.playerImg.getContent().position.x - windowWidth * 0.2,y:  this.playerImg.getContent().position.y - windowHeight * 0.2});
         // TweenLite.from(this.playerImg.getContent(), 0.3, {alpha:  0});
         // this.playerImg.getContent().rotation = 0.4;
         // TweenLite.to(this.playerImg.getContent(), 0.5, {rotation: 0});

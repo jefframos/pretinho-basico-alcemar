@@ -680,6 +680,7 @@ var Application = AbstractApplication.extend({
 }), AppModel = Class.extend({
     init: function() {
         this.currentPlayerModel = {}, this.playerModels = [ new PlayerModel({
+            label: "PIANGERS",
             outGame: "piangersN.png",
             inGame: "piangersNGame.png",
             bullet: "bulletSmall.png",
@@ -693,6 +694,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 9
         }), new PlayerModel({
+            label: "FETER",
             outGame: "feter.png",
             inGame: "feterGame.png",
             bullet: "bulletSmall.png",
@@ -706,6 +708,7 @@ var Application = AbstractApplication.extend({
             bulletVel: 6,
             bulletCoast: .1
         }), new PlayerModel({
+            label: "ALCEMAR",
             outGame: "alcemar.png",
             inGame: "alcemarGame.png",
             bullet: "bulletSmall.png",
@@ -719,6 +722,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 6
         }), new PlayerModel({
+            label: "JEISO",
             outGame: "jeso.png",
             inGame: "jesoGame.png",
             bullet: "bulletSmall.png",
@@ -732,6 +736,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 8
         }), new PlayerModel({
+            label: "Mr. PI",
             outGame: "pi.png",
             inGame: "piGame.png",
             bullet: "bulletSmall.png",
@@ -745,6 +750,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
+            label: "PORÃ",
             outGame: "pora.png",
             inGame: "poraGame.png",
             bullet: "bulletSmall.png",
@@ -758,6 +764,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
+            label: "ARTHUR",
             outGame: "arthur.png",
             inGame: "arthurGame.png",
             bullet: "bulletSmall.png",
@@ -771,6 +778,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
+            label: "POTTER",
             outGame: "poter.png",
             inGame: "poterGame.png",
             bullet: "bulletSmall.png",
@@ -784,6 +792,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
+            label: "NETO",
             outGame: "neto.png",
             inGame: "netoGame.png",
             bullet: "bulletSmall.png",
@@ -797,6 +806,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
+            label: "RODAIKA",
             outGame: "rodaika.png",
             inGame: "rodaikaGame.png",
             bullet: "bulletSmall.png",
@@ -839,9 +849,10 @@ var Application = AbstractApplication.extend({
     init: function(graphicsObject, statsObject) {
         this.range = 40, this.maxEnergy = 1e4, this.currentEnergy = 1e4, this.maxBulletEnergy = 100, 
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
-        this.currentBulletForce = 100, this.recoverEnergy = .5, this.thumb = graphicsObject.thumb ? graphicsObject.thumb : "thumb_jeiso", 
-        this.thumbColor = this.thumb + "_color.png", this.thumbGray = this.thumb + "_gray.png", 
-        this.color = graphicsObject.color ? graphicsObject.color : 8755, this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
+        this.currentBulletForce = 100, this.recoverEnergy = .5, this.label = graphicsObject.label ? graphicsObject.label : "NOME", 
+        this.thumb = graphicsObject.thumb ? graphicsObject.thumb : "thumb_jeiso", this.thumbColor = this.thumb + "_color.png", 
+        this.thumbGray = this.thumb + "_gray.png", this.color = graphicsObject.color ? graphicsObject.color : 8755, 
+        this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
         this.imgSource = graphicsObject.outGame ? graphicsObject.outGame : this.imgSourceGame, 
         this.coverSource = graphicsObject.coverSource ? graphicsObject.coverSource : "dist/img/UI/jeisoGrande.png", 
         this.bulletSource = graphicsObject.bullet ? graphicsObject.bullet : "bullet.png", 
@@ -966,7 +977,7 @@ var Application = AbstractApplication.extend({
         }), 12, 12), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.arrButtons[APP.getGameModel().currentID].selectedFunction(), this.createStatsContainer(), 
-        this.updatePlayers();
+        this.updatePlayers(!0);
     },
     createStatsContainer: function() {
         this.statsContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.statsContainer), 
@@ -1019,8 +1030,18 @@ var Application = AbstractApplication.extend({
         this.energyBar.updateBar(1, APP.getGameModel().currentPlayerModel.energyCoast), 
         this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3), this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);
     },
-    updatePlayers: function() {
-        this.currentID = APP.getGameModel().currentID, this.updateStatsBars(), this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
+    updatePlayers: function(instant) {
+        this.currentID = APP.getGameModel().currentID, this.updateStatsBars(), this.playerName && this.playerName.parent && this.playerName.parent.removeChild(this.playerName), 
+        this.playerName = new PIXI.Text(APP.getGameModel().currentPlayerModel.label, {
+            align: "center",
+            fill: "#FFFFFF",
+            strokeThickness: 3,
+            stroke: "#033E43",
+            font: "45px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), this.playerName.position.x = windowWidth / 2 - this.playerName.width / 2, this.playerName.position.y = this.char1.getContent().position.y - 10, 
+        this.addChild(this.playerName), this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
         this.faceColor = new PIXI.Graphics(), this.faceColor.beginFill(APP.getGameModel().currentPlayerModel.color), 
         this.faceColor.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), this.faceColor.lineTo(this.pointsMask[1][0], this.pointsMask[1][1]), 
         this.faceColor.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), this.faceColor.lineTo(this.pointsMask[3][0], this.pointsMask[3][1]), 
@@ -1031,12 +1052,10 @@ var Application = AbstractApplication.extend({
         if (this.playerImgBig.container.scale.x = coverScale, this.playerImgBig.container.scale.y = coverScale, 
         this.playerImgBig.setPosition(windowWidth / 2 - this.playerImgBig.getContent().width / 2, windowHeight - this.playerImgBig.getContent().height), 
         this.faceContainer.addChild(this.playerImgBig.getContent()), this.faceColorBlink.alpha = 1, 
-        TweenLite.to(this.faceColorBlink, .2, {
+        TweenLite.to(this.faceColorBlink, instant ? 0 : .2, {
             alpha: 0
-        }), TweenLite.from(this.playerImgBig.getContent().position, .8, {
+        }), TweenLite.from(this.playerImgBig.getContent().position, instant ? 0 : .8, {
             x: this.playerImgBig.getContent().position.x + .1 * windowWidth
-        }), TweenLite.from(this.playerImgBig.getContent(), .3, {
-            alpha: 0
         }), this.playerImg && this.playerImg.getContent().parent && (this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
         this.removeChild(this.playerImg)), this.playerImg = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource), 
         this.playerImg) {
@@ -1045,7 +1064,7 @@ var Application = AbstractApplication.extend({
             scale = this.playerImg.container.width > this.playerImg.container.height ? scaleConverter(this.playerImg.container.width, windowWidth, .2) : scaleConverter(this.playerImg.container.height, windowHeight, .4), 
             this.playerImg.container.scale.x = scale, this.playerImg.container.scale.y = scale, 
             this.planeContainer.addChild(this.playerImg.getContent()), this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2), 
-            TweenLite.from(this.playerImg.getContent().position, .8, {
+            TweenLite.from(this.playerImg.getContent().position, instant ? 0 : .8, {
                 ease: "easeOutBack",
                 x: this.playerImg.getContent().position.x - .2 * windowWidth,
                 y: this.playerImg.getContent().position.y - .2 * windowHeight
