@@ -20,7 +20,7 @@ var PauseModal = Class.extend({
 		this.exitButton = new DefaultButton('simpleButtonOver.png', 'simpleButtonUp.png');
         this.exitButton.build(this.backBars.getContent().width - 20, 60);
 		this.exitButton.addLabel(new PIXI.Text('CONTINUE', { align:'center', fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),35,12);
-        this.exitButton.setPosition(this.backBars.getContent().width / 2 - this.exitButton.width / 2, this.backBars.getContent().height / 2 - this.exitButton.height / 2 - 10);
+        this.exitButton.setPosition(this.backBars.getContent().width / 2 - this.exitButton.width / 2, 8);//this.backBars.getContent().height / 2 - this.exitButton.height / 2 - 10);
         this.boxContainer.addChild(this.exitButton.getContent());
         this.exitButton.clickCallback = function(){
             self.hide(function(){self.screen.updateable = true;});
@@ -29,13 +29,24 @@ var PauseModal = Class.extend({
 
         this.restartButton = new DefaultButton('simpleButtonOver.png', 'simpleButtonUp.png');
 		this.restartButton.build(this.exitButton.width, 60);
-		this.restartButton.addLabel(new PIXI.Text('RESTART', { align:'center', fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),48,12);
-		this.restartButton.setPosition(this.backBars.getContent().width / 2 - this.restartButton.width / 2, this.backBars.getContent().height / 2 + this.restartButton.height / 2 + 10);
+		this.restartButton.addLabel(new PIXI.Text('REINICIAR', { align:'center', fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),48,12);
+		this.restartButton.setPosition(this.backBars.getContent().width / 2 - this.restartButton.width / 2, this.exitButton.getContent().height +this.exitButton.getContent().position.y + 20);
 		this.boxContainer.addChild(this.restartButton.getContent());
 		this.restartButton.clickCallback = function(){
 			self.hide(function(){
 				self.screen.updateable = true;
 				self.screen.reset();
+			});
+		};
+
+		this.backButton = new DefaultButton('simpleButtonOver.png', 'simpleButtonUp.png');
+		this.backButton.build(this.exitButton.width, 60);
+		this.backButton.addLabel(new PIXI.Text('VOLTAR', { align:'center', fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),48,12);
+		this.backButton.setPosition(this.backBars.getContent().width / 2 - this.backButton.width / 2, this.restartButton.getContent().height +this.restartButton.getContent().position.y + 20);
+		this.boxContainer.addChild(this.backButton.getContent());
+		this.backButton.clickCallback = function(){
+			self.hide(function(){
+				self.screen.screenManager.prevScreen();
 			});
 		};
 

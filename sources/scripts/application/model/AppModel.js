@@ -37,7 +37,7 @@ var AppModel = Class.extend({
 				coverSource:'dist/img/UI/feterGrande.png'
 			},
 			{
-				energyCoast:2,
+				energyCoast:2.3,
 				vel:1.5,
 				bulletForce:2.5,
 				bulletVel:6,
@@ -101,9 +101,9 @@ var AppModel = Class.extend({
 				coverSource:'dist/img/UI/poraGrande.png'
 			},
 			{
-				energyCoast:2.5,
+				energyCoast:2.9,
 				vel:1.5,
-				bulletForce:1,
+				bulletForce:1.3,
 				bulletCoast:0.1,
 				bulletVel:5,
 			}
@@ -117,8 +117,8 @@ var AppModel = Class.extend({
 				coverSource:'dist/img/UI/arthurGrande.png'
 			},
 			{
-				energyCoast:2,
-				vel:1,
+				energyCoast:2.4,
+				vel:1.5,
 				bulletForce:2,
 				bulletCoast:0.1,
 				bulletVel:5,
@@ -135,7 +135,7 @@ var AppModel = Class.extend({
 			{
 				energyCoast:1.5,
 				vel:2,
-				bulletForce:1.5,
+				bulletForce:2,
 				bulletCoast:0.1,
 				bulletVel:5,
 			}
@@ -151,7 +151,7 @@ var AppModel = Class.extend({
 			{
 				energyCoast:2.5,
 				vel:2,
-				bulletForce:2,
+				bulletForce:3,
 				bulletCoast:0.1,
 				bulletVel:5,
 			}
@@ -175,9 +175,10 @@ var AppModel = Class.extend({
 		];
 
 		this.birdModels = [
-			new BirdModel('belga.png',null, 4, 0.1, 1.8, new BirdBehaviourSinoid({sinAcc:0.05}), 120, 0.1),
-			new BirdModel('roxo.png',null, 6, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.15),
-			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourDefault(), 150, 0.1)
+			//source, target, hp, demage, vel, behaviour, toNext, sizePercent, money
+			new BirdModel('belga.png',null, 2, 0.1, 1.5, new BirdBehaviourSinoid({sinAcc:0.05}), 150, 0.1, 5),
+			new BirdModel('roxo.png',null, 6, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.15, 10),
+			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourDefault(), 150, 0.1, 8)
 		];
 
 		this.setModel(0);

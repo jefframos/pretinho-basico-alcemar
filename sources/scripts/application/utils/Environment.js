@@ -32,10 +32,11 @@ var Environment =  Class.extend({
 			this.currentSprId = i;
 			this.addEnv();
 		}
-		// console.log('this');
+		//// console.log('this');
 	},
 	addEnv: function(){
 		this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame(this.arraySprt[this.currentSprId]));
+		this.sprite.cacheAsBitmap = true;
 		var last = this.container.children[this.container.children.length - 1];
 		if(last){
 			this.sprite.position.x = last.position.x + last.width - 2;
@@ -46,7 +47,7 @@ var Environment =  Class.extend({
 	},
 	update: function(){
 		if(!this.container.children){
-			console.log(this.container);
+			//console.log(this.container);
 			return;
 		}
 		for (var i = this.container.children.length - 1; i >= 0; i--) {

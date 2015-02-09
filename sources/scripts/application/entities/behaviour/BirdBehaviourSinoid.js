@@ -4,7 +4,7 @@ var BirdBehaviourSinoid = Class.extend({
 		this.props = props;
 		this.sin = 0;
 		// this.position = {x: windowWidth, y: windowHeight * 0.1 + ((windowHeight * 0.8) * Math.random())};
-		this.position = {x: windowWidth, y: windowHeight /2};
+		this.position = {x: windowWidth, y:windowHeight * 0.15 + ((windowHeight * 0.7) * Math.random())};
 	},
 	clone:function(){
 		return new BirdBehaviourSinoid(this.props);

@@ -16,7 +16,7 @@ var Bullet = Entity.extend({
         this.timeLive = timeLive;
         this.power = power;
         this.defaultVelocity = 1;
-        console.log(bulletSource);
+        //console.log(bulletSource);
         this.imgSource = bulletSource;
 
     },
@@ -54,10 +54,10 @@ var Bullet = Entity.extend({
         // }
     },
     collide:function(arrayCollide){
-        console.log('fireCollide', arrayCollide[0]);
+        // console.log('fireCollide', arrayCollide[0]);
         if(this.collidable){
             if(arrayCollide[0].type === 'bird'){
-                console.log(arrayCollide[0].type);
+                // console.log(arrayCollide[0].type);
                 this.preKill();
                 arrayCollide[0].hurt(this.power);
                 // arrayCollide[0].hurt(this.power, this.fireType);
@@ -65,7 +65,7 @@ var Bullet = Entity.extend({
         }
     },
     preKill:function(){
-        for (var i = 2; i >= 0; i--) {
+        for (var i = 1; i >= 0; i--) {
             var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'bulletParticle.png', Math.random() * 0.1);
             particle.build();
             particle.gravity = 0.1 * Math.random() + 0.2;

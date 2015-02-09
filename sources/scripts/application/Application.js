@@ -11,13 +11,13 @@ var Application = AbstractApplication.extend({
         this.id = parseInt(Math.random() * 100000000000);
         this.gameModel = new AppModel();
 
-        this.objCounter = new PIXI.Text('', {font:'15px Arial'});
-        this.stage.addChild(this.objCounter);
-        this.objCounter.position.y = windowHeight - 40;
-        this.objCounter.position.x = 20;
+        // this.objCounter = new PIXI.Text('', {font:'15px Arial'});
+        // this.stage.addChild(this.objCounter);
+        // this.objCounter.position.y = windowHeight - 40;
+        // this.objCounter.position.x = 20;
 
         this.labelDebug = new PIXI.Text('Debug', {font:'15px Arial'});
-        this.stage.addChild(this.labelDebug);
+        // this.stage.addChild(this.labelDebug);
         this.labelDebug.position.y = windowHeight - 20;
         this.labelDebug.position.x = 20;
 	},
@@ -29,9 +29,9 @@ var Application = AbstractApplication.extend({
         if(!this.screenManager.currentScreen){
             return;
         }
-        this.childsCounter = 1;
-        this.recursiveCounter(this.screenManager.currentScreen);
-        this.objCounter.setText(this.childsCounter);
+        // this.childsCounter = 1;
+        // this.recursiveCounter(this.screenManager.currentScreen);
+        // this.objCounter.setText(this.childsCounter);
     },
     recursiveCounter:function(obj){
         var j = 0;

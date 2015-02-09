@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/UI/UI.tps</string>
+        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/atlas/clouds.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>HUD.png</filename>
+        <filename></filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -74,7 +74,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>0</uint>
+        <uint>1</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>HUD.json</filename>
+                <filename></filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -180,47 +180,14 @@
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">None</enum>
+            <enum type="SpriteSettings::TrimMode">Trim</enum>
             <key>heuristicMask</key>
             <false/>
             <key>pivotPoint</key>
             <enum type="SpriteSettings::PivotPoint">Center</enum>
         </struct>
         <key>fileList</key>
-        <array>
-            <filename>simpleButtonOver.png</filename>
-            <filename>simpleButtonUp.png</filename>
-            <filename>selected.png</filename>
-            <filename>out.png</filename>
-            <filename>pista.png</filename>
-            <filename>selectedInner.png</filename>
-            <filename>backBars.png</filename>
-            <filename>birdContainer.png</filename>
-            <filename>endModalBg.png</filename>
-            <filename>gasoline.png</filename>
-            <filename>moneyContent.png</filename>
-            <filename>reducingPB/thumb_alcemar_gray.png</filename>
-            <filename>reducingPB/thumb_arthur_gray.png</filename>
-            <filename>reducingPB/thumb_feter_gray.png</filename>
-            <filename>reducingPB/thumb_jeiso_gray.png</filename>
-            <filename>reducingPB/thumb_neto_gray.png</filename>
-            <filename>reducingPB/thumb_pi_gray.png</filename>
-            <filename>reducingPB/thumb_piangers_gray.png</filename>
-            <filename>reducingPB/thumb_pora_gray.png</filename>
-            <filename>reducingPB/thumb_poter_gray.png</filename>
-            <filename>reducingPB/thumb_rodaika_gray.png</filename>
-            <filename>reducing/thumb_alcemar_color.png</filename>
-            <filename>reducing/thumb_arthur_color.png</filename>
-            <filename>reducing/thumb_feter_color.png</filename>
-            <filename>reducing/thumb_jeiso_color.png</filename>
-            <filename>reducing/thumb_neto_color.png</filename>
-            <filename>reducing/thumb_pi_color.png</filename>
-            <filename>reducing/thumb_piangers_color.png</filename>
-            <filename>reducing/thumb_pora_color.png</filename>
-            <filename>reducing/thumb_poter_color.png</filename>
-            <filename>reducing/thumb_rodaika_color.png</filename>
-            <filename>border.png</filename>
-        </array>
+        <array/>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>

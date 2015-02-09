@@ -5,13 +5,14 @@ var GameScreen = AbstractScreen.extend({
     },
     destroy: function () {
         this.initApp = false;
-        console.log('DESTROY');
+        //console.log('DESTROY');
         this._super();
     },
     build: function () {
-        console.log(this.gameOver,'build');
+        //console.log(this.gameOver,'build');
 
-        this.particleAccum = 100;
+       
+
         this.gameOver = false;
 
         this._super();
@@ -108,7 +109,7 @@ var GameScreen = AbstractScreen.extend({
         };
         // this.textAcc.setText(this.textAcc.text+'\nbuild');
 
-        this.spawner = 0;
+        //this.spawner = 0;
     },
     reset:function(){
         this.destroy();
@@ -181,9 +182,9 @@ var GameScreen = AbstractScreen.extend({
         if(this.gameOver){
             this.red.gameOver = true;
             this.red.velocity.y += 0.05;
-            // console.log(this.red.getPosition().y);
+            //// console.log(this.red.getPosition().y);
             if(this.red.getPosition().y > windowHeight+ this.red.getContent().height){
-                console.log('GAME OVER');
+                //console.log('GAME OVER');
                 this.endModal.show();
             }
         }
@@ -196,9 +197,11 @@ var GameScreen = AbstractScreen.extend({
 
         this.updateBirds();
         this.updateParticles();
+        this.updateItens();
+        this.updateClouds();
         if(this.pointsLabel){
             this.pointsLabel.setText(this.points);
-            this.pointsLabel.position.x = this.moneyContainer.width /2;
+            this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;
         }
 
     },
@@ -209,14 +212,47 @@ var GameScreen = AbstractScreen.extend({
             this.layer.addChild(bird);
 
             var scale = scaleConverter(bird.getContent().width, windowHeight, bird.birdModel.sizePercent);
-            // console.log(scale);
+            //// console.log(scale);
             bird.setScale( scale,scale);
-            // console.log(bird);
+            //// console.log(bird);
             bird.setPosition(bird.behaviour.position.x ,bird.behaviour.position.y);
             this.spawner = bird.birdModel.toNext;
 
         }else{
             this.spawner --;
+        }
+    },
+    updateItens:function(){
+        if(this.itemAccum < 0){
+            this.itemAccum = 1800;
+            var item = new Item();
+            item.build();
+            item.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));
+            this.layer.addChild(item);
+            var itemScale = scaleConverter(item.getContent().height, windowHeight, 0.1);
+            item.setScale(itemScale, itemScale);
+        }else{
+            this.itemAccum --;
+        }
+    },
+    updateClouds:function(){
+        if(this.acumCloud < 0){
+            this.acumCloud = 800;
+            var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
+            simpleEntity.velocity.x = -0.1;
+            simpleEntity.setPosition(windowWidth, + Math.random() * windowHeight * 0.2);
+            this.backLayer.addChild(simpleEntity);
+            var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, 0.5);
+            simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale;
+            this.vecClouds.push(simpleEntity);
+
+        }else{
+            this.acumCloud --;
+            for (var i = this.vecClouds.length - 1; i >= 0; i--) {
+                if(this.vecClouds[i].getContent().position.x +this.vecClouds[i].getContent().width < 0){
+                    this.vecClouds[i].kill = true;
+                }
+            }
         }
     },
     updateParticles:function(){
@@ -234,19 +270,32 @@ var GameScreen = AbstractScreen.extend({
         }
     },
     initApplication:function(){
-        console.log('INIT APLICATION');
+        //console.log('INIT APLICATION');
+        this.particleAccum = 500;
+        this.itemAccum = 1000;
+        this.acumCloud = 500;
+        this.spawner = 150;
 
         this.points = 0;
         this.initApp = true;
+
+        this.vecClouds = [];
         // this.sky = new SimpleSprite('ceu1.png');
         // this.addChild(this.sky);
         // this.sky.container.width = windowWidth;
         // this.sky.container.height = windowHeight * 0.9;
+        // var clouds = new Environment(windowWidth, windowHeight);
+        // clouds.build(['1b.png','2b.png','3b.png','4b.png']);
+        // clouds.velocity.x = -0.2;
+        // this.addChild(clouds);
+        // clouds.getContent().scale.x = clouds.getContent().scale.y = 0.5;
+        // clouds.getContent().position.y = 30;
+        this.cloudsSources = ['1b.png','2b.png','3b.png','4b.png'];
+
         var environment = new Environment(windowWidth, windowHeight);
         environment.build(['env1.png','env2.png','env3.png','env4.png']);
-        environment.velocity.x = -1;
+        environment.velocity.x = -0.5;
         this.addChild(environment);
-
 
 
         this.layerManager = new LayerManager();
@@ -255,10 +304,16 @@ var GameScreen = AbstractScreen.extend({
         this.addChild(this.layerManager);
 
         //adiciona uma camada
+        this.backLayer = new Layer();
+        this.backLayer.build('BackLayer');
+        this.layerManager.addLayer(this.backLayer);
+
+        //adiciona uma camada
         this.layer = new Layer();
         this.layer.build('EntityLayer');
         this.layerManager.addLayer(this.layer);
 
+        
 
         this.playerModel = APP.getGameModel().currentPlayerModel;
         this.playerModel.reset();
@@ -272,50 +327,38 @@ var GameScreen = AbstractScreen.extend({
 
         // this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
         var scale = scaleConverter(this.red.getContent().width, windowHeight, 0.25);
-        TweenLite.to(this.red.spritesheet.position, 1,{x:windowWidth * 0.15 +this.red.getContent().width/2, y:windowHeight /2} );
+        TweenLite.to(this.red.spritesheet.position, 2,{x:windowWidth * 0.15 +this.red.getContent().width/2, y:windowHeight /2} );
         this.red.setScale( scale,scale);
         var self = this;
 
-        var posHelper =  windowHeight * 0.05;
+        // var posHelper =  windowHeight * 0.05;
 
-        this.energyBar = new BarView(windowWidth * 0.1, 10, 1, 1);
-        this.addChild(this.energyBar);
-        this.energyBar.setPosition(20, posHelper);
-        this.energyBar.setFrontColor(0xE08A23);
+        var barsContainer = new PIXI.DisplayObjectContainer();
+
+        this.energyBar = new GasBarView('gasBarBack.png', 'gasBar.png', 5,15);
+        barsContainer.addChild(this.energyBar.getContent());
+        this.energyBar.setPosition(0, 0);
         
-        this.bulletBar = new BarView(windowWidth * 0.08, 10, 1, 1);
-        this.addChild(this.bulletBar);
-        this.bulletBar.setPosition(20, posHelper + 20);
-        this.bulletBar.setFrontColor(0x3B98B8);
+        this.bulletBar = new GasBarView('fireBarBack.png', 'fireBar.png', 2, 4);
+        barsContainer.addChild(this.bulletBar.getContent());
+        this.bulletBar.setPosition(50, this.energyBar.getContent().height - 13);
 
+        this.addChild(barsContainer);
 
+        barsContainer.position.x = 20;
+        barsContainer.position.y = 20;
 
-        this.returnButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.returnButton.build(60, 50);
-        this.returnButton.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 65);
-        this.addChild(this.returnButton);
-        this.returnButton.addLabel(new PIXI.Text('<', {font:'40px Arial'}),15,5);
-        this.returnButton.clickCallback = function(){
-            self.screenManager.prevScreen();
-        };
+        barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
 
-        this.pauseButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.pauseButton.build(80, 50);
-        this.pauseButton.setPosition( windowWidth /2 - this.pauseButton.width / 2, windowHeight * 0.08);
+        this.pauseButton = new DefaultButton('pauseButton.png', 'pauseButton.png');
+        this.pauseButton.build();
         this.addChild(this.pauseButton);
-        this.pauseButton.addLabel(new PIXI.Text('PAUSE', {font:'20px Luckiest Guy'}),5,15);
         this.pauseButton.clickCallback = function(){
             self.pauseModal.show();
-            // self.endModal.show();
         };
-
-        var item = new Item();
-        item.build();
-        item.setPosition(windowWidth, windowHeight / 2);
-        this.layer.addChild(item);
-        var itemScale = scaleConverter(item.getContent().height, windowHeight, 0.1);
-        item.setScale(itemScale, itemScale);
-
+        var pauseScale = scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.1);
+        this.pauseButton.getContent().scale.x = this.pauseButton.getContent().scale.y = pauseScale;
+        this.pauseButton.setPosition( windowWidth - (this.pauseButton.width * pauseScale) - 20,windowHeight - (this.pauseButton.height * pauseScale) - 20);
         // if(possibleFullscreen()){
         //     this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
         //     this.fullScreen.build(40, 20);
@@ -329,39 +372,45 @@ var GameScreen = AbstractScreen.extend({
 
         this.initBench = false;
 
-        // this.textAcc.setText(this.textAcc.text+'\nendinitApplication');
-
-
         this.gameHUD = new PIXI.DisplayObjectContainer();
         this.addChild(this.gameHUD);
 
         this.moneyContainer = new PIXI.DisplayObjectContainer();
         this.addChild(this.moneyContainer);
 
-        var moneyBg = new SimpleSprite('moneyContent.png');
-        this.moneyContainer.addChild(moneyBg.getContent());
+        // var moneyBg = new SimpleSprite('moneyContent.png');
+        // this.moneyContainer.addChild(moneyBg.getContent());
 
-        this.pointsLabel = new PIXI.Text('', {font:'25px Arial'});
+        this.pointsLabel = new PIXI.Text('0', {font:'30px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:3});
         this.moneyContainer.addChild(this.pointsLabel);
-        this.moneyContainer.position.y = 20;
-        this.moneyContainer.position.x = windowWidth / 2;
 
-        var moneyScale = scaleConverter(this.moneyContainer.width, windowWidth, 0.25);
-        this.moneyContainer.scale.x = moneyScale;
-        this.moneyContainer.scale.y = moneyScale;
+        // var moneyScale = scaleConverter(this.moneyContainer.width, windowWidth, 0.25);
+        // this.moneyContainer.scale.x = moneyScale;
+        // this.moneyContainer.scale.y = moneyScale;
 
-        this.pointsLabel.position.x = this.moneyContainer.width + this.pointsLabel.width / 2;
-        this.pointsLabel.position.y = 31;
+        // this.pointsLabel.position.x = this.moneyContainer.width + this.pointsLabel.width / 2;
+        // this.pointsLabel.position.y = 31;
 
+        this.moneyContainer.position.y = 10;
         this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;//this.moneyContainer.width * 0.05;
 
         this.updateable = true;
 
         this.endModal = new EndModal(this);
+        // this.endModal.show();
 
         this.pauseModal = new PauseModal(this);
 
         
+
+        //add first cloud
+        var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
+        simpleEntity.velocity.x = -0.1;
+        simpleEntity.setPosition(windowWidth * 0.1, + Math.random() * windowHeight * 0.2);
+        this.backLayer.addChild(simpleEntity);
+        var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, 0.5);
+        simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale;
+        this.vecClouds.push(simpleEntity);
         
     },
     updatePoints:function(value){

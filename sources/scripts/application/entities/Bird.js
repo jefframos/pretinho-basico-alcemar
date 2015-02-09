@@ -28,7 +28,7 @@ var Bird = Entity.extend({
         this.hp -= demage;
         this.velocity.x = -Math.abs(this.vel * 0.4);
         if(this.hp <= 0){
-            APP.updatePoints(5);
+            APP.updatePoints(this.birdModel.money);
             this.preKill();
         }
         this.getContent().tint = 0xFF0000;

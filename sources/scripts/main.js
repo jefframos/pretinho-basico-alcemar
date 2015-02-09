@@ -9,7 +9,7 @@ windowHeight = 640;
 
 var realWindowWidth = 1136,
 realWindowHeight = 640;
-var gameScale = 1.5;
+var gameScale = 1.3;
 if(testMobile()){
 	windowWidth = window.innerWidth * gameScale;//640;
 	windowHeight = window.innerHeight * gameScale;//960;

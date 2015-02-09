@@ -13,6 +13,7 @@ var WaitScreen = AbstractScreen.extend({
 
         var assetsToLoader = ['dist/img/atlas/atlas.json',
         'dist/img/atlas/atlas1.json',
+        'dist/img/atlas/clouds.json',
         'dist/img/UI/bgChoice.png',
         'dist/img/UI/jeisoGrande.png',
         'dist/img/UI/arthurGrande.png',
@@ -68,8 +69,8 @@ var WaitScreen = AbstractScreen.extend({
 
         if(possibleFullscreen()){
             this.fullScreen = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-            this.fullScreen.build(40, 20);
-            this.fullScreen.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 35);
+            this.fullScreen.build(100, 100);
+            this.fullScreen.setPosition( 20,windowHeight * 0.95 - 35);
             this.addChild(this.fullScreen);
             this.fullScreen.addLabel(new PIXI.Text('Full', {font:'10px Arial'}),5,5);
             this.fullScreen.clickCallback = function(){

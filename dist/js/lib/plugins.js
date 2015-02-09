@@ -1,4 +1,4 @@
-/*! jefframos 29-01-2015 */
+/*! jefframos 09-02-2015 */
 !function(m, j) {
     function s(a, e) {
         for (var g in e) try {
@@ -7688,7 +7688,30 @@ var DefaultButton = Class.extend({
         array[randomIndex] = temporaryValue;
         return array;
     }
-}, SimpleSprite = Class.extend({
+}, SimpleEntity = Class.extend({
+    init: function(img) {
+        this.texture = "string" == typeof img ? new PIXI.Texture.fromImage(img) : img, this.container = new PIXI.Sprite(this.texture), 
+        this.velocity = {
+            x: 0,
+            y: 0
+        }, this.updateable = !0;
+    },
+    update: function() {
+        this.container.position.x += this.velocity.x, this.container.position.y += this.velocity.y;
+    },
+    getContent: function() {
+        return this.container;
+    },
+    preKill: function() {
+        this.kill = !0;
+    },
+    setParentLayer: function(parentLayer) {
+        this.layer = parentLayer;
+    },
+    setPosition: function(x, y) {
+        this.container.position.x = x, this.container.position.y = y;
+    }
+}), SimpleSprite = Class.extend({
     init: function(img) {
         this.texture = "string" == typeof img ? new PIXI.Texture.fromImage(img) : img, this.container = new PIXI.Sprite(this.texture);
     },
