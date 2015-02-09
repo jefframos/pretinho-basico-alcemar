@@ -956,8 +956,14 @@ var Application = AbstractApplication.extend({
         }), 15, 12), this.play.clickCallback = function() {
             self.screenManager.change("Game");
         }, this.returnButton = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.returnButton.build(60, 60), this.returnButton.setPosition(10, windowHeight - this.play.height - 10), 
-        this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
+        this.returnButton.build(120, 60), this.returnButton.setPosition(10, windowHeight - this.play.height - 10), 
+        this.addChild(this.returnButton), this.returnButton.addLabel(new PIXI.Text("VOLTAR", {
+            align: "center",
+            fill: "#033E43",
+            font: "28px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 12, 12), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.arrButtons[APP.getGameModel().currentID].selectedFunction(), this.createStatsContainer(), 
         this.updatePlayers();

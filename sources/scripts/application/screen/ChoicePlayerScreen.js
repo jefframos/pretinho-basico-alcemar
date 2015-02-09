@@ -264,10 +264,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         };
 
         this.returnButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.returnButton.build(60, 60);
+        this.returnButton.build(120, 60);
         this.returnButton.setPosition(10 ,windowHeight - this.play.height - 10);
         this.addChild(this.returnButton);
-        // this.returnButton.addLabel(new PIXI.Text('<', {font:'70px Luckiest Guy'}),5,5);
+        this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
+        
         this.returnButton.clickCallback = function(){
             self.screenManager.change('Wait');
         };
