@@ -255,7 +255,8 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         this.play = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         this.play.build(120,60);
-        this.play.setPosition( windowWidth - this.play.width - 10,windowHeight - this.play.height - 10);
+        scaleConverter(this.play.getContent().height, windowHeight, 0.1, this.play);
+        this.play.setPosition( windowWidth - this.play.getContent().width - 20,windowHeight - this.play.getContent().height - 20);
         this.addChild(this.play);
 
         this.play.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
@@ -265,7 +266,9 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         this.returnButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         this.returnButton.build(120, 60);
-        this.returnButton.setPosition(10 ,windowHeight - this.play.height - 10);
+        scaleConverter(this.returnButton.getContent().height, windowHeight, 0.1, this.returnButton);
+
+        this.returnButton.setPosition(20 ,windowHeight - this.returnButton.getContent().height - 20);
         this.addChild(this.returnButton);
         this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
         

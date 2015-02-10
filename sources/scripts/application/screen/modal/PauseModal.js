@@ -6,7 +6,7 @@ var PauseModal = Class.extend({
 		this.container = new PIXI.DisplayObjectContainer();
 		this.boxContainer = new PIXI.DisplayObjectContainer();
 		this.bg = new PIXI.Graphics();
-		this.bg.beginFill(0x004d48);
+		this.bg.beginFill(0x000000);
 		this.bg.drawRect(0,0,windowWidth, windowHeight);
 		this.bg.alpha = 0.0;
 		this.container.addChild(this.bg);
@@ -14,48 +14,42 @@ var PauseModal = Class.extend({
 
 		var self = this;
 
-		this.backBars = new SimpleSprite('backBars.png');
-		this.boxContainer.addChild(this.backBars.getContent());
+		this.backButton = new DefaultButton('voltarButton.png', 'voltarButton.png');
+		this.backButton.build();
+		// this.backButton.getContent().scale.x = this.backButton.getContent().scale.y = 0.8;
+		this.backButton.setPosition(0, 0);
+		this.backButton.clickCallback = function(){
+			self.hide(function(){
+				self.screen.screenManager.prevScreen();
+			});
+		};
+		this.boxContainer.addChild(this.backButton.getContent());
 
-		this.exitButton = new DefaultButton('simpleButtonOver.png', 'simpleButtonUp.png');
-        this.exitButton.build(this.backBars.getContent().width - 20, 60);
-		this.exitButton.addLabel(new PIXI.Text('CONTINUE', { align:'center', fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),35,12);
-        this.exitButton.setPosition(this.backBars.getContent().width / 2 - this.exitButton.width / 2, 8);//this.backBars.getContent().height / 2 - this.exitButton.height / 2 - 10);
-        this.boxContainer.addChild(this.exitButton.getContent());
-        this.exitButton.clickCallback = function(){
+		this.continueButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+        this.continueButton.build();
+        this.continueButton.setPosition(this.backButton.getContent().width + 20, -this.continueButton.getContent().height / 2 + this.backButton.getContent().height / 2);//this.backBars.getContent().height / 2 - this.continueButton.height / 2 - 10);
+        this.continueButton.clickCallback = function(){
             self.hide(function(){self.screen.updateable = true;});
         };
+        this.boxContainer.addChild(this.continueButton.getContent());
 
-
-        this.restartButton = new DefaultButton('simpleButtonOver.png', 'simpleButtonUp.png');
-		this.restartButton.build(this.exitButton.width, 60);
-		this.restartButton.addLabel(new PIXI.Text('REINICIAR', { align:'center', fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),48,12);
-		this.restartButton.setPosition(this.backBars.getContent().width / 2 - this.restartButton.width / 2, this.exitButton.getContent().height +this.exitButton.getContent().position.y + 20);
-		this.boxContainer.addChild(this.restartButton.getContent());
+        this.restartButton = new DefaultButton('replayButton.png', 'replayButton.png');
+		this.restartButton.build();
+		// this.restartButton.getContent().scale.x = this.restartButton.getContent().scale.y = 0.8;
+		this.restartButton.setPosition(this.continueButton.getContent().width + this.continueButton.getContent().position.x + 20, 0);
 		this.restartButton.clickCallback = function(){
 			self.hide(function(){
 				self.screen.updateable = true;
 				self.screen.reset();
 			});
 		};
+		this.boxContainer.addChild(this.restartButton.getContent());
 
-		this.backButton = new DefaultButton('simpleButtonOver.png', 'simpleButtonUp.png');
-		this.backButton.build(this.exitButton.width, 60);
-		this.backButton.addLabel(new PIXI.Text('VOLTAR', { align:'center', fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),48,12);
-		this.backButton.setPosition(this.backBars.getContent().width / 2 - this.backButton.width / 2, this.restartButton.getContent().height +this.restartButton.getContent().position.y + 20);
-		this.boxContainer.addChild(this.backButton.getContent());
-		this.backButton.clickCallback = function(){
-			self.hide(function(){
-				self.screen.screenManager.prevScreen();
-			});
-		};
-
-        this.boxContainer.addChild(this.restartButton.getContent());
         this.boxContainer.alpha = 0;
         this.boxContainer.visible = false;
 
         this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
-        this.boxContainer.position.y = this.boxContainer.height;
+        // this.boxContainer.position.y = windowHeight / 2;
 	},
 	show:function(points){
 		this.screen.addChild(this);
@@ -64,7 +58,7 @@ var PauseModal = Class.extend({
 
 		this.screen.updateable = false;
 		TweenLite.to(this.bg, 0.5, {alpha:0.8});
-		TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.boxContainer.height / 2, ease:'easeOutBack'});
+		TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.boxContainer.height / 2 - this.continueButton.getContent().position.y, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:1});
 	},
 	hide:function(callback){

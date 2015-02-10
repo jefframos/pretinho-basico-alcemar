@@ -21,6 +21,7 @@ var PlayerModel = Class.extend({
 		this.imgSource = graphicsObject.outGame?graphicsObject.outGame:this.imgSourceGame;
 		this.coverSource = graphicsObject.coverSource?graphicsObject.coverSource:'dist/img/UI/jeisoGrande.png';
 		this.bulletSource = graphicsObject.bullet?graphicsObject.bullet:'bullet.png';
+		this.bulletRotation = graphicsObject.bulletRotation?graphicsObject.bulletRotation:false;
 		this.energyCoast = statsObject.energyCoast?statsObject.energyCoast:1;
 		this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2;
 		// console.log(this.energyCoast);

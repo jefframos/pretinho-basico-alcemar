@@ -133,7 +133,7 @@ var GameScreen = AbstractScreen.extend({
         var angle = this.red.rotation;
         var bullet = new Bullet({x:Math.cos(angle) * vel,
             y:Math.sin(angle) * vel},
-            timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource);
+            timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletRotation);
         bullet.build();
         //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
         bullet.setPosition(this.red.getPosition().x * 0.8, this.red.getPosition().y * 0.8);
@@ -292,6 +292,12 @@ var GameScreen = AbstractScreen.extend({
         // clouds.getContent().position.y = 30;
         this.cloudsSources = ['1b.png','2b.png','3b.png','4b.png'];
 
+
+        this.layerManagerBack = new LayerManager();
+        this.layerManagerBack.build('MainBack');
+        this.addChild(this.layerManagerBack);
+
+
         var environment = new Environment(windowWidth, windowHeight);
         environment.build(['env1.png','env2.png','env3.png','env4.png']);
         environment.velocity.x = -0.35;
@@ -306,7 +312,7 @@ var GameScreen = AbstractScreen.extend({
         //adiciona uma camada
         this.backLayer = new Layer();
         this.backLayer.build('BackLayer');
-        this.layerManager.addLayer(this.backLayer);
+        this.layerManagerBack.addLayer(this.backLayer);
 
         //adiciona uma camada
         this.layer = new Layer();
@@ -326,7 +332,7 @@ var GameScreen = AbstractScreen.extend({
         this.gameOver = false;
 
         // this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
-        var scale = scaleConverter(this.red.getContent().width, windowHeight, 0.25);
+        var scale = scaleConverter(this.red.getContent().height, windowHeight, 0.25);
         TweenLite.to(this.red.spritesheet.position, 2,{x:windowWidth * 0.15 +this.red.getContent().width/2, y:windowHeight /2} );
         this.red.setScale( scale,scale);
         var self = this;
@@ -335,7 +341,7 @@ var GameScreen = AbstractScreen.extend({
 
         var barsContainer = new PIXI.DisplayObjectContainer();
 
-        this.energyBar = new GasBarView('gasBarBack.png', 'gasBar.png', 5,15);
+        this.energyBar = new GasBarView('gasBarBack.png', 'gasBar.png', 50,15);
         barsContainer.addChild(this.energyBar.getContent());
         this.energyBar.setPosition(0, 0);
         
@@ -356,9 +362,8 @@ var GameScreen = AbstractScreen.extend({
         this.pauseButton.clickCallback = function(){
             self.pauseModal.show();
         };
-        var pauseScale = scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.1);
-        this.pauseButton.getContent().scale.x = this.pauseButton.getContent().scale.y = pauseScale;
-        this.pauseButton.setPosition( windowWidth - (this.pauseButton.width * pauseScale) - 20,windowHeight - (this.pauseButton.height * pauseScale) - 20);
+        scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.12, this.pauseButton);
+        this.pauseButton.setPosition( windowWidth - (this.pauseButton.getContent().width) - 20,windowHeight - (this.pauseButton.getContent().height) - 20);
         // if(possibleFullscreen()){
         //     this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
         //     this.fullScreen.build(40, 20);
@@ -403,7 +408,7 @@ var GameScreen = AbstractScreen.extend({
 
         
 
-        //add first cloud
+        // add first cloud
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
         simpleEntity.velocity.x = -0.1;
         simpleEntity.setPosition(windowWidth * 0.1, + Math.random() * windowHeight * 0.2);

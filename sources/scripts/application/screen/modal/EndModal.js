@@ -17,11 +17,44 @@ var EndModal = Class.extend({
 		this.background  = new SimpleSprite('endModalBg.png');
 		this.boxContainer.addChild(this.background.getContent());
 		
-		this.exitButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+
+		this.saveButton = new DefaultButton('saveButton.png', 'saveButton.png');
+		this.saveButton.build();
+		this.saveButton.setPosition(this.background.getContent().width / 2 - this.saveButton.width / 2,
+			this.background.getContent().height - 180);
+		// this.saveButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
+		this.boxContainer.addChild(this.saveButton.getContent());
+		this.saveButton.clickCallback = function(){
+			self.hide(function(){
+			});
+		};
+
+		// this.twitterButton = new DefaultButton('twitterButton.png', 'twitterButton.png');
+		// this.twitterButton.build();
+		// this.twitterButton.setPosition(this.saveButton.getContent().position.x - this.twitterButton.width - 10,
+		// 	this.background.getContent().height - 170);
+		// this.boxContainer.addChild(this.twitterButton.getContent());
+		// this.twitterButton.clickCallback = function(){
+		// 	self.hide(function(){
+		// 	});
+		// };
+
+		// this.fbButton = new DefaultButton('fbButton.png', 'fbButton.png');
+		// this.fbButton.build();
+		// this.fbButton.setPosition(this.saveButton.getContent().position.x + this.saveButton.getContent().width + 10,
+		// 	this.background.getContent().height - 170);
+		// this.boxContainer.addChild(this.fbButton.getContent());
+		// this.fbButton.clickCallback = function(){
+		// 	self.hide(function(){
+		// 	});
+		// };
+
+
+		this.exitButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
 		this.exitButton.build();
 		this.exitButton.setPosition(this.background.getContent().width / 2 - this.exitButton.width / 2,
 			this.background.getContent().height - this.exitButton.height / 2);
-
+		// this.exitButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
 		this.boxContainer.addChild(this.exitButton.getContent());
 		this.exitButton.clickCallback = function(){
 			self.hide(function(){
@@ -29,6 +62,20 @@ var EndModal = Class.extend({
 				self.screen.reset();
 			});
 		};
+
+		this.backButton = new DefaultButton('voltarButton.png', 'voltarButton.png');
+		this.backButton.build();
+		this.backButton.setPosition(this.exitButton.getContent().position.x - this.backButton.width - 15,
+			this.background.getContent().height - this.backButton.height / 2);
+		// this.backButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
+		this.boxContainer.addChild(this.backButton.getContent());
+		this.backButton.clickCallback = function(){
+			self.hide(function(){
+				self.screen.screenManager.prevScreen();
+			});
+		};
+
+
 		this.boxContainer.addChild(this.exitButton.getContent());
 		this.boxContainer.alpha = 0;
 		this.boxContainer.visible = false;
@@ -51,7 +98,7 @@ var EndModal = Class.extend({
 		for (i = 1; i < 4; i++) {
 			tempBirdContainer = new PIXI.DisplayObjectContainer();
 			birdContainer = new SimpleSprite('birdContainer.png');
-			bird = new SimpleSprite(arrayBirds[cont ++]);
+			bird = new SimpleSprite(APP.getGameModel().birdModels[cont ++].imgSource);
 			tempBirdContainer.addChild(birdContainer.getContent());
 			tempBirdContainer.addChild(bird.getContent());
 			this.boxContainer.addChild(tempBirdContainer);
@@ -68,7 +115,7 @@ var EndModal = Class.extend({
 		for (i = 1; i < 4; i++) {
 			tempBirdContainer = new PIXI.DisplayObjectContainer();
 			birdContainer = new SimpleSprite('birdContainer.png');
-			bird = new SimpleSprite(arrayBirds[cont ++]);
+			bird = new SimpleSprite(APP.getGameModel().birdModels[cont ++].imgSource);
 			tempBirdContainer.addChild(birdContainer.getContent());
 			this.boxContainer.addChild(tempBirdContainer);
 			tempBirdContainer.addChild(bird.getContent());
@@ -79,7 +126,7 @@ var EndModal = Class.extend({
 				tempBirdContainer.position.x -= birdContainer.getContent().width;
 			}
 			bird.getContent().position.y = birdContainer.getContent().height / 2 - bird.getContent().height / 2;
-			bird.getContent().position.x = birdContainer.getContent().width / 2 - bird.getContent().width / 2 + (30 * birdContainer.getContent().scale.x);
+			bird.getContent().position.x = birdContainer.getContent().width / 2 - bird.getContent().width / 2 + (45 * birdContainer.getContent().scale.x);
 
 		}
 

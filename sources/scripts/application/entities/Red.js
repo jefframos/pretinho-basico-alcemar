@@ -123,15 +123,18 @@ var Red = SpritesheetEntity.extend({
 		if(this.collidable){
 			if(arrayCollide[0].type !== 'bullet'){
 				if(arrayCollide[0].type === 'item'){
-					this.playerModel.currentEnergy = this.playerModel.maxEnergy;
-				}
-				else{
-					var demage = arrayCollide[0].demage * this.playerModel.maxEnergy;
-					if(!isNaN(demage)){
-						this.playerModel.currentEnergy -= demage;
+					this.playerModel.currentEnergy += this.playerModel.maxEnergy * 0.3;
+					if(this.playerModel.currentEnergy > this.playerModel.maxEnergy){
+						this.playerModel.currentEnergy = this.playerModel.maxEnergy;
 					}
+					arrayCollide[0].preKill();
 				}
-				arrayCollide[0].preKill();
+				// else{
+				// 	var demage = arrayCollide[0].demage * this.playerModel.maxEnergy;
+				// 	if(!isNaN(demage)){
+				// 		this.playerModel.currentEnergy -= demage;
+				// 	}
+				// }
 				
 			}
 		}

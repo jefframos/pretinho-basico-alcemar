@@ -3,6 +3,7 @@ var GasBarView = Class.extend({
 	init: function(backSource, frontSource, _x, _y){
 
 		this.text = 'default';
+		this._x = _x;
 		this.container = new PIXI.DisplayObjectContainer();
 		this.backContainer = new PIXI.DisplayObjectContainer();
 		this.container.addChild(this.backContainer);

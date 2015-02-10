@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var Bullet = Entity.extend({
-    init:function(vel, timeLive, power, bulletSource){
+    init:function(vel, timeLive, power, bulletSource, rotation){
         this._super( true );
         this.updateable = false;
         this.deading = false;
@@ -18,7 +18,10 @@ var Bullet = Entity.extend({
         this.defaultVelocity = 1;
         //console.log(bulletSource);
         this.imgSource = bulletSource;
-
+        this.isRotation = rotation;
+        if(this.isRotation){
+            this.accumRot = Math.random() * 0.1 - 0.05;
+        }
     },
     build: function(){
 
@@ -40,8 +43,10 @@ var Bullet = Entity.extend({
         if(this.timeLive <= 0){
             this.kill = true;
         }
-        this.range = this.sprite.height;
-
+        this.range = this.sprite.height / 2;
+        if(this.isRotation){
+            this.sprite.rotation += this.accumRot;
+        }
         if(this.collideArea){
             return;
         }
@@ -66,10 +71,11 @@ var Bullet = Entity.extend({
     },
     preKill:function(){
         for (var i = 1; i >= 0; i--) {
-            var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'bulletParticle.png', Math.random() * 0.1);
+            var particle = new Particles({x: Math.random() * 4, y:-(Math.random() * 2 + 1)}, 120, this.imgSource, Math.random() * 0.05);
             particle.build();
             particle.gravity = 0.1 * Math.random() + 0.2;
-            particle.alphadecres = 0.08;
+            particle.alphadecres = 0.1;
+            particle.scaledecress = 0.02;
             particle.setPosition(this.getPosition().x - (Math.random() + this.getContent().width * 0.1) / 2,
                 this.getPosition().y);
             this.layer.addChild(particle);

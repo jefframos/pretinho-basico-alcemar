@@ -4,13 +4,17 @@ var BirdBehaviourSinoid = Class.extend({
 		this.props = props;
 		this.sin = 0;
 		// this.position = {x: windowWidth, y: windowHeight * 0.1 + ((windowHeight * 0.8) * Math.random())};
-		this.position = {x: windowWidth, y:windowHeight * 0.15 + ((windowHeight * 0.7) * Math.random())};
+		this.position = {x: windowWidth + 40, y:windowHeight * 0.2 + ((windowHeight * 0.6) * Math.random())};
 	},
 	clone:function(){
 		return new BirdBehaviourSinoid(this.props);
 	},
 	update:function(entity){
-		entity.velocity.y = Math.sin(this.sin) * entity.vel;
+		if(this.props.velY){
+			entity.velocity.y = Math.sin(this.sin) * this.props.velY;
+		}else{
+			entity.velocity.y = Math.sin(this.sin) * entity.vel;
+		}
         this.sin += this.props.sinAcc;
         // console.log(entity.getPosition());
 	},

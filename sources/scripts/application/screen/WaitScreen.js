@@ -59,7 +59,7 @@ var WaitScreen = AbstractScreen.extend({
         // console.log(this.btnBenchmark.build);
         this.btnBenchmark.build(200,100);
         scaleConverter(this.btnBenchmark.height, windowHeight, 0.2, this.btnBenchmark);
-        this.btnBenchmark.setPosition( windowWidth - this.btnBenchmark.getContent().width  - this.btnBenchmark.getContent().height * 0.05, windowHeight - this.btnBenchmark.getContent().height - this.btnBenchmark.getContent().height * 0.05);
+        this.btnBenchmark.setPosition( windowWidth - this.btnBenchmark.getContent().width  - 20, windowHeight - this.btnBenchmark.getContent().height - 20);
         this.addChild(this.btnBenchmark);
 
         // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
@@ -83,7 +83,7 @@ var WaitScreen = AbstractScreen.extend({
         }
         // setTimeout(function(){
 
-        // self.screenManager.change('Choice');
+        // self.screenManager.change('Game');
         // }, 1000);
     }
 });
