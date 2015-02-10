@@ -58,7 +58,8 @@ var WaitScreen = AbstractScreen.extend({
         this.btnBenchmark = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
         // console.log(this.btnBenchmark.build);
         this.btnBenchmark.build(200,100);
-        this.btnBenchmark.setPosition( windowWidth - this.btnBenchmark.width  - this.btnBenchmark.height * 0.05, windowHeight - this.btnBenchmark.height - this.btnBenchmark.height * 0.05);
+        scaleConverter(this.btnBenchmark.height, windowHeight, 0.2, this.btnBenchmark);
+        this.btnBenchmark.setPosition( windowWidth - this.btnBenchmark.getContent().width  - this.btnBenchmark.getContent().height * 0.05, windowHeight - this.btnBenchmark.getContent().height - this.btnBenchmark.getContent().height * 0.05);
         this.addChild(this.btnBenchmark);
 
         // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
@@ -71,7 +72,9 @@ var WaitScreen = AbstractScreen.extend({
         if(possibleFullscreen()){
             this.fullScreen = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
             this.fullScreen.build(200, 100);
-            this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.height - this.fullScreen.height * 0.05);
+            scaleConverter(this.fullScreen.height, windowHeight, 0.2, this.fullScreen);
+
+            this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.getContent().height - this.fullScreen.getContent().height * 0.05);
             this.addChild(this.fullScreen);
             this.fullScreen.addLabel(new PIXI.Text('Fullscreen', { align:'center', fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,28);
             this.fullScreen.clickCallback = function(){

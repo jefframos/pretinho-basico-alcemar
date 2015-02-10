@@ -30,7 +30,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'FETER',
+				label:'FETTER',
 				outGame:'feter.png',
 				inGame:'feterGame.png',
 				bullet:'bulletSmall.png',

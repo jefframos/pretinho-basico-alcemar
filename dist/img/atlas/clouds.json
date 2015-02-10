@@ -44,14 +44,23 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":471,"h":289},
 	"sourceSize": {"w":471,"h":289},
 	"pivot": {"x":0.5,"y":0.5}
+},
+"sky.png":
+{
+	"frame": {"x":875,"y":217,"w":5,"h":600},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":5,"h":600},
+	"sourceSize": {"w":5,"h":600},
+	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "clouds.png",
 	"format": "RGBA8888",
-	"size": {"w":880,"h":508},
+	"size": {"w":882,"h":819},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e961dc57c774d8f11226736c345a8b42:ea6e0630a260e32b2e39d3738089caeb:e96b5453eed6fb7cc3a8e55168758fa4$"
+	"smartupdate": "$TexturePacker:SmartUpdate:692290fbde93e16acb67237cec7f4984:a873de402a4b3f33f561a7d32a162e06:e96b5453eed6fb7cc3a8e55168758fa4$"
 }
 }

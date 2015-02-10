@@ -1,4 +1,4 @@
-/*! jefframos 09-02-2015 */
+/*! jefframos 10-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -77,8 +77,9 @@ function radiansToDegrees(rad) {
     return rad / (Math.PI / 180);
 }
 
-function scaleConverter(current, max, scale) {
-    return max * scale / current;
+function scaleConverter(current, max, _scale, object) {
+    var scale = max * _scale / current;
+    return object ? void (object.scale ? object.scale.x = object.scale.y = scale : object.getContent() && object.getContent().scale && (object.getContent().scale.x = object.getContent().scale.y = scale)) : scale;
 }
 
 function shuffle(array) {
@@ -694,7 +695,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 9
         }), new PlayerModel({
-            label: "FETER",
+            label: "FETTER",
             outGame: "feter.png",
             inGame: "feterGame.png",
             bullet: "bulletSmall.png",
@@ -1186,12 +1187,10 @@ var Application = AbstractApplication.extend({
     },
     updateClouds: function() {
         if (this.acumCloud < 0) {
-            this.acumCloud = 800;
+            this.acumCloud = 1200;
             var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
             simpleEntity.velocity.x = -.1, simpleEntity.setPosition(windowWidth, +Math.random() * windowHeight * .2), 
-            this.backLayer.addChild(simpleEntity);
-            var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, .5);
-            simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale, 
+            this.backLayer.addChild(simpleEntity), scaleConverter(simpleEntity.getContent().height, windowHeight, .5, simpleEntity), 
             this.vecClouds.push(simpleEntity);
         } else {
             this.acumCloud--;
@@ -1211,9 +1210,11 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, this.spawner = 150, 
-        this.points = 0, this.initApp = !0, this.vecClouds = [], this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ];
+        this.points = 0, this.initApp = !0, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
+        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
+        this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ];
         var environment = new Environment(windowWidth, windowHeight);
-        environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -.5, 
+        environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -.35, 
         this.addChild(environment), this.layerManager = new LayerManager(), this.layerManager.build("Main"), 
         this.addChild(this.layerManager), this.backLayer = new Layer(), this.backLayer.build("BackLayer"), 
         this.layerManager.addLayer(this.backLayer), this.layer = new Layer(), this.layer.build("EntityLayer"), 
@@ -1297,7 +1298,8 @@ var Application = AbstractApplication.extend({
         background.getContent().scale.x = scaleBack, background.getContent().scale.y = scaleBack;
         var self = this;
         this.btnBenchmark = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.btnBenchmark.build(200, 100), this.btnBenchmark.setPosition(windowWidth - this.btnBenchmark.width - .05 * this.btnBenchmark.height, windowHeight - this.btnBenchmark.height - .05 * this.btnBenchmark.height), 
+        this.btnBenchmark.build(200, 100), scaleConverter(this.btnBenchmark.height, windowHeight, .2, this.btnBenchmark), 
+        this.btnBenchmark.setPosition(windowWidth - this.btnBenchmark.getContent().width - .05 * this.btnBenchmark.getContent().height, windowHeight - this.btnBenchmark.getContent().height - .05 * this.btnBenchmark.getContent().height), 
         this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Jogar", {
             align: "center",
             fill: "#033E43",
@@ -1307,7 +1309,8 @@ var Application = AbstractApplication.extend({
         }), 25, 18), this.btnBenchmark.clickCallback = function() {
             self.screenManager.change("Choice");
         }, possibleFullscreen() && (this.fullScreen = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.fullScreen.build(200, 100), this.fullScreen.setPosition(20, windowHeight - this.fullScreen.height - .05 * this.fullScreen.height), 
+        this.fullScreen.build(200, 100), scaleConverter(this.fullScreen.height, windowHeight, .2, this.fullScreen), 
+        this.fullScreen.setPosition(20, windowHeight - this.fullScreen.getContent().height - .05 * this.fullScreen.getContent().height), 
         this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Fullscreen", {
             align: "center",
             fill: "#033E43",
@@ -1575,7 +1578,7 @@ var Application = AbstractApplication.extend({
     },
     build: function(imgs, spacing) {
         this.arraySprt = imgs, spacing && (this.spacing = spacing);
-        for (var i = 0; i < this.arraySprt.length && !(this.container.width > this.maxWidth); i++) this.currentSprId = i, 
+        for (var i = Math.floor(this.arraySprt.length * Math.random()); i < this.arraySprt.length && !(this.container.width > this.maxWidth); i++) this.currentSprId = i, 
         this.addEnv();
     },
     addEnv: function() {

@@ -237,13 +237,12 @@ var GameScreen = AbstractScreen.extend({
     },
     updateClouds:function(){
         if(this.acumCloud < 0){
-            this.acumCloud = 800;
+            this.acumCloud = 1200;
             var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
             simpleEntity.velocity.x = -0.1;
             simpleEntity.setPosition(windowWidth, + Math.random() * windowHeight * 0.2);
             this.backLayer.addChild(simpleEntity);
-            var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, 0.5);
-            simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale;
+            scaleConverter(simpleEntity.getContent().height, windowHeight, 0.5, simpleEntity);
             this.vecClouds.push(simpleEntity);
 
         }else{
@@ -280,10 +279,11 @@ var GameScreen = AbstractScreen.extend({
         this.initApp = true;
 
         this.vecClouds = [];
-        // this.sky = new SimpleSprite('ceu1.png');
-        // this.addChild(this.sky);
-        // this.sky.container.width = windowWidth;
-        // this.sky.container.height = windowHeight * 0.9;
+
+        this.sky = new SimpleSprite('sky.png');
+        this.addChild(this.sky);
+        this.sky.container.width = windowWidth;
+        this.sky.container.height = windowHeight * 0.9;
         // var clouds = new Environment(windowWidth, windowHeight);
         // clouds.build(['1b.png','2b.png','3b.png','4b.png']);
         // clouds.velocity.x = -0.2;
@@ -294,7 +294,7 @@ var GameScreen = AbstractScreen.extend({
 
         var environment = new Environment(windowWidth, windowHeight);
         environment.build(['env1.png','env2.png','env3.png','env4.png']);
-        environment.velocity.x = -0.5;
+        environment.velocity.x = -0.35;
         this.addChild(environment);
 
 

@@ -25,7 +25,7 @@ var Environment =  Class.extend({
 		// this.totTiles = Math.ceil(this.maxWidth/this.texWidth) + 1;
 		// //trace(totTiles)
 
-		for (var i = 0; i < this.arraySprt.length; i++) {
+		for (var i = Math.floor(this.arraySprt.length * Math.random()); i < this.arraySprt.length; i++) {
 			if(this.container.width > this.maxWidth){
 				break;
 			}

@@ -10,9 +10,18 @@ function radiansToDegrees(rad) {
 	return rad / (Math.PI / 180);
 }
 
-function scaleConverter(current, max, scale) {
+function scaleConverter(current, max, _scale, object) {
 	// console.log(current, max, scale);
-	return (max * scale) / current;
+	var scale = (max * _scale) / current;
+
+    if(!object){
+        return scale;
+    }
+    if(object.scale){
+        object.scale.x = object.scale.y = scale;
+    }else if(object.getContent() && object.getContent().scale){
+        object.getContent().scale.x = object.getContent().scale.y = scale;
+    }
 }
 function shuffle(array) {
     var counter = array.length, temp, index;
