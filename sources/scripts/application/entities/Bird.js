@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var Bird = Entity.extend({
-    init:function(birdModel){
+    init:function(birdModel, screen){
         this._super( true );
         this.updateable = false;
         this.deading = false;
@@ -16,7 +16,7 @@ var Bird = Entity.extend({
 
         this.velocity.x = -this.vel;
         this.velocity.y = 0;
-
+        this.screen = screen;
         this.demage = this.birdModel.demage;
         this.hp = this.birdModel.hp;
         this.defaultVelocity = this.birdModel.vel;
@@ -29,6 +29,16 @@ var Bird = Entity.extend({
         this.velocity.x = -Math.abs(this.vel * 0.4);
         if(this.hp <= 0){
             APP.updatePoints(this.birdModel.money);
+
+            var mascadasLabel = new Particles({x:0, y:-(Math.random() * 0.2 + 0.3)}, 120,
+                new PIXI.Text(this.birdModel.money, {font:'35px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:3}),
+                0);
+            mascadasLabel.build();
+            mascadasLabel.setPosition(this.getPosition().x,
+                this.getPosition().y - Math.random() * 50);
+            mascadasLabel.alphadecress = 0.01;
+            this.screen.addChild(mascadasLabel);
+
             this.preKill();
         }
         this.getContent().tint = 0xFF0000;

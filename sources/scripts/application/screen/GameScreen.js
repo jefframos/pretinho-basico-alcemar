@@ -204,9 +204,19 @@ var GameScreen = AbstractScreen.extend({
         this.updateParticles();
         this.updateItens();
         this.updateClouds();
-        if(this.pointsLabel){
+        if(this.labelAcum > 0){
+            this.labelAcum --;
+        }
+        if(this.pointsLabel && this.pointsLabel.text !== String(this.points)){
+            // console.log(this.pointsLabel.text !== toStringthis.points);
             this.pointsLabel.setText(this.points);
             this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;
+            this.moneyContainer.scale.x = this.moneyContainer.scale.y = 1.5;
+            this.moneyContainer.rotation = Math.random() * 0.7 - 0.25;
+            this.labelAcum = 20;
+        }else if(this.labelAcum === 0){
+            this.moneyContainer.scale.x = this.moneyContainer.scale.y = 1;
+            this.moneyContainer.rotation = 0;
         }
 
     },
@@ -217,7 +227,7 @@ var GameScreen = AbstractScreen.extend({
     },
     updateBirds:function(){
         if(this.spawner <= 0){
-            var bird = APP.getGameModel().getNewBird(this.red);
+            var bird = APP.getGameModel().getNewBird(this.red, this);
             bird.build();
             this.layer.addChild(bird);
 
@@ -234,7 +244,7 @@ var GameScreen = AbstractScreen.extend({
     },
     updateItens:function(){
         if(this.itemAccum < 0){
-            this.itemAccum = 1800;
+            this.itemAccum = 1500 + Math.random() * 1500;
             var item = new Item();
             item.build();
             item.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));
@@ -285,6 +295,7 @@ var GameScreen = AbstractScreen.extend({
         this.acumCloud = 500;
         this.spawner = 150;
         this.alertAcum = 0;
+        this.labelAcum = 0;
 
         this.points = 0;
         this.initApp = true;

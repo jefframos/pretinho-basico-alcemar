@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var Particles = Entity.extend({
-    init:function(vel, timeLive, label, rotation){
+    init:function(vel, timeLive, source, rotation){
         this._super( true );
         this.updateable = false;
         this.colidable = false;
@@ -17,7 +17,8 @@ var Particles = Entity.extend({
         this.timeLive = timeLive;
         this.power = 1;
         this.defaultVelocity = 1;
-        this.imgSource = label;
+
+        this.imgSource = source;
         this.alphadecress = 0.03;
         this.scaledecress = 0.03;
         this.gravity = 0;
@@ -28,7 +29,12 @@ var Particles = Entity.extend({
     },
     build: function(){
         this.updateable = true;
-        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
+        if(this.imgSource instanceof PIXI.Text)
+        {
+            this.sprite = this.imgSource;
+        }else{
+            this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
+        }
         this.sprite.anchor.x = 0.5;
         this.sprite.anchor.y = 0.5;
         this.sprite.alpha = 1;

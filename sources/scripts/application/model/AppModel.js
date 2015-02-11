@@ -77,8 +77,8 @@ var AppModel = Class.extend({
 			{
 				energyCoast:1.5,
 				vel:3,
-				bulletForce:0.5,
-				bulletCoast:0.08,
+				bulletForce:0.8,
+				bulletCoast:0.07,
 				bulletVel:8,
 			}
 			),
@@ -95,7 +95,7 @@ var AppModel = Class.extend({
 			{
 				energyCoast:3,
 				vel:1,
-				bulletForce:1,
+				bulletForce:1.4,
 				bulletCoast:0.1,
 				bulletVel:5,
 			}
@@ -205,10 +205,10 @@ var AppModel = Class.extend({
 		this.currentID = id;
 		this.currentPlayerModel = this.playerModels[id];
 	},
-	getNewBird:function(player){
+	getNewBird:function(player, screen){
 		var id = Math.floor(this.birdModels.length * Math.random());
 		this.birdModels[id].target = player;
-		var bird = new Bird(this.birdModels[id]);
+		var bird = new Bird(this.birdModels[id], screen);
         return bird;
 	},
 	build:function(){

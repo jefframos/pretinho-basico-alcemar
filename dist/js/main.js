@@ -440,17 +440,30 @@ var Application = AbstractApplication.extend({
         this.container.position.x = x, this.container.position.y = y;
     }
 }), Bird = Entity.extend({
-    init: function(birdModel) {
+    init: function(birdModel, screen) {
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
         this.height = 1, this.type = "bird", this.target = "enemy", this.fireType = "physical", 
         this.birdModel = birdModel, this.vel = birdModel.vel, this.velocity.x = -this.vel, 
-        this.velocity.y = 0, this.demage = this.birdModel.demage, this.hp = this.birdModel.hp, 
-        this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
+        this.velocity.y = 0, this.screen = screen, this.demage = this.birdModel.demage, 
+        this.hp = this.birdModel.hp, this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
         this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1;
     },
     hurt: function(demage) {
-        this.hp -= demage, this.velocity.x = -Math.abs(.4 * this.vel), this.hp <= 0 && (APP.updatePoints(this.birdModel.money), 
-        this.preKill()), this.getContent().tint = 16711680;
+        if (this.hp -= demage, this.velocity.x = -Math.abs(.4 * this.vel), this.hp <= 0) {
+            APP.updatePoints(this.birdModel.money);
+            var mascadasLabel = new Particles({
+                x: 0,
+                y: -(.2 * Math.random() + .3)
+            }, 120, new PIXI.Text(this.birdModel.money, {
+                font: "35px Luckiest Guy",
+                fill: "#FFFFFF",
+                stroke: "#033E43",
+                strokeThickness: 3
+            }), 0);
+            mascadasLabel.build(), mascadasLabel.setPosition(this.getPosition().x, this.getPosition().y - 50 * Math.random()), 
+            mascadasLabel.alphadecress = .01, this.screen.addChild(mascadasLabel), this.preKill();
+        }
+        this.getContent().tint = 16711680;
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -557,7 +570,7 @@ var Application = AbstractApplication.extend({
     },
     update: function() {
         this._super(), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
-        this.range = .7 * this.sprite.height, this.collideArea;
+        this.range = .8 * this.sprite.height, this.collideArea;
     },
     preKill: function() {
         for (var i = 4; i >= 0; i--) {
@@ -735,8 +748,8 @@ var Application = AbstractApplication.extend({
         }, {
             energyCoast: 1.5,
             vel: 3,
-            bulletForce: .5,
-            bulletCoast: .08,
+            bulletForce: .8,
+            bulletCoast: .07,
             bulletVel: 8
         }), new PlayerModel({
             label: "Mr. PI",
@@ -750,7 +763,7 @@ var Application = AbstractApplication.extend({
         }, {
             energyCoast: 3,
             vel: 1,
-            bulletForce: 1,
+            bulletForce: 1.4,
             bulletCoast: .1,
             bulletVel: 5
         }), new PlayerModel({
@@ -842,10 +855,10 @@ var Application = AbstractApplication.extend({
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
     },
-    getNewBird: function(player) {
+    getNewBird: function(player, screen) {
         var id = Math.floor(this.birdModels.length * Math.random());
         this.birdModels[id].target = player;
-        var bird = new Bird(this.birdModels[id]);
+        var bird = new Bird(this.birdModels[id], screen);
         return bird;
     },
     build: function() {},
@@ -1167,14 +1180,17 @@ var Application = AbstractApplication.extend({
         this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
         this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
         this.updateBirds(), this.updateParticles(), this.updateItens(), this.updateClouds(), 
-        this.pointsLabel && (this.pointsLabel.setText(this.points), this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20)));
+        this.labelAcum > 0 && this.labelAcum--, this.pointsLabel && this.pointsLabel.text !== String(this.points) ? (this.pointsLabel.setText(this.points), 
+        this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20, this.moneyContainer.scale.x = this.moneyContainer.scale.y = 1.5, 
+        this.moneyContainer.rotation = .7 * Math.random() - .25, this.labelAcum = 20) : 0 === this.labelAcum && (this.moneyContainer.scale.x = this.moneyContainer.scale.y = 1, 
+        this.moneyContainer.rotation = 0)));
     },
     alertGasoline: function() {
         this.gasoline.getContent().scale.x = this.gasoline.getContent().scale.y = Math.abs(.23 * Math.sin(this.alertAcum += .08)) + .6;
     },
     updateBirds: function() {
         if (this.spawner <= 0) {
-            var bird = APP.getGameModel().getNewBird(this.red);
+            var bird = APP.getGameModel().getNewBird(this.red, this);
             bird.build(), this.layer.addChild(bird);
             var scale = scaleConverter(bird.getContent().width, windowHeight, bird.birdModel.sizePercent);
             bird.setScale(scale, scale), bird.setPosition(bird.behaviour.position.x, bird.behaviour.position.y), 
@@ -1183,7 +1199,7 @@ var Application = AbstractApplication.extend({
     },
     updateItens: function() {
         if (this.itemAccum < 0) {
-            this.itemAccum = 1800;
+            this.itemAccum = 1500 + 1500 * Math.random();
             var item = new Item();
             item.build(), item.setPosition(windowWidth, .1 * windowHeight + .8 * windowHeight * Math.random()), 
             this.layer.addChild(item);
@@ -1216,10 +1232,11 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, this.spawner = 150, 
-        this.alertAcum = 0, this.points = 0, this.initApp = !0, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
-        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
-        this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], this.layerManagerBack = new LayerManager(), 
-        this.layerManagerBack.build("MainBack"), this.addChild(this.layerManagerBack);
+        this.alertAcum = 0, this.labelAcum = 0, this.points = 0, this.initApp = !0, this.vecClouds = [], 
+        this.sky = new SimpleSprite("sky.png"), this.addChild(this.sky), this.sky.container.width = windowWidth, 
+        this.sky.container.height = .9 * windowHeight, this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], 
+        this.layerManagerBack = new LayerManager(), this.layerManagerBack.build("MainBack"), 
+        this.addChild(this.layerManagerBack);
         var environment = new Environment(windowWidth, windowHeight);
         environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -.35, 
         this.addChild(environment), this.layerManager = new LayerManager(), this.layerManager.build("Main"), 
@@ -1622,17 +1639,17 @@ var Application = AbstractApplication.extend({
         return this.container;
     }
 }), Particles = Entity.extend({
-    init: function(vel, timeLive, label, rotation) {
+    init: function(vel, timeLive, source, rotation) {
         this._super(!0), this.updateable = !1, this.colidable = !1, this.deading = !1, this.range = 40, 
         this.width = 1, this.height = 1, this.type = "fire", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = 1, this.defaultVelocity = 1, this.imgSource = label, this.alphadecress = .03, 
+        this.power = 1, this.defaultVelocity = 1, this.imgSource = source, this.alphadecress = .03, 
         this.scaledecress = .03, this.gravity = 0, rotation && (this.rotation = rotation);
     },
     build: function() {
-        this.updateable = !0, this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.sprite.alpha = 1, this.sprite.scale.x = .2, this.sprite.scale.y = .2, 
-        this.getContent().rotation = this.rotation;
+        this.updateable = !0, this.sprite = this.imgSource instanceof PIXI.Text ? this.imgSource : new PIXI.Sprite.fromFrame(this.imgSource), 
+        this.sprite.anchor.x = .5, this.sprite.anchor.y = .5, this.sprite.alpha = 1, this.sprite.scale.x = .2, 
+        this.sprite.scale.y = .2, this.getContent().rotation = this.rotation;
     },
     update: function() {
         this._super(), 0 !== this.gravity && (this.velocity.y += this.gravity), this.timeLive--, 
