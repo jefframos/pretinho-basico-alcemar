@@ -13,7 +13,14 @@ var Red = SpritesheetEntity.extend({
 		var motionIdle = new SpritesheetAnimation();
 		// motionIdle.build('idle', this.getFramesByRange('piangers0', 2, 8), 1, true, null);
 		// console.log(this.playerModel);
-		motionIdle.build('idle', [this.playerModel.imgSourceGame], 1, true, null);
+		if(windowHeight > 450){
+            //this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
+			motionIdle.build('idle', [this.playerModel.imgSource], 1, true, null);
+
+        }else{
+			motionIdle.build('idle', [this.playerModel.imgSourceGame], 1, true, null);
+            //this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame);
+        }
 		
 		var motionHurt = new SpritesheetAnimation();
 		motionHurt.build('hurt', this.getFramesByRange('piangers0', 2, 2), 1, false, function(){

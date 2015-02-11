@@ -257,6 +257,8 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.play.build();
         scaleConverter(this.play.getContent().height, windowHeight, 0.25, this.play);
         this.play.setPosition( windowWidth - this.play.getContent().width - 20,windowHeight - this.play.getContent().height - 20);
+        TweenLite.from(this.play.getContent().position, 0.8, {x:windowWidth, ease:'easeOutBack'});
+
         this.addChild(this.play);
 
         // this.play.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
@@ -269,6 +271,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         scaleConverter(this.returnButton.getContent().height, windowHeight, 0.15, this.returnButton);
 
         this.returnButton.setPosition(20 ,windowHeight - this.returnButton.getContent().height - 20);
+        TweenLite.from(this.returnButton.getContent().position, 0.8, {x:- this.returnButton.getContent().width, ease:'easeOutBack'});
         this.addChild(this.returnButton);
         // this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
         
@@ -409,7 +412,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.playerImg.getContent().parent.removeChild(this.playerImg.getContent());
             this.removeChild(this.playerImg);
         }
-        this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame);
+        if(windowHeight > 450){
+            this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
+        }else{
+            this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame);
+        }
         if(!this.playerImg){
             return;
         }

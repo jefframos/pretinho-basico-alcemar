@@ -130,7 +130,7 @@ var ChoiceButton = DefaultButton.extend({
 		this.thumb.scale.x = this.thumb.scale.y = scale;
 		this.containerThumbs.addChild(this.thumb);
 		this.thumb.position.x = this.width / 2 - this.thumb.width / 2;
-		this.thumb.position.y = this.height - this.thumb.height - 6;
+		this.thumb.position.y = this.height - this.thumb.height - 4;
 		this.thumb.visible = false;
 
 		this.thumbGray = new PIXI.Sprite(PIXI.Texture.fromImage(thumbGray));
@@ -138,7 +138,7 @@ var ChoiceButton = DefaultButton.extend({
 		this.thumbGray.scale.x = this.thumbGray.scale.y = scale;
 		this.containerThumbs.addChild(this.thumbGray);
 		this.thumbGray.position.x = this.width / 2 - this.thumbGray.width / 2;
-		this.thumbGray.position.y = this.height - this.thumbGray.height - 6;
+		this.thumbGray.position.y = this.height - this.thumbGray.height - 4;
 		this.thumbGray.visible = true;
 
 		this.maskButton = new PIXI.Graphics();

@@ -4,11 +4,18 @@ function testMobile() {
 	return Modernizr.touch;// || window.innerWidth < 600;//true;// Modernizr.touch || window.innerWidth < 600;
 }
 var resizeProportional = true;
-var windowWidth = 1136,
-windowHeight = 640;
+// var windowWidth = 1136,
+// windowHeight = 640;
 
-var realWindowWidth = 1136,
-realWindowHeight = 640;
+// var realWindowWidth = 1136,
+// realWindowHeight = 640;
+
+var windowWidth = 810,
+windowHeight = 456;
+
+var realWindowWidth = 810,
+realWindowHeight = 456;
+
 var gameScale = 1.3;
 if(testMobile()){
 	windowWidth = window.innerWidth * gameScale;//640;

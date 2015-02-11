@@ -55,26 +55,26 @@ var WaitScreen = AbstractScreen.extend({
         background.getContent().scale.x = scaleBack;
         background.getContent().scale.y = scaleBack;
         var self = this;
-        this.btnBenchmark = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        this.btnBenchmark = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
         // console.log(this.btnBenchmark.build);
-        this.btnBenchmark.build(200,100);
-        scaleConverter(this.btnBenchmark.height, windowHeight, 0.2, this.btnBenchmark);
+        this.btnBenchmark.build();
+        scaleConverter(this.btnBenchmark.height, windowHeight, 0.25, this.btnBenchmark);
         this.btnBenchmark.setPosition( windowWidth - this.btnBenchmark.getContent().width  - 20, windowHeight - this.btnBenchmark.getContent().height - 20);
         this.addChild(this.btnBenchmark);
 
         // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
 
-        this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
+        // this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
         this.btnBenchmark.clickCallback = function(){
             self.screenManager.change('Choice');
         };
 
-        if(possibleFullscreen()){
+        if(possibleFullscreen() && testMobile()){
             this.fullScreen = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
             this.fullScreen.build(200, 100);
             scaleConverter(this.fullScreen.height, windowHeight, 0.2, this.fullScreen);
 
-            this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.getContent().height - this.fullScreen.getContent().height * 0.05);
+            this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.getContent().height - 20);
             this.addChild(this.fullScreen);
             this.fullScreen.addLabel(new PIXI.Text('Fullscreen', { align:'center', fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,28);
             this.fullScreen.clickCallback = function(){

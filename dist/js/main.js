@@ -405,10 +405,10 @@ var Application = AbstractApplication.extend({
         this.containerThumbs = new PIXI.DisplayObjectContainer(), this.thumb = new PIXI.Sprite(PIXI.Texture.fromImage(thumb));
         var scale = scaleConverter(this.thumb.height, this.height, .8);
         this.thumb.scale.x = this.thumb.scale.y = scale, this.containerThumbs.addChild(this.thumb), 
-        this.thumb.position.x = this.width / 2 - this.thumb.width / 2, this.thumb.position.y = this.height - this.thumb.height - 6, 
+        this.thumb.position.x = this.width / 2 - this.thumb.width / 2, this.thumb.position.y = this.height - this.thumb.height - 4, 
         this.thumb.visible = !1, this.thumbGray = new PIXI.Sprite(PIXI.Texture.fromImage(thumbGray)), 
         this.thumbGray.scale.x = this.thumbGray.scale.y = scale, this.containerThumbs.addChild(this.thumbGray), 
-        this.thumbGray.position.x = this.width / 2 - this.thumbGray.width / 2, this.thumbGray.position.y = this.height - this.thumbGray.height - 6, 
+        this.thumbGray.position.x = this.width / 2 - this.thumbGray.width / 2, this.thumbGray.position.y = this.height - this.thumbGray.height - 4, 
         this.thumbGray.visible = !0, this.maskButton = new PIXI.Graphics(), this.maskButton.beginFill(9991763), 
         this.maskButton.drawCircle(this.width / 2, this.width / 2, this.width / 2 + 6), 
         this.containerThumbs.addChild(this.maskButton), this.containerThumbs.mask = this.maskButton, 
@@ -590,7 +590,7 @@ var Application = AbstractApplication.extend({
     },
     build: function(screen) {
         var self = this, motionIdle = new SpritesheetAnimation();
-        motionIdle.build("idle", [ this.playerModel.imgSourceGame ], 1, !0, null);
+        windowHeight > 450 ? motionIdle.build("idle", [ this.playerModel.imgSource ], 1, !0, null) : motionIdle.build("idle", [ this.playerModel.imgSourceGame ], 1, !0, null);
         var motionHurt = new SpritesheetAnimation();
         motionHurt.build("hurt", this.getFramesByRange("piangers0", 2, 2), 1, !1, function() {
             self.spritesheet.play("idle");
@@ -986,12 +986,18 @@ var Application = AbstractApplication.extend({
         this.play = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
         this.play.build(), scaleConverter(this.play.getContent().height, windowHeight, .25, this.play), 
         this.play.setPosition(windowWidth - this.play.getContent().width - 20, windowHeight - this.play.getContent().height - 20), 
-        this.addChild(this.play), this.play.clickCallback = function() {
+        TweenLite.from(this.play.getContent().position, .8, {
+            x: windowWidth,
+            ease: "easeOutBack"
+        }), this.addChild(this.play), this.play.clickCallback = function() {
             self.screenManager.change("Game");
         }, this.returnButton = new DefaultButton("voltarButton.png", "voltarButton.png"), 
         this.returnButton.build(), scaleConverter(this.returnButton.getContent().height, windowHeight, .15, this.returnButton), 
         this.returnButton.setPosition(20, windowHeight - this.returnButton.getContent().height - 20), 
-        this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
+        TweenLite.from(this.returnButton.getContent().position, .8, {
+            x: -this.returnButton.getContent().width,
+            ease: "easeOutBack"
+        }), this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.arrButtons[APP.getGameModel().currentID].selectedFunction(), this.createStatsContainer(), 
         this.updatePlayers(!0);
@@ -1074,7 +1080,7 @@ var Application = AbstractApplication.extend({
         }), TweenLite.from(this.playerImgBig.getContent().position, instant ? 0 : .8, {
             x: this.playerImgBig.getContent().position.x + .1 * windowWidth
         }), this.playerImg && this.playerImg.getContent().parent && (this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
-        this.removeChild(this.playerImg)), this.playerImg = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame), 
+        this.removeChild(this.playerImg)), this.playerImg = new SimpleSprite(windowHeight > 450 ? APP.getGameModel().currentPlayerModel.imgSource : APP.getGameModel().currentPlayerModel.imgSourceGame), 
         this.playerImg) {
             this.playerImg.container.anchor.x = .5, this.playerImg.container.anchor.y = .5;
             var scale = 1;
@@ -1137,7 +1143,7 @@ var Application = AbstractApplication.extend({
         this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight);
         var self = this;
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
-            self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast || (self.touchstart = !0, 
+            self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * (self.playerModel.bulletCoast + .2) || (self.touchstart = !0, 
             self.onBulletTouch = !0);
         }, this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function() {
             self.touchstart && !self.gameOver && (self.touchstart = !1, self.onBulletTouch = !1, 
@@ -1174,8 +1180,11 @@ var Application = AbstractApplication.extend({
         this.updateable && (this._super(), this.playerModel && this.initApp && (!testMobile() && this.red && APP.stage.getMousePosition().y > 0 && APP.stage.getMousePosition().y < windowHeight && this.red.setTarget(APP.stage.getMousePosition().y + .8 * this.red.getContent().height), 
         this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
         this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
+        this.playerModel.currentBulletEnergy < this.playerModel.maxBulletEnergy * (this.playerModel.bulletCoast + .2) ? this.alertBullet() : (this.bulletAcum = 0, 
+        this.bulletIco.getContent().scale.x = .8, this.bulletIco.getContent().scale.y = .8), 
         this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? (this.playerModel.currentEnergy -= this.playerModel.energyCoast, 
-        this.playerModel.currentEnergy < .2 * this.playerModel.maxEnergy ? this.alertGasoline() : this.alertAcum = 0) : this.gameOver = !0, 
+        this.playerModel.currentEnergy < .2 * this.playerModel.maxEnergy ? this.alertGasoline() : (this.alertAcum = 0, 
+        this.gasolineIco.getContent().scale.x = .8, this.gasolineIco.getContent().scale.y = .8)) : this.gameOver = !0, 
         this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && this.endModal.show()), 
         this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
         this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
@@ -1186,7 +1195,10 @@ var Application = AbstractApplication.extend({
         this.moneyContainer.rotation = 0)));
     },
     alertGasoline: function() {
-        this.gasoline.getContent().scale.x = this.gasoline.getContent().scale.y = Math.abs(.23 * Math.sin(this.alertAcum += .08)) + .6;
+        this.gasolineIco.getContent().scale.x = this.gasolineIco.getContent().scale.y = Math.abs(.23 * Math.sin(this.alertAcum += .08)) + .8;
+    },
+    alertBullet: function() {
+        this.bulletIco.getContent().scale.x = this.bulletIco.getContent().scale.y = Math.abs(.23 * Math.sin(this.bulletAcum += .08)) + .8;
     },
     updateBirds: function() {
         if (this.spawner <= 0) {
@@ -1232,11 +1244,11 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, this.spawner = 150, 
-        this.alertAcum = 0, this.labelAcum = 0, this.points = 0, this.initApp = !0, this.vecClouds = [], 
-        this.sky = new SimpleSprite("sky.png"), this.addChild(this.sky), this.sky.container.width = windowWidth, 
-        this.sky.container.height = .9 * windowHeight, this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], 
-        this.layerManagerBack = new LayerManager(), this.layerManagerBack.build("MainBack"), 
-        this.addChild(this.layerManagerBack);
+        this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, this.points = 0, this.initApp = !0, 
+        this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), this.addChild(this.sky), 
+        this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
+        this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], this.layerManagerBack = new LayerManager(), 
+        this.layerManagerBack.build("MainBack"), this.addChild(this.layerManagerBack);
         var environment = new Environment(windowWidth, windowHeight);
         environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -.35, 
         this.addChild(environment), this.layerManager = new LayerManager(), this.layerManager.build("Main"), 
@@ -1252,17 +1264,22 @@ var Application = AbstractApplication.extend({
             y: windowHeight / 2
         }), this.red.setScale(scale, scale);
         var self = this, barsContainer = new PIXI.DisplayObjectContainer();
-        this.energyBar = new GasBarView("gasBarBack.png", "gasBar.png", 50, 15), barsContainer.addChild(this.energyBar.getContent()), 
-        this.energyBar.setPosition(0, 0), this.bulletBar = new GasBarView("fireBarBack.png", "fireBar.png", 2, 4), 
-        barsContainer.addChild(this.bulletBar.getContent()), this.bulletBar.setPosition(50, this.energyBar.getContent().height - 13), 
-        this.addChild(barsContainer), barsContainer.position.x = 20, barsContainer.position.y = 20, 
-        this.gasoline = new SimpleSprite("gasoline.png"), barsContainer.addChild(this.gasoline.getContent()), 
-        this.gasoline.getContent().anchor.x = .5, this.gasoline.getContent().anchor.y = .5, 
-        this.gasoline.getContent().scale.x = .6, this.gasoline.getContent().scale.y = .6, 
-        this.gasoline.getContent().position.x = .6 * this.gasoline.getContent().width, this.gasoline.getContent().position.y = .6 * this.gasoline.getContent().height - 14, 
-        barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, .3), 
-        this.pauseButton = new DefaultButton("pauseButton.png", "pauseButton.png"), this.pauseButton.build(), 
-        this.addChild(this.pauseButton), this.pauseButton.clickCallback = function() {
+        this.energyBar = new GasBarView("gasBarBack.png", "gasBar.png", 51, 2), barsContainer.addChild(this.energyBar.getContent()), 
+        this.energyBar.setPosition(0, 0), scaleConverter(this.energyBar.getContent().width, windowWidth, .25, this.energyBar), 
+        this.gasolineIco = new SimpleSprite("gasoline.png"), this.gasolineIco.getContent().anchor.x = .5, 
+        this.gasolineIco.getContent().anchor.y = .5, this.gasolineIco.getContent().scale.x = .8, 
+        this.gasolineIco.getContent().scale.y = .8, this.gasolineIco.getContent().position.x = this.gasolineIco.getContent().width * this.gasolineIco.getContent().scale.x, 
+        this.gasolineIco.getContent().position.y = this.energyBar.getContent().height / 2 + 5, 
+        this.energyBar.getContent().addChild(this.gasolineIco.getContent()), this.bulletBar = new GasBarView("gasBarBack2.png", "gasBar.png", 51, 2), 
+        barsContainer.addChild(this.bulletBar.getContent()), scaleConverter(this.bulletBar.getContent().width, windowWidth, .25, this.bulletBar), 
+        this.bulletBar.setPosition(0, windowHeight - this.bulletBar.getContent().height - 40), 
+        this.bulletIco = new SimpleSprite("gasoline.png"), this.bulletIco.getContent().anchor.x = .5, 
+        this.bulletIco.getContent().anchor.y = .5, this.bulletIco.getContent().scale.x = .8, 
+        this.bulletIco.getContent().scale.y = .8, this.bulletIco.getContent().position.x = this.bulletIco.getContent().width * this.bulletIco.getContent().scale.x, 
+        this.bulletIco.getContent().position.y = this.bulletBar.getContent().height / 2 + 5, 
+        this.bulletBar.getContent().addChild(this.bulletIco.getContent()), this.addChild(barsContainer), 
+        barsContainer.position.x = 20, barsContainer.position.y = 20, this.pauseButton = new DefaultButton("pauseButton.png", "pauseButton.png"), 
+        this.pauseButton.build(), this.addChild(this.pauseButton), this.pauseButton.clickCallback = function() {
             self.pauseModal.show();
         }, scaleConverter(this.pauseButton.getContent().height, windowHeight, .12, this.pauseButton), 
         this.pauseButton.setPosition(windowWidth - this.pauseButton.getContent().width - 20, windowHeight - this.pauseButton.getContent().height - 20), 
@@ -1323,20 +1340,14 @@ var Application = AbstractApplication.extend({
         var scaleBack = scaleConverter(background.getContent().width, windowWidth, 1);
         background.getContent().scale.x = scaleBack, background.getContent().scale.y = scaleBack;
         var self = this;
-        this.btnBenchmark = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.btnBenchmark.build(200, 100), scaleConverter(this.btnBenchmark.height, windowHeight, .2, this.btnBenchmark), 
+        this.btnBenchmark = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
+        this.btnBenchmark.build(), scaleConverter(this.btnBenchmark.height, windowHeight, .25, this.btnBenchmark), 
         this.btnBenchmark.setPosition(windowWidth - this.btnBenchmark.getContent().width - 20, windowHeight - this.btnBenchmark.getContent().height - 20), 
-        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("Jogar", {
-            align: "center",
-            fill: "#033E43",
-            font: "50px Luckiest Guy",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        }), 25, 18), this.btnBenchmark.clickCallback = function() {
+        this.addChild(this.btnBenchmark), this.btnBenchmark.clickCallback = function() {
             self.screenManager.change("Choice");
-        }, possibleFullscreen() && (this.fullScreen = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
+        }, possibleFullscreen() && testMobile() && (this.fullScreen = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.fullScreen.build(200, 100), scaleConverter(this.fullScreen.height, windowHeight, .2, this.fullScreen), 
-        this.fullScreen.setPosition(20, windowHeight - this.fullScreen.getContent().height - .05 * this.fullScreen.getContent().height), 
+        this.fullScreen.setPosition(20, windowHeight - this.fullScreen.getContent().height - 20), 
         this.addChild(this.fullScreen), this.fullScreen.addLabel(new PIXI.Text("Fullscreen", {
             align: "center",
             fill: "#033E43",
@@ -1398,53 +1409,29 @@ var Application = AbstractApplication.extend({
         this.bg = new PIXI.Graphics(), this.bg.beginFill(0), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
         this.bg.alpha = 0, this.container.addChild(this.bg), this.container.addChild(this.boxContainer);
         var self = this;
-        this.background = new SimpleSprite("endModalBg.png"), this.boxContainer.addChild(this.background.getContent()), 
-        this.saveButton = new DefaultButton("saveButton.png", "saveButton.png"), this.saveButton.build(), 
-        this.saveButton.setPosition(this.background.getContent().width / 2 - this.saveButton.width / 2, this.background.getContent().height - 180), 
-        this.boxContainer.addChild(this.saveButton.getContent()), this.saveButton.clickCallback = function() {
-            self.hide(function() {});
-        }, this.exitButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
-        this.exitButton.build(), this.exitButton.setPosition(this.background.getContent().width / 2 - this.exitButton.width / 2, this.background.getContent().height - this.exitButton.height / 2), 
-        this.boxContainer.addChild(this.exitButton.getContent()), this.exitButton.clickCallback = function() {
+        this.exitButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
+        this.exitButton.build(), this.boxContainer.addChild(this.exitButton.getContent()), 
+        this.exitButton.clickCallback = function() {
             self.hide(function() {
                 self.screen.updateable = !0, self.screen.reset();
             });
-        }, this.backButton = new DefaultButton("voltarButton.png", "voltarButton.png"), 
-        this.backButton.build(), this.backButton.setPosition(this.exitButton.getContent().position.x - this.backButton.width - 15, this.background.getContent().height - this.backButton.height / 2), 
+        }, this.backButton = new DefaultButton("menuButton.png", "menuButton.png"), this.backButton.build(), 
+        this.backButton.setPosition(this.exitButton.getContent().position.x - this.backButton.width - 15, 0), 
         this.boxContainer.addChild(this.backButton.getContent()), this.backButton.clickCallback = function() {
             self.hide(function() {
                 self.screen.screenManager.prevScreen();
             });
         }, this.boxContainer.addChild(this.exitButton.getContent()), this.boxContainer.alpha = 0, 
-        this.boxContainer.visible = !1, this.containerScale = scaleConverter(this.boxContainer.height, windowHeight, .85), 
+        this.boxContainer.visible = !1, this.containerScale = scaleConverter(this.boxContainer.height, windowHeight, .2), 
         this.boxContainer.scale.x = this.containerScale, this.boxContainer.scale.y = this.containerScale, 
-        this.boxContainer.position.x = windowWidth / 2 - this.background.getContent().width * this.containerScale / 2, 
-        this.boxContainer.position.y = windowHeight / 2 - this.background.getContent().height * this.containerScale / 2;
-        var i = 0, tempBirdContainer = null, birdContainer = null, bird = null, cont = 0;
-        for (i = 1; 4 > i; i++) tempBirdContainer = new PIXI.DisplayObjectContainer(), birdContainer = new SimpleSprite("birdContainer.png"), 
-        bird = new SimpleSprite(APP.getGameModel().birdModels[cont++].imgSource), tempBirdContainer.addChild(birdContainer.getContent()), 
-        tempBirdContainer.addChild(bird.getContent()), this.boxContainer.addChild(tempBirdContainer), 
-        tempBirdContainer.position.x = -50, tempBirdContainer.position.y = (birdContainer.getContent().height - 40) * (i - 1) + 40, 
-        i % 2 === 0 && (birdContainer.getContent().scale.x = -1, tempBirdContainer.position.x -= birdContainer.getContent().width), 
-        bird.getContent().position.y = birdContainer.getContent().height / 2 - bird.getContent().height / 2, 
-        bird.getContent().position.x = birdContainer.getContent().width / 2 - bird.getContent().width / 2 + 30 * birdContainer.getContent().scale.x;
-        for (i = 1; 4 > i; i++) tempBirdContainer = new PIXI.DisplayObjectContainer(), birdContainer = new SimpleSprite("birdContainer.png"), 
-        bird = new SimpleSprite(APP.getGameModel().birdModels[cont++].imgSource), tempBirdContainer.addChild(birdContainer.getContent()), 
-        this.boxContainer.addChild(tempBirdContainer), tempBirdContainer.addChild(bird.getContent()), 
-        tempBirdContainer.position.x = 610, tempBirdContainer.position.y = (birdContainer.getContent().height - 40) * (i - 1) + 40, 
-        i % 2 !== 0 && (birdContainer.getContent().scale.x = -1, tempBirdContainer.position.x -= birdContainer.getContent().width), 
-        bird.getContent().position.y = birdContainer.getContent().height / 2 - bird.getContent().height / 2, 
-        bird.getContent().position.x = birdContainer.getContent().width / 2 - bird.getContent().width / 2 + 45 * birdContainer.getContent().scale.x;
-        var top = new SimpleSprite("gasoline.png");
-        this.boxContainer.addChild(top.getContent()), top.getContent().position.x = this.background.getContent().width / 2 - top.getContent().width / 2, 
-        top.getContent().position.y = -top.getContent().height / 2;
+        this.boxContainer.position.x = windowWidth / 2, this.boxContainer.position.y = windowHeight;
     },
     show: function() {
         this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
         this.boxContainer.visible = !0, this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
             alpha: .8
         }), TweenLite.to(this.boxContainer.position, 1, {
-            y: windowHeight / 2 - this.background.getContent().height * this.containerScale / 2,
+            y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
             alpha: 1
@@ -1660,7 +1647,7 @@ var Application = AbstractApplication.extend({
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
     }
-}), resizeProportional = !0, windowWidth = 1136, windowHeight = 640, realWindowWidth = 1136, realWindowHeight = 640, gameScale = 1.3;
+}), resizeProportional = !0, windowWidth = 810, windowHeight = 456, realWindowWidth = 810, realWindowHeight = 456, gameScale = 1.3;
 
 testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
 realWindowWidth = windowWidth, realWindowHeight = windowHeight);

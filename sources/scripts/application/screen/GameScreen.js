@@ -61,7 +61,8 @@ var GameScreen = AbstractScreen.extend({
 
 
         this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function(touchData){
-            if(self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * self.playerModel.bulletCoast){
+            // console.log(self.playerModel.currentBulletEnergy,self.playerModel.currentBulletForce, self.playerModel.maxBulletEnergy);
+            if(self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * (self.playerModel.bulletCoast + 0.2)){
                 return;
             }
             // self.textAcc.setText('TOUCH START!');
@@ -76,7 +77,6 @@ var GameScreen = AbstractScreen.extend({
             }
             self.touchstart = false;
             self.onBulletTouch = false;
-
             self.shoot();
         };
 
@@ -173,12 +173,21 @@ var GameScreen = AbstractScreen.extend({
         if(this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy -this.playerModel.recoverBulletEnergy) {
             this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy;
         }
+        if(this.playerModel.currentBulletEnergy < this.playerModel.maxBulletEnergy * (this.playerModel.bulletCoast + 0.2)){
+            this.alertBullet();
+        }else{
+            this.bulletAcum = 0;
+            this.bulletIco.getContent().scale.x = 0.8;
+            this.bulletIco.getContent().scale.y = 0.8;
+        }
         if(this.playerModel && this.playerModel.currentEnergy > this.playerModel.energyCoast * 1.1){
             this.playerModel.currentEnergy -= this.playerModel.energyCoast;
             if(this.playerModel.currentEnergy < this.playerModel.maxEnergy * 0.2){
                 this.alertGasoline();
             }else{
                 this.alertAcum = 0;
+                this.gasolineIco.getContent().scale.x = 0.8;
+                this.gasolineIco.getContent().scale.y = 0.8;
             }
         }else{
             this.gameOver = true;
@@ -222,7 +231,12 @@ var GameScreen = AbstractScreen.extend({
     },
     alertGasoline:function(){
         // this.gasoline.getContent().tint = 0xFF0000;
-        this.gasoline.getContent().scale.x = this.gasoline.getContent().scale.y = Math.abs(Math.sin(this.alertAcum += 0.08) * 0.23) + 0.6;
+        this.gasolineIco.getContent().scale.x = this.gasolineIco.getContent().scale.y = Math.abs(Math.sin(this.alertAcum += 0.08) * 0.23) + 0.8;
+        
+    },
+    alertBullet:function(){
+        // this.gasoline.getContent().tint = 0xFF0000;
+        this.bulletIco.getContent().scale.x = this.bulletIco.getContent().scale.y = Math.abs(Math.sin(this.bulletAcum += 0.08) * 0.23) + 0.8;
         
     },
     updateBirds:function(){
@@ -295,6 +309,7 @@ var GameScreen = AbstractScreen.extend({
         this.acumCloud = 500;
         this.spawner = 150;
         this.alertAcum = 0;
+        this.bulletAcum = 0;
         this.labelAcum = 0;
 
         this.points = 0;
@@ -363,29 +378,43 @@ var GameScreen = AbstractScreen.extend({
 
         var barsContainer = new PIXI.DisplayObjectContainer();
 
-        this.energyBar = new GasBarView('gasBarBack.png', 'gasBar.png', 50,15);
+        this.energyBar = new GasBarView('gasBarBack.png', 'gasBar.png', 51,2);
         barsContainer.addChild(this.energyBar.getContent());
         this.energyBar.setPosition(0, 0);
+        scaleConverter(this.energyBar.getContent().width, windowWidth, 0.25, this.energyBar);
+
+
+        this.gasolineIco = new SimpleSprite('gasoline.png');
+        this.gasolineIco.getContent().anchor.x = 0.5;
+        this.gasolineIco.getContent().anchor.y = 0.5;
+        this.gasolineIco.getContent().scale.x = 0.8;
+        this.gasolineIco.getContent().scale.y = 0.8;
+        this.gasolineIco.getContent().position.x = this.gasolineIco.getContent().width * this.gasolineIco.getContent().scale.x;//this.gasolineIco.getContent().width * 0.6-5;
+        this.gasolineIco.getContent().position.y = this.energyBar.getContent().height / 2 + 5;
+        this.energyBar.getContent().addChild(this.gasolineIco.getContent());
         
-        this.bulletBar = new GasBarView('fireBarBack.png', 'fireBar.png', 2, 4);
+        // this.bulletBar = new GasBarView('fireBarBack.png', 'fireBar.png', 2, 4);
+        this.bulletBar = new GasBarView('gasBarBack2.png', 'gasBar.png', 51,2);
         barsContainer.addChild(this.bulletBar.getContent());
-        this.bulletBar.setPosition(50, this.energyBar.getContent().height - 13);
+        scaleConverter(this.bulletBar.getContent().width, windowWidth, 0.25, this.bulletBar);
+        this.bulletBar.setPosition(0, windowHeight - this.bulletBar.getContent().height - 40);
+
+        this.bulletIco = new SimpleSprite('gasoline.png');
+        this.bulletIco.getContent().anchor.x = 0.5;
+        this.bulletIco.getContent().anchor.y = 0.5;
+        this.bulletIco.getContent().scale.x = 0.8;
+        this.bulletIco.getContent().scale.y = 0.8;
+        this.bulletIco.getContent().position.x = this.bulletIco.getContent().width * this.bulletIco.getContent().scale.x;//this.bulletIco.getContent().width * 0.6-5;
+        this.bulletIco.getContent().position.y = this.bulletBar.getContent().height / 2 + 5;
+        this.bulletBar.getContent().addChild(this.bulletIco.getContent());
 
         this.addChild(barsContainer);
 
         barsContainer.position.x = 20;
         barsContainer.position.y = 20;
 
-        this.gasoline = new SimpleSprite('gasoline.png');
-        barsContainer.addChild(this.gasoline.getContent());
-        this.gasoline.getContent().anchor.x = 0.5;
-        this.gasoline.getContent().anchor.y = 0.5;
-        this.gasoline.getContent().scale.x = 0.6;
-        this.gasoline.getContent().scale.y = 0.6;
-        this.gasoline.getContent().position.x = this.gasoline.getContent().width * 0.6;
-        this.gasoline.getContent().position.y = this.gasoline.getContent().height * 0.6 - 14;
+        // barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
 
-        barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
         this.pauseButton = new DefaultButton('pauseButton.png', 'pauseButton.png');
         this.pauseButton.build();
         this.addChild(this.pauseButton);
