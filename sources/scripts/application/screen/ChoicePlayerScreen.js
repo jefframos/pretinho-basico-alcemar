@@ -253,24 +253,24 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.arrButtons[i].mouseUpCallback = this.resetButtons;
         }
 
-        this.play = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.play.build(120,60);
-        scaleConverter(this.play.getContent().height, windowHeight, 0.1, this.play);
+        this.play = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+        this.play.build();
+        scaleConverter(this.play.getContent().height, windowHeight, 0.25, this.play);
         this.play.setPosition( windowWidth - this.play.getContent().width - 20,windowHeight - this.play.getContent().height - 20);
         this.addChild(this.play);
 
-        this.play.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
+        // this.play.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
         this.play.clickCallback = function(){
             self.screenManager.change('Game');
         };
 
-        this.returnButton = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.returnButton.build(120, 60);
-        scaleConverter(this.returnButton.getContent().height, windowHeight, 0.1, this.returnButton);
+        this.returnButton = new DefaultButton('voltarButton.png', 'voltarButton.png');
+        this.returnButton.build();
+        scaleConverter(this.returnButton.getContent().height, windowHeight, 0.15, this.returnButton);
 
         this.returnButton.setPosition(20 ,windowHeight - this.returnButton.getContent().height - 20);
         this.addChild(this.returnButton);
-        this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
+        // this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
         
         this.returnButton.clickCallback = function(){
             self.screenManager.change('Wait');
@@ -409,7 +409,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.playerImg.getContent().parent.removeChild(this.playerImg.getContent());
             this.removeChild(this.playerImg);
         }
-        this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
+        this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame);
         if(!this.playerImg){
             return;
         }
@@ -418,12 +418,12 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         var scale = 1;
         if(this.playerImg.container.width > this.playerImg.container.height){
-            scale = scaleConverter(this.playerImg.container.width, windowWidth, 0.2);
+            scale = scaleConverter(this.playerImg.container.width, windowWidth, 0.17, this.playerImg.container);
         }else{
-            scale = scaleConverter(this.playerImg.container.height, windowHeight, 0.4);
+            scale = scaleConverter(this.playerImg.container.height, windowHeight, 0.35, this.playerImg.container);
         }
-        this.playerImg.container.scale.x = scale;
-        this.playerImg.container.scale.y = scale;
+        // this.playerImg.container.scale.x = scale;
+        // this.playerImg.container.scale.y = scale;
 
         // this.playerImg  = new PIXI.Sprite.fromFrame(this.imgSource);
         this.planeContainer.addChild(this.playerImg.getContent());

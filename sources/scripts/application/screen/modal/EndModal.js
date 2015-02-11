@@ -6,7 +6,7 @@ var EndModal = Class.extend({
 		this.container = new PIXI.DisplayObjectContainer();
 		this.boxContainer = new PIXI.DisplayObjectContainer();
 		this.bg = new PIXI.Graphics();
-		this.bg.beginFill(0x004d48);
+		this.bg.beginFill(0x000000);
 		this.bg.drawRect(0,0,windowWidth, windowHeight);
 		this.bg.alpha = 0.0;
 		this.container.addChild(this.bg);

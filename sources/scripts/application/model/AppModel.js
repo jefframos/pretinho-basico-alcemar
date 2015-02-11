@@ -192,11 +192,11 @@ var AppModel = Class.extend({
 		this.birdModels = [
 			//source, target, hp, demage, vel, behaviour, toNext, sizePercent, money
 			new BirdModel('caralinho.png',null, 1, 0.2, -3.5, new BirdBehaviourDefault(), 80, 0.12, 3),
-			new BirdModel('belga.png',null, 3, 0.1, 1.5, new BirdBehaviourSinoid({sinAcc:0.05}), 120, 0.15, 5),
-			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}), 150, 0.15, 8),
-			new BirdModel('roxo.png',null, 10, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 170, 0.20, 10),
-			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid({sinAcc:0.08, velY:-8}), 180, 0.2, 15),
-			new BirdModel('nigeriano.png',null, 50, 0.1, 0.8, new BirdBehaviourSinoid({sinAcc:0.08}), 280, 0.3, 20)
+			new BirdModel('belga.png',null, 3, 0.1, 1.5, new BirdBehaviourSinoid({sinAcc:0.05}), 150, 0.15, 5),
+			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}), 180, 0.15, 8),
+			new BirdModel('roxo.png',null, 10, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.20, 10),
+			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid({sinAcc:0.08, velY:-8}), 210, 0.2, 15),
+			new BirdModel('nigeriano.png',null, 50, 0.1, 0.6, new BirdBehaviourSinoid({sinAcc:0.08}), 280, 0.3, 20)
 		];
 
 		this.setModel(0);

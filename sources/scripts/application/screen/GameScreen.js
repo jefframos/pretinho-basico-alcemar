@@ -175,6 +175,11 @@ var GameScreen = AbstractScreen.extend({
         }
         if(this.playerModel && this.playerModel.currentEnergy > this.playerModel.energyCoast * 1.1){
             this.playerModel.currentEnergy -= this.playerModel.energyCoast;
+            if(this.playerModel.currentEnergy < this.playerModel.maxEnergy * 0.2){
+                this.alertGasoline();
+            }else{
+                this.alertAcum = 0;
+            }
         }else{
             this.gameOver = true;
         }
@@ -204,6 +209,11 @@ var GameScreen = AbstractScreen.extend({
             this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;
         }
 
+    },
+    alertGasoline:function(){
+        // this.gasoline.getContent().tint = 0xFF0000;
+        this.gasoline.getContent().scale.x = this.gasoline.getContent().scale.y = Math.abs(Math.sin(this.alertAcum += 0.08) * 0.23) + 0.6;
+        
     },
     updateBirds:function(){
         if(this.spawner <= 0){
@@ -274,6 +284,7 @@ var GameScreen = AbstractScreen.extend({
         this.itemAccum = 1000;
         this.acumCloud = 500;
         this.spawner = 150;
+        this.alertAcum = 0;
 
         this.points = 0;
         this.initApp = true;
@@ -354,8 +365,16 @@ var GameScreen = AbstractScreen.extend({
         barsContainer.position.x = 20;
         barsContainer.position.y = 20;
 
-        barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
+        this.gasoline = new SimpleSprite('gasoline.png');
+        barsContainer.addChild(this.gasoline.getContent());
+        this.gasoline.getContent().anchor.x = 0.5;
+        this.gasoline.getContent().anchor.y = 0.5;
+        this.gasoline.getContent().scale.x = 0.6;
+        this.gasoline.getContent().scale.y = 0.6;
+        this.gasoline.getContent().position.x = this.gasoline.getContent().width * 0.6;
+        this.gasoline.getContent().position.y = this.gasoline.getContent().height * 0.6 - 14;
 
+        barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
         this.pauseButton = new DefaultButton('pauseButton.png', 'pauseButton.png');
         this.pauseButton.build();
         this.addChild(this.pauseButton);
