@@ -579,7 +579,7 @@ var Application = AbstractApplication.extend({
     },
     update: function() {
         this._super(), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
-        this.range = .8 * this.sprite.height, this.collideArea;
+        this.range = .5 * this.sprite.height, this.collideArea;
     },
     preKill: function() {
         for (var i = 4; i >= 0; i--) {
@@ -628,9 +628,12 @@ var Application = AbstractApplication.extend({
         this.getPosition().x > windowWidth + 50 && this.preKill();
     },
     collide: function(arrayCollide) {
-        this.collidable && "bullet" !== arrayCollide[0].type && "item" === arrayCollide[0].type && (this.playerModel.currentEnergy += .3 * this.playerModel.maxEnergy, 
-        this.playerModel.currentEnergy > this.playerModel.maxEnergy && (this.playerModel.currentEnergy = this.playerModel.maxEnergy), 
-        arrayCollide[0].preKill());
+        if (this.collidable) for (var i = arrayCollide.length - 1; i >= 0; i--) {
+            var entity = arrayCollide[i];
+            "bullet" !== entity.type && "item" === entity.type && (this.playerModel.currentEnergy += .3 * this.playerModel.maxEnergy, 
+            this.playerModel.currentEnergy > this.playerModel.maxEnergy && (this.playerModel.currentEnergy = this.playerModel.maxEnergy), 
+            entity.preKill());
+        }
     },
     destroy: function() {
         this._super();
@@ -880,8 +883,8 @@ var Application = AbstractApplication.extend({
         }), 150, .15, 5), new BirdModel("lambecu.png", null, 6, .2, -1.5, new BirdBehaviourSinoid({
             sinAcc: .05,
             velY: -3
-        }), 180, .15, 8), new BirdModel("roxo.png", null, 10, .2, -1.8, new BirdBehaviourDiag({
-            accX: .02
+        }), 180, .15, 8), new BirdModel("roxo.png", null, 12, .2, -2, new BirdBehaviourDiag({
+            accX: 0
         }), 200, .2, 10), new BirdModel("nocu.png", null, 12, .2, -2, new BirdBehaviourSinoid2({
             sinAcc: .08,
             velY: -8
@@ -892,6 +895,9 @@ var Application = AbstractApplication.extend({
     },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
+    },
+    zerarTudo: function() {
+        this.totalPoints = 0, this.cookieManager.setCookie("totalPoints", 0, 500);
     },
     getNewBird: function(player, screen) {
         this.currentHorde++;
@@ -1275,11 +1281,11 @@ var Application = AbstractApplication.extend({
     },
     updateItens: function() {
         if (this.itemAccum < 0) {
-            this.itemAccum = 1500 + 1500 * Math.random();
+            this.itemAccum = 2e3 + 2e3 * Math.random();
             var item = new Item();
             item.build(), item.setPosition(windowWidth, .1 * windowHeight + .8 * windowHeight * Math.random()), 
             this.layer.addChild(item);
-            var itemScale = scaleConverter(item.getContent().height, windowHeight, .1);
+            var itemScale = scaleConverter(item.getContent().height, windowHeight, .15);
             item.setScale(itemScale, itemScale);
         } else this.itemAccum--;
     },
@@ -1423,7 +1429,17 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 25, 28), this.fullScreen.clickCallback = function() {
             fullscreen();
-        });
+        }), this.zerarCookie = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
+        this.zerarCookie.build(200, 100), scaleConverter(this.zerarCookie.height, windowHeight, .2, this.zerarCookie), 
+        this.zerarCookie.setPosition(20, 20), this.addChild(this.zerarCookie), this.zerarCookie.addLabel(new PIXI.Text("Zerar", {
+            align: "center",
+            fill: "#033E43",
+            font: "50px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 28, 20), this.zerarCookie.clickCallback = function() {
+            APP.getGameModel().zerarTudo();
+        };
     }
 }), CreditsModal = Class.extend({
     init: function(screen) {

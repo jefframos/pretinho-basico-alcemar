@@ -37,7 +37,7 @@ var Item = Entity.extend({
 
 
         // console.log(this.velocity);
-        this.range = this.sprite.height * 0.8;// * this.sprite.scale.x;
+        this.range = this.sprite.height * 0.5;// * this.sprite.scale.x;
 
         if(this.collideArea){
             return;

@@ -209,7 +209,8 @@ var AppModel = Class.extend({
 			new BirdModel('caralinho.png',null, 1, 0.2, -3.5, new BirdBehaviourDefault(), 50, 0.12, 3),
 			new BirdModel('belga.png',null, 3, 0.1, 1.5, new BirdBehaviourSinoid({sinAcc:0.05}), 150, 0.15, 5),
 			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}), 180, 0.15, 8),
-			new BirdModel('roxo.png',null, 10, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.20, 10),
+			new BirdModel('roxo.png',null, 12, 0.2, -2, new BirdBehaviourDiag({accX:0.00}), 200, 0.20, 10),
+			// new BirdModel('roxo.png',null, 10, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.20, 10),
 			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}), 410, 0.2, 20),
 			new BirdModel('nigeriano.png',null, 50, 0.1, 0.6, new BirdBehaviourSinoid({sinAcc:0.08}), 700, 0.3, 50)
 		];
@@ -223,6 +224,10 @@ var AppModel = Class.extend({
 	setModel:function(id){
 		this.currentID = id;
 		this.currentPlayerModel = this.playerModels[id];
+	},
+	zerarTudo:function(){
+		this.totalPoints = 0;
+		this.cookieManager.setCookie('totalPoints', 0, 500);
 	},
 	getNewBird:function(player, screen){
 		this.currentHorde ++;

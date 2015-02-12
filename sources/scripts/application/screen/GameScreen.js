@@ -261,12 +261,12 @@ var GameScreen = AbstractScreen.extend({
     },
     updateItens:function(){
         if(this.itemAccum < 0){
-            this.itemAccum = 1500 + Math.random() * 1500;
+            this.itemAccum = 2000 + Math.random() * 2000;
             var item = new Item();
             item.build();
             item.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));
             this.layer.addChild(item);
-            var itemScale = scaleConverter(item.getContent().height, windowHeight, 0.1);
+            var itemScale = scaleConverter(item.getContent().height, windowHeight, 0.15);
             item.setScale(itemScale, itemScale);
         }else{
             this.itemAccum --;

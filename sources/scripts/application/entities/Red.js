@@ -128,22 +128,26 @@ var Red = SpritesheetEntity.extend({
 	},
 	collide:function(arrayCollide){
 		if(this.collidable){
-			if(arrayCollide[0].type !== 'bullet'){
-				if(arrayCollide[0].type === 'item'){
-					this.playerModel.currentEnergy += this.playerModel.maxEnergy * 0.3;
-					if(this.playerModel.currentEnergy > this.playerModel.maxEnergy){
-						this.playerModel.currentEnergy = this.playerModel.maxEnergy;
+			for (var i = arrayCollide.length - 1; i >= 0; i--) {
+				var entity = arrayCollide[i];
+				if(entity.type !== 'bullet'){
+					if(entity.type === 'item'){
+						this.playerModel.currentEnergy += this.playerModel.maxEnergy * 0.3;
+						if(this.playerModel.currentEnergy > this.playerModel.maxEnergy){
+							this.playerModel.currentEnergy = this.playerModel.maxEnergy;
+						}
+						entity.preKill();
 					}
-					arrayCollide[0].preKill();
+					// else{
+					// 	var demage = arrayCollide[0].demage * this.playerModel.maxEnergy;
+					// 	if(!isNaN(demage)){
+					// 		this.playerModel.currentEnergy -= demage;
+					// 	}
+					// }
+					
 				}
-				// else{
-				// 	var demage = arrayCollide[0].demage * this.playerModel.maxEnergy;
-				// 	if(!isNaN(demage)){
-				// 		this.playerModel.currentEnergy -= demage;
-				// 	}
-				// }
-				
 			}
+			
 		}
 	},
 	// updateParticles:function(){
