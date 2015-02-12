@@ -720,6 +720,21 @@ var Application = AbstractApplication.extend({
 }), AppModel = Class.extend({
     init: function() {
         this.currentPlayerModel = {}, this.totalPoints = 0, this.currentPoints = 0, this.playerModels = [ new PlayerModel({
+            label: "ALCEMAR",
+            outGame: "alcemar.png",
+            inGame: "alcemarGame.png",
+            bullet: "alcemarFire.png",
+            bulletRotation: !0,
+            color: 11719780,
+            thumb: "thumb_alcemar",
+            coverSource: "dist/img/UI/alcemarGrande.png"
+        }, {
+            energyCoast: 2.5,
+            vel: .5,
+            bulletForce: 2,
+            bulletVel: 5,
+            bulletCoast: .1
+        }), new PlayerModel({
             label: "PIANGERS",
             outGame: "piangersN.png",
             inGame: "piangersNGame.png",
@@ -734,7 +749,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.5,
             bulletCoast: .12,
             bulletVel: 7,
-            toAble: 0
+            toAble: 100
         }), new PlayerModel({
             label: "POTTER",
             outGame: "poter.png",
@@ -750,7 +765,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 2,
             bulletCoast: .15,
             bulletVel: 7,
-            toAble: 0
+            toAble: 250
         }), new PlayerModel({
             label: "ARTHUR",
             outGame: "arthur.png",
@@ -765,7 +780,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 2.2,
             bulletCoast: .1,
             bulletVel: 6,
-            toAble: 100
+            toAble: 350
         }), new PlayerModel({
             label: "PORÃ",
             outGame: "pora.png",
@@ -781,7 +796,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.3,
             bulletCoast: .11,
             bulletVel: 5,
-            toAble: 150
+            toAble: 500
         }), new PlayerModel({
             label: "JEISO",
             outGame: "jeso.png",
@@ -796,23 +811,7 @@ var Application = AbstractApplication.extend({
             bulletForce: .8,
             bulletCoast: .07,
             bulletVel: 8,
-            toAble: 200
-        }), new PlayerModel({
-            label: "ALCEMAR",
-            outGame: "alcemar.png",
-            inGame: "alcemarGame.png",
-            bullet: "alcemarFire.png",
-            bulletRotation: !0,
-            color: 11719780,
-            thumb: "thumb_alcemar",
-            coverSource: "dist/img/UI/alcemarGrande.png"
-        }, {
-            energyCoast: 2.8,
-            vel: .5,
-            bulletForce: 2.7,
-            bulletVel: 5,
-            bulletCoast: .1,
-            toAble: 400
+            toAble: 600
         }), new PlayerModel({
             label: "Mr. PI",
             outGame: "pi.png",
@@ -828,7 +827,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.4,
             bulletCoast: .1,
             bulletVel: 5,
-            toAble: 500
+            toAble: 800
         }), new PlayerModel({
             label: "FETTER",
             outGame: "feter.png",
@@ -840,7 +839,7 @@ var Application = AbstractApplication.extend({
         }, {
             energyCoast: 2.3,
             vel: 1.5,
-            bulletForce: 2.5,
+            bulletForce: 2.6,
             bulletVel: 6,
             bulletCoast: .15,
             toAble: 1e3

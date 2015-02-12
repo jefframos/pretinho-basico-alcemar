@@ -14,6 +14,25 @@ var AppModel = Class.extend({
 		this.playerModels = [
 
 			new PlayerModel({
+				label:'ALCEMAR',
+				outGame:'alcemar.png',
+				inGame:'alcemarGame.png',
+				bullet:'alcemarFire.png',
+				bulletRotation: true,
+				color:0xB2D464,
+				thumb:'thumb_alcemar',
+				coverSource:'dist/img/UI/alcemarGrande.png'
+			},
+			{
+				energyCoast:2.5,
+				vel:0.5,
+				bulletForce:2.0,
+				bulletVel:5,
+				bulletCoast:0.1,
+				//toAble: 400
+			}
+			),
+			new PlayerModel({
 				label:'PIANGERS',
 				outGame:'piangersN.png',
 				inGame:'piangersNGame.png',
@@ -29,7 +48,7 @@ var AppModel = Class.extend({
 				bulletForce:1.5,
 				bulletCoast:0.12,
 				bulletVel:7,
-				toAble: 0
+				toAble: 100
 			}
 			),
 			new PlayerModel({
@@ -48,7 +67,7 @@ var AppModel = Class.extend({
 				bulletForce:2,
 				bulletCoast:0.15,
 				bulletVel:7,
-				toAble: 0
+				toAble: 250
 			}
 			),
 			new PlayerModel({
@@ -66,7 +85,7 @@ var AppModel = Class.extend({
 				bulletForce:2.2,
 				bulletCoast:0.1,
 				bulletVel:6,
-				toAble: 100
+				toAble: 350
 			}
 			),
 			new PlayerModel({
@@ -85,7 +104,7 @@ var AppModel = Class.extend({
 				bulletForce:1.3,
 				bulletCoast:0.11,
 				bulletVel:5,
-				toAble: 150
+				toAble: 500
 			}
 			),
 			new PlayerModel({
@@ -103,26 +122,7 @@ var AppModel = Class.extend({
 				bulletForce:0.8,
 				bulletCoast:0.07,
 				bulletVel:8,
-				toAble: 200
-			}
-			),
-			new PlayerModel({
-				label:'ALCEMAR',
-				outGame:'alcemar.png',
-				inGame:'alcemarGame.png',
-				bullet:'alcemarFire.png',
-				bulletRotation: true,
-				color:0xB2D464,
-				thumb:'thumb_alcemar',
-				coverSource:'dist/img/UI/alcemarGrande.png'
-			},
-			{
-				energyCoast:2.8,
-				vel:0.5,
-				bulletForce:2.7,
-				bulletVel:5,
-				bulletCoast:0.1,
-				toAble: 400
+				toAble: 600
 			}
 			),
 			new PlayerModel({
@@ -141,7 +141,7 @@ var AppModel = Class.extend({
 				bulletForce:1.4,
 				bulletCoast:0.1,
 				bulletVel:5,
-				toAble: 500
+				toAble: 800
 			}
 			),
 			new PlayerModel({
@@ -156,7 +156,7 @@ var AppModel = Class.extend({
 			{
 				energyCoast:2.3,
 				vel:1.5,
-				bulletForce:2.5,
+				bulletForce:2.6,
 				bulletVel:6,
 				bulletCoast:0.15,
 				toAble: 1000
