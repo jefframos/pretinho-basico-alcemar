@@ -887,19 +887,23 @@ var Application = AbstractApplication.extend({
             velY: -8
         }), 410, .2, 20), new BirdModel("nigeriano.png", null, 50, .1, .6, new BirdBehaviourSinoid({
             sinAcc: .08
-        }), 700, .3, 50) ], this.setModel(0), this.birdProbs = [ 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 4, 5 ];
+        }), 700, .3, 50) ], this.setModel(0), this.birdProbs = [ 0, 1, 0, 0, 2, 0, 1, 3, 2, 3, 4, 5, 4, 5 ], 
+        this.currentHorde = 0;
     },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
     },
     getNewBird: function(player, screen) {
-        var id = this.birdProbs[Math.floor(this.birdProbs.length * Math.random())];
+        this.currentHorde++;
+        var max = this.birdProbs.length;
+        this.currentHorde < max && (max = this.currentHorde);
+        var id = this.birdProbs[Math.floor(max * Math.random())];
         this.birdModels[id].target = player;
         var bird = new Bird(this.birdModels[id], screen);
         return this.lastID = id, bird;
     },
     addPoints: function() {
-        this.totalPoints += this.currentPoints, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
+        this.currentHorde = 0, this.totalPoints += this.currentPoints, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
         this.maxPoints < this.currentPoints && (this.maxPoints = this.currentPoints);
     },
     build: function() {},
