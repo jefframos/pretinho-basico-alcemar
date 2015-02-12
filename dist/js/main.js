@@ -763,7 +763,7 @@ var Application = AbstractApplication.extend({
             energyCoast: 2.4,
             vel: 1.5,
             bulletForce: 2.2,
-            bulletCoast: .5,
+            bulletCoast: .1,
             bulletVel: 6,
             toAble: 100
         }), new PlayerModel({
