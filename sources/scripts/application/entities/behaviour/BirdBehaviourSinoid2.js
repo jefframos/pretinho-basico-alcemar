@@ -1,13 +1,12 @@
 /*jshint undef:false */
-var BirdBehaviourSinoid = Class.extend({
+var BirdBehaviourSinoid2 = Class.extend({
 	init:function(props){
 		this.props = props;
 		this.sin = Math.random();
-		// this.position = {x: windowWidth, y: windowHeight * 0.1 + ((windowHeight * 0.8) * Math.random())};
-		this.position = {x: windowWidth + 40, y:windowHeight * 0.3 + ((windowHeight * 0.6) * Math.random())};
+		this.position = {x: windowWidth + 40, y:windowHeight - windowHeight * 0.15 - (windowHeight * 0.2 * Math.random())};
 	},
 	clone:function(){
-		return new BirdBehaviourSinoid(this.props);
+		return new BirdBehaviourSinoid2(this.props);
 	},
 	update:function(entity){
 		if(this.props.velY){

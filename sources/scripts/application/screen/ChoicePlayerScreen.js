@@ -120,10 +120,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.addChild(this.char2);
         // this.char2.addLabel(new PIXI.Text('Feter', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char2.clickCallback = function(){
-            if(self.currentID === 1){
+            if(self.currentID === 2){
                 return;
             }
-            APP.getGameModel().setModel(1);
+            APP.getGameModel().setModel(2);
             self.updatePlayers();
         };
 
@@ -133,10 +133,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.addChild(this.char3);
         // this.char3.addLabel(new PIXI.Text('Alcemar', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char3.clickCallback = function(){
-            if(self.currentID === 2){
+            if(self.currentID === 5){
                 return;
             }
-            APP.getGameModel().setModel(2);
+            APP.getGameModel().setModel(5);
             self.updatePlayers();
         };
 
@@ -146,10 +146,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.addChild(this.char4);
         // this.char4.addLabel(new PIXI.Text('Jeiso', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char4.clickCallback = function(){
-            if(self.currentID === 3){
+            if(self.currentID === 1){
                 return;
             }
-            APP.getGameModel().setModel(3);
+            APP.getGameModel().setModel(1);
             self.updatePlayers();
         };
 
@@ -162,10 +162,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.currentID = APP.getGameModel().currentID;
         // this.char5.addLabel(new PIXI.Text('Pi', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),20,15);
         this.char5.clickCallback = function(){
-            if(self.currentID === 4){
+            if(self.currentID === 3){
                 return;
             }
-            APP.getGameModel().setModel(4);
+            APP.getGameModel().setModel(3);
             self.updatePlayers();
         };
 
@@ -176,10 +176,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.addChild(this.char6);
         // this.char6.addLabel(new PIXI.Text('Pora', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char6.clickCallback = function(){
-            if(self.currentID === 5){
+            if(self.currentID === 6){
                 return;
             }
-            APP.getGameModel().setModel(5);
+            APP.getGameModel().setModel(6);
             self.updatePlayers();
         };
 
@@ -189,10 +189,10 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.addChild(this.char7);
         // this.char7.addLabel(new PIXI.Text('Arthur', { align:'center', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,15);
         this.char7.clickCallback = function(){
-            if(self.currentID === 6){
+            if(self.currentID === 4){
                 return;
             }
-            APP.getGameModel().setModel(6);
+            APP.getGameModel().setModel(4);
             self.updatePlayers();
         };
 
@@ -234,22 +234,33 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             APP.getGameModel().setModel(9);
             self.updatePlayers();
         };
-
+        // 14
+        // 257
+        // 36  8
+        //     9   10
         this.arrButtons.push(this.char1);
-        this.arrButtons.push(this.char2);
-        this.arrButtons.push(this.char3);
         this.arrButtons.push(this.char4);
+        this.arrButtons.push(this.char2);
         this.arrButtons.push(this.char5);
-        this.arrButtons.push(this.char6);
         this.arrButtons.push(this.char7);
+        this.arrButtons.push(this.char3);
+        this.arrButtons.push(this.char6);
         this.arrButtons.push(this.char8);
         this.arrButtons.push(this.char9);
         this.arrButtons.push(this.char10);
 
+
         for (var i = this.arrButtons.length - 1; i >= 0; i--) {
+            var tempPlayerModel = APP.getGameModel().playerModels[i];
             this.arrButtons[i].parent = this;
-            this.arrButtons[i].color = APP.getGameModel().playerModels[i].color;
-            this.arrButtons[i].addThumb(APP.getGameModel().playerModels[i].thumbColor, APP.getGameModel().playerModels[i].thumbGray);
+            if(tempPlayerModel.toAble <= APP.getGameModel().totalPoints){
+                this.arrButtons[i].color = APP.getGameModel().playerModels[i].color;
+                this.arrButtons[i].addThumb(APP.getGameModel().playerModels[i].thumbColor, APP.getGameModel().playerModels[i].thumbGray);
+            }else{
+                this.arrButtons[i].color = 0x555555;
+                this.arrButtons[i].addThumb(APP.getGameModel().playerModels[i].thumbGray, APP.getGameModel().playerModels[i].thumbGray);
+                this.arrButtons[i].block(tempPlayerModel.toAble);
+            }
             this.arrButtons[i].mouseUpCallback = this.resetButtons;
         }
 
@@ -257,7 +268,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.play.build();
         scaleConverter(this.play.getContent().height, windowHeight, 0.25, this.play);
         this.play.setPosition( windowWidth - this.play.getContent().width - 20,windowHeight - this.play.getContent().height - 20);
-        TweenLite.from(this.play.getContent().position, 0.8, {x:windowWidth, ease:'easeOutBack'});
+        TweenLite.from(this.play.getContent().position, 0.8, {delay:0.3, x:windowWidth, ease:'easeOutBack'});
 
         this.addChild(this.play);
 
@@ -271,7 +282,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         scaleConverter(this.returnButton.getContent().height, windowHeight, 0.15, this.returnButton);
 
         this.returnButton.setPosition(20 ,windowHeight - this.returnButton.getContent().height - 20);
-        TweenLite.from(this.returnButton.getContent().position, 0.8, {x:- this.returnButton.getContent().width, ease:'easeOutBack'});
+        TweenLite.from(this.returnButton.getContent().position, 0.8, {delay:0.2, x:- this.returnButton.getContent().width, ease:'easeOutBack'});
         this.addChild(this.returnButton);
         // this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
         
@@ -346,7 +357,9 @@ var ChoicePlayerScreen = AbstractScreen.extend({
     resetButtons:function(){
         for (var i = this.parent.arrButtons.length - 1; i >= 0; i--) {
             if(this !== this.parent.arrButtons[i]){
-                this.parent.arrButtons[i].resetTextures();
+                if(!this.parent.arrButtons[i].isBlocked){
+                    this.parent.arrButtons[i].resetTextures();
+                }
             }
         }
     },

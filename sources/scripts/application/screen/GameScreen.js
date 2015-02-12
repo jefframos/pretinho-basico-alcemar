@@ -199,6 +199,7 @@ var GameScreen = AbstractScreen.extend({
             //// console.log(this.red.getPosition().y);
             if(this.red.getPosition().y > windowHeight+ this.red.getContent().height){
                 //console.log('GAME OVER');
+                APP.getGameModel().addPoints();
                 this.endModal.show();
             }
         }
@@ -216,16 +217,17 @@ var GameScreen = AbstractScreen.extend({
         if(this.labelAcum > 0){
             this.labelAcum --;
         }
-        if(this.pointsLabel && this.pointsLabel.text !== String(this.points)){
+        if(this.pointsLabel && this.pointsLabel.text !== String(APP.getGameModel().currentPoints)){
             // console.log(this.pointsLabel.text !== toStringthis.points);
-            this.pointsLabel.setText(this.points);
-            this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;
-            this.moneyContainer.scale.x = this.moneyContainer.scale.y = 1.5;
-            this.moneyContainer.rotation = Math.random() * 0.7 - 0.25;
+            this.pointsLabel.setText(APP.getGameModel().currentPoints);
+            // this.pointsLabel.position.x = (this.moneyContainer.width) - this.pointsLabel.width - 20;
+            this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1.5;
+            this.pointsLabel.rotation = Math.random() * 0.7 - 0.25;
             this.labelAcum = 20;
         }else if(this.labelAcum === 0){
-            this.moneyContainer.scale.x = this.moneyContainer.scale.y = 1;
-            this.moneyContainer.rotation = 0;
+            this.pointsLabel.position.x = this.moneyContainer.width - 20;//(this.moneyContainer.width) - this.pointsLabel.width - 20;
+            this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1;
+            this.pointsLabel.rotation = 0;
         }
 
     },
@@ -250,6 +252,7 @@ var GameScreen = AbstractScreen.extend({
             bird.setScale( scale,scale);
             //// console.log(bird);
             bird.setPosition(bird.behaviour.position.x ,bird.behaviour.position.y);
+            console.log(bird.behaviour.position.y);
             this.spawner = bird.birdModel.toNext;
 
         }else{
@@ -312,7 +315,7 @@ var GameScreen = AbstractScreen.extend({
         this.bulletAcum = 0;
         this.labelAcum = 0;
 
-        this.points = 0;
+        APP.getGameModel().currentPoints = 0;
         this.initApp = true;
 
         this.vecClouds = [];
@@ -394,17 +397,17 @@ var GameScreen = AbstractScreen.extend({
         this.energyBar.getContent().addChild(this.gasolineIco.getContent());
         
         // this.bulletBar = new GasBarView('fireBarBack.png', 'fireBar.png', 2, 4);
-        this.bulletBar = new GasBarView('gasBarBack2.png', 'gasBar.png', 51,2);
+        this.bulletBar = new GasBarView('gasBarBack2.png', 'gasBar2.png', 51,2);
         barsContainer.addChild(this.bulletBar.getContent());
         scaleConverter(this.bulletBar.getContent().width, windowWidth, 0.25, this.bulletBar);
         this.bulletBar.setPosition(0, windowHeight - this.bulletBar.getContent().height - 40);
 
-        this.bulletIco = new SimpleSprite('gasoline.png');
+        this.bulletIco = new SimpleSprite('bulletIco.png');
         this.bulletIco.getContent().anchor.x = 0.5;
         this.bulletIco.getContent().anchor.y = 0.5;
-        this.bulletIco.getContent().scale.x = 0.8;
-        this.bulletIco.getContent().scale.y = 0.8;
-        this.bulletIco.getContent().position.x = this.bulletIco.getContent().width * this.bulletIco.getContent().scale.x;//this.bulletIco.getContent().width * 0.6-5;
+        this.bulletIco.getContent().scale.x = 0.9;
+        this.bulletIco.getContent().scale.y = 0.9;
+        this.bulletIco.getContent().position.x = 46;//this.bulletIco.getContent().width * 0.6-5;
         this.bulletIco.getContent().position.y = this.bulletBar.getContent().height / 2 + 5;
         this.bulletBar.getContent().addChild(this.bulletIco.getContent());
 
@@ -442,21 +445,28 @@ var GameScreen = AbstractScreen.extend({
         this.moneyContainer = new PIXI.DisplayObjectContainer();
         this.addChild(this.moneyContainer);
 
-        // var moneyBg = new SimpleSprite('moneyContent.png');
-        // this.moneyContainer.addChild(moneyBg.getContent());
+        var moneyBg = new SimpleSprite('moneyContainer.png');
+        this.moneyContainer.addChild(moneyBg.getContent());
 
-        this.pointsLabel = new PIXI.Text('0', {font:'30px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:3});
+
+
+        this.pointsLabel = new PIXI.Text('0', {font:'30px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5});
         this.moneyContainer.addChild(this.pointsLabel);
+
+
 
         // var moneyScale = scaleConverter(this.moneyContainer.width, windowWidth, 0.25);
         // this.moneyContainer.scale.x = moneyScale;
         // this.moneyContainer.scale.y = moneyScale;
 
         // this.pointsLabel.position.x = this.moneyContainer.width + this.pointsLabel.width / 2;
-        // this.pointsLabel.position.y = 31;
+        this.pointsLabel.position.y = 2;
+        scaleConverter(this.moneyContainer.width, windowWidth, 0.15, this.moneyContainer);
 
         this.moneyContainer.position.y = 10;
         this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;//this.moneyContainer.width * 0.05;
+        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10;
+
 
         this.updateable = true;
 
@@ -478,7 +488,7 @@ var GameScreen = AbstractScreen.extend({
         
     },
     updatePoints:function(value){
-        this.points += value;
+        APP.getGameModel().currentPoints += value;
     },
     benchmark:function()
     {

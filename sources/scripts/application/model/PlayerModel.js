@@ -29,6 +29,7 @@ var PlayerModel = Class.extend({
 		this.velocity = statsObject.vel?statsObject.vel:2;
 		this.bulletVel = statsObject.bulletVel?statsObject.bulletVel:8;
 		this.bulletForce = statsObject.bulletForce?statsObject.bulletForce:1;
+		this.toAble = statsObject.toAble?statsObject.toAble:0;
 		
 	},
 	reset:function(id){

@@ -5,6 +5,7 @@ var ChoiceButton = DefaultButton.extend({
 		this.color = 0xFFFFFF;
 		this.background = new PIXI.Sprite(PIXI.Texture.fromImage(imgDown));
 		this.border = new PIXI.Sprite(PIXI.Texture.fromImage(imgBorder));
+		this.isBlocked = false;
 	},
 	build:function( width, height)
 	{
@@ -44,64 +45,54 @@ var ChoiceButton = DefaultButton.extend({
 		this.shapeButton.interactive = true;//(true);
 
 		this.shapeButton.mousedown = this.shapeButton.touchstart = function(data){
+			if(self.isBlocked){
+				return;
+			}
 			self.selectedFunction();
-			
-		};
-
-		// set the mouseup and touchend callback..
-		this.shapeButton.mouseup = this.shapeButton.touchend = this.shapeButton.touchoutside = this.shapeButton.mouseuoutside = this.shapeButton.touchendoutside = function(data){
-			this.isdown = false;
 			if(self.mouseUpCallback !== null){
 				self.mouseUpCallback();
 			}
+			if(self.clickCallback !== null){
+				self.clickCallback();
+			}
 			
-			
-			// if(self.isOver)
-			// {
-			// 	self.shapeButton.setTexture(self.textureButtonOver);
-			// }
-			// else
-			// {
-			// 	self.shapeButton.setTexture(self.textureButton);
-			// }
-
 		};
 
-		// set the mouseover callback..
-		// this.shapeButton.mouseover = function(data){
-
+		// this.shapeButton.click = function(data){
+		// 	if(self.isBlocked){
+		// 		return;
+		// 	}
 		// 	// self.shapeButton.tint = 0xFF0000;
-		// 	self.isOver = true;
-		// 	self.shapeButton.setTexture(self.textureButtonOver);
+		// 	if(self.clickCallback !== null){
+		// 		self.clickCallback();
+		// 	}
 		// };
 
-		// // set the mouseout callback..
-		// this.shapeButton.mouseout = function(data){
-
-		// 	self.isOver = false;
-		// 	self.shapeButton.setTexture(self.textureButton);
-
-		// 	self.mouseUpCallback();
-		// 	// if(self.mouseUpCallback !== null){
-		// 	// 	console.log('mouseUpCallback');
-		// 	// }
+		// this.shapeButton.tap = function(data){
+		// 	if(self.isBlocked){
+		// 		return;
+		// 	}
+		// 	// self.shapeButton.tint = 0xFF0000;
+		// 	if(self.clickCallback !== null){
+		// 		self.clickCallback();
+		// 	}
 		// };
-
-		this.shapeButton.click = function(data){
-			// self.shapeButton.tint = 0xFF0000;
-			if(self.clickCallback !== null){
-				self.clickCallback();
-			}
-		};
-
-		this.shapeButton.tap = function(data){
-			// self.shapeButton.tint = 0xFF0000;
-			if(self.clickCallback !== null){
-				self.clickCallback();
-			}
-		};
-
 		
+	},
+	block:function(value){
+		this.isBlocked = true;
+		var desblock = new PIXI.Text(value, { align:'center',fill:'#FFFFFF', font:'20px Roboto'});
+		this.thumbGray.tint = 0;
+		this.shapeButton.tint = 0x555555;
+		var coin = new SimpleSprite('coins.png');
+
+		coin.getContent().position.x = this.background.width / 2 - coin.getContent().width / 2;
+		coin.getContent().position.y = this.background.height / 2 - coin.getContent().height / 2 - 10;
+
+		desblock.position.x = this.background.width / 2 - desblock.width / 2;
+		desblock.position.y = this.background.height / 2 - desblock.height / 2 + 15;
+		this.container.addChild(desblock);
+		this.container.addChild(coin.getContent());
 	},
 	selectedFunction:function(){
 		if(this.mouseDownCallback !== null){
