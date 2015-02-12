@@ -9,7 +9,11 @@ var AppModel = Class.extend({
 		// vel, 1 / 3
 		// bullet vel,
 		// bullet force 1 / 3
-		this.totalPoints = 0;
+		this.cookieManager = new CookieManager();
+		// console.log(cookieManager.getCookie('totalPoints'));
+		// this.cookieManager.setCookie('totalPoints', 0, 500);
+		var points = parseInt(this.cookieManager.getCookie('totalPoints'));
+		this.totalPoints = points?points:0;
 		this.currentPoints = 0;
 		this.playerModels = [
 
@@ -24,7 +28,7 @@ var AppModel = Class.extend({
 				coverSource:'dist/img/UI/alcemarGrande.png'
 			},
 			{
-				energyCoast:2.5,
+				energyCoast:1.5,
 				vel:0.5,
 				bulletForce:2.0,
 				bulletVel:5,
@@ -228,6 +232,7 @@ var AppModel = Class.extend({
 	},
 	addPoints:function(){
 		this.totalPoints += this.currentPoints;
+		this.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
 		if(this.maxPoints < this.currentPoints){
 			this.maxPoints = this.currentPoints;
 		}

@@ -234,10 +234,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             APP.getGameModel().setModel(9);
             self.updatePlayers();
         };
-        // 14
-        // 257
-        // 36  8
-        //     9   10
+
         this.arrButtons.push(this.char1);
         this.arrButtons.push(this.char4);
         this.arrButtons.push(this.char2);
@@ -301,13 +298,28 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.statsContainer = new PIXI.DisplayObjectContainer();
         this.addChild(this.statsContainer);
 
+        this.moneyContainer = new PIXI.DisplayObjectContainer();
+
+        var moneyBg = new SimpleSprite('moneyContainer.png');
+        this.moneyContainer.addChild(moneyBg.getContent());
+
+        this.pointsLabel = new PIXI.Text(APP.getGameModel().totalPoints, {font:'28px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5});
+        this.moneyContainer.addChild(this.pointsLabel);
+
+        this.pointsLabel.position.y = 2;
+        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10;
+
 
         this.backBars = new SimpleSprite('backBars.png');
         this.statsContainer.addChild(this.backBars.getContent());
 
-        var barX = this.backBars.getContent().width / 2 - 150 / 2;
-        var barY = 60;
+        this.backBars.getContent().position.y = this.moneyContainer.height;
 
+        var barX = this.backBars.getContent().width / 2 - 150 / 2;
+        var barY = 60 + this.backBars.getContent().position.y;
+
+        // this.moneyContainer.position.y = - this.moneyContainer.height;
+        this.moneyContainer.position.x = this.statsContainer.width - this.moneyContainer.width;
 
         this.energyBar = new BarView(150, 15, 1, 0);
         this.statsContainer.addChild(this.energyBar.getContent());
@@ -347,12 +359,16 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         tiroLabel.position.x = this.backBars.getContent().width / 2 - tiroLabel.width / 2;
         tiroLabel.position.y = this.powerBar.getContent().position.y - tiroLabel.height;
 
-        var statsScale = scaleConverter(this.statsContainer.width, windowWidth, 0.2);
+        var statsScale = scaleConverter(this.statsContainer.width, windowWidth, 0.18);
         this.statsContainer.scale.x = statsScale;
         this.statsContainer.scale.y = statsScale;
 
         this.statsContainer.position.x = windowWidth - this.statsContainer.width - this.statsContainer.width * 0.1;
-        this.statsContainer.position.y = this.char1.getContent().position.y;
+        this.statsContainer.position.y = this.char1.getContent().position.y - this.moneyContainer.position.y;
+
+
+
+        this.statsContainer.addChild(this.moneyContainer);
     },
     resetButtons:function(){
         for (var i = this.parent.arrButtons.length - 1; i >= 0; i--) {

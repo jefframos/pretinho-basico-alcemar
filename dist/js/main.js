@@ -719,7 +719,9 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.totalPoints = 0, this.currentPoints = 0, this.playerModels = [ new PlayerModel({
+        this.currentPlayerModel = {}, this.cookieManager = new CookieManager();
+        var points = parseInt(this.cookieManager.getCookie("totalPoints"));
+        this.totalPoints = points ? points : 0, this.currentPoints = 0, this.playerModels = [ new PlayerModel({
             label: "ALCEMAR",
             outGame: "alcemar.png",
             inGame: "alcemarGame.png",
@@ -729,7 +731,7 @@ var Application = AbstractApplication.extend({
             thumb: "thumb_alcemar",
             coverSource: "dist/img/UI/alcemarGrande.png"
         }, {
-            energyCoast: 2.5,
+            energyCoast: 1.5,
             vel: .5,
             bulletForce: 2,
             bulletVel: 5,
@@ -897,7 +899,8 @@ var Application = AbstractApplication.extend({
         return this.lastID = id, bird;
     },
     addPoints: function() {
-        this.totalPoints += this.currentPoints, this.maxPoints < this.currentPoints && (this.maxPoints = this.currentPoints);
+        this.totalPoints += this.currentPoints, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
+        this.maxPoints < this.currentPoints && (this.maxPoints = this.currentPoints);
     },
     build: function() {},
     destroy: function() {},
@@ -1049,8 +1052,19 @@ var Application = AbstractApplication.extend({
     },
     createStatsContainer: function() {
         this.statsContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.statsContainer), 
-        this.backBars = new SimpleSprite("backBars.png"), this.statsContainer.addChild(this.backBars.getContent());
-        var barX = this.backBars.getContent().width / 2 - 75, barY = 60;
+        this.moneyContainer = new PIXI.DisplayObjectContainer();
+        var moneyBg = new SimpleSprite("moneyContainer.png");
+        this.moneyContainer.addChild(moneyBg.getContent()), this.pointsLabel = new PIXI.Text(APP.getGameModel().totalPoints, {
+            font: "28px Luckiest Guy",
+            fill: "#FFFFFF",
+            stroke: "#033E43",
+            strokeThickness: 5
+        }), this.moneyContainer.addChild(this.pointsLabel), this.pointsLabel.position.y = 2, 
+        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10, 
+        this.backBars = new SimpleSprite("backBars.png"), this.statsContainer.addChild(this.backBars.getContent()), 
+        this.backBars.getContent().position.y = this.moneyContainer.height;
+        var barX = this.backBars.getContent().width / 2 - 75, barY = 60 + this.backBars.getContent().position.y;
+        this.moneyContainer.position.x = this.statsContainer.width - this.moneyContainer.width, 
         this.energyBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.energyBar.getContent()), 
         this.energyBar.setPosition(barX, 0 + barY), this.energyBar.setFrontColor(16158750), 
         this.energyBar.setBackColor(0), this.energyBar.addBackShape(8637092, 6), this.velBar = new BarView(150, 15, 1, 0), 
@@ -1086,10 +1100,11 @@ var Application = AbstractApplication.extend({
         });
         this.statsContainer.addChild(tiroLabel), tiroLabel.position.x = this.backBars.getContent().width / 2 - tiroLabel.width / 2, 
         tiroLabel.position.y = this.powerBar.getContent().position.y - tiroLabel.height;
-        var statsScale = scaleConverter(this.statsContainer.width, windowWidth, .2);
+        var statsScale = scaleConverter(this.statsContainer.width, windowWidth, .18);
         this.statsContainer.scale.x = statsScale, this.statsContainer.scale.y = statsScale, 
         this.statsContainer.position.x = windowWidth - this.statsContainer.width - .1 * this.statsContainer.width, 
-        this.statsContainer.position.y = this.char1.getContent().position.y;
+        this.statsContainer.position.y = this.char1.getContent().position.y - this.moneyContainer.position.y, 
+        this.statsContainer.addChild(this.moneyContainer);
     },
     resetButtons: function() {
         for (var i = this.parent.arrButtons.length - 1; i >= 0; i--) this !== this.parent.arrButtons[i] && (this.parent.arrButtons[i].isBlocked || this.parent.arrButtons[i].resetTextures());
@@ -1616,6 +1631,17 @@ var Application = AbstractApplication.extend({
     addPosition: function(position) {
         for (var exists = !1, i = this.vecPositions.length - 1; i >= 0; i--) this.vecPositions[i] === position && (exists = !0);
         exists || this.vecPositions.push(position);
+    }
+}), CookieManager = Class.extend({
+    init: function() {},
+    setCookie: function(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + 24 * exdays * 60 * 60 * 1e3);
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+    },
+    getCookie: function(name) {
+        return (name = new RegExp("(?:^|;\\s*)" + ("" + name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") + "=([^;]*)").exec(document.cookie)) && name[1];
     }
 }), Environment = Class.extend({
     init: function(maxWidth, maxHeight) {
