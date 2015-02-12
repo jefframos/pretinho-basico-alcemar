@@ -133,7 +133,7 @@ var GameScreen = AbstractScreen.extend({
         var angle = this.red.rotation;
         var bullet = new Bullet({x:Math.cos(angle) * vel,
             y:Math.sin(angle) * vel},
-            timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletRotation);
+            timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletParticleSource, this.playerModel.bulletRotation);
         bullet.build();
         //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
         bullet.setPosition(this.red.getPosition().x * 0.8, this.red.getPosition().y * 0.8);
@@ -294,7 +294,7 @@ var GameScreen = AbstractScreen.extend({
     updateParticles:function(){
         if(this.particleAccum < 0){
             this.particleAccum = this.playerModel.currentEnergy / this.playerModel.maxEnergy * 100 + 8;
-            var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, 'smoke.png', -0.02 * Math.random() + 0.01);
+            var particle = new Particles({x:-0.9, y:-(Math.random() * 0.2 + 0.7)}, 110, this.playerModel.smoke, -0.02 * Math.random() + 0.01);
             particle.build();
             particle.alphadecress = 0.01;
             particle.setPosition(this.red.getPosition().x - this.red.getContent().width - Math.random() * 10 + 15,

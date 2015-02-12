@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var Bullet = Entity.extend({
-    init:function(vel, timeLive, power, bulletSource, rotation){
+    init:function(vel, timeLive, power, bulletSource, particle, rotation){
         this._super( true );
         this.updateable = false;
         this.deading = false;
@@ -18,6 +18,7 @@ var Bullet = Entity.extend({
         this.defaultVelocity = 1;
         //console.log(bulletSource);
         this.imgSource = bulletSource;
+        this.particleSource = particle;
         this.isRotation = rotation;
         if(this.isRotation){
             this.accumRot = Math.random() * 0.1 - 0.05;
@@ -71,7 +72,7 @@ var Bullet = Entity.extend({
     },
     preKill:function(){
         for (var i = 1; i >= 0; i--) {
-            var particle = new Particles({x: Math.random() * 4, y:-(Math.random() * 2 + 1)}, 120, this.imgSource, Math.random() * 0.05);
+            var particle = new Particles({x: Math.random() * 4, y:-(Math.random() * 2 + 1)}, 120, this.particleSource, Math.random() * 0.05);
             particle.build();
             particle.gravity = 0.1 * Math.random() + 0.2;
             particle.alphadecres = 0.1;

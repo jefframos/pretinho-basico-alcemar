@@ -52,7 +52,7 @@ var AppModel = Class.extend({
 				bulletForce:1.5,
 				bulletCoast:0.12,
 				bulletVel:7,
-				toAble: 100
+				toAble: 200
 			}
 			),
 			new PlayerModel({
@@ -71,7 +71,7 @@ var AppModel = Class.extend({
 				bulletForce:2,
 				bulletCoast:0.15,
 				bulletVel:7,
-				toAble: 250
+				toAble: 500
 			}
 			),
 			new PlayerModel({
@@ -89,7 +89,7 @@ var AppModel = Class.extend({
 				bulletForce:2.2,
 				bulletCoast:0.1,
 				bulletVel:6,
-				toAble: 350
+				toAble: 800
 			}
 			),
 			new PlayerModel({
@@ -108,7 +108,7 @@ var AppModel = Class.extend({
 				bulletForce:1.3,
 				bulletCoast:0.11,
 				bulletVel:5,
-				toAble: 500
+				toAble: 1200
 			}
 			),
 			new PlayerModel({
@@ -126,7 +126,7 @@ var AppModel = Class.extend({
 				bulletForce:0.8,
 				bulletCoast:0.07,
 				bulletVel:8,
-				toAble: 600
+				toAble: 1500
 			}
 			),
 			new PlayerModel({
@@ -145,7 +145,7 @@ var AppModel = Class.extend({
 				bulletForce:1.4,
 				bulletCoast:0.1,
 				bulletVel:5,
-				toAble: 800
+				toAble: 2000
 			}
 			),
 			new PlayerModel({
@@ -160,10 +160,10 @@ var AppModel = Class.extend({
 			{
 				energyCoast:2.3,
 				vel:1.5,
-				bulletForce:2.6,
+				bulletForce:3,
 				bulletVel:6,
 				bulletCoast:0.15,
-				toAble: 1000
+				toAble: 2500
 			}
 			),
 			new PlayerModel({
@@ -211,7 +211,7 @@ var AppModel = Class.extend({
 			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}), 180, 0.15, 8),
 			new BirdModel('roxo.png',null, 12, 0.2, -2, new BirdBehaviourDiag({accX:0.00}), 200, 0.20, 10),
 			// new BirdModel('roxo.png',null, 10, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.20, 10),
-			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}), 410, 0.2, 20),
+			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}), 320, 0.2, 20),
 			new BirdModel('nigeriano.png',null, 50, 0.1, 0.6, new BirdBehaviourSinoid({sinAcc:0.08}), 700, 0.3, 50)
 		];
 
@@ -228,6 +228,10 @@ var AppModel = Class.extend({
 	zerarTudo:function(){
 		this.totalPoints = 0;
 		this.cookieManager.setCookie('totalPoints', 0, 500);
+	},
+	maxPoints:function(){
+		this.totalPoints = 999999;
+		this.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
 	},
 	getNewBird:function(player, screen){
 		this.currentHorde ++;

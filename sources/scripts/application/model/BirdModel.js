@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var BirdModel = Class.extend({
-	init:function(source, target, hp, demage, vel, behaviour, toNext, sizePercent, money){
+	init:function(source, target, hp, demage, vel, behaviour, toNext, sizePercent, money, particles){
 		this.imgSource = source?source:'belga.png';
 		this.demage = demage;
 		this.vel = vel;
@@ -11,6 +11,7 @@ var BirdModel = Class.extend({
 		this.behaviour = behaviour;
 		this.sizePercent = sizePercent;
 		this.money = money;
+		this.particles = particles?particles:['smoke.png'];
 	},
 	serialize:function(){
 		

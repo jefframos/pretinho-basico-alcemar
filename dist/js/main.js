@@ -483,11 +483,11 @@ var Application = AbstractApplication.extend({
         this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
     },
     preKill: function() {
-        for (var i = 2; i >= 0; i--) {
+        for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
             var particle = new Particles({
                 x: 4 * Math.random() - 2,
                 y: -(2 * Math.random() + 1)
-            }, 120, "smoke.png", .1 * Math.random());
+            }, 120, this.birdModel.particles[i], .1 * Math.random());
             particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
             particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
             this.layer.addChild(particle);
@@ -495,12 +495,12 @@ var Application = AbstractApplication.extend({
         this.collidable = !1, this.kill = !0;
     }
 }), Bullet = Entity.extend({
-    init: function(vel, timeLive, power, bulletSource, rotation) {
+    init: function(vel, timeLive, power, bulletSource, particle, rotation) {
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
         this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = power, this.defaultVelocity = 1, this.imgSource = bulletSource, this.isRotation = rotation, 
-        this.isRotation && (this.accumRot = .1 * Math.random() - .05);
+        this.power = power, this.defaultVelocity = 1, this.imgSource = bulletSource, this.particleSource = particle, 
+        this.isRotation = rotation, this.isRotation && (this.accumRot = .1 * Math.random() - .05);
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -522,7 +522,7 @@ var Application = AbstractApplication.extend({
             var particle = new Particles({
                 x: 4 * Math.random(),
                 y: -(2 * Math.random() + 1)
-            }, 120, this.imgSource, .05 * Math.random());
+            }, 120, this.particleSource, .05 * Math.random());
             particle.build(), particle.gravity = .1 * Math.random() + .2, particle.alphadecres = .1, 
             particle.scaledecress = .02, particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
             this.layer.addChild(particle);
@@ -754,7 +754,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.5,
             bulletCoast: .12,
             bulletVel: 7,
-            toAble: 100
+            toAble: 200
         }), new PlayerModel({
             label: "POTTER",
             outGame: "poter.png",
@@ -770,7 +770,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 2,
             bulletCoast: .15,
             bulletVel: 7,
-            toAble: 250
+            toAble: 500
         }), new PlayerModel({
             label: "ARTHUR",
             outGame: "arthur.png",
@@ -785,7 +785,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 2.2,
             bulletCoast: .1,
             bulletVel: 6,
-            toAble: 350
+            toAble: 800
         }), new PlayerModel({
             label: "PORÃ",
             outGame: "pora.png",
@@ -801,7 +801,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.3,
             bulletCoast: .11,
             bulletVel: 5,
-            toAble: 500
+            toAble: 1200
         }), new PlayerModel({
             label: "JEISO",
             outGame: "jeso.png",
@@ -816,7 +816,7 @@ var Application = AbstractApplication.extend({
             bulletForce: .8,
             bulletCoast: .07,
             bulletVel: 8,
-            toAble: 600
+            toAble: 1500
         }), new PlayerModel({
             label: "Mr. PI",
             outGame: "pi.png",
@@ -832,7 +832,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.4,
             bulletCoast: .1,
             bulletVel: 5,
-            toAble: 800
+            toAble: 2e3
         }), new PlayerModel({
             label: "FETTER",
             outGame: "feter.png",
@@ -844,10 +844,10 @@ var Application = AbstractApplication.extend({
         }, {
             energyCoast: 2.3,
             vel: 1.5,
-            bulletForce: 2.6,
+            bulletForce: 3,
             bulletVel: 6,
             bulletCoast: .15,
-            toAble: 1e3
+            toAble: 2500
         }), new PlayerModel({
             label: "NETO",
             outGame: "neto.png",
@@ -888,7 +888,7 @@ var Application = AbstractApplication.extend({
         }), 200, .2, 10), new BirdModel("nocu.png", null, 12, .2, -2, new BirdBehaviourSinoid2({
             sinAcc: .08,
             velY: -8
-        }), 410, .2, 20), new BirdModel("nigeriano.png", null, 50, .1, .6, new BirdBehaviourSinoid({
+        }), 320, .2, 20), new BirdModel("nigeriano.png", null, 50, .1, .6, new BirdBehaviourSinoid({
             sinAcc: .08
         }), 700, .3, 50) ], this.setModel(0), this.birdProbs = [ 0, 1, 0, 0, 2, 0, 1, 3, 2, 3, 4, 5, 4, 5 ], 
         this.currentHorde = 0;
@@ -898,6 +898,9 @@ var Application = AbstractApplication.extend({
     },
     zerarTudo: function() {
         this.totalPoints = 0, this.cookieManager.setCookie("totalPoints", 0, 500);
+    },
+    maxPoints: function() {
+        this.totalPoints = 999999, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500);
     },
     getNewBird: function(player, screen) {
         this.currentHorde++;
@@ -916,10 +919,11 @@ var Application = AbstractApplication.extend({
     destroy: function() {},
     serialize: function() {}
 }), BirdModel = Class.extend({
-    init: function(source, target, hp, demage, vel, behaviour, toNext, sizePercent, money) {
+    init: function(source, target, hp, demage, vel, behaviour, toNext, sizePercent, money, particles) {
         this.imgSource = source ? source : "belga.png", this.demage = demage, this.vel = vel, 
         this.hp = hp, this.target = target, this.timeLive = 999, this.toNext = toNext ? toNext : 150, 
-        this.behaviour = behaviour, this.sizePercent = sizePercent, this.money = money;
+        this.behaviour = behaviour, this.sizePercent = sizePercent, this.money = money, 
+        this.particles = particles ? particles : [ "smoke.png" ];
     },
     serialize: function() {}
 }), PlayerModel = Class.extend({
@@ -933,7 +937,8 @@ var Application = AbstractApplication.extend({
         this.imgSource = graphicsObject.outGame ? graphicsObject.outGame : this.imgSourceGame, 
         this.coverSource = graphicsObject.coverSource ? graphicsObject.coverSource : "dist/img/UI/jeisoGrande.png", 
         this.bulletSource = graphicsObject.bullet ? graphicsObject.bullet : "bullet.png", 
-        this.bulletRotation = graphicsObject.bulletRotation ? graphicsObject.bulletRotation : !1, 
+        this.bulletParticleSource = graphicsObject.bulletParticle ? graphicsObject.bulletParticle : this.bulletSource, 
+        this.smoke = graphicsObject.smoke ? graphicsObject.smoke : "smoke.png", this.bulletRotation = graphicsObject.bulletRotation ? graphicsObject.bulletRotation : !1, 
         this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 5.5 - this.energyCoast * this.energyCoast / 2, 
         this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, this.velocity = statsObject.vel ? statsObject.vel : 2, 
         this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, 
@@ -1239,7 +1244,7 @@ var Application = AbstractApplication.extend({
         var percent = this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy, fireForce = percent * this.playerModel.range, timeLive = this.red.getContent().width / this.playerModel.bulletVel + fireForce + 100, vel = this.playerModel.bulletVel + this.playerModel.bulletVel * percent, angle = this.red.rotation, bullet = new Bullet({
             x: Math.cos(angle) * vel,
             y: Math.sin(angle) * vel
-        }, timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletRotation);
+        }, timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletParticleSource, this.playerModel.bulletRotation);
         bullet.build(), bullet.setPosition(.8 * this.red.getPosition().x, .8 * this.red.getPosition().y), 
         this.layer.addChild(bullet);
         scaleConverter(this.red.getContent().width, bullet.getContent().width, .8);
@@ -1307,7 +1312,7 @@ var Application = AbstractApplication.extend({
             var particle = new Particles({
                 x: -.9,
                 y: -(.2 * Math.random() + .7)
-            }, 110, "smoke.png", -.02 * Math.random() + .01);
+            }, 110, this.playerModel.smoke, -.02 * Math.random() + .01);
             particle.build(), particle.alphadecress = .01, particle.setPosition(this.red.getPosition().x - this.red.getContent().width - 10 * Math.random() + 15, this.red.getPosition().y - this.red.getContent().height / 2 + 25), 
             this.addChild(particle);
         } else this.particleAccum--;
@@ -1430,7 +1435,7 @@ var Application = AbstractApplication.extend({
         }), 25, 28), this.fullScreen.clickCallback = function() {
             fullscreen();
         }), this.zerarCookie = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.zerarCookie.build(200, 100), scaleConverter(this.zerarCookie.height, windowHeight, .2, this.zerarCookie), 
+        this.zerarCookie.build(200, 100), scaleConverter(this.zerarCookie.height, windowHeight, .1, this.zerarCookie), 
         this.zerarCookie.setPosition(20, 20), this.addChild(this.zerarCookie), this.zerarCookie.addLabel(new PIXI.Text("Zerar", {
             align: "center",
             fill: "#033E43",
@@ -1439,6 +1444,17 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 20), this.zerarCookie.clickCallback = function() {
             APP.getGameModel().zerarTudo();
+        }, this.maxPoints = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
+        this.maxPoints.build(200, 100), scaleConverter(this.maxPoints.height, windowHeight, .1, this.maxPoints), 
+        this.maxPoints.setPosition(20 + this.zerarCookie.getContent().width + 10, 20), this.addChild(this.maxPoints), 
+        this.maxPoints.addLabel(new PIXI.Text(" MAX ", {
+            align: "center",
+            fill: "#033E43",
+            font: "50px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 28, 20), this.maxPoints.clickCallback = function() {
+            APP.getGameModel().maxPoints();
         };
     }
 }), CreditsModal = Class.extend({
