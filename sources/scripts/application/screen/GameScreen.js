@@ -199,8 +199,8 @@ var GameScreen = AbstractScreen.extend({
             //// console.log(this.red.getPosition().y);
             if(this.red.getPosition().y > windowHeight+ this.red.getContent().height){
                 //console.log('GAME OVER');
-                APP.getGameModel().addPoints();
-                this.endModal.show();
+                var newPlayers = APP.getGameModel().addPoints();
+                this.endModal.show(newPlayers);
             }
         }
         if(this.bulletBar){

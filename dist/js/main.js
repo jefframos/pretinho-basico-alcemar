@@ -723,8 +723,9 @@ var Application = AbstractApplication.extend({
 }), AppModel = Class.extend({
     init: function() {
         this.currentPlayerModel = {}, this.cookieManager = new CookieManager();
-        var points = parseInt(this.cookieManager.getCookie("totalPoints"));
-        this.totalPoints = points ? points : 0, this.currentPoints = 0, this.playerModels = [ new PlayerModel({
+        var points = parseInt(this.cookieManager.getCookie("totalPoints")), tempBirds = parseInt(this.cookieManager.getCookie("totalBirds"));
+        this.totalPoints = points ? points : 0, this.totalBirds = tempBirds ? tempBirds : 1, 
+        this.currentPoints = 0, this.playerModels = [ new PlayerModel({
             label: "ALCEMAR",
             outGame: "alcemar.png",
             inGame: "alcemarGame.png",
@@ -751,10 +752,10 @@ var Application = AbstractApplication.extend({
         }, {
             energyCoast: 1.5,
             vel: 2.5,
-            bulletForce: 1.5,
+            bulletForce: 1.2,
             bulletCoast: .12,
             bulletVel: 7,
-            toAble: 200
+            toAble: 50
         }), new PlayerModel({
             label: "POTTER",
             outGame: "poter.png",
@@ -765,9 +766,9 @@ var Application = AbstractApplication.extend({
             thumb: "thumb_poter",
             coverSource: "dist/img/UI/poterGrande.png"
         }, {
-            energyCoast: 1.5,
-            vel: 1.8,
-            bulletForce: 2,
+            energyCoast: 1.7,
+            vel: 1.7,
+            bulletForce: 1.5,
             bulletCoast: .15,
             bulletVel: 7,
             toAble: 500
@@ -880,40 +881,54 @@ var Application = AbstractApplication.extend({
             toAble: 1e4
         }) ], this.birdModels = [ new BirdModel("caralinho.png", null, 1, .2, -3.5, new BirdBehaviourDefault(), 50, .12, 3), new BirdModel("belga.png", null, 3, .1, 1.5, new BirdBehaviourSinoid({
             sinAcc: .05
-        }), 150, .15, 5), new BirdModel("lambecu.png", null, 6, .2, -1.5, new BirdBehaviourSinoid({
+        }), 110, .15, 5), new BirdModel("lambecu.png", null, 6, .2, -1.5, new BirdBehaviourSinoid({
             sinAcc: .05,
             velY: -3
-        }), 180, .15, 8), new BirdModel("roxo.png", null, 12, .2, -2, new BirdBehaviourDiag({
+        }), 150, .15, 8), new BirdModel("roxo.png", null, 12, .2, -2, new BirdBehaviourDiag({
             accX: 0
-        }), 200, .2, 10), new BirdModel("nocu.png", null, 12, .2, -2, new BirdBehaviourSinoid2({
+        }), 160, .2, 10), new BirdModel("nocu.png", null, 12, .2, -2, new BirdBehaviourSinoid2({
             sinAcc: .08,
             velY: -8
-        }), 320, .2, 20), new BirdModel("nigeriano.png", null, 50, .1, .6, new BirdBehaviourSinoid({
+        }), 250, .2, 20), new BirdModel("nigeriano.png", null, 50, .1, .6, new BirdBehaviourSinoid({
             sinAcc: .08
-        }), 700, .3, 50) ], this.setModel(0), this.birdProbs = [ 0, 1, 0, 0, 2, 0, 1, 3, 2, 3, 4, 5, 4, 5 ], 
-        this.currentHorde = 0;
+        }), 600, .3, 50) ], this.setModel(0), this.totalPlayers = 0;
+        for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && (this.playerModels[i].able = !0, 
+        this.totalPlayers++);
+        this.birdProbs = [ 0, 1, 0, 0, 2, 0, 1, 3, 2, 3, 4, 5, 4, 5 ], this.currentHorde = 0;
     },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
     },
     zerarTudo: function() {
-        this.totalPoints = 0, this.cookieManager.setCookie("totalPoints", 0, 500);
+        this.currentHorde = 0, this.totalPoints = 0, this.totalBirds = 1, this.cookieManager.setCookie("totalPoints", 0, 500), 
+        this.cookieManager.setCookie("totalBirds", 1, 500);
+        for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
     maxPoints: function() {
-        this.totalPoints = 999999, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500);
+        this.currentHorde = 0, this.totalPoints = 999999, this.totalBirds = 6, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
+        this.cookieManager.setCookie("totalBirds", 6, 500);
+        for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
     getNewBird: function(player, screen) {
         this.currentHorde++;
         var max = this.birdProbs.length;
         this.currentHorde < max && (max = this.currentHorde);
-        var id = this.birdProbs[Math.floor(max * Math.random())];
+        for (var id = 99999; id > this.totalBirds - 1; ) id = this.birdProbs[Math.floor(max * Math.random())];
         this.birdModels[id].target = player;
         var bird = new Bird(this.birdModels[id], screen);
         return this.lastID = id, bird;
     },
+    ableNewBird: function() {
+        this.totalBirds >= 6 || (this.totalBirds++, this.cookieManager.setCookie("totalBirds", this.totalBirds, 500));
+    },
     addPoints: function() {
         this.currentHorde = 0, this.totalPoints += this.currentPoints, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
         this.maxPoints < this.currentPoints && (this.maxPoints = this.currentPoints);
+        var tempReturn = [];
+        this.totalPlayers = 0;
+        for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able && (this.playerModels[i].able = !0, 
+        tempReturn.push(this.playerModels[i])), this.playerModels[i].able && this.totalPlayers++;
+        return tempReturn;
     },
     build: function() {},
     destroy: function() {},
@@ -942,7 +957,7 @@ var Application = AbstractApplication.extend({
         this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 5.5 - this.energyCoast * this.energyCoast / 2, 
         this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, this.velocity = statsObject.vel ? statsObject.vel : 2, 
         this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, 
-        this.toAble = statsObject.toAble ? statsObject.toAble : 0;
+        this.toAble = statsObject.toAble ? statsObject.toAble : 0, this.able = !1;
     },
     reset: function() {
         this.currentEnergy = this.maxEnergy, this.currentBulletEnergy = this.maxBulletEnergy;
@@ -1262,22 +1277,27 @@ var Application = AbstractApplication.extend({
         this.playerModel.currentBulletEnergy < 0 && (this.playerModel.currentBulletEnergy = 0);
     },
     update: function() {
-        this.updateable && (this._super(), this.playerModel && this.initApp && (!testMobile() && this.red && APP.stage.getMousePosition().y > 0 && APP.stage.getMousePosition().y < windowHeight && this.red.setTarget(APP.stage.getMousePosition().y + .8 * this.red.getContent().height), 
-        this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
-        this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
-        this.playerModel.currentBulletEnergy < this.playerModel.maxBulletEnergy * (this.playerModel.bulletCoast + .2) ? this.alertBullet() : (this.bulletAcum = 0, 
-        this.bulletIco.getContent().scale.x = .8, this.bulletIco.getContent().scale.y = .8), 
-        this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? (this.playerModel.currentEnergy -= this.playerModel.energyCoast, 
-        this.playerModel.currentEnergy < .2 * this.playerModel.maxEnergy ? this.alertGasoline() : (this.alertAcum = 0, 
-        this.gasolineIco.getContent().scale.x = .8, this.gasolineIco.getContent().scale.y = .8)) : this.gameOver = !0, 
-        this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height && (APP.getGameModel().addPoints(), 
-        this.endModal.show())), this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
-        this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
-        this.updateBirds(), this.updateParticles(), this.updateItens(), this.updateClouds(), 
-        this.labelAcum > 0 && this.labelAcum--, this.pointsLabel && this.pointsLabel.text !== String(APP.getGameModel().currentPoints) ? (this.pointsLabel.setText(APP.getGameModel().currentPoints), 
-        this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1.5, this.pointsLabel.rotation = .7 * Math.random() - .25, 
-        this.labelAcum = 20) : 0 === this.labelAcum && (this.pointsLabel.position.x = this.moneyContainer.width - 20, 
-        this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1, this.pointsLabel.rotation = 0)));
+        if (this.updateable && (this._super(), this.playerModel && this.initApp)) {
+            if (!testMobile() && this.red && APP.stage.getMousePosition().y > 0 && APP.stage.getMousePosition().y < windowHeight && this.red.setTarget(APP.stage.getMousePosition().y + .8 * this.red.getContent().height), 
+            this.playerModel && this.onBulletTouch && this.playerModel.currentBulletEnergy > 0, 
+            this.playerModel && this.playerModel.currentBulletEnergy <= this.playerModel.maxBulletEnergy - this.playerModel.recoverBulletEnergy && (this.playerModel.currentBulletEnergy += this.playerModel.recoverBulletEnergy), 
+            this.playerModel.currentBulletEnergy < this.playerModel.maxBulletEnergy * (this.playerModel.bulletCoast + .2) ? this.alertBullet() : (this.bulletAcum = 0, 
+            this.bulletIco.getContent().scale.x = .8, this.bulletIco.getContent().scale.y = .8), 
+            this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? (this.playerModel.currentEnergy -= this.playerModel.energyCoast, 
+            this.playerModel.currentEnergy < .2 * this.playerModel.maxEnergy ? this.alertGasoline() : (this.alertAcum = 0, 
+            this.gasolineIco.getContent().scale.x = .8, this.gasolineIco.getContent().scale.y = .8)) : this.gameOver = !0, 
+            this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height)) {
+                var newPlayers = APP.getGameModel().addPoints();
+                this.endModal.show(newPlayers);
+            }
+            this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
+            this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
+            this.updateBirds(), this.updateParticles(), this.updateItens(), this.updateClouds(), 
+            this.labelAcum > 0 && this.labelAcum--, this.pointsLabel && this.pointsLabel.text !== String(APP.getGameModel().currentPoints) ? (this.pointsLabel.setText(APP.getGameModel().currentPoints), 
+            this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1.5, this.pointsLabel.rotation = .7 * Math.random() - .25, 
+            this.labelAcum = 20) : 0 === this.labelAcum && (this.pointsLabel.position.x = this.moneyContainer.width - 20, 
+            this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1, this.pointsLabel.rotation = 0);
+        }
     },
     alertGasoline: function() {
         this.gasolineIco.getContent().scale.x = this.gasolineIco.getContent().scale.y = Math.abs(.23 * Math.sin(this.alertAcum += .08)) + .8;
@@ -1552,11 +1572,31 @@ var Application = AbstractApplication.extend({
         this.boxContainer.scale.x = this.containerScale, this.boxContainer.scale.y = this.containerScale, 
         this.boxContainer.position.x = windowWidth / 2, this.boxContainer.position.y = windowHeight;
     },
-    show: function() {
-        this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
-        this.boxContainer.visible = !0, this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
+    show: function(newPlayers) {
+        if (newPlayers && newPlayers.length > 0) {
+            var self = this;
+            this.newCharContainer = new PIXI.DisplayObjectContainer(), APP.getGameModel().ableNewBird();
+            var charLabel = new PIXI.Text("Você recrutou o\n" + newPlayers[0].label, {
+                align: "center",
+                fill: "#FFFFFF",
+                font: "50px Luckiest Guy",
+                wordWrap: !0,
+                wordWrapWidth: 300
+            });
+            this.newCharContainer.addChild(charLabel), this.container.addChild(this.newCharContainer), 
+            this.container.buttonMode = !0, this.container.interactive = !0, charLabel.position.x = windowWidth / 2 - charLabel.width / 2, 
+            charLabel.position.y = windowHeight - charLabel.height - 20, this.container.mousedown = this.container.touchstart = function() {
+                self.showPoints();
+            };
+        } else this.showPoints();
+        this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
             alpha: .8
-        }), TweenLite.to(this.boxContainer.position, 1, {
+        }), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
+    },
+    showPoints: function() {
+        this.newCharContainer && (TweenLite.to(this.newCharContainer, .5, {
+            alpha: 0
+        }), this.container.interactive = !1), this.boxContainer.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {

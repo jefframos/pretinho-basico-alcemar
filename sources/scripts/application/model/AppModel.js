@@ -13,7 +13,9 @@ var AppModel = Class.extend({
 		// console.log(cookieManager.getCookie('totalPoints'));
 		// this.cookieManager.setCookie('totalPoints', 0, 500);
 		var points = parseInt(this.cookieManager.getCookie('totalPoints'));
+		var tempBirds = parseInt(this.cookieManager.getCookie('totalBirds'));
 		this.totalPoints = points?points:0;
+		this.totalBirds = tempBirds?tempBirds:1;
 		this.currentPoints = 0;
 		this.playerModels = [
 
@@ -49,10 +51,10 @@ var AppModel = Class.extend({
 			{
 				energyCoast:1.5,
 				vel:2.5,
-				bulletForce:1.5,
+				bulletForce:1.2,
 				bulletCoast:0.12,
 				bulletVel:7,
-				toAble: 200
+				toAble: 50
 			}
 			),
 			new PlayerModel({
@@ -66,9 +68,9 @@ var AppModel = Class.extend({
 				coverSource:'dist/img/UI/poterGrande.png'
 			},
 			{
-				energyCoast:1.5,
-				vel:1.8,
-				bulletForce:2,
+				energyCoast:1.7,
+				vel:1.7,
+				bulletForce:1.5,
 				bulletCoast:0.15,
 				bulletVel:7,
 				toAble: 500
@@ -207,31 +209,62 @@ var AppModel = Class.extend({
 		this.birdModels = [
 			//source, target, hp, demage, vel, behaviour, toNext, sizePercent, money
 			new BirdModel('caralinho.png',null, 1, 0.2, -3.5, new BirdBehaviourDefault(), 50, 0.12, 3),
-			new BirdModel('belga.png',null, 3, 0.1, 1.5, new BirdBehaviourSinoid({sinAcc:0.05}), 150, 0.15, 5),
-			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}), 180, 0.15, 8),
-			new BirdModel('roxo.png',null, 12, 0.2, -2, new BirdBehaviourDiag({accX:0.00}), 200, 0.20, 10),
+			new BirdModel('belga.png',null, 3, 0.1, 1.5, new BirdBehaviourSinoid({sinAcc:0.05}), 110, 0.15, 5),
+			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}), 150, 0.15, 8),
+			new BirdModel('roxo.png',null, 12, 0.2, -2, new BirdBehaviourDiag({accX:0.00}), 160, 0.20, 10),
 			// new BirdModel('roxo.png',null, 10, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.20, 10),
-			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}), 320, 0.2, 20),
-			new BirdModel('nigeriano.png',null, 50, 0.1, 0.6, new BirdBehaviourSinoid({sinAcc:0.08}), 700, 0.3, 50)
+			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}), 250, 0.2, 20),
+			new BirdModel('nigeriano.png',null, 50, 0.1, 0.6, new BirdBehaviourSinoid({sinAcc:0.08}), 600, 0.3, 50)
 		];
 
 		this.setModel(0);
-
+		this.totalPlayers = 0;
+		for (var i = this.playerModels.length - 1; i >= 0; i--) {
+			if(this.playerModels[i].toAble <= this.totalPoints){
+				this.playerModels[i].able = true;
+				this.totalPlayers ++;
+			}
+		}
 		this.birdProbs = [0,1,0,0,2,0,1,3,2,3,4,5,4,5];
 
 		this.currentHorde = 0;
+
+
 	},
 	setModel:function(id){
 		this.currentID = id;
 		this.currentPlayerModel = this.playerModels[id];
 	},
 	zerarTudo:function(){
+		this.currentHorde = 0;
 		this.totalPoints = 0;
+		this.totalBirds = 1;
 		this.cookieManager.setCookie('totalPoints', 0, 500);
+		this.cookieManager.setCookie('totalBirds', 1, 500);
+
+		for (var i = this.playerModels.length - 1; i >= 0; i--) {
+			if(this.playerModels[i].toAble <= this.totalPoints){
+				this.playerModels[i].able = true;
+			}else{
+				this.playerModels[i].able = false;
+			}
+		}
 	},
 	maxPoints:function(){
+		this.currentHorde = 0;
 		this.totalPoints = 999999;
+		this.totalBirds = 6;
 		this.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
+		this.cookieManager.setCookie('totalBirds', 6, 500);
+
+
+		for (var i = this.playerModels.length - 1; i >= 0; i--) {
+			if(this.playerModels[i].toAble <= this.totalPoints){
+				this.playerModels[i].able = true;
+			}else{
+				this.playerModels[i].able = false;
+			}
+		}
 	},
 	getNewBird:function(player, screen){
 		this.currentHorde ++;
@@ -241,11 +274,21 @@ var AppModel = Class.extend({
 			max = this.currentHorde;
 		}
 
-		var id = this.birdProbs[Math.floor(max * Math.random())];
+		var id = 99999;
+		while(id > (this.totalBirds - 1)){
+			id = this.birdProbs[Math.floor(max * Math.random())];
+		}
 		this.birdModels[id].target = player;
 		var bird = new Bird(this.birdModels[id], screen);
 		this.lastID = id;
-        return bird;
+		return bird;
+	},
+	ableNewBird:function(){
+		if(this.totalBirds >= 6){
+			return;
+		}
+		this.totalBirds ++;
+		this.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
 	},
 	addPoints:function(){
 		this.currentHorde = 0;
@@ -254,6 +297,18 @@ var AppModel = Class.extend({
 		if(this.maxPoints < this.currentPoints){
 			this.maxPoints = this.currentPoints;
 		}
+		var tempReturn = [];
+		this.totalPlayers = 0;
+		for (var i = this.playerModels.length - 1; i >= 0; i--) {
+			if(this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able){
+				this.playerModels[i].able = true;
+				tempReturn.push(this.playerModels[i]);
+			}
+			if(this.playerModels[i].able){
+				this.totalPlayers ++;
+			}
+		}
+		return tempReturn;
 	},
 	build:function(){
 

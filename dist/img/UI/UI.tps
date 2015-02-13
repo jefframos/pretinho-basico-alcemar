@@ -198,7 +198,6 @@
             <filename>birdContainer.png</filename>
             <filename>endModalBg.png</filename>
             <filename>gasoline.png</filename>
-            <filename>moneyContent.png</filename>
             <filename>reducingPB/thumb_alcemar_gray.png</filename>
             <filename>reducingPB/thumb_arthur_gray.png</filename>
             <filename>reducingPB/thumb_feter_gray.png</filename>
@@ -220,6 +219,23 @@
             <filename>reducing/thumb_poter_color.png</filename>
             <filename>reducing/thumb_rodaika_color.png</filename>
             <filename>border.png</filename>
+            <filename>voltarButton.png</filename>
+            <filename>continueButton.png</filename>
+            <filename>continueButtonBig.png</filename>
+            <filename>fbButton.png</filename>
+            <filename>gasBar.png</filename>
+            <filename>gasBarBack.png</filename>
+            <filename>menuButton.png</filename>
+            <filename>pauseButton.png</filename>
+            <filename>replayButton.png</filename>
+            <filename>saveButton.png</filename>
+            <filename>twitterButton.png</filename>
+            <filename>gasBarBack2.png</filename>
+            <filename>gasBar2.png</filename>
+            <filename>bulletIco.png</filename>
+            <filename>moneyContainer.png</filename>
+            <filename>coin.png</filename>
+            <filename>coins.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

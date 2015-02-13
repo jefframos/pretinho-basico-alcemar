@@ -137,14 +137,39 @@ var EndModal = Class.extend({
 		// top.getContent().position.x = this.background.getContent().width / 2 - top.getContent().width / 2;
 		// top.getContent().position.y = - top.getContent().height / 2;
 	},
-	show:function(points){
-		this.screen.addChild(this);
-		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
-		this.boxContainer.visible = true;
+	show:function(newPlayers){
+		// console.log('newPlayers',newPlayers, newPlayers.length);
+		if(newPlayers && newPlayers.length > 0){
+			var self = this;
+			this.newCharContainer = new PIXI.DisplayObjectContainer();
+			APP.getGameModel().ableNewBird();
+			var charLabel = new PIXI.Text('Você recrutou o\n' + newPlayers[0].label, { align:'center', fill:'#FFFFFF', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+			this.newCharContainer.addChild(charLabel);
+			this.container.addChild(this.newCharContainer);
+			this.container.buttonMode = true;
+			this.container.interactive = true;
+			charLabel.position.x = windowWidth / 2 - charLabel.width / 2;
+			charLabel.position.y = windowHeight - charLabel.height - 20;
 
+			this.container.mousedown = this.container.touchstart = function(data){
+				self.showPoints();
+			};
+
+		}else{
+			this.showPoints();
+		}
+
+		this.screen.addChild(this);
 		this.screen.updateable = false;
 		TweenLite.to(this.bg, 0.5, {alpha:0.8});
-
+		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
+	},
+	showPoints:function(){
+		if(this.newCharContainer){
+			TweenLite.to(this.newCharContainer, 0.5, {alpha:0});
+			this.container.interactive = false;
+		}
+		this.boxContainer.visible = true;
 		// TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.background.getContent().height * this.containerScale / 2, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer.position, 1, {y:windowHeight - this.boxContainer.height - 20, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:1});

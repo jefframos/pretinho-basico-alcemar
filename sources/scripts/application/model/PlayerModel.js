@@ -32,10 +32,12 @@ var PlayerModel = Class.extend({
 		this.bulletVel = statsObject.bulletVel?statsObject.bulletVel:8;
 		this.bulletForce = statsObject.bulletForce?statsObject.bulletForce:1;
 		this.toAble = statsObject.toAble?statsObject.toAble:0;
+
+		this.able = false;
 		
 	},
 	reset:function(id){
-		this.currentEnergy = this.maxEnergy;
+		this.currentEnergy = this.maxEnergy;// * 0.1;
 		this.currentBulletEnergy = this.maxBulletEnergy;
 	},
 	build:function(){
