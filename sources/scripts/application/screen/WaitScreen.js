@@ -49,11 +49,11 @@ var WaitScreen = AbstractScreen.extend({
     },
     initApplication:function(){
 
-        var background = new SimpleSprite('dist/img/UI/introScreen.jpg');
-        this.addChild(background.getContent());
-        var scaleBack = scaleConverter(background.getContent().width, windowWidth, 1);
-        background.getContent().scale.x = scaleBack;
-        background.getContent().scale.y = scaleBack;
+        this.background = new SimpleSprite('dist/img/UI/introScreen.jpg');
+        this.addChild(this.background.getContent());
+        var scaleBack = scaleConverter(this.background.getContent().width, windowWidth, 1);
+        this.background.getContent().scale.x = scaleBack;
+        this.background.getContent().scale.y = scaleBack;
         var self = this;
         this.btnBenchmark = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
         // console.log(this.btnBenchmark.build);
@@ -103,9 +103,31 @@ var WaitScreen = AbstractScreen.extend({
         this.maxPoints.clickCallback = function(){
             APP.getGameModel().maxPoints();
         };
+
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        TweenLite.to(this.frontShape, 1, {delay:0.2, alpha:0});
         // setTimeout(function(){
 
         // self.screenManager.change('Game');
         // }, 1000);
-    }
+    },
+    transitionIn:function()
+    {
+        // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
+        this.frontShape = new PIXI.Graphics();
+        this.frontShape.beginFill(0xFFFFFF);
+        this.frontShape.drawRect(0,0,windowWidth, windowHeight);
+        this.addChild(this.frontShape);
+        this.build();
+
+    },
+    transitionOut:function(nextScreen, container)
+    {
+        var self = this;
+        TweenLite.to(this.frontShape, 0.5, {alpha:1, onComplete:function(){
+            self.destroy();
+            container.removeChild(self.getContent());
+            nextScreen.transitionIn();
+        }});
+    },
 });

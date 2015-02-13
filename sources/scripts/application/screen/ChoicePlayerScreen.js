@@ -293,6 +293,32 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         this.createStatsContainer();
         this.updatePlayers(true);
+    
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        TweenLite.to(this.frontShape, 1, {delay:0.2, alpha:0});
+        // setTimeout(function(){
+
+        // self.screenManager.change('Game');
+        // }, 1000);
+    },
+    transitionIn:function()
+    {
+        // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
+        this.frontShape = new PIXI.Graphics();
+        this.frontShape.beginFill(0xFFFFFF);
+        this.frontShape.drawRect(0,0,windowWidth, windowHeight);
+        this.addChild(this.frontShape);
+        this.build();
+
+    },
+    transitionOut:function(nextScreen, container)
+    {
+        var self = this;
+        TweenLite.to(this.frontShape, 0.5, {alpha:1, onComplete:function(){
+            self.destroy();
+            container.removeChild(self.getContent());
+            nextScreen.transitionIn();
+        }});
     },
     createStatsContainer:function(){
         this.statsContainer = new PIXI.DisplayObjectContainer();

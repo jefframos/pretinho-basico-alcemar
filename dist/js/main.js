@@ -1,4 +1,4 @@
-/*! jefframos 12-02-2015 */
+/*! jefframos 13-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1063,7 +1063,24 @@ var Application = AbstractApplication.extend({
         }), this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.arrButtons[APP.getGameModel().currentID].selectedFunction(), this.createStatsContainer(), 
-        this.updatePlayers(!0);
+        this.updatePlayers(!0), this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        TweenLite.to(this.frontShape, 1, {
+            delay: .2,
+            alpha: 0
+        });
+    },
+    transitionIn: function() {
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(16777215), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.frontShape), this.build();
+    },
+    transitionOut: function(nextScreen, container) {
+        var self = this;
+        TweenLite.to(this.frontShape, .5, {
+            alpha: 1,
+            onComplete: function() {
+                self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn();
+            }
+        });
     },
     createStatsContainer: function() {
         this.statsContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.statsContainer), 
@@ -1413,10 +1430,9 @@ var Application = AbstractApplication.extend({
         this.initApplication(), APP.labelDebug.visible = !1;
     },
     initApplication: function() {
-        var background = new SimpleSprite("dist/img/UI/introScreen.jpg");
-        this.addChild(background.getContent());
-        var scaleBack = scaleConverter(background.getContent().width, windowWidth, 1);
-        background.getContent().scale.x = scaleBack, background.getContent().scale.y = scaleBack;
+        this.background = new SimpleSprite("dist/img/UI/introScreen.jpg"), this.addChild(this.background.getContent());
+        var scaleBack = scaleConverter(this.background.getContent().width, windowWidth, 1);
+        this.background.getContent().scale.x = scaleBack, this.background.getContent().scale.y = scaleBack;
         var self = this;
         this.btnBenchmark = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
         this.btnBenchmark.build(), scaleConverter(this.btnBenchmark.height, windowHeight, .25, this.btnBenchmark), 
@@ -1455,7 +1471,24 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 20), this.maxPoints.clickCallback = function() {
             APP.getGameModel().maxPoints();
-        };
+        }, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        TweenLite.to(this.frontShape, 1, {
+            delay: .2,
+            alpha: 0
+        });
+    },
+    transitionIn: function() {
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(16777215), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.frontShape), this.build();
+    },
+    transitionOut: function(nextScreen, container) {
+        var self = this;
+        TweenLite.to(this.frontShape, .5, {
+            alpha: 1,
+            onComplete: function() {
+                self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn();
+            }
+        });
     }
 }), CreditsModal = Class.extend({
     init: function(screen) {
