@@ -265,7 +265,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.play.build();
         scaleConverter(this.play.getContent().height, windowHeight, 0.25, this.play);
         this.play.setPosition( windowWidth - this.play.getContent().width - 20,windowHeight - this.play.getContent().height - 20);
-        TweenLite.from(this.play.getContent().position, 0.8, {delay:0.5, x:windowWidth, ease:'easeOutBack'});
+        // TweenLite.from(this.play.getContent().position, 0.8, {delay:0.5, x:windowWidth, ease:'easeOutBack'});
 
         this.addChild(this.play);
 
@@ -279,7 +279,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         scaleConverter(this.returnButton.getContent().height, windowHeight, 0.15, this.returnButton);
 
         this.returnButton.setPosition(20 ,windowHeight - this.returnButton.getContent().height - 20);
-        TweenLite.from(this.returnButton.getContent().position, 0.8, {delay:0.6, x:- this.returnButton.getContent().width, ease:'easeOutBack'});
+        // TweenLite.from(this.returnButton.getContent().position, 0.8, {delay:0.6, x:- this.returnButton.getContent().width, ease:'easeOutBack'});
         this.addChild(this.returnButton);
         // this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
         

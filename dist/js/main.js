@@ -1047,20 +1047,12 @@ var Application = AbstractApplication.extend({
         this.play = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
         this.play.build(), scaleConverter(this.play.getContent().height, windowHeight, .25, this.play), 
         this.play.setPosition(windowWidth - this.play.getContent().width - 20, windowHeight - this.play.getContent().height - 20), 
-        TweenLite.from(this.play.getContent().position, .8, {
-            delay: .5,
-            x: windowWidth,
-            ease: "easeOutBack"
-        }), this.addChild(this.play), this.play.clickCallback = function() {
+        this.addChild(this.play), this.play.clickCallback = function() {
             self.screenManager.change("Game");
         }, this.returnButton = new DefaultButton("voltarButton.png", "voltarButton.png"), 
         this.returnButton.build(), scaleConverter(this.returnButton.getContent().height, windowHeight, .15, this.returnButton), 
         this.returnButton.setPosition(20, windowHeight - this.returnButton.getContent().height - 20), 
-        TweenLite.from(this.returnButton.getContent().position, .8, {
-            delay: .6,
-            x: -this.returnButton.getContent().width,
-            ease: "easeOutBack"
-        }), this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
+        this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.arrButtons[APP.getGameModel().currentID].selectedFunction(), this.createStatsContainer(), 
         this.updatePlayers(!0), this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
@@ -1070,7 +1062,7 @@ var Application = AbstractApplication.extend({
         });
     },
     transitionIn: function() {
-        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(16777215), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(16777215), this.frontShape.drawRect(0, 0, windowWidth, windowHeight + 10), 
         this.addChild(this.frontShape), this.build();
     },
     transitionOut: function(nextScreen, container) {
