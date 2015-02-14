@@ -14,9 +14,10 @@ var EndModal = Class.extend({
 
 		var self = this;
 
-		// this.background  = new SimpleSprite('endModalBg.png');
-		// this.boxContainer.addChild(this.background.getContent());
-		
+		this.feito  = new SimpleSprite('feitoo.png');
+		this.container.addChild(this.feito.getContent());
+		scaleConverter(this.feito.getContent().width, windowWidth, 0.35, this.feito);
+		this.feito.setPosition(windowWidth / 2 - this.feito.getContent().width / 2, -10);
 
 		// this.saveButton = new DefaultButton('saveButton.png', 'saveButton.png');
 		// this.saveButton.build();
@@ -49,10 +50,34 @@ var EndModal = Class.extend({
 		// 	});
 		// };
 
+		this.backButton = new DefaultButton('menuButton.png', 'menuButton.png');
+		this.backButton.build();
+		this.backButton.setPosition(0,0);
+			// this.background.getContent().height - this.backButton.height / 2);
+		// this.backButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
+		this.boxContainer.addChild(this.backButton.getContent());
+		this.backButton.clickCallback = function(){
+			self.hide(function(){
+				self.screen.screenManager.prevScreen();
+			});
+		};
 
-		this.exitButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+		this.trofeuButton = new DefaultButton('trofeuButton.png', 'trofeuButton.png');
+		this.trofeuButton.build();
+		this.trofeuButton.setPosition(this.backButton.getContent().position.x + this.backButton.getContent().width + 10, 0);
+			// this.background.getContent().height - this.trofeuButton.height / 2);
+		// this.trofeuButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
+		this.boxContainer.addChild(this.trofeuButton.getContent());
+		this.trofeuButton.clickCallback = function(){
+			// self.hide(function(){
+			// 	// self.screen.screenManager.prevScreen();
+			// });
+		};
+
+
+		this.exitButton = new DefaultButton('replayButton.png', 'replayButton.png');
 		this.exitButton.build();
-		// this.exitButton.setPosition(this.background.getContent().width / 2 - this.exitButton.width / 2,
+		this.exitButton.setPosition(this.trofeuButton.getContent().position.x + this.exitButton.getContent().width+ 10, 0);
 		// 	this.background.getContent().height - this.exitButton.height / 2);
 		// this.exitButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
 		this.boxContainer.addChild(this.exitButton.getContent());
@@ -63,18 +88,6 @@ var EndModal = Class.extend({
 			});
 		};
 
-		this.backButton = new DefaultButton('menuButton.png', 'menuButton.png');
-		this.backButton.build();
-		this.backButton.setPosition(this.exitButton.getContent().position.x - this.backButton.width - 15,
-			0);
-			// this.background.getContent().height - this.backButton.height / 2);
-		// this.backButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
-		this.boxContainer.addChild(this.backButton.getContent());
-		this.backButton.clickCallback = function(){
-			self.hide(function(){
-				self.screen.screenManager.prevScreen();
-			});
-		};
 
 
 		this.boxContainer.addChild(this.exitButton.getContent());
@@ -82,11 +95,9 @@ var EndModal = Class.extend({
 		this.boxContainer.visible = false;
 
 		// this.containerScale = scaleConverter(this.boxContainer.height, windowHeight, 0.85);
-		this.containerScale = scaleConverter(this.boxContainer.height, windowHeight, 0.2);
-		this.boxContainer.scale.x = this.containerScale;
-		this.boxContainer.scale.y = this.containerScale;
+		scaleConverter(this.boxContainer.height, windowHeight, 0.18, this.boxContainer);
 
-		this.boxContainer.position.x = windowWidth / 2;// - this.background.getContent().width * this.containerScale / 2;
+		this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;// - this.background.getContent().width * this.containerScale / 2;
 		this.boxContainer.position.y = windowHeight;// - this.boxContainer.height - 20;// - this.background.getContent().height * this.containerScale / 2;
 
 
@@ -139,18 +150,58 @@ var EndModal = Class.extend({
 	},
 	show:function(newPlayers){
 		// console.log('newPlayers',newPlayers, newPlayers.length);
+		// newPlayers = [APP.getGameModel().playerModels[0]];
 		if(newPlayers && newPlayers.length > 0){
 			var self = this;
 			this.newCharContainer = new PIXI.DisplayObjectContainer();
 			APP.getGameModel().ableNewBird();
-			var charLabel = new PIXI.Text('Você recrutou o\n' + newPlayers[0].label, { align:'center', fill:'#FFFFFF', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+
+
+			var pista = new SimpleSprite('pista.png');
+			var holofote = new SimpleSprite('holofote.png');
+			var novo = new SimpleSprite('novorecruta.png');
+
+			var playerImage = null;
+			if(windowHeight > 450){
+				playerImage  = new SimpleSprite(newPlayers[0].imgSource);
+			}else{
+				playerImage  = new SimpleSprite(newPlayers[0].imgSourceGame);
+			}
+
+
+			// var playerImage = new SimpleSprite(APP.getGameModel().playerModels[0].im);
+
+			this.newCharContainer.addChild(pista.getContent());
+			// scaleConverter(pista.getContent().width, windowWidth, 0.35, pista);
+			pista.setPosition(0, holofote.getContent().height - 35);
+
+			this.newCharContainer.addChild(holofote.getContent());
+			this.newCharContainer.addChild(playerImage.getContent());
+			this.newCharContainer.addChild(novo.getContent());
+			// scaleConverter(holofote.getContent().width, windowWidth, 0.35, holofote);
+			holofote.setPosition(pista.getContent().width / 2 - holofote.getContent().width / 2, 0);
+
+
+			var charLabel = new PIXI.Text(newPlayers[0].label, { align:'center', fill:'#FFFFFF', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
 			this.newCharContainer.addChild(charLabel);
 			this.container.addChild(this.newCharContainer);
 			this.container.buttonMode = true;
 			this.container.interactive = true;
-			charLabel.position.x = windowWidth / 2 - charLabel.width / 2;
-			charLabel.position.y = windowHeight - charLabel.height - 20;
 
+
+			charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2;
+			charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20;
+
+			novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20);
+
+			scaleConverter(playerImage.getContent().height, this.newCharContainer.height, 0.3, playerImage);
+			playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width/2, pista.getContent().position.y - playerImage.getContent().height - 10);
+			
+			scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer);
+
+			this.newCharContainer.position.x = windowWidth / 2 - this.newCharContainer.width / 2;
+
+			this.feito.getContent().parent.setChildIndex(this.feito.getContent(), this.feito.getContent().parent.children.length - 1);
 			this.container.mousedown = this.container.touchstart = function(data){
 				self.showPoints();
 			};

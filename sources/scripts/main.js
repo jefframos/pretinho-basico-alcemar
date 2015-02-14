@@ -10,11 +10,11 @@ var resizeProportional = true;
 // var realWindowWidth = 1136,
 // realWindowHeight = 640;
 
-var windowWidth = 810,
-windowHeight = 456;
+var windowWidth = 1334,
+windowHeight = 750;
 
-var realWindowWidth = 810,
-realWindowHeight = 456;
+var realWindowWidth = 1334,
+realWindowHeight = 750;
 
 var gameScale = 1.3;
 if(testMobile()){

@@ -2,8 +2,8 @@
 var PlayerModel = Class.extend({
 	init:function(graphicsObject, statsObject){//source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet, color, thumb){
 		this.range = 40;
-		this.maxEnergy = 12000;
-		this.currentEnergy = 12000;
+		this.maxEnergy = 10000;
+		this.currentEnergy = 10000;
 		this.maxBulletEnergy = 100;
 		this.currentBulletEnergy = 100;
 		this.recoverBulletEnergy = 0.5;
@@ -20,12 +20,14 @@ var PlayerModel = Class.extend({
 		this.imgSourceGame = graphicsObject.inGame?graphicsObject.inGame:'piangersNGame.png';
 		this.imgSource = graphicsObject.outGame?graphicsObject.outGame:this.imgSourceGame;
 		this.coverSource = graphicsObject.coverSource?graphicsObject.coverSource:'dist/img/UI/jeisoGrande.png';
-		this.bulletSource = graphicsObject.bullet?graphicsObject.bullet:'bullet.png';
+		this.bulletSource = graphicsObject.bullet?graphicsObject.bullet:'feterFire.png';
 		this.bulletParticleSource = graphicsObject.bulletParticle?graphicsObject.bulletParticle:this.bulletSource;
 		this.smoke = graphicsObject.smoke?graphicsObject.smoke:'smoke.png';
 		this.bulletRotation = graphicsObject.bulletRotation?graphicsObject.bulletRotation:false;
 		this.energyCoast = statsObject.energyCoast?statsObject.energyCoast:1;
-		this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2;
+		this.energyCoast = 4 - this.energyCoast;
+		console.log(this.energyCoast);
+		// this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2.5;
 		// console.log(this.energyCoast);
 		this.bulletCoast = statsObject.bulletCoast?statsObject.bulletCoast:0.2;
 		this.velocity = statsObject.vel?statsObject.vel:2;

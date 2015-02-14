@@ -25,6 +25,7 @@ var AppModel = Class.extend({
 				inGame:'alcemarGame.png',
 				bullet:'alcemarFire.png',
 				bulletRotation: true,
+				bulletParticle:'partalcemar.png',
 				color:0xB2D464,
 				thumb:'thumb_alcemar',
 				coverSource:'dist/img/UI/alcemarGrande.png'
@@ -44,6 +45,7 @@ var AppModel = Class.extend({
 				inGame:'piangersNGame.png',
 				bullet:'piangersFire.png',
 				bulletRotation: true,
+				bulletParticle:'partpiangers1.png',
 				color:0x74CDDF,
 				thumb:'thumb_piangers',
 				coverSource:'dist/img/UI/piangersGrande.png'
@@ -63,6 +65,7 @@ var AppModel = Class.extend({
 				inGame:'poterGame.png',
 				bullet:'potterFire.png',
 				bulletRotation: true,
+				bulletParticle:'partpotter.png',
 				color:0xFAAF4C,
 				thumb:'thumb_poter',
 				coverSource:'dist/img/UI/poterGrande.png'
@@ -81,6 +84,7 @@ var AppModel = Class.extend({
 				outGame:'arthur.png',
 				inGame:'arthurGame.png',
 				bullet:'arthurFire.png',
+				bulletParticle:'partarthur.png',
 				color:0xB383B9,
 				thumb:'thumb_arthur',
 				coverSource:'dist/img/UI/arthurGrande.png'
@@ -100,12 +104,13 @@ var AppModel = Class.extend({
 				inGame:'poraGame.png',
 				bullet:'poraFire.png',
 				bulletRotation: true,
+				bulletParticle:'partexplosao.png',
 				color:0xFDCE07,
 				thumb:'thumb_pora',
 				coverSource:'dist/img/UI/poraGrande.png'
 			},
 			{
-				energyCoast:2.9,
+				energyCoast:2.6,
 				vel:1.5,
 				bulletForce:1.3,
 				bulletCoast:0.11,
@@ -118,6 +123,7 @@ var AppModel = Class.extend({
 				outGame:'jeso.png',
 				inGame:'jesoGame.png',
 				bullet:'jeisoFire.png',
+				bulletParticle:'partjeiso.png',
 				color:0x88C440,
 				thumb:'thumb_jeiso',
 				coverSource:'dist/img/UI/jeisoGrande.png'
@@ -137,6 +143,7 @@ var AppModel = Class.extend({
 				inGame:'piGame.png',
 				bullet:'piFire.png',
 				bulletRotation: true,
+				bulletParticle:'partpi.png',
 				color:0x8F6DAF,
 				thumb:'thumb_pi',
 				coverSource:'dist/img/UI/piGrande.png'
@@ -155,6 +162,7 @@ var AppModel = Class.extend({
 				outGame:'feter.png',
 				inGame:'feterGame.png',
 				bullet:'feterFire.png',
+				bulletParticle:'partexplosao.png',
 				color:0xEE4323,
 				thumb:'thumb_feter',
 				coverSource:'dist/img/UI/feterGrande.png'
@@ -173,6 +181,7 @@ var AppModel = Class.extend({
 				outGame:'neto.png',
 				inGame:'netoGame.png',
 				bullet:'netoFire.png',
+				bulletParticle:'partneto.png',
 				color:0xB3A170,
 				thumb:'thumb_neto',
 				coverSource:'dist/img/UI/netoGrande.png'
@@ -191,6 +200,7 @@ var AppModel = Class.extend({
 				outGame:'rodaika.png',
 				inGame:'rodaikaGame.png',
 				bullet:'rodaikaFire.png',
+				bulletParticle:'partrodaika2.png',
 				color:0xF284AA,
 				thumb:'thumb_rodaika',
 				coverSource:'dist/img/UI/rodaikaGrande.png'
@@ -208,13 +218,107 @@ var AppModel = Class.extend({
 
 		this.birdModels = [
 			//source, target, hp, demage, vel, behaviour, toNext, sizePercent, money
-			new BirdModel('caralinho.png',null, 1, 0.2, -3.5, new BirdBehaviourDefault(), 50, 0.12, 3),
-			new BirdModel('belga.png',null, 3, 0.1, 1.5, new BirdBehaviourSinoid({sinAcc:0.05}), 110, 0.15, 5),
-			new BirdModel('lambecu.png',null, 6, 0.2, -1.5, new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}), 150, 0.15, 8),
-			new BirdModel('roxo.png',null, 12, 0.2, -2, new BirdBehaviourDiag({accX:0.00}), 160, 0.20, 10),
-			// new BirdModel('roxo.png',null, 10, 0.2, -1.8, new BirdBehaviourDiag({accX:0.02}), 200, 0.20, 10),
-			new BirdModel('nocu.png',null, 12, 0.2, -2, new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}), 250, 0.2, 20),
-			new BirdModel('nigeriano.png',null, 50, 0.1, 0.6, new BirdBehaviourSinoid({sinAcc:0.08}), 600, 0.3, 50)
+			  
+
+			new BirdModel({
+				source:'caralinho.png',
+				particles:['cabeca2.png', 'penas2.png'],
+				egg:'',
+				sizePercent:0.12
+			},
+			{
+				target:null,
+				hp:1,
+				demage:0.2,
+				vel:-3.5,
+				behaviour:new BirdBehaviourDefault(),
+				toNext:50,
+				money:3
+			}),
+
+
+
+			
+
+			new BirdModel({
+				source:'belga.png',
+				particles:['cabeca5.png', 'penas5.png'],
+				egg:'',
+				sizePercent:0.15
+			},
+			{
+				target:null,
+				hp:3,
+				demage:0.2,
+				vel:-1.5,
+				behaviour:new BirdBehaviourSinoid({sinAcc:0.05}),
+				toNext:110,
+				money:5
+			}),
+
+			new BirdModel({
+				source:'lambecu.png',
+				particles:['cabeca4.png', 'penas4.png'],
+				egg:'',
+				sizePercent:0.15
+			},
+			{
+				target:null,
+				hp:6,
+				demage:0.2,
+				vel:-1.5,
+				behaviour:new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}),
+				toNext:150,
+				money:8
+			}),
+
+			new BirdModel({
+				source:'roxo.png',
+				particles:['cabeca6.png', 'penas6.png'],
+				egg:'',
+				sizePercent:0.2
+			},
+			{
+				target:null,
+				hp:12,
+				demage:0.2,
+				vel:-2,
+				behaviour:new BirdBehaviourDiag({accX:0.00}),
+				toNext:150,
+				money:10
+			}),
+
+			new BirdModel({
+				source:'nocu.png',
+				particles:['cabeca3.png', 'penas3.png'],
+				egg:'',
+				sizePercent:0.2
+			},
+			{
+				target:null,
+				hp:12,
+				demage:0.2,
+				vel:-2,
+				behaviour: new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}),
+				toNext:250,
+				money:20
+			}),
+
+			new BirdModel({
+				source:'nigeriano.png',
+				particles:['cabeca1.png', 'penas1.png'],
+				egg:'',
+				sizePercent:0.3
+			},
+			{
+				target:null,
+				hp:50,
+				demage:0.2,
+				vel:-0.5,
+				behaviour: new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}),
+				toNext:600,
+				money:50
+			}),
 		];
 
 		this.setModel(0);

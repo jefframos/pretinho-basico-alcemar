@@ -136,10 +136,11 @@ var GameScreen = AbstractScreen.extend({
             timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletParticleSource, this.playerModel.bulletRotation);
         bullet.build();
         //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
-        bullet.setPosition(this.red.getPosition().x * 0.8, this.red.getPosition().y * 0.8);
+        bullet.setPosition(this.red.getPosition().x * 0.8, this.red.getPosition().y - this.red.getContent().height * 0.8);
         this.layer.addChild(bullet);
 
-        var scaleBullet = scaleConverter(this.red.getContent().width, bullet.getContent().width, 0.8);
+
+        scaleConverter(bullet.getContent().height,this.red.getContent().height, 0.2, bullet);
         this.playerModel.currentBulletEnergy -= this.playerModel.maxBulletEnergy * this.playerModel.bulletCoast;
 
         if(this.playerModel.currentBulletEnergy < 0){
@@ -225,7 +226,7 @@ var GameScreen = AbstractScreen.extend({
             this.pointsLabel.rotation = Math.random() * 0.7 - 0.25;
             this.labelAcum = 20;
         }else if(this.labelAcum === 0){
-            this.pointsLabel.position.x = this.moneyContainer.width - 20;//(this.moneyContainer.width) - this.pointsLabel.width - 20;
+            this.pointsLabel.position.x = this.moneyContainer.width / this.moneyContainer.scale.x - this.pointsLabel.width - 20;//(this.moneyContainer.width) - this.pointsLabel.width - 20;
             this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1;
             this.pointsLabel.rotation = 0;
         }
