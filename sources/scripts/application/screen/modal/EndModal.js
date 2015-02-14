@@ -130,6 +130,9 @@ var EndModal = Class.extend({
 		this.contents.position.y = windowHeight / 2 - this.contents.height / 2;
 		this.container.addChild(this.contents);
 
+		this.contents.alpha = 0;
+		this.contents.visible = false;
+
 		console.log(this.icons.position, this.contents.position, this.contents.width);
 
 
@@ -210,9 +213,11 @@ var EndModal = Class.extend({
 			this.container.interactive = false;
 		}
 		this.boxContainer.visible = true;
+		this.contents.visible = true;
 		// TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.background.getContent().height * this.containerScale / 2, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer.position, 1, {y:windowHeight - this.boxContainer.height - 20, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:1});
+		TweenLite.to(this.contents, 0.5, {alpha:1});
 	},
 	hide:function(callback){
 		var self = this;

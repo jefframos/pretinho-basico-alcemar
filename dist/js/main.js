@@ -1713,7 +1713,7 @@ var Application = AbstractApplication.extend({
         this.contents.addChild(this.labels), scaleConverter(this.contents.height, windowHeight, .4, this.contents), 
         this.labels.position.x = this.icons.x + this.icons.width + 20, this.contents.position.x = windowWidth / 2 - this.mascadaLabel.width * this.contents.scale.x, 
         this.contents.position.y = windowHeight / 2 - this.contents.height / 2, this.container.addChild(this.contents), 
-        console.log(this.icons.position, this.contents.position, this.contents.width);
+        this.contents.alpha = 0, this.contents.visible = !1, console.log(this.icons.position, this.contents.position, this.contents.width);
     },
     show: function(newPlayers) {
         if (this.currentBirds.setText(APP.getGameModel().currentPoints), this.currentCoin.setText(APP.getGameModel().currentPoints), 
@@ -1752,10 +1752,13 @@ var Application = AbstractApplication.extend({
     showPoints: function() {
         this.newCharContainer && (TweenLite.to(this.newCharContainer, .5, {
             alpha: 0
-        }), this.container.interactive = !1), this.boxContainer.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
+        }), this.container.interactive = !1), this.boxContainer.visible = !0, this.contents.visible = !0, 
+        TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 1
+        }), TweenLite.to(this.contents, .5, {
             alpha: 1
         });
     },
