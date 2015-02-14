@@ -56,7 +56,7 @@ var AppModel = Class.extend({
 				bulletForce:1.2,
 				bulletCoast:0.12,
 				bulletVel:7,
-				toAble: 50
+				toAble: 10
 			}
 			),
 			new PlayerModel({
@@ -71,12 +71,12 @@ var AppModel = Class.extend({
 				coverSource:'dist/img/UI/poterGrande.png'
 			},
 			{
-				energyCoast:1.7,
-				vel:1.7,
+				energyCoast:1.9,
+				vel:1.5,
 				bulletForce:1.5,
 				bulletCoast:0.15,
 				bulletVel:7,
-				toAble: 500
+				toAble: 350
 			}
 			),
 			new PlayerModel({
@@ -218,13 +218,12 @@ var AppModel = Class.extend({
 
 		this.birdModels = [
 			//source, target, hp, demage, vel, behaviour, toNext, sizePercent, money
-			  
-
 			new BirdModel({
 				source:'caralinho.png',
 				particles:['cabeca2.png', 'penas2.png'],
 				egg:'',
-				sizePercent:0.12
+				sizePercent:0.11,
+				label:'Caralinho da terra'
 			},
 			{
 				target:null,
@@ -233,18 +232,16 @@ var AppModel = Class.extend({
 				vel:-3.5,
 				behaviour:new BirdBehaviourDefault(),
 				toNext:50,
-				money:3
+				money:1
 			}),
-
-
-
-			
 
 			new BirdModel({
 				source:'belga.png',
 				particles:['cabeca5.png', 'penas5.png'],
-				egg:'',
-				sizePercent:0.15
+				egg:'ovo2.png',
+				sizePercent:0.15,
+				label:'Caralho Belga'
+
 			},
 			{
 				target:null,
@@ -253,14 +250,16 @@ var AppModel = Class.extend({
 				vel:-1.5,
 				behaviour:new BirdBehaviourSinoid({sinAcc:0.05}),
 				toNext:110,
-				money:5
+				money:3
 			}),
 
 			new BirdModel({
 				source:'lambecu.png',
 				particles:['cabeca4.png', 'penas4.png'],
-				egg:'',
-				sizePercent:0.15
+				egg:'ovo3.png',
+				sizePercent:0.15,
+				label:'Lambecu Francês'
+
 			},
 			{
 				target:null,
@@ -269,14 +268,16 @@ var AppModel = Class.extend({
 				vel:-1.5,
 				behaviour:new BirdBehaviourSinoid({sinAcc:0.05, velY:-3}),
 				toNext:150,
-				money:8
+				money:4
 			}),
 
 			new BirdModel({
 				source:'roxo.png',
 				particles:['cabeca6.png', 'penas6.png'],
-				egg:'',
-				sizePercent:0.2
+				egg:'ovo4.png',
+				sizePercent:0.2,
+				label:'Papacu de cabeça roxa'
+
 			},
 			{
 				target:null,
@@ -285,14 +286,16 @@ var AppModel = Class.extend({
 				vel:-2,
 				behaviour:new BirdBehaviourDiag({accX:0.00}),
 				toNext:150,
-				money:10
+				money:6
 			}),
 
 			new BirdModel({
 				source:'nocu.png',
 				particles:['cabeca3.png', 'penas3.png'],
-				egg:'',
-				sizePercent:0.2
+				egg:'ovo5.png',
+				sizePercent:0.2,
+				label:'Nocututinha'
+
 			},
 			{
 				target:null,
@@ -307,15 +310,17 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'nigeriano.png',
 				particles:['cabeca1.png', 'penas1.png'],
-				egg:'',
-				sizePercent:0.3
+				egg:'ovo6.png',
+				sizePercent:0.3,
+				label:'Piçudão azul nigeriano'
+
 			},
 			{
 				target:null,
 				hp:50,
 				demage:0.2,
 				vel:-0.5,
-				behaviour: new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}),
+				behaviour: new BirdBehaviourSinoid2({sinAcc:0.08, velY:-2}),
 				toNext:600,
 				money:50
 			}),
@@ -343,6 +348,7 @@ var AppModel = Class.extend({
 		this.currentHorde = 0;
 		this.totalPoints = 0;
 		this.totalBirds = 1;
+		this.totalPlayers = 1;
 		this.cookieManager.setCookie('totalPoints', 0, 500);
 		this.cookieManager.setCookie('totalBirds', 1, 500);
 
@@ -387,11 +393,20 @@ var AppModel = Class.extend({
 		this.lastID = id;
 		return bird;
 	},
-	ableNewBird:function(){
-		if(this.totalBirds >= 6){
+	ableNewBird:function(birdModel){
+
+		if(this.totalBirds >= this.birdModels.length){
 			return;
 		}
-		this.totalBirds ++;
+		this.totalBirds = 0;
+		for (var i = 0; i < this.birdModels.length; i++) {
+			this.totalBirds ++;
+			if(this.birdModels[i].label === birdModel.label){
+				console.log(this.birdModels[i].label, birdModel.label);
+				break;
+			}
+		}
+		console.log(this.totalBirds);
 		this.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
 	},
 	addPoints:function(){

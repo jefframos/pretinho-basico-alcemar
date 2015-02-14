@@ -2,8 +2,8 @@
 var PlayerModel = Class.extend({
 	init:function(graphicsObject, statsObject){//source, sourceGame,ecoast, bcoast, vel, bvel, bforce, bullet, color, thumb){
 		this.range = 40;
-		this.maxEnergy = 10000;
-		this.currentEnergy = 10000;
+		this.maxEnergy = 7000;
+		this.currentEnergy = 8000;
 		this.maxBulletEnergy = 100;
 		this.currentBulletEnergy = 100;
 		this.recoverBulletEnergy = 0.5;

@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var Egg = Entity.extend({
-    init:function(){
+    init:function(birdModel, screen){
         this._super( true );
         this.updateable = false;
         this.deading = false;
@@ -9,10 +9,11 @@ var Egg = Entity.extend({
         this.height = 1;
         this.type = 'item';
 
-        this.vel = 2;
-
+        this.vel = 0.5;
+        this.screen = screen;
+        this.birdModel = birdModel;
         this.velocity.x = -this.vel;
-        this.imgSource = 'gasoline.png';
+        this.imgSource = birdModel.egg;
     },
     build: function(){
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
@@ -35,28 +36,24 @@ var Egg = Entity.extend({
             this.velocity.x = -Math.abs(this.vel);
         }
 
-
-        // console.log(this.velocity);
-        this.range = this.sprite.height * 0.5;// * this.sprite.scale.x;
+        this.range = this.sprite.height * 0.5;
 
         if(this.collideArea){
             return;
         }
-        // this.collideArea = new PIXI.Graphics();
-        // this.collideArea.lineStyle(1,0x665544);
-        // this.collideArea.drawCircle(this.centerPosition.x,this.centerPosition.y,this.range);
-        // this.getContent().addChild(this.collideArea);
     },
     preKill:function(){
-        for (var i = 4; i >= 0; i--) {
-            var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, 'smoke.png', Math.random() * 0.1);
-            particle.build();
-            particle.gravity = 0.1 * Math.random();
-            particle.alphadecres = 0.08;
-            particle.setPosition(this.getPosition().x - (Math.random() + this.getContent().width * 0.1) / 2,
-                this.getPosition().y);
-            this.layer.addChild(particle);
-        }
+        // for (var i = this.birdModel.particles.length; i >= 0; i--) {
+        //     var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, this.birdModel.particles[i], Math.random() * 0.1);
+        //     particle.build();
+        //     particle.gravity = 0.1 * Math.random();
+        //     particle.alphadecres = 0.08;
+        //     particle.setPosition(this.getPosition().x - (Math.random() + this.getContent().width * 0.1) / 2,
+        //         this.getPosition().y);
+        //     this.layer.addChild(particle);
+        // }
+        APP.getGameModel().ableNewBird(this.birdModel);
+        this.screen.newBirdModal.show([this.birdModel]);
         this.collidable = false;
         this.kill = true;
     }

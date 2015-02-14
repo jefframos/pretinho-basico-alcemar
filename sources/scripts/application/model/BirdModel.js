@@ -6,6 +6,7 @@ var BirdModel = Class.extend({
 		this.particles = graphicsObject.particles?graphicsObject.particles:['smoke.png'];
 		this.egg = graphicsObject.egg?graphicsObject.egg:['smoke.png'];
 		this.sizePercent = graphicsObject.sizePercent?graphicsObject.sizePercent:0.2;
+		this.label = graphicsObject.label?graphicsObject.label:'';
 		
 		this.demage = statsObjec.demage;
 		this.vel = statsObjec.vel;

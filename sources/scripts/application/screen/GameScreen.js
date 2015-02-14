@@ -215,6 +215,12 @@ var GameScreen = AbstractScreen.extend({
         this.updateParticles();
         this.updateItens();
         this.updateClouds();
+        if(this.createEggAccum === 0){
+            this.createEgg();
+            this.createEggAccum = -1;
+        }else{
+            this.createEggAccum --;
+        }
         if(this.labelAcum > 0){
             this.labelAcum --;
         }
@@ -253,7 +259,7 @@ var GameScreen = AbstractScreen.extend({
             bird.setScale( scale,scale);
             //// console.log(bird);
             bird.setPosition(bird.behaviour.position.x ,bird.behaviour.position.y);
-            console.log(bird.behaviour.position.y);
+            // console.log(bird.behaviour.position.y);
             this.spawner = bird.birdModel.toNext;
 
         }else{
@@ -262,7 +268,7 @@ var GameScreen = AbstractScreen.extend({
     },
     updateItens:function(){
         if(this.itemAccum < 0){
-            this.itemAccum = 2000 + Math.random() * 2000;
+            this.itemAccum = 2400 + Math.random() * 2000;
             var item = new Item();
             item.build();
             item.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));
@@ -427,17 +433,6 @@ var GameScreen = AbstractScreen.extend({
         };
         scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.12, this.pauseButton);
         this.pauseButton.setPosition( windowWidth - (this.pauseButton.getContent().width) - 20,windowHeight - (this.pauseButton.getContent().height) - 20);
-        // if(possibleFullscreen()){
-        //     this.fullScreen = new DefaultButton('dist/img/UI/simpleButtonUp.png', 'dist/img/UI/simpleButtonOver.png');
-        //     this.fullScreen.build(40, 20);
-        //     this.fullScreen.setPosition( windowWidth * 0.95 - 20,windowHeight * 0.95 - 35);
-        //     this.addChild(this.fullScreen);
-        //     this.fullScreen.addLabel(new PIXI.Text('Full', {font:'10px Arial'}),5,5);
-        //     this.fullScreen.clickCallback = function(){
-        //         fullscreen();
-        //     };
-        // }
-
         this.initBench = false;
 
         this.gameHUD = new PIXI.DisplayObjectContainer();
@@ -473,10 +468,20 @@ var GameScreen = AbstractScreen.extend({
 
         this.endModal = new EndModal(this);
         // this.endModal.show();
+        this.newBirdModal = new NewBirdModal(this);
+        // this.newBird.show();
 
         this.pauseModal = new PauseModal(this);
 
-        
+        console.log( APP.getGameModel().totalBirds , APP.getGameModel().totalPlayers);
+
+        if(APP.getGameModel().totalPlayers > APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
+            this.createEggAccum = Math.floor(Math.random() * 800 + 200);
+            console.log('egg', this.createEggAccum);
+        }else{
+            this.createEggAccum = -1;
+        }
+
 
         // add first cloud
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
@@ -487,6 +492,15 @@ var GameScreen = AbstractScreen.extend({
         simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale;
         this.vecClouds.push(simpleEntity);
         
+    },
+    createEgg:function(){
+        console.log('(egg)');
+        this.egg = new Egg(APP.getGameModel().birdModels[APP.getGameModel().totalBirds], this);
+        this.egg.build();
+        this.egg.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));
+        this.layer.addChild(this.egg);
+        scaleConverter(this.egg.getContent().height, windowHeight, 0.15, this.egg);
+        this.layer.addChild(this.egg);
     },
     updatePoints:function(value){
         APP.getGameModel().currentPoints += value;
