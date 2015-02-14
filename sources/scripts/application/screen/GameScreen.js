@@ -476,7 +476,7 @@ var GameScreen = AbstractScreen.extend({
 
         console.log( APP.getGameModel().totalBirds , APP.getGameModel().totalPlayers);
 
-        if(APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
+        if(APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
             this.createEggAccum = Math.floor(Math.random() * 800 + 200);
         }else{
             this.createEggAccum = -1;
