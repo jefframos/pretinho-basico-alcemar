@@ -93,7 +93,7 @@ var AppModel = Class.extend({
 				energyCoast:2.4,
 				vel:1.5,
 				bulletForce:2.2,
-				bulletCoast:0.1,
+				bulletCoast:0.15,
 				bulletVel:6,
 				toAble: 800
 			}

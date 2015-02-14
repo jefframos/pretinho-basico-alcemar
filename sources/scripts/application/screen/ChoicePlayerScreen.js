@@ -294,33 +294,33 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.createStatsContainer();
         this.updatePlayers(true);
     
-        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
-        TweenLite.to(this.frontShape.position, 1, {delay:0.2, y:windowHeight});
+        // this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        // TweenLite.to(this.frontShape.position, 1, {delay:0.2, y:windowHeight});
         // setTimeout(function(){
 
         // self.screenManager.change('Game');
         // }, 1000);
     },
-    transitionIn:function()
-    {
-        // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
-        this.frontShape = new PIXI.Graphics();
-        this.frontShape.beginFill(0xFFFFFF);
-        this.frontShape.drawRect(0,0,windowWidth, windowHeight + 10);
-        this.addChild(this.frontShape);
-        this.build();
+    // transitionIn:function()
+    // {
+    //     // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
+    //     this.frontShape = new PIXI.Graphics();
+    //     this.frontShape.beginFill(0xFFFFFF);
+    //     this.frontShape.drawRect(0,0,windowWidth, windowHeight + 10);
+    //     this.addChild(this.frontShape);
+    //     this.build();
 
-    },
-    transitionOut:function(nextScreen, container)
-    {
-        var self = this;
-        this.frontShape.position.y = - windowHeight;
-        TweenLite.to(this.frontShape.position, 0.8, {y:0, ease:'easeOutBounce', onComplete:function(){
-            self.destroy();
-            container.removeChild(self.getContent());
-            nextScreen.transitionIn();
-        }});
-    },
+    // },
+    // transitionOut:function(nextScreen, container)
+    // {
+    //     var self = this;
+    //     this.frontShape.position.y = - windowHeight;
+    //     TweenLite.to(this.frontShape.position, 0.8, {y:0, ease:'easeOutBounce', onComplete:function(){
+    //         self.destroy();
+    //         container.removeChild(self.getContent());
+    //         nextScreen.transitionIn();
+    //     }});
+    // },
     createStatsContainer:function(){
         this.statsContainer = new PIXI.DisplayObjectContainer();
         this.addChild(this.statsContainer);

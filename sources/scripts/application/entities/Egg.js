@@ -7,7 +7,7 @@ var Egg = Entity.extend({
         this.range = 80;
         this.width = 1;
         this.height = 1;
-        this.type = 'item';
+        this.type = 'egg';
 
         this.vel = 0.5;
         this.screen = screen;

@@ -268,7 +268,8 @@ var GameScreen = AbstractScreen.extend({
     },
     updateItens:function(){
         if(this.itemAccum < 0){
-            this.itemAccum = 2400 + Math.random() * 2000;
+            console.log(this.playerModel.energyCoast, 'coast');
+            this.itemAccum = 1400 + Math.random() * 2000 + 3000 / this.playerModel.energyCoast;
             var item = new Item();
             item.build();
             item.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));
@@ -399,8 +400,8 @@ var GameScreen = AbstractScreen.extend({
         this.gasolineIco.getContent().anchor.y = 0.5;
         this.gasolineIco.getContent().scale.x = 0.8;
         this.gasolineIco.getContent().scale.y = 0.8;
-        this.gasolineIco.getContent().position.x = this.gasolineIco.getContent().width * this.gasolineIco.getContent().scale.x;//this.gasolineIco.getContent().width * 0.6-5;
-        this.gasolineIco.getContent().position.y = this.energyBar.getContent().height / 2 + 5;
+        this.gasolineIco.getContent().position.x = 50;//this.gasolineIco.getContent().width * 0.6-5;
+        this.gasolineIco.getContent().position.y = 20;
         this.energyBar.getContent().addChild(this.gasolineIco.getContent());
         
         // this.bulletBar = new GasBarView('fireBarBack.png', 'fireBar.png', 2, 4);
@@ -415,7 +416,7 @@ var GameScreen = AbstractScreen.extend({
         this.bulletIco.getContent().scale.x = 0.9;
         this.bulletIco.getContent().scale.y = 0.9;
         this.bulletIco.getContent().position.x = 46;//this.bulletIco.getContent().width * 0.6-5;
-        this.bulletIco.getContent().position.y = this.bulletBar.getContent().height / 2 + 5;
+        this.bulletIco.getContent().position.y = 15;
         this.bulletBar.getContent().addChild(this.bulletIco.getContent());
 
         this.addChild(barsContainer);
@@ -475,9 +476,8 @@ var GameScreen = AbstractScreen.extend({
 
         console.log( APP.getGameModel().totalBirds , APP.getGameModel().totalPlayers);
 
-        if(APP.getGameModel().totalPlayers > APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
+        if(APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
             this.createEggAccum = Math.floor(Math.random() * 800 + 200);
-            console.log('egg', this.createEggAccum);
         }else{
             this.createEggAccum = -1;
         }
