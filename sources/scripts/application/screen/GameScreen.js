@@ -482,7 +482,7 @@ var GameScreen = AbstractScreen.extend({
             this.createEggAccum = -1;
         }
 
-
+        // this.createEgg();
         // add first cloud
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
         simpleEntity.velocity.x = -0.1;

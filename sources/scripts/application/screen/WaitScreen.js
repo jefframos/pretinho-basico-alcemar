@@ -83,23 +83,23 @@ var WaitScreen = AbstractScreen.extend({
         }
 
         this.zerarCookie = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.zerarCookie.build(200, 100);
-        scaleConverter(this.zerarCookie.height, windowHeight, 0.1, this.zerarCookie);
+        this.zerarCookie.build(200, 200);
+        scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
 
         this.zerarCookie.setPosition( 20, 20);
         this.addChild(this.zerarCookie);
-        this.zerarCookie.addLabel(new PIXI.Text('Zerar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,20);
+        this.zerarCookie.addLabel(new PIXI.Text('Zerar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
         this.zerarCookie.clickCallback = function(){
             APP.getGameModel().zerarTudo();
         };
 
         this.maxPoints = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-        this.maxPoints.build(200, 100);
-        scaleConverter(this.maxPoints.height, windowHeight, 0.1, this.maxPoints);
+        this.maxPoints.build(200, 200);
+        scaleConverter(this.maxPoints.height, windowHeight, 0.2, this.maxPoints);
 
         this.maxPoints.setPosition( 20 + this.zerarCookie.getContent().width + 10, 20);
         this.addChild(this.maxPoints);
-        this.maxPoints.addLabel(new PIXI.Text(' MAX ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,20);
+        this.maxPoints.addLabel(new PIXI.Text(' MAX ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
         this.maxPoints.clickCallback = function(){
             APP.getGameModel().maxPoints();
         };

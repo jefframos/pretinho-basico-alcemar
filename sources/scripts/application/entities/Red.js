@@ -136,6 +136,9 @@ var Red = SpritesheetEntity.extend({
 						if(this.playerModel.currentEnergy > this.playerModel.maxEnergy){
 							this.playerModel.currentEnergy = this.playerModel.maxEnergy;
 						}
+						// console.log(entity.type);
+						entity.preKill();
+					}else{
 						entity.preKill();
 					}
 					// else{
