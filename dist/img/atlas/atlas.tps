@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/atlas/atlas.tps</string>
+        <string>C:/wamp/www/pretinho-basico-alcemar/dist/img/atlas/atlas.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -86,9 +86,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>1024</int>
+            <int>2048</int>
             <key>height</key>
-            <int>1024</int>
+            <int>2048</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -188,11 +188,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>belga.png</filename>
             <filename>smoke.png</filename>
-            <filename>lambecu.png</filename>
-            <filename>roxo.png</filename>
-            <filename>bullet.png</filename>
             <filename>piangersN.png</filename>
             <filename>feter.png</filename>
             <filename>neto.png</filename>
@@ -203,8 +199,6 @@
             <filename>rodaika.png</filename>
             <filename>alcemar.png</filename>
             <filename>arthur.png</filename>
-            <filename>bulletParticle.png</filename>
-            <filename>bulletSmall.png</filename>
             <filename>netoGame.png</filename>
             <filename>rodaikaGame.png</filename>
             <filename>arthurGame.png</filename>
@@ -215,6 +209,45 @@
             <filename>poraGame.png</filename>
             <filename>piGame.png</filename>
             <filename>feterGame.png</filename>
+            <filename>birds/belga.png</filename>
+            <filename>birds/caralinho.png</filename>
+            <filename>birds/lambecu.png</filename>
+            <filename>birds/nigeriano.png</filename>
+            <filename>birds/nocu.png</filename>
+            <filename>birds/roxo.png</filename>
+            <filename>bullets/alcemarFire.png</filename>
+            <filename>bullets/arthurFire.png</filename>
+            <filename>bullets/feterFire.png</filename>
+            <filename>bullets/jeisoFire.png</filename>
+            <filename>bullets/netoFire.png</filename>
+            <filename>bullets/piangersFire.png</filename>
+            <filename>bullets/piFire.png</filename>
+            <filename>bullets/poraFire.png</filename>
+            <filename>bullets/potterFire.png</filename>
+            <filename>bullets/rodaikaFire.png</filename>
+            <filename>particles/partalcemar.png</filename>
+            <filename>particles/partarthur.png</filename>
+            <filename>particles/partexplosao.png</filename>
+            <filename>particles/partjeiso.png</filename>
+            <filename>particles/partneto.png</filename>
+            <filename>particles/partpi.png</filename>
+            <filename>particles/partpiangers1.png</filename>
+            <filename>particles/partpiangers2.png</filename>
+            <filename>particles/partpotter.png</filename>
+            <filename>particles/partrodaika1.png</filename>
+            <filename>particles/partrodaika2.png</filename>
+            <filename>particles/cabeca6.png</filename>
+            <filename>particles/penas1.png</filename>
+            <filename>particles/penas2.png</filename>
+            <filename>particles/penas3.png</filename>
+            <filename>particles/penas4.png</filename>
+            <filename>particles/penas5.png</filename>
+            <filename>particles/penas6.png</filename>
+            <filename>particles/cabeca1.png</filename>
+            <filename>particles/cabeca2.png</filename>
+            <filename>particles/cabeca3.png</filename>
+            <filename>particles/cabeca4.png</filename>
+            <filename>particles/cabeca5.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

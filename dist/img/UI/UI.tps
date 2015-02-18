@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/UI/UI.tps</string>
+        <string>C:/wamp/www/pretinho-basico-alcemar/dist/img/UI/UI.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -195,8 +195,6 @@
             <filename>pista.png</filename>
             <filename>selectedInner.png</filename>
             <filename>backBars.png</filename>
-            <filename>birdContainer.png</filename>
-            <filename>endModalBg.png</filename>
             <filename>gasoline.png</filename>
             <filename>reducingPB/thumb_alcemar_gray.png</filename>
             <filename>reducingPB/thumb_arthur_gray.png</filename>
@@ -228,7 +226,6 @@
             <filename>menuButton.png</filename>
             <filename>pauseButton.png</filename>
             <filename>replayButton.png</filename>
-            <filename>saveButton.png</filename>
             <filename>twitterButton.png</filename>
             <filename>gasBarBack2.png</filename>
             <filename>gasBar2.png</filename>
@@ -236,6 +233,20 @@
             <filename>moneyContainer.png</filename>
             <filename>coin.png</filename>
             <filename>coins.png</filename>
+            <filename>feitoo.png</filename>
+            <filename>holofote.png</filename>
+            <filename>novorecruta.png</filename>
+            <filename>trofeuButton.png</filename>
+            <filename>penasfundo2.png</filename>
+            <filename>nova_ave.png</filename>
+            <filename>ovo2.png</filename>
+            <filename>ovo3.png</filename>
+            <filename>ovo4.png</filename>
+            <filename>ovo5.png</filename>
+            <filename>ovo6.png</filename>
+            <filename>ovoquebrado.png</filename>
+            <filename>penasfundo1.png</filename>
+            <filename>moeda.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

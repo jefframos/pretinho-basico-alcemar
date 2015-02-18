@@ -1,4 +1,4 @@
-/*! jefframos 14-02-2015 */
+/*! jefframos 17-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -648,9 +648,9 @@ var Application = AbstractApplication.extend({
     collide: function(arrayCollide) {
         if (this.collidable) for (var i = arrayCollide.length - 1; i >= 0; i--) {
             var entity = arrayCollide[i];
-            "bullet" !== entity.type && "item" === entity.type && (this.playerModel.currentEnergy += .3 * this.playerModel.maxEnergy, 
+            "bullet" !== entity.type && ("item" === entity.type ? (this.playerModel.currentEnergy += .3 * this.playerModel.maxEnergy, 
             this.playerModel.currentEnergy > this.playerModel.maxEnergy && (this.playerModel.currentEnergy = this.playerModel.maxEnergy), 
-            entity.preKill());
+            entity.preKill()) : entity.preKill());
         }
     },
     destroy: function() {
@@ -1507,7 +1507,7 @@ var Application = AbstractApplication.extend({
         this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10, 
         this.updateable = !0, this.endModal = new EndModal(this), this.newBirdModal = new NewBirdModal(this), 
         this.pauseModal = new PauseModal(this), console.log(APP.getGameModel().totalBirds, APP.getGameModel().totalPlayers), 
-        this.createEggAccum = APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
+        this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
         simpleEntity.velocity.x = -.1, simpleEntity.setPosition(.1 * windowWidth, +Math.random() * windowHeight * .2), 
         this.backLayer.addChild(simpleEntity);
@@ -1577,17 +1577,17 @@ var Application = AbstractApplication.extend({
         }), 25, 28), this.fullScreen.clickCallback = function() {
             fullscreen();
         }), this.zerarCookie = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.zerarCookie.build(200, 100), scaleConverter(this.zerarCookie.height, windowHeight, .1, this.zerarCookie), 
+        this.zerarCookie.build(200, 200), scaleConverter(this.zerarCookie.height, windowHeight, .2, this.zerarCookie), 
         this.zerarCookie.setPosition(20, 20), this.addChild(this.zerarCookie), this.zerarCookie.addLabel(new PIXI.Text("Zerar", {
             align: "center",
             fill: "#033E43",
             font: "50px Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
-        }), 28, 20), this.zerarCookie.clickCallback = function() {
+        }), 28, 80), this.zerarCookie.clickCallback = function() {
             APP.getGameModel().zerarTudo();
         }, this.maxPoints = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.maxPoints.build(200, 100), scaleConverter(this.maxPoints.height, windowHeight, .1, this.maxPoints), 
+        this.maxPoints.build(200, 200), scaleConverter(this.maxPoints.height, windowHeight, .2, this.maxPoints), 
         this.maxPoints.setPosition(20 + this.zerarCookie.getContent().width + 10, 20), this.addChild(this.maxPoints), 
         this.maxPoints.addLabel(new PIXI.Text(" MAX ", {
             align: "center",
@@ -1595,7 +1595,7 @@ var Application = AbstractApplication.extend({
             font: "50px Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
-        }), 28, 20), this.maxPoints.clickCallback = function() {
+        }), 28, 80), this.maxPoints.clickCallback = function() {
             APP.getGameModel().maxPoints();
         };
     },
