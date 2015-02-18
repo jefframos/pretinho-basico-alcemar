@@ -1,4 +1,4 @@
-/*! jefframos 17-02-2015 */
+/*! jefframos 18-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1032,7 +1032,7 @@ var Application = AbstractApplication.extend({
         return this.lastID = id, bird;
     },
     ableNewBird: function(birdModel) {
-        if (!(this.totalBirds >= this.birdModels.length)) {
+        if (birdModel && !(this.totalBirds >= this.birdModels.length)) {
             this.totalBirds = 0;
             for (var i = 0; i < this.birdModels.length; i++) if (this.totalBirds++, this.birdModels[i].label === birdModel.label) {
                 console.log(this.birdModels[i].label, birdModel.label);
@@ -1816,11 +1816,11 @@ var Application = AbstractApplication.extend({
             scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer), 
             this.newCharContainer.position.x = windowWidth / 2 - this.newCharContainer.width / 2, 
             this.feito.getContent().parent.setChildIndex(this.feito.getContent(), this.feito.getContent().parent.children.length - 1), 
-            this.container.mousedown = this.container.touchstart = function() {
+            setTimeout(self.container.mousedown = self.container.touchstart = function() {
                 self.hide(function() {
                     self.screen.updateable = !0;
                 });
-            };
+            }, 2e3);
         }
         this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
             alpha: .8

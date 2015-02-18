@@ -81,11 +81,13 @@ var NewBirdModal = Class.extend({
 			this.newCharContainer.position.x = windowWidth / 2 - this.newCharContainer.width / 2;
 
 			this.feito.getContent().parent.setChildIndex(this.feito.getContent(), this.feito.getContent().parent.children.length - 1);
-			this.container.mousedown = this.container.touchstart = function(data){
+			
+			setTimeout(self.container.mousedown = self.container.touchstart = function(data){
 				self.hide(function(){
 					self.screen.updateable = true;
 				});
-			};
+			}, 2000);
+			
 
 		}
 		this.screen.addChild(this);

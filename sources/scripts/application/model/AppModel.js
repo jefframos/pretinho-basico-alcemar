@@ -395,7 +395,7 @@ var AppModel = Class.extend({
 	},
 	ableNewBird:function(birdModel){
 
-		if(this.totalBirds >= this.birdModels.length){
+		if(!birdModel || this.totalBirds >= this.birdModels.length){
 			return;
 		}
 		this.totalBirds = 0;
