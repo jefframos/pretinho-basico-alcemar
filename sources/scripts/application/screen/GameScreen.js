@@ -495,6 +495,9 @@ var GameScreen = AbstractScreen.extend({
     },
     createEgg:function(){
         console.log('(egg)');
+        if(APP.getGameModel().totalBirds >= APP.getGameModel().birdModels.length){
+            return;
+        }
         this.egg = new Egg(APP.getGameModel().birdModels[APP.getGameModel().totalBirds], this);
         this.egg.build();
         this.egg.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));

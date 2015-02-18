@@ -1516,10 +1516,10 @@ var Application = AbstractApplication.extend({
         this.vecClouds.push(simpleEntity);
     },
     createEgg: function() {
-        console.log("(egg)"), this.egg = new Egg(APP.getGameModel().birdModels[APP.getGameModel().totalBirds], this), 
+        console.log("(egg)"), APP.getGameModel().totalBirds >= APP.getGameModel().birdModels.length || (this.egg = new Egg(APP.getGameModel().birdModels[APP.getGameModel().totalBirds], this), 
         this.egg.build(), this.egg.setPosition(windowWidth, .1 * windowHeight + .8 * windowHeight * Math.random()), 
         this.layer.addChild(this.egg), scaleConverter(this.egg.getContent().height, windowHeight, .15, this.egg), 
-        this.layer.addChild(this.egg);
+        this.layer.addChild(this.egg));
     },
     updatePoints: function(value) {
         APP.getGameModel().currentPoints += value;
