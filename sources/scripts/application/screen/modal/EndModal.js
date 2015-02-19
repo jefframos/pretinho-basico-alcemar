@@ -177,8 +177,8 @@ var EndModal = Class.extend({
 			var charLabel = new PIXI.Text(newPlayers[0].label, { align:'center', fill:'#FFFFFF', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
 			this.newCharContainer.addChild(charLabel);
 			this.container.addChild(this.newCharContainer);
-			this.container.buttonMode = true;
-			this.container.interactive = true;
+			// this.container.buttonMode = true;
+			// this.container.interactive = true;
 
 
 			charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2;
@@ -194,9 +194,18 @@ var EndModal = Class.extend({
 			this.newCharContainer.position.x = windowWidth / 2 - this.newCharContainer.width / 2;
 
 			this.feito.getContent().parent.setChildIndex(this.feito.getContent(), this.feito.getContent().parent.children.length - 1);
-			this.container.mousedown = this.container.touchstart = function(data){
-				self.showPoints();
-			};
+
+			setTimeout(function(){
+					self.container.buttonMode = true;
+					self.container.interactive = true;
+					self.container.mousedown = self.container.touchstart = function(data){
+						self.showPoints();
+					};
+				}, 2000);
+			
+			// this.container.mousedown = this.container.touchstart = function(data){
+			// 	self.showPoints();
+			// };
 
 		}else{
 			this.showPoints();

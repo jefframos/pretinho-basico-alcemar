@@ -64,8 +64,8 @@ var NewBirdModal = Class.extend({
 			var charLabel = new PIXI.Text(bird[0].label, { align:'center', fill:'#FFFFFF', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
 			this.newCharContainer.addChild(charLabel);
 			this.container.addChild(this.newCharContainer);
-			this.container.buttonMode = true;
-			this.container.interactive = true;
+			// this.container.buttonMode = true;
+			// this.container.interactive = true;
 
 
 			charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2;
@@ -82,11 +82,15 @@ var NewBirdModal = Class.extend({
 
 			this.feito.getContent().parent.setChildIndex(this.feito.getContent(), this.feito.getContent().parent.children.length - 1);
 			
-			setTimeout(self.container.mousedown = self.container.touchstart = function(data){
-				self.hide(function(){
-					self.screen.updateable = true;
-				});
-			}, 2000);
+			setTimeout(function(){
+					self.container.buttonMode = true;
+					self.container.interactive = true;
+					self.container.mousedown = self.container.touchstart = function(data){
+						self.hide(function(){
+							self.screen.updateable = true;
+						});
+					};
+				}, 2000);
 			
 
 		}

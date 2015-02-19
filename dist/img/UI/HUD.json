@@ -47,7 +47,7 @@
 },
 "continueButton.png":
 {
-	"frame": {"x":332,"y":136,"w":108,"h":95},
+	"frame": {"x":222,"y":136,"w":108,"h":95},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":95},
@@ -137,7 +137,7 @@
 },
 "menuButton.png":
 {
-	"frame": {"x":222,"y":136,"w":108,"h":95},
+	"frame": {"x":332,"y":136,"w":108,"h":95},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":95},
@@ -191,15 +191,6 @@
 },
 "ovo2.png":
 {
-	"frame": {"x":548,"y":136,"w":101,"h":96},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":101,"h":96},
-	"sourceSize": {"w":101,"h":96},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"ovo3.png":
-{
 	"frame": {"x":2,"y":235,"w":101,"h":97},
 	"rotated": false,
 	"trimmed": false,
@@ -207,16 +198,7 @@
 	"sourceSize": {"w":101,"h":97},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"ovo4.png":
-{
-	"frame": {"x":442,"y":136,"w":104,"h":96},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":104,"h":96},
-	"sourceSize": {"w":104,"h":96},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"ovo5.png":
+"ovo3.png":
 {
 	"frame": {"x":105,"y":235,"w":104,"h":97},
 	"rotated": false,
@@ -225,13 +207,31 @@
 	"sourceSize": {"w":104,"h":97},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"ovo6.png":
+"ovo4.png":
 {
-	"frame": {"x":1153,"y":136,"w":104,"h":97},
+	"frame": {"x":1153,"y":136,"w":101,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":101,"h":97},
+	"sourceSize": {"w":101,"h":97},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"ovo5.png":
+{
+	"frame": {"x":944,"y":136,"w":104,"h":97},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":104,"h":97},
 	"sourceSize": {"w":104,"h":97},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"ovo6.png":
+{
+	"frame": {"x":1050,"y":136,"w":101,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":101,"h":97},
+	"sourceSize": {"w":101,"h":97},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "ovoquebrado.png":
@@ -308,7 +308,7 @@
 },
 "simpleButtonOver.png":
 {
-	"frame": {"x":902,"y":136,"w":249,"h":97},
+	"frame": {"x":442,"y":136,"w":249,"h":97},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":97},
@@ -317,7 +317,7 @@
 },
 "simpleButtonUp.png":
 {
-	"frame": {"x":651,"y":136,"w":249,"h":97},
+	"frame": {"x":693,"y":136,"w":249,"h":97},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":97},
@@ -538,6 +538,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1331,"h":990},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3c011333527d3d38f8af6a17e0e3a6e2:c25c4752b3ad09109e009ff0f935d4a2:ab8edaf43021c39a73bb7d040bcb4897$"
+	"smartupdate": "$TexturePacker:SmartUpdate:01e648d3b1a68f8d2077baca998982d8:cc7b595edfac93c4c268bb7a20f55237:ab8edaf43021c39a73bb7d040bcb4897$"
 }
 }

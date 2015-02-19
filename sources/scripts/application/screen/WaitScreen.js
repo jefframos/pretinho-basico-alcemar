@@ -104,6 +104,17 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().maxPoints();
         };
 
+        this.more100button = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        this.more100button.build(200, 200);
+        scaleConverter(this.more100button.height, windowHeight, 0.2, this.more100button);
+
+        this.more100button.setPosition( this.maxPoints.getContent().position.x + this.maxPoints.getContent().width + 10, 20);
+        this.addChild(this.more100button);
+        this.more100button.addLabel(new PIXI.Text(' +100 ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
+        this.more100button.clickCallback = function(){
+            APP.getGameModel().add100Points();
+        };
+
         // this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         // TweenLite.to(this.frontShape.position, 1, {delay:0.2, y:windowHeight});
         // setTimeout(function(){

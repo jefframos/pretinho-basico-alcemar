@@ -1,4 +1,4 @@
-/*! jefframos 18-02-2015 */
+/*! jefframos 19-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -448,125 +448,6 @@ var Application = AbstractApplication.extend({
     setPosition: function(x, y) {
         this.container.position.x = x, this.container.position.y = y;
     }
-}), Bird = Entity.extend({
-    init: function(birdModel, screen) {
-        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
-        this.height = 1, this.type = "bird", this.target = "enemy", this.fireType = "physical", 
-        this.birdModel = birdModel, this.vel = birdModel.vel, this.velocity.x = -this.vel, 
-        this.velocity.y = 0, this.screen = screen, this.demage = this.birdModel.demage, 
-        this.hp = this.birdModel.hp, this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
-        this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1;
-    },
-    hurt: function(demage) {
-        if (this.hp -= demage, this.velocity.x = -Math.abs(.4 * this.vel), this.hp <= 0) {
-            APP.updatePoints(this.birdModel.money);
-            var mascadasLabel = new Particles({
-                x: 0,
-                y: -(.2 * Math.random() + .3)
-            }, 120, new PIXI.Text(this.birdModel.money, {
-                font: "35px Luckiest Guy",
-                fill: "#FFFFFF",
-                stroke: "#033E43",
-                strokeThickness: 3
-            }), 0);
-            mascadasLabel.build(), mascadasLabel.setPosition(this.getPosition().x, this.getPosition().y - 50 * Math.random()), 
-            mascadasLabel.alphadecress = .01, this.screen.addChild(mascadasLabel), this.preKill();
-        }
-        this.getContent().tint = 16711680;
-    },
-    build: function() {
-        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
-    },
-    update: function() {
-        this._super(), this.behaviour.update(this), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
-        this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
-    },
-    preKill: function() {
-        for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
-            var particle = new Particles({
-                x: 4 * Math.random() - 2,
-                y: -(2 * Math.random() + 1)
-            }, 120, this.birdModel.particles[i], .1 * Math.random());
-            particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
-            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
-            this.layer.addChild(particle);
-        }
-        this.collidable = !1, this.kill = !0;
-    }
-}), Bullet = Entity.extend({
-    init: function(vel, timeLive, power, bulletSource, particle, rotation) {
-        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
-        this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
-        this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
-        this.power = power, this.defaultVelocity = 1, this.imgSource = bulletSource, this.particleSource = particle, 
-        this.isRotation = rotation, this.isRotation && (this.accumRot = .1 * Math.random() - .05);
-    },
-    build: function() {
-        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.getContent().alpha = 0, 
-        TweenLite.to(this.getContent(), .5, {
-            alpha: 1
-        });
-    },
-    update: function() {
-        this._super(), this.layer.collideChilds(this), this.timeLive--, this.timeLive <= 0 && (this.kill = !0), 
-        this.range = this.sprite.height / 2, this.isRotation && (this.sprite.rotation += this.accumRot), 
-        this.collideArea;
-    },
-    collide: function(arrayCollide) {
-        this.collidable && "bird" === arrayCollide[0].type && (this.preKill(), arrayCollide[0].hurt(this.power));
-    },
-    preKill: function() {
-        for (var i = 1; i >= 0; i--) {
-            var particle = new Particles({
-                x: 4 * Math.random(),
-                y: -(2 * Math.random() + 1)
-            }, 120, this.particleSource, .05 * Math.random());
-            particle.build(), particle.gravity = .1 * Math.random() + .2, particle.alphadecres = .1, 
-            particle.scaledecress = .02, particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
-            this.layer.addChild(particle);
-        }
-        this.collidable = !1, this.kill = !0;
-    },
-    pointDistance: function(x, y, x0, y0) {
-        return Math.sqrt((x -= x0) * x + (y -= y0) * y);
-    },
-    touch: function(collection) {
-        collection.object && "environment" === collection.object.type && collection.object.fireCollide(), 
-        this.preKill();
-    }
-}), Cupcake = SpritesheetEntity.extend({
-    init: function() {
-        this._super(!0);
-    },
-    build: function() {
-        var self = this, motionIdle = new SpritesheetAnimation();
-        motionIdle.build("idle", this.getFramesByRange("cupcake10", 0, 13), 1, !0, null);
-        var motionRun = new SpritesheetAnimation();
-        motionRun.build("run", this.getFramesByRange("cupcake10", 14, 37), 0, !0, null);
-        var motionPounch = new SpritesheetAnimation();
-        motionPounch.build("pounch", this.getFramesByRange("cupcake10", 38, 59), -1, !1, function() {
-            self.spritesheet.play("idle");
-        });
-        var motionThrow = new SpritesheetAnimation();
-        motionThrow.build("throw", this.getFramesByRange("cupcake10", 60, 107), -2, !1, function() {
-            self.spritesheet.play("idle");
-        });
-        var motionHurt = new SpritesheetAnimation();
-        motionHurt.build("hurt", this.getFramesByRange("cupcake10", 108, 123), -2, !1, function() {
-            self.spritesheet.play("idle");
-        }), this.spritesheet = new Spritesheet(), this.spritesheet.addAnimation(motionIdle), 
-        this.spritesheet.addAnimation(motionRun), this.spritesheet.addAnimation(motionPounch), 
-        this.spritesheet.addAnimation(motionThrow), this.spritesheet.addAnimation(motionHurt), 
-        this.spritesheet.play("idle");
-    },
-    update: function() {
-        this._super();
-    },
-    destroy: function() {
-        this._super();
-    }
 }), Egg = Entity.extend({
     init: function(birdModel, screen) {
         this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
@@ -656,6 +537,52 @@ var Application = AbstractApplication.extend({
     destroy: function() {
         this._super();
     }
+}), Bird = Entity.extend({
+    init: function(birdModel, screen) {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
+        this.height = 1, this.type = "bird", this.target = "enemy", this.fireType = "physical", 
+        this.birdModel = birdModel, this.vel = birdModel.vel, this.velocity.x = -this.vel, 
+        this.velocity.y = 0, this.screen = screen, this.demage = this.birdModel.demage, 
+        this.hp = this.birdModel.hp, this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
+        this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1;
+    },
+    hurt: function(demage) {
+        if (this.hp -= demage, this.velocity.x = -Math.abs(.4 * this.vel), this.hp <= 0) {
+            APP.updatePoints(this.birdModel.money);
+            var mascadasLabel = new Particles({
+                x: -.5,
+                y: -(.2 * Math.random() + .3)
+            }, 120, new PIXI.Text("+" + this.birdModel.money, {
+                font: "40px Luckiest Guy",
+                fill: "#79DB20",
+                stroke: "#033E43",
+                strokeThickness: 3
+            }), 0);
+            mascadasLabel.build(), mascadasLabel.setPosition(this.getPosition().x, this.getPosition().y - 50 * Math.random()), 
+            mascadasLabel.alphadecress = .01, this.screen.addChild(mascadasLabel), this.preKill();
+        }
+        this.getContent().tint = 16711680;
+    },
+    build: function() {
+        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
+    },
+    update: function() {
+        this._super(), this.behaviour.update(this), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
+        this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
+    },
+    preKill: function() {
+        for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
+            var particle = new Particles({
+                x: 4 * Math.random() - 2,
+                y: -(2 * Math.random() + 1)
+            }, 120, this.birdModel.particles[i], .1 * Math.random());
+            particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
+            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+            this.layer.addChild(particle);
+        }
+        this.collidable = !1, this.kill = !0;
+    }
 }), BirdBehaviourDefault = Class.extend({
     init: function(props) {
         this.props = props, this.position = {
@@ -738,6 +665,122 @@ var Application = AbstractApplication.extend({
     build: function() {},
     destroy: function() {},
     serialize: function() {}
+}), Bullet = Entity.extend({
+    init: function(vel, timeLive, power, bulletSource, particle, rotation) {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
+        this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
+        this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
+        this.power = power, this.defaultVelocity = 1, this.imgSource = bulletSource, this.particleSource = particle, 
+        this.isRotation = rotation, this.isRotation && (this.accumRot = .1 * Math.random() - .05);
+    },
+    build: function() {
+        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.getContent().alpha = 0, 
+        TweenLite.to(this.getContent(), .5, {
+            alpha: 1
+        }), this.birdsCollided = [];
+    },
+    update: function() {
+        if (this._super(), this.layer.collideChilds(this), (!this.targetEntity || this.targetEntity && this.targetEntity.kill) && this.timeLive--, 
+        (this.timeLive <= 0 || this.getPosition() > windowWidth + 20) && (this.kill = !0), 
+        this.range = this.sprite.height / 2, this.isRotation && (this.sprite.rotation += this.accumRot), 
+        this.targetEntity && !this.targetEntity.kill) if (this.homingStart <= 0) {
+            var angle = Math.atan2(this.targetEntity.getPosition().y - this.getPosition().y, this.targetEntity.getPosition().x - this.getPosition().x);
+            angle = 180 * angle / Math.PI, angle += 90, angle = angle / 180 * Math.PI, this.velocity.x = Math.sin(angle) * this.defaultVelocity, 
+            this.velocity.y = -Math.cos(angle) * this.defaultVelocity;
+        } else this.homingStart--;
+        this.collideArea;
+    },
+    setHoming: function(entity, timetostart) {
+        this.homingStart = timetostart, this.targetEntity = entity;
+    },
+    collide: function(arrayCollide) {
+        if (this.collidable) for (var i = arrayCollide.length - 1; i >= 0; i--) if ("bird" === arrayCollide[i].type) {
+            for (var j = this.birdsCollided.length - 1; j >= 0; j--) if (arrayCollide[i] === this.birdsCollided[j]) return;
+            console.log("collide"), this.preKill(), arrayCollide[i].hurt(this.power), this.birdsCollided.push(arrayCollide[i]);
+        }
+    },
+    preKill: function() {
+        if (!this.invencible) {
+            for (var i = 1; i >= 0; i--) {
+                var particle = new Particles({
+                    x: 4 * Math.random(),
+                    y: -(2 * Math.random() + 1)
+                }, 120, this.particleSource, .05 * Math.random());
+                particle.build(), particle.gravity = .1 * Math.random() + .2, particle.alphadecres = .1, 
+                particle.scaledecress = .02, particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+                this.layer.addChild(particle);
+            }
+            this.collidable = !1, this.kill = !0;
+        }
+    },
+    pointDistance: function(x, y, x0, y0) {
+        return Math.sqrt((x -= x0) * x + (y -= y0) * y);
+    },
+    touch: function(collection) {
+        collection.object && "environment" === collection.object.type && collection.object.fireCollide(), 
+        this.preKill();
+    }
+}), GiantShootBehaviour = Class.extend({
+    init: function(props) {
+        this.props = props ? props : {};
+    },
+    clone: function() {
+        return new GiantShootBehaviour(this.props);
+    },
+    build: function(screen) {
+        var vel = this.props.vel ? this.props.vel : 2.5, timeLive = windowWidth / vel, bulletForce = (this.props.totalFires ? this.props.totalFires : 5, 
+        this.props.angleOpen ? this.props.angleOpen : .08, this.props.bulletForce ? this.props.bulletForce : 5 * screen.playerModel.bulletForce), invencible = this.props.invencible ? this.props.invencible : !1, angle = 0, size = this.props.size ? this.props.size : .8, bullet = new Bullet({
+            x: Math.cos(angle) * vel,
+            y: Math.sin(angle) * vel
+        }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
+        bullet.invencible = invencible, bullet.build(), bullet.setPosition(screen.red.getPosition().x * size, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+        screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, windowHeight, .4, bullet);
+    },
+    destroy: function() {},
+    serialize: function() {}
+}), HomingBehaviour = Class.extend({
+    init: function(props) {
+        this.props = props ? props : {};
+    },
+    clone: function() {
+        return new HomingBehaviour(this.props);
+    },
+    build: function(screen) {
+        for (var birds = [], i = screen.layer.childs.length - 1; i >= 0; i--) "bird" === screen.layer.childs[i].type && birds.push(screen.layer.childs[i]);
+        console.log(birds);
+        var vel = this.props.vel ? this.props.vel : 7, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, angleOpen = this.props.angleOpen ? this.props.angleOpen : 3, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1;
+        for (i = 0; i < birds.length; i++) {
+            var angle = screen.red.rotation + angleOpen * (i - totalFires / 2), bullet = new Bullet({
+                x: Math.cos(angle) * vel,
+                y: Math.sin(angle) * vel
+            }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
+            bullet.invencible = invencible, bullet.defaultVelocity = vel, bullet.setHoming(birds[i], 2), 
+            bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet);
+        }
+    },
+    destroy: function() {},
+    serialize: function() {}
+}), MultipleBehaviour = Class.extend({
+    init: function(props) {
+        this.props = props ? props : {};
+    },
+    clone: function() {
+        return new MultipleBehaviour(this.props);
+    },
+    build: function(screen) {
+        for (var vel = this.props.vel ? this.props.vel : 2.5, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, angleOpen = this.props.angleOpen ? this.props.angleOpen : .08, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, i = 0; totalFires >= i; i++) {
+            var angle = screen.red.rotation + angleOpen * (i - totalFires / 2), bullet = new Bullet({
+                x: Math.cos(angle) * vel,
+                y: Math.sin(angle) * vel
+            }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
+            bullet.invencible = invencible, bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet);
+        }
+    },
+    destroy: function() {},
+    serialize: function() {}
 }), AppModel = Class.extend({
     init: function() {
         this.currentPlayerModel = {}, this.cookieManager = new CookieManager();
@@ -758,7 +801,12 @@ var Application = AbstractApplication.extend({
             vel: .5,
             bulletForce: 2,
             bulletVel: 5,
-            bulletCoast: .1
+            bulletCoast: .1,
+            bulletBehaviour: new HomingBehaviour({
+                invencible: !0,
+                bulletForce: 10,
+                vel: 5
+            })
         }), new PlayerModel({
             label: "PIANGERS",
             outGame: "piangersN.png",
@@ -775,7 +823,13 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.2,
             bulletCoast: .12,
             bulletVel: 7,
-            toAble: 10
+            toAble: 10,
+            bulletBehaviour: new GiantShootBehaviour({
+                vel: 2,
+                invencible: !0,
+                bulletForce: 10,
+                size: .8
+            })
         }), new PlayerModel({
             label: "POTTER",
             outGame: "poter.png",
@@ -792,7 +846,12 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.5,
             bulletCoast: .15,
             bulletVel: 7,
-            toAble: 350
+            toAble: 350,
+            bulletBehaviour: new MultipleBehaviour({
+                vel: 4,
+                totalFires: 6,
+                bulletForce: 2
+            })
         }), new PlayerModel({
             label: "ARTHUR",
             outGame: "arthur.png",
@@ -888,7 +947,7 @@ var Application = AbstractApplication.extend({
             energyCoast: 2.5,
             vel: 2,
             bulletForce: 3,
-            bulletCoast: .15,
+            bulletCoast: .12,
             bulletVel: 5,
             toAble: 5e3
         }), new PlayerModel({
@@ -910,7 +969,7 @@ var Application = AbstractApplication.extend({
         }) ], this.birdModels = [ new BirdModel({
             source: "caralinho.png",
             particles: [ "cabeca2.png", "penas2.png" ],
-            egg: "",
+            egg: "ovo2.png",
             sizePercent: .11,
             label: "Caralinho da terra"
         }, {
@@ -971,6 +1030,22 @@ var Application = AbstractApplication.extend({
             toNext: 150,
             money: 6
         }), new BirdModel({
+            source: "papodebago.png",
+            particles: [ "cabeca7.png", "penas7.png" ],
+            egg: "ovo2.png",
+            sizePercent: .21,
+            label: "Galo Papo de Bago"
+        }, {
+            target: null,
+            hp: 1,
+            demage: .2,
+            vel: -3.5,
+            behaviour: new BirdBehaviourDiag({
+                accX: -.01
+            }),
+            toNext: 80,
+            money: 12
+        }), new BirdModel({
             source: "nocu.png",
             particles: [ "cabeca3.png", "penas3.png" ],
             egg: "ovo5.png",
@@ -987,6 +1062,23 @@ var Application = AbstractApplication.extend({
             }),
             toNext: 250,
             money: 20
+        }), new BirdModel({
+            source: "calopsuda.png",
+            particles: [ "cabeca8.png", "penas8.png" ],
+            egg: "ovo2.png",
+            sizePercent: .21,
+            label: "Calopsuda"
+        }, {
+            target: null,
+            hp: 40,
+            demage: .2,
+            vel: -1,
+            behaviour: new BirdBehaviourSinoid2({
+                sinAcc: .05,
+                velY: -6
+            }),
+            toNext: 180,
+            money: 25
         }), new BirdModel({
             source: "nigeriano.png",
             particles: [ "cabeca1.png", "penas1.png" ],
@@ -1007,7 +1099,7 @@ var Application = AbstractApplication.extend({
         }) ], this.setModel(0), this.totalPlayers = 0;
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && (this.playerModels[i].able = !0, 
         this.totalPlayers++);
-        this.birdProbs = [ 0, 1, 0, 0, 2, 0, 1, 3, 2, 3, 4, 5, 4, 5 ], this.currentHorde = 0;
+        this.birdProbs = [ 0, 1, 0, 0, 2, 0, 1, 3, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7 ], this.currentHorde = 0;
     },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
@@ -1018,7 +1110,7 @@ var Application = AbstractApplication.extend({
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
     maxPoints: function() {
-        this.currentHorde = 0, this.totalPoints = 999999, this.totalBirds = 6, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
+        this.currentHorde = 0, this.totalPoints = 999999, this.totalBirds = 8, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
         this.cookieManager.setCookie("totalBirds", 6, 500);
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
@@ -1040,6 +1132,12 @@ var Application = AbstractApplication.extend({
             }
             console.log(this.totalBirds), this.cookieManager.setCookie("totalBirds", this.totalBirds, 500);
         }
+    },
+    add100Points: function() {
+        this.totalPoints += 100, this.cookieManager.setCookie("totalPoints", 100, 500), 
+        this.totalPlayers = 0;
+        for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able && (this.playerModels[i].able = !0), 
+        this.playerModels[i].able && this.totalPlayers++;
     },
     addPoints: function() {
         this.currentHorde = 0, this.totalPoints += this.currentPoints, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
@@ -1080,6 +1178,7 @@ var Application = AbstractApplication.extend({
         console.log(this.energyCoast), this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
         this.velocity = statsObject.vel ? statsObject.vel : 2, this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, 
         this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, this.toAble = statsObject.toAble ? statsObject.toAble : 0, 
+        this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour : new MultipleBehaviour(), 
         this.able = !1;
     },
     reset: function() {
@@ -1370,8 +1469,12 @@ var Application = AbstractApplication.extend({
     onAssetsLoaded: function() {
         this.initApplication();
     },
+    special: function() {
+        var bulletBehaviour = this.playerModel.bulletBehaviour.clone();
+        bulletBehaviour.build(this);
+    },
     shoot: function() {
-        var percent = this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy, fireForce = percent * this.playerModel.range, timeLive = this.red.getContent().width / this.playerModel.bulletVel + fireForce + 100, vel = this.playerModel.bulletVel + this.playerModel.bulletVel * percent, angle = this.red.rotation, bullet = new Bullet({
+        var timeLive = this.red.getContent().width / this.playerModel.bulletVel + 200, vel = this.playerModel.bulletVel + this.playerModel.bulletVel, angle = this.red.rotation, bullet = new Bullet({
             x: Math.cos(angle) * vel,
             y: Math.sin(angle) * vel
         }, timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletParticleSource, this.playerModel.bulletRotation);
@@ -1455,7 +1558,7 @@ var Application = AbstractApplication.extend({
     initApplication: function() {
         this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, this.spawner = 150, 
         this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, APP.getGameModel().currentPoints = 0, 
-        this.initApp = !0, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
+        APP.getGameModel().currentHorde = 0, this.initApp = !0, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
         this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
         this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], this.layerManagerBack = new LayerManager(), 
         this.layerManagerBack.build("MainBack"), this.addChild(this.layerManagerBack);
@@ -1488,6 +1591,11 @@ var Application = AbstractApplication.extend({
         this.bulletIco.getContent().scale.y = .9, this.bulletIco.getContent().position.x = 46, 
         this.bulletIco.getContent().position.y = 15, this.bulletBar.getContent().addChild(this.bulletIco.getContent()), 
         this.addChild(barsContainer), barsContainer.position.x = 20, barsContainer.position.y = 20, 
+        this.specialButton = new DefaultButton("out.png", "out.png"), this.specialButton.build(), 
+        this.addChild(this.specialButton), this.specialButton.clickCallback = function() {
+            self.special();
+        }, scaleConverter(this.specialButton.getContent().height, windowHeight, .15, this.specialButton), 
+        this.specialButton.setPosition(windowWidth - this.specialButton.getContent().width - 20, windowHeight / 2 - this.specialButton.getContent().height / 2), 
         this.pauseButton = new DefaultButton("pauseButton.png", "pauseButton.png"), this.pauseButton.build(), 
         this.addChild(this.pauseButton), this.pauseButton.clickCallback = function() {
             self.pauseModal.show();
@@ -1507,7 +1615,7 @@ var Application = AbstractApplication.extend({
         this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10, 
         this.updateable = !0, this.endModal = new EndModal(this), this.newBirdModal = new NewBirdModal(this), 
         this.pauseModal = new PauseModal(this), console.log(APP.getGameModel().totalBirds, APP.getGameModel().totalPlayers), 
-        this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
+        this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
         simpleEntity.velocity.x = -.1, simpleEntity.setPosition(.1 * windowWidth, +Math.random() * windowHeight * .2), 
         this.backLayer.addChild(simpleEntity);
@@ -1597,6 +1705,17 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 80), this.maxPoints.clickCallback = function() {
             APP.getGameModel().maxPoints();
+        }, this.more100button = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
+        this.more100button.build(200, 200), scaleConverter(this.more100button.height, windowHeight, .2, this.more100button), 
+        this.more100button.setPosition(this.maxPoints.getContent().position.x + this.maxPoints.getContent().width + 10, 20), 
+        this.addChild(this.more100button), this.more100button.addLabel(new PIXI.Text(" +100 ", {
+            align: "center",
+            fill: "#033E43",
+            font: "50px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 28, 80), this.more100button.clickCallback = function() {
+            APP.getGameModel().add100Points();
         };
     },
     transitionIn: function() {
@@ -1733,17 +1852,18 @@ var Application = AbstractApplication.extend({
                 wordWrapWidth: 300
             });
             this.newCharContainer.addChild(charLabel), this.container.addChild(this.newCharContainer), 
-            this.container.buttonMode = !0, this.container.interactive = !0, charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2, 
-            charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20, 
+            charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2, charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20, 
             novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20), 
             scaleConverter(playerImage.getContent().height, this.newCharContainer.height, .3, playerImage), 
             playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width / 2, pista.getContent().position.y - playerImage.getContent().height - 10), 
             scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer), 
             this.newCharContainer.position.x = windowWidth / 2 - this.newCharContainer.width / 2, 
             this.feito.getContent().parent.setChildIndex(this.feito.getContent(), this.feito.getContent().parent.children.length - 1), 
-            this.container.mousedown = this.container.touchstart = function() {
-                self.showPoints();
-            };
+            setTimeout(function() {
+                self.container.buttonMode = !0, self.container.interactive = !0, self.container.mousedown = self.container.touchstart = function() {
+                    self.showPoints();
+                };
+            }, 2e3);
         } else this.showPoints();
         this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
             alpha: .8
@@ -1808,18 +1928,19 @@ var Application = AbstractApplication.extend({
                 wordWrapWidth: 300
             });
             this.newCharContainer.addChild(charLabel), this.container.addChild(this.newCharContainer), 
-            this.container.buttonMode = !0, this.container.interactive = !0, charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2, 
-            charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20, 
+            charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2, charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20, 
             novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20), 
             scaleConverter(playerImage.getContent().height, this.newCharContainer.height, .3, playerImage), 
             playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width / 2, pista.getContent().position.y - playerImage.getContent().height - 10), 
             scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer), 
             this.newCharContainer.position.x = windowWidth / 2 - this.newCharContainer.width / 2, 
             this.feito.getContent().parent.setChildIndex(this.feito.getContent(), this.feito.getContent().parent.children.length - 1), 
-            setTimeout(self.container.mousedown = self.container.touchstart = function() {
-                self.hide(function() {
-                    self.screen.updateable = !0;
-                });
+            setTimeout(function() {
+                self.container.buttonMode = !0, self.container.interactive = !0, self.container.mousedown = self.container.touchstart = function() {
+                    self.hide(function() {
+                        self.screen.updateable = !0;
+                    });
+                };
             }, 2e3);
         }
         this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
@@ -1869,7 +1990,8 @@ var Application = AbstractApplication.extend({
                 self.screen.updateable = !0, self.screen.reset();
             });
         }, this.boxContainer.addChild(this.restartButton.getContent()), this.boxContainer.alpha = 0, 
-        this.boxContainer.visible = !1, this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
+        this.boxContainer.visible = !1, scaleConverter(this.boxContainer.width, windowWidth, .5, this.boxContainer), 
+        this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
     },
     show: function() {
         this.screen.addChild(this), this.boxContainer.visible = !0, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 

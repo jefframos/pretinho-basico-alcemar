@@ -124,12 +124,14 @@ var GameScreen = AbstractScreen.extend({
         // this.textAcc.setText(this.textAcc.text+'\nAssetsLoaded');
         this.initApplication();
     },
+    special:function() {
+        var bulletBehaviour = this.playerModel.bulletBehaviour.clone();
+        bulletBehaviour.build(this);
+    },
     shoot:function() {
-        var percent = (this.playerModel.currentBulletForce / this.playerModel.maxBulletEnergy);
-        var fireForce = percent * this.playerModel.range;
-        var timeLive = (this.red.getContent().width/ this.playerModel.bulletVel) + (fireForce) + 100;
+        var timeLive = (this.red.getContent().width/ this.playerModel.bulletVel) + 200;
 
-        var vel = this.playerModel.bulletVel + this.playerModel.bulletVel*percent;
+        var vel = this.playerModel.bulletVel + this.playerModel.bulletVel;
         var angle = this.red.rotation;
         var bullet = new Bullet({x:Math.cos(angle) * vel,
             y:Math.sin(angle) * vel},
@@ -322,8 +324,8 @@ var GameScreen = AbstractScreen.extend({
         this.alertAcum = 0;
         this.bulletAcum = 0;
         this.labelAcum = 0;
-
         APP.getGameModel().currentPoints = 0;
+        APP.getGameModel().currentHorde = 0;
         this.initApp = true;
 
         this.vecClouds = [];
@@ -426,6 +428,16 @@ var GameScreen = AbstractScreen.extend({
 
         // barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
 
+        this.specialButton = new DefaultButton('out.png', 'out.png');
+        this.specialButton.build();
+        this.addChild(this.specialButton);
+        this.specialButton.clickCallback = function(){
+            self.special();
+        };
+        scaleConverter(this.specialButton.getContent().height, windowHeight, 0.15, this.specialButton);
+        this.specialButton.setPosition( windowWidth - (this.specialButton.getContent().width) - 20,windowHeight/2 - (this.specialButton.getContent().height/2));
+        
+
         this.pauseButton = new DefaultButton('pauseButton.png', 'pauseButton.png');
         this.pauseButton.build();
         this.addChild(this.pauseButton);
@@ -476,7 +488,7 @@ var GameScreen = AbstractScreen.extend({
 
         console.log( APP.getGameModel().totalBirds , APP.getGameModel().totalPlayers);
 
-        if(APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
+        if(APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
             this.createEggAccum = Math.floor(Math.random() * 800 + 200);
         }else{
             this.createEggAccum = -1;

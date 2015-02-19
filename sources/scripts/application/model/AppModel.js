@@ -36,6 +36,7 @@ var AppModel = Class.extend({
 				bulletForce:2.0,
 				bulletVel:5,
 				bulletCoast:0.1,
+				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:10, vel:5})
 				//toAble: 400
 			}
 			),
@@ -56,7 +57,8 @@ var AppModel = Class.extend({
 				bulletForce:1.2,
 				bulletCoast:0.12,
 				bulletVel:7,
-				toAble: 10
+				toAble: 10,
+				bulletBehaviour: new GiantShootBehaviour({vel:2, invencible:true, bulletForce:10, size: 0.8})
 			}
 			),
 			new PlayerModel({
@@ -76,7 +78,8 @@ var AppModel = Class.extend({
 				bulletForce:1.5,
 				bulletCoast:0.15,
 				bulletVel:7,
-				toAble: 350
+				toAble: 350,
+				bulletBehaviour: new MultipleBehaviour({vel:4, totalFires:6, bulletForce:2})
 			}
 			),
 			new PlayerModel({
@@ -190,7 +193,7 @@ var AppModel = Class.extend({
 				energyCoast:2.5,
 				vel:2,
 				bulletForce:3,
-				bulletCoast:0.15,
+				bulletCoast:0.12,
 				bulletVel:5,
 				toAble: 5000
 			}
@@ -217,11 +220,12 @@ var AppModel = Class.extend({
 		];
 
 		this.birdModels = [
-			//source, target, hp, demage, vel, behaviour, toNext, sizePercent, money
+
+			
 			new BirdModel({
 				source:'caralinho.png',
 				particles:['cabeca2.png', 'penas2.png'],
-				egg:'',
+				egg:'ovo2.png',
 				sizePercent:0.11,
 				label:'Caralinho da terra'
 			},
@@ -288,6 +292,23 @@ var AppModel = Class.extend({
 				toNext:150,
 				money:6
 			}),
+			
+			new BirdModel({
+				source:'papodebago.png',
+				particles:['cabeca7.png', 'penas7.png'],
+				egg:'ovo2.png',
+				sizePercent:0.21,
+				label:'Galo Papo de Bago'
+			},
+			{
+				target:null,
+				hp:1,
+				demage:0.2,
+				vel:-3.5,
+				behaviour:new BirdBehaviourDiag({accX:-0.01}),
+				toNext:80,
+				money:12
+			}),
 
 			new BirdModel({
 				source:'nocu.png',
@@ -306,6 +327,24 @@ var AppModel = Class.extend({
 				toNext:250,
 				money:20
 			}),
+
+			new BirdModel({
+				source:'calopsuda.png',
+				particles:['cabeca8.png', 'penas8.png'],
+				egg:'ovo2.png',
+				sizePercent:0.21,
+				label:'Calopsuda'
+			},
+			{
+				target:null,
+				hp:40,
+				demage:0.2,
+				vel:-1,
+				behaviour: new BirdBehaviourSinoid2({sinAcc:0.05, velY:-6}),
+				toNext:180,
+				money:25
+			}),
+
 
 			new BirdModel({
 				source:'nigeriano.png',
@@ -334,7 +373,7 @@ var AppModel = Class.extend({
 				this.totalPlayers ++;
 			}
 		}
-		this.birdProbs = [0,1,0,0,2,0,1,3,2,3,4,5,4,5];
+		this.birdProbs = [0,1,0,0,2,0,1,3,2,3,4,5,6,7,4,5,6,7];
 
 		this.currentHorde = 0;
 
@@ -363,7 +402,7 @@ var AppModel = Class.extend({
 	maxPoints:function(){
 		this.currentHorde = 0;
 		this.totalPoints = 999999;
-		this.totalBirds = 6;
+		this.totalBirds = 8;
 		this.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
 		this.cookieManager.setCookie('totalBirds', 6, 500);
 
@@ -408,6 +447,19 @@ var AppModel = Class.extend({
 		}
 		console.log(this.totalBirds);
 		this.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
+	},
+	add100Points:function(){
+		this.totalPoints += 100;
+		this.cookieManager.setCookie('totalPoints', 100, 500);
+		this.totalPlayers = 0;
+		for (var i = this.playerModels.length - 1; i >= 0; i--) {
+			if(this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able){
+				this.playerModels[i].able = true;
+			}
+			if(this.playerModels[i].able){
+				this.totalPlayers ++;
+			}
+		}
 	},
 	addPoints:function(){
 		this.currentHorde = 0;
