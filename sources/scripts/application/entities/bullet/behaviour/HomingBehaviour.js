@@ -12,13 +12,8 @@ var HomingBehaviour = Class.extend({
             if(screen.layer.childs[i].type === 'bird'){
                 var target = new SimpleSprite('target.png');
                 screen.layer.childs[i].getContent().addChild(target.getContent());
-                // target.getContent().position.x = -screen.layer.childs[i].getContent().width / 2;
-                // target.getContent().position.y = -screen.layer.childs[i].getContent().height / 2;
-
                 target.getContent().position.x = -target.getContent().width / 2;
                 target.getContent().position.y = -target.getContent().height / 2;
-
-                
                 birds.push(screen.layer.childs[i]);
             }
         }

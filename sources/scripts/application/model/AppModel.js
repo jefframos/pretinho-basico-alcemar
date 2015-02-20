@@ -191,7 +191,8 @@ var AppModel = Class.extend({
 				bulletForce:3,
 				bulletVel:6,
 				bulletCoast:0.15,
-				toAble: 2500
+				toAble: 2500,
+				bulletBehaviour: new RainBehaviour()
 			}
 			),
 			new PlayerModel({

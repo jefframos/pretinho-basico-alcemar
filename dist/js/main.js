@@ -808,6 +808,31 @@ var Application = AbstractApplication.extend({
     },
     destroy: function() {},
     serialize: function() {}
+}), RainBehaviour = Class.extend({
+    init: function(props) {
+        this.props = props ? props : {};
+    },
+    clone: function() {
+        return new RainBehaviour(this.props);
+    },
+    build: function(screen) {
+        var vel = this.props.vel ? this.props.vel : 10, timeLive = windowWidth / vel, timeInterval = this.props.timeInterval ? this.props.timeInterval : 150;
+        this.totalFires = this.props.totalFires ? this.props.totalFires : 25;
+        var bulletForce = (void 0 !== this.props.angleOpen ? this.props.angleOpen : .9, 
+        this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce), invencible = this.props.invencible ? this.props.invencible : !1, self = this;
+        this.interval = setInterval(function() {
+            var angle = 45, bullet = new Bullet({
+                x: Math.cos(angle) * vel,
+                y: Math.sin(angle) * vel
+            }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
+            bullet.invencible = invencible, bullet.build(), bullet.getContent().rotation = angle, 
+            bullet.setPosition(.6 * windowWidth * Math.random() + .15 * windowWidth, -bullet.getContent().height), 
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet), 
+            --self.totalFires <= 0 && clearInterval(self.interval);
+        }, timeInterval);
+    },
+    destroy: function() {},
+    serialize: function() {}
 }), SequenceBehaviour = Class.extend({
     init: function(props) {
         this.props = props ? props : {};
@@ -998,7 +1023,8 @@ var Application = AbstractApplication.extend({
             bulletForce: 3,
             bulletVel: 6,
             bulletCoast: .15,
-            toAble: 2500
+            toAble: 2500,
+            bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
             label: "NETO",
             outGame: "neto.png",
