@@ -48,6 +48,7 @@ var PauseModal = Class.extend({
         this.boxContainer.alpha = 0;
         this.boxContainer.visible = false;
 
+        scaleConverter(this.boxContainer.width, windowWidth, 0.5, this.boxContainer);
         this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
         // this.boxContainer.position.y = windowHeight / 2;
 	},

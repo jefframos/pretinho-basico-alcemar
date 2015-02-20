@@ -17,6 +17,16 @@ var AppModel = Class.extend({
 		this.totalPoints = points?points:0;
 		this.totalBirds = tempBirds?tempBirds:1;
 		this.currentPoints = 0;
+
+		// bulletBehaviour: new GiantShootBehaviour({vel:2, invencible:true, bulletForce:10, size: 0.8})
+		// bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25})
+		// bulletBehaviour: new SequenceBehaviour()
+		// bulletBehaviour: new MultipleBehaviour({vel:4, totalFires:8, bulletForce:2})
+		// bulletBehaviour: new MultipleBehaviour({vel:4, invencible:true, totalFires:5, bulletForce:5})
+		// bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:10, vel:5})
+
+
+
 		this.playerModels = [
 
 			new PlayerModel({
@@ -36,7 +46,8 @@ var AppModel = Class.extend({
 				bulletForce:2.0,
 				bulletVel:5,
 				bulletCoast:0.1,
-				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:10, vel:5})
+				bulletBehaviour: new GiantShootBehaviour({vel:2, invencible:true, bulletForce:10, size: 0.8})
+				// bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:10, vel:5})
 				//toAble: 400
 			}
 			),
@@ -58,7 +69,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.12,
 				bulletVel:7,
 				toAble: 10,
-				bulletBehaviour: new GiantShootBehaviour({vel:2, invencible:true, bulletForce:10, size: 0.8})
+				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25})
 			}
 			),
 			new PlayerModel({
@@ -79,7 +90,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.15,
 				bulletVel:7,
 				toAble: 350,
-				bulletBehaviour: new MultipleBehaviour({vel:4, totalFires:6, bulletForce:2})
+				bulletBehaviour: new SequenceBehaviour()
 			}
 			),
 			new PlayerModel({
@@ -98,7 +109,8 @@ var AppModel = Class.extend({
 				bulletForce:2.2,
 				bulletCoast:0.15,
 				bulletVel:6,
-				toAble: 800
+				toAble: 800,
+				bulletBehaviour: new MultipleBehaviour({vel:4, totalFires:8, bulletForce:2})
 			}
 			),
 			new PlayerModel({
@@ -118,7 +130,8 @@ var AppModel = Class.extend({
 				bulletForce:1.3,
 				bulletCoast:0.11,
 				bulletVel:5,
-				toAble: 1200
+				toAble: 1200,
+				bulletBehaviour: new MultipleBehaviour({vel:4, invencible:true, totalFires:5, bulletForce:5})
 			}
 			),
 			new PlayerModel({
@@ -137,7 +150,8 @@ var AppModel = Class.extend({
 				bulletForce:0.8,
 				bulletCoast:0.07,
 				bulletVel:8,
-				toAble: 1500
+				toAble: 1500,
+				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:50, vel:4})
 			}
 			),
 			new PlayerModel({
@@ -157,7 +171,8 @@ var AppModel = Class.extend({
 				bulletForce:1.4,
 				bulletCoast:0.1,
 				bulletVel:5,
-				toAble: 2000
+				toAble: 2000,
+				bulletBehaviour: new AkumaBehaviour()
 			}
 			),
 			new PlayerModel({

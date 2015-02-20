@@ -1,4 +1,4 @@
-/*! jefframos 19-02-2015 */
+/*! jefframos 20-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -685,6 +685,7 @@ var Application = AbstractApplication.extend({
         (this.timeLive <= 0 || this.getPosition() > windowWidth + 20) && (this.kill = !0), 
         this.range = this.sprite.height / 2, this.isRotation && (this.sprite.rotation += this.accumRot), 
         this.targetEntity && !this.targetEntity.kill) if (this.homingStart <= 0) {
+            this.range = this.sprite.height;
             var angle = Math.atan2(this.targetEntity.getPosition().y - this.getPosition().y, this.targetEntity.getPosition().x - this.getPosition().x);
             angle = 180 * angle / Math.PI, angle += 90, angle = angle / 180 * Math.PI, this.velocity.x = Math.sin(angle) * this.defaultVelocity, 
             this.velocity.y = -Math.cos(angle) * this.defaultVelocity;
@@ -721,6 +722,27 @@ var Application = AbstractApplication.extend({
         collection.object && "environment" === collection.object.type && collection.object.fireCollide(), 
         this.preKill();
     }
+}), AkumaBehaviour = Class.extend({
+    init: function(props) {
+        this.props = props ? props : {};
+    },
+    clone: function() {
+        return new AkumaBehaviour(this.props);
+    },
+    build: function(screen) {
+        for (var i = screen.layer.childs.length - 1; i >= 0; i--) "bird" === screen.layer.childs[i].type && screen.layer.childs[i].hurt(9999);
+        var white = new PIXI.Graphics();
+        white.beginFill(16777215), white.drawRect(0, 0, windowWidth, windowHeight), screen.addChild(white), 
+        TweenLite.to(white, .5, {
+            alpha: 0,
+            onCompleteParams: [ white ],
+            onComplete: function(target) {
+                target && target.parent && (target.parent.removeChild(target), target = null);
+            }
+        });
+    },
+    destroy: function() {},
+    serialize: function() {}
 }), GiantShootBehaviour = Class.extend({
     init: function(props) {
         this.props = props ? props : {};
@@ -781,6 +803,31 @@ var Application = AbstractApplication.extend({
     },
     destroy: function() {},
     serialize: function() {}
+}), SequenceBehaviour = Class.extend({
+    init: function(props) {
+        this.props = props ? props : {};
+    },
+    clone: function() {
+        return new SequenceBehaviour(this.props);
+    },
+    build: function(screen) {
+        var vel = this.props.vel ? this.props.vel : 10, timeLive = windowWidth / vel, timeInterval = this.props.timeInterval ? this.props.timeInterval : 150;
+        this.totalFires = this.props.totalFires ? this.props.totalFires : 20;
+        var angleOpen = void 0 !== this.props.angleOpen ? this.props.angleOpen : .9, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, self = this;
+        this.interval = setInterval(function() {
+            var angle = screen.red.rotation;
+            angle += 0 === angleOpen ? 0 : angleOpen * Math.random() - angleOpen / 2;
+            var bullet = new Bullet({
+                x: Math.cos(angle) * vel,
+                y: Math.sin(angle) * vel
+            }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
+            bullet.invencible = invencible, bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet), 
+            --self.totalFires <= 0 && clearInterval(self.interval);
+        }, timeInterval);
+    },
+    destroy: function() {},
+    serialize: function() {}
 }), AppModel = Class.extend({
     init: function() {
         this.currentPlayerModel = {}, this.cookieManager = new CookieManager();
@@ -802,10 +849,11 @@ var Application = AbstractApplication.extend({
             bulletForce: 2,
             bulletVel: 5,
             bulletCoast: .1,
-            bulletBehaviour: new HomingBehaviour({
+            bulletBehaviour: new GiantShootBehaviour({
+                vel: 2,
                 invencible: !0,
                 bulletForce: 10,
-                vel: 5
+                size: .8
             })
         }), new PlayerModel({
             label: "PIANGERS",
@@ -824,11 +872,9 @@ var Application = AbstractApplication.extend({
             bulletCoast: .12,
             bulletVel: 7,
             toAble: 10,
-            bulletBehaviour: new GiantShootBehaviour({
-                vel: 2,
-                invencible: !0,
-                bulletForce: 10,
-                size: .8
+            bulletBehaviour: new SequenceBehaviour({
+                angleOpen: 0,
+                totalFires: 25
             })
         }), new PlayerModel({
             label: "POTTER",
@@ -847,11 +893,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .15,
             bulletVel: 7,
             toAble: 350,
-            bulletBehaviour: new MultipleBehaviour({
-                vel: 4,
-                totalFires: 6,
-                bulletForce: 2
-            })
+            bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
             label: "ARTHUR",
             outGame: "arthur.png",
@@ -867,7 +909,12 @@ var Application = AbstractApplication.extend({
             bulletForce: 2.2,
             bulletCoast: .15,
             bulletVel: 6,
-            toAble: 800
+            toAble: 800,
+            bulletBehaviour: new MultipleBehaviour({
+                vel: 4,
+                totalFires: 8,
+                bulletForce: 2
+            })
         }), new PlayerModel({
             label: "PORÃ",
             outGame: "pora.png",
@@ -884,7 +931,13 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.3,
             bulletCoast: .11,
             bulletVel: 5,
-            toAble: 1200
+            toAble: 1200,
+            bulletBehaviour: new MultipleBehaviour({
+                vel: 4,
+                invencible: !0,
+                totalFires: 5,
+                bulletForce: 5
+            })
         }), new PlayerModel({
             label: "JEISO",
             outGame: "jeso.png",
@@ -900,7 +953,12 @@ var Application = AbstractApplication.extend({
             bulletForce: .8,
             bulletCoast: .07,
             bulletVel: 8,
-            toAble: 1500
+            toAble: 1500,
+            bulletBehaviour: new HomingBehaviour({
+                invencible: !0,
+                bulletForce: 50,
+                vel: 4
+            })
         }), new PlayerModel({
             label: "Mr. PI",
             outGame: "pi.png",
@@ -917,7 +975,8 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.4,
             bulletCoast: .1,
             bulletVel: 5,
-            toAble: 2e3
+            toAble: 2e3,
+            bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "FETTER",
             outGame: "feter.png",

@@ -36,17 +36,39 @@ var Bullet = Entity.extend({
 
         this.getContent().alpha = 0;
         TweenLite.to(this.getContent(), 0.5, {alpha:1});
+
+        this.birdsCollided = [];
     },
     update: function(){
         this._super();
         this.layer.collideChilds(this);
-        this.timeLive --;
-        if(this.timeLive <= 0){
+        if(!this.targetEntity || (this.targetEntity && this.targetEntity.kill)){
+            this.timeLive --;
+        }
+        if(this.timeLive <= 0 || this.getPosition() > windowWidth + 20){
             this.kill = true;
         }
         this.range = this.sprite.height / 2;
         if(this.isRotation){
             this.sprite.rotation += this.accumRot;
+        }
+
+        if(this.targetEntity && !this.targetEntity.kill){
+            if(this.homingStart <= 0){
+                this.range = this.sprite.height;
+                var angle = Math.atan2(this.targetEntity.getPosition().y - this.getPosition().y, this.targetEntity.getPosition().x - this.getPosition().x);
+                // var angle = Math.atan2(this.getPosition().y - this.targetEntity.getPosition().y,this.getPosition().x - this.targetEntity.getPosition().x);
+                
+                angle = angle * 180 / Math.PI;
+                angle += 90;
+                angle = angle / 180 * Math.PI;
+                // console.log(angle);
+                this.velocity.x = Math.sin(angle) * this.defaultVelocity;
+                this.velocity.y = -Math.cos(angle) * this.defaultVelocity;
+            }
+            else{
+                this.homingStart --;
+            }
         }
         if(this.collideArea){
             return;
@@ -59,18 +81,35 @@ var Bullet = Entity.extend({
         //     this.velocity.y -= 0.1;
         // }
     },
+    setHoming:function(entity, timetostart){
+        this.homingStart = timetostart;
+        this.targetEntity = entity;
+    },
     collide:function(arrayCollide){
         // console.log('fireCollide', arrayCollide[0]);
         if(this.collidable){
-            if(arrayCollide[0].type === 'bird'){
-                // console.log(arrayCollide[0].type);
-                this.preKill();
-                arrayCollide[0].hurt(this.power);
-                // arrayCollide[0].hurt(this.power, this.fireType);
+            for (var i = arrayCollide.length - 1; i >= 0; i--) {
+                if(arrayCollide[i].type === 'bird'){
+                    for (var j = this.birdsCollided.length - 1; j >= 0; j--) {
+                        if(arrayCollide[i] === this.birdsCollided[j])
+                        {
+                            return;
+                        }
+                    }
+                    console.log('collide');
+                    // console.log(arrayCollide[0].type);
+                    this.preKill();
+                    arrayCollide[i].hurt(this.power);
+                    this.birdsCollided.push(arrayCollide[i]);
+                    // arrayCollide[0].hurt(this.power, this.fireType);
+                }
             }
         }
     },
     preKill:function(){
+        if(this.invencible){
+            return;
+        }
         for (var i = 1; i >= 0; i--) {
             var particle = new Particles({x: Math.random() * 4, y:-(Math.random() * 2 + 1)}, 120, this.particleSource, Math.random() * 0.05);
             particle.build();
