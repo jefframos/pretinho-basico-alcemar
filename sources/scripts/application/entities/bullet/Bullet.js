@@ -16,6 +16,7 @@ var Bullet = Entity.extend({
         this.timeLive = timeLive;
         this.power = power;
         this.defaultVelocity = 1;
+        // this.defaultVelocity.y = vel.y;
         //console.log(bulletSource);
         this.imgSource = bulletSource;
         this.particleSource = particle;
@@ -23,6 +24,7 @@ var Bullet = Entity.extend({
         if(this.isRotation){
             this.accumRot = Math.random() * 0.1 - 0.05;
         }
+        this.sin = 0;
     },
     build: function(){
 
@@ -52,7 +54,6 @@ var Bullet = Entity.extend({
         if(this.isRotation){
             this.sprite.rotation += this.accumRot;
         }
-
         if(this.targetEntity && !this.targetEntity.kill){
             if(this.homingStart <= 0){
                 this.range = this.sprite.height;
@@ -71,6 +72,12 @@ var Bullet = Entity.extend({
 
             }
         }
+
+        if(this.sinoid){
+            this.velocity.y = Math.sin(this.sin) * this.velocity.x;
+            this.sin += 0.2;
+        }
+
         if(this.collideArea){
             return;
         }

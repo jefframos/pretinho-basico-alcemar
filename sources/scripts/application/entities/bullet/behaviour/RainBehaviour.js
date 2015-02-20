@@ -14,6 +14,7 @@ var RainBehaviour = Class.extend({
 		var angleOpen = this.props.angleOpen !== undefined ? this.props.angleOpen:0.9;
 		var bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce;
 		var invencible = this.props.invencible ? this.props.invencible : false;
+		var size = this.props.size ? this.props.size: 0.3;
 		var self = this;
 		// console.log(angleOpen, this.props);
 		this.interval = setInterval(function(){
@@ -28,7 +29,7 @@ var RainBehaviour = Class.extend({
 			//UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
 			bullet.setPosition((windowWidth * 0.6) * Math.random() + (windowWidth * 0.15), -bullet.getContent().height);
 			screen.layer.addChild(bullet);
-			scaleConverter(bullet.getContent().height,screen.red.getContent().height, 0.3, bullet);
+			scaleConverter(bullet.getContent().height,screen.red.getContent().height, size, bullet);
 			if(--self.totalFires <= 0){
 				clearInterval(self.interval);
 			}

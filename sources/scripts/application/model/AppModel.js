@@ -90,7 +90,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.15,
 				bulletVel:7,
 				toAble: 350,
-				bulletBehaviour: new SequenceBehaviour()
+				bulletBehaviour: new MultipleBehaviour({vel:3, totalFires:8, bulletForce:10, size:0.15, angleOpen:0.25})
 			}
 			),
 			new PlayerModel({
@@ -110,7 +110,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.15,
 				bulletVel:6,
 				toAble: 800,
-				bulletBehaviour: new MultipleBehaviour({vel:3, totalFires:8, bulletForce:10, size:0.15})
+				bulletBehaviour: new SequenceBehaviour()
 			}
 			),
 			new PlayerModel({
@@ -131,7 +131,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.11,
 				bulletVel:5,
 				toAble: 1200,
-				bulletBehaviour: new MultipleBehaviour({vel:4.5, invencible:true, totalFires:5, bulletForce:5})
+				bulletBehaviour: new MultipleBehaviour({vel:3.5, invencible:true, totalFires:5, bulletForce:5, size:0.5})
 			}
 			),
 			new PlayerModel({
@@ -211,7 +211,8 @@ var AppModel = Class.extend({
 				bulletForce:3,
 				bulletCoast:0.12,
 				bulletVel:5,
-				toAble: 5000
+				toAble: 5000,
+				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true})
 			}
 			),
 			new PlayerModel({
@@ -230,7 +231,8 @@ var AppModel = Class.extend({
 				bulletForce:1.5,
 				bulletCoast:0.08,
 				bulletVel:4,
-				toAble: 10000
+				toAble: 10000,
+				bulletBehaviour: new RandomBehaviour()
 			}
 			)
 		];

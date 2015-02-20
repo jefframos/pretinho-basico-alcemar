@@ -671,7 +671,8 @@ var Application = AbstractApplication.extend({
         this.height = 1, this.type = "bullet", this.target = "enemy", this.fireType = "physical", 
         this.node = null, this.velocity.x = vel.x, this.velocity.y = vel.y, this.timeLive = timeLive, 
         this.power = power, this.defaultVelocity = 1, this.imgSource = bulletSource, this.particleSource = particle, 
-        this.isRotation = rotation, this.isRotation && (this.accumRot = .1 * Math.random() - .05);
+        this.isRotation = rotation, this.isRotation && (this.accumRot = .1 * Math.random() - .05), 
+        this.sin = 0;
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
@@ -691,6 +692,7 @@ var Application = AbstractApplication.extend({
             angle = angle / 180 * Math.PI, this.velocity.x = Math.sin(angle) * this.defaultVelocity, 
             this.velocity.y = -Math.cos(angle) * this.defaultVelocity;
         } else this.homingStart--;
+        this.sinoid && (this.velocity.y = Math.sin(this.sin) * this.velocity.x, this.sin += .2), 
         this.collideArea;
     },
     setHoming: function(entity, timetostart, angle) {
@@ -797,12 +799,13 @@ var Application = AbstractApplication.extend({
         return new MultipleBehaviour(this.props);
     },
     build: function(screen) {
-        for (var vel = this.props.vel ? this.props.vel : 2.5, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, size = this.props.size ? this.props.size : .3, angleOpen = this.props.angleOpen ? this.props.angleOpen : .08, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, i = 0; totalFires >= i; i++) {
+        for (var vel = this.props.vel ? this.props.vel : 2.5, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, size = this.props.size ? this.props.size : .3, angleOpen = this.props.angleOpen ? this.props.angleOpen : .08, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, sinoid = this.props.sinoid ? this.props.sinoid : !1, i = 0; totalFires >= i; i++) {
             var angle = screen.red.rotation + angleOpen * (i - totalFires / 2), bullet = new Bullet({
                 x: Math.cos(angle) * vel,
                 y: Math.sin(angle) * vel
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
-            bullet.invencible = invencible, bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            bullet.invencible = invencible, bullet.build(), bullet.sinoid = sinoid, bullet.getContent().rotation = angle, 
+            bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
             screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, size, bullet);
         }
     },
@@ -819,7 +822,7 @@ var Application = AbstractApplication.extend({
         var vel = this.props.vel ? this.props.vel : 10, timeLive = windowWidth / vel, timeInterval = this.props.timeInterval ? this.props.timeInterval : 150;
         this.totalFires = this.props.totalFires ? this.props.totalFires : 25;
         var bulletForce = (void 0 !== this.props.angleOpen ? this.props.angleOpen : .9, 
-        this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce), invencible = this.props.invencible ? this.props.invencible : !1, self = this;
+        this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce), invencible = this.props.invencible ? this.props.invencible : !1, size = this.props.size ? this.props.size : .3, self = this;
         this.interval = setInterval(function() {
             var angle = 45, bullet = new Bullet({
                 x: Math.cos(angle) * vel,
@@ -827,9 +830,51 @@ var Application = AbstractApplication.extend({
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
             bullet.invencible = invencible, bullet.build(), bullet.getContent().rotation = angle, 
             bullet.setPosition(.6 * windowWidth * Math.random() + .15 * windowWidth, -bullet.getContent().height), 
-            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet), 
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, size, bullet), 
             --self.totalFires <= 0 && clearInterval(self.interval);
         }, timeInterval);
+    },
+    destroy: function() {},
+    serialize: function() {}
+}), RandomBehaviour = Class.extend({
+    init: function(props) {
+        this.props = props ? props : {};
+    },
+    clone: function() {
+        var id = Math.floor(9 * Math.random());
+        return 0 === id ? new GiantShootBehaviour({
+            vel: 2,
+            invencible: !0,
+            bulletForce: 10,
+            size: .8
+        }) : 1 === id ? new HomingBehaviour({
+            invencible: !0,
+            bulletForce: 10,
+            vel: 5
+        }) : 2 === id ? new SequenceBehaviour({
+            angleOpen: 0,
+            totalFires: 25
+        }) : 3 === id ? new MultipleBehaviour({
+            vel: 3,
+            totalFires: 8,
+            bulletForce: 10,
+            size: .15,
+            angleOpen: .25
+        }) : 4 === id ? new SequenceBehaviour() : 5 === id ? new MultipleBehaviour({
+            vel: 3.5,
+            invencible: !0,
+            totalFires: 5,
+            bulletForce: 5,
+            size: .5
+        }) : 6 === id ? new HomingBehaviour({
+            invencible: !0,
+            bulletForce: 50,
+            vel: 4
+        }) : 7 === id ? new AkumaBehaviour() : 8 === id ? new SequenceBehaviour({
+            angleOpen: 0,
+            totalFires: 25,
+            sinoid: !0
+        }) : new RainBehaviour();
     },
     destroy: function() {},
     serialize: function() {}
@@ -843,7 +888,7 @@ var Application = AbstractApplication.extend({
     build: function(screen) {
         var vel = this.props.vel ? this.props.vel : 10, timeLive = windowWidth / vel, timeInterval = this.props.timeInterval ? this.props.timeInterval : 150;
         this.totalFires = this.props.totalFires ? this.props.totalFires : 20;
-        var angleOpen = void 0 !== this.props.angleOpen ? this.props.angleOpen : .9, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, self = this;
+        var angleOpen = void 0 !== this.props.angleOpen ? this.props.angleOpen : .9, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, size = this.props.size ? this.props.size : .3, self = this, sinoid = this.props.sinoid ? this.props.sinoid : !1;
         this.interval = setInterval(function() {
             var angle = screen.red.rotation;
             angle += 0 === angleOpen ? 0 : angleOpen * Math.random() - angleOpen / 2;
@@ -851,8 +896,9 @@ var Application = AbstractApplication.extend({
                 x: Math.cos(angle) * vel,
                 y: Math.sin(angle) * vel
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
-            bullet.invencible = invencible, bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
-            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet), 
+            bullet.invencible = invencible, bullet.build(), bullet.getContent().rotation = angle, 
+            bullet.sinoid = sinoid, bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, size, bullet), 
             --self.totalFires <= 0 && clearInterval(self.interval);
         }, timeInterval);
     },
@@ -923,7 +969,13 @@ var Application = AbstractApplication.extend({
             bulletCoast: .15,
             bulletVel: 7,
             toAble: 350,
-            bulletBehaviour: new SequenceBehaviour()
+            bulletBehaviour: new MultipleBehaviour({
+                vel: 3,
+                totalFires: 8,
+                bulletForce: 10,
+                size: .15,
+                angleOpen: .25
+            })
         }), new PlayerModel({
             label: "ARTHUR",
             outGame: "arthur.png",
@@ -940,12 +992,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .15,
             bulletVel: 6,
             toAble: 800,
-            bulletBehaviour: new MultipleBehaviour({
-                vel: 3,
-                totalFires: 8,
-                bulletForce: 10,
-                size: .15
-            })
+            bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
             label: "PORÃ",
             outGame: "pora.png",
@@ -964,10 +1011,11 @@ var Application = AbstractApplication.extend({
             bulletVel: 5,
             toAble: 1200,
             bulletBehaviour: new MultipleBehaviour({
-                vel: 4.5,
+                vel: 3.5,
                 invencible: !0,
                 totalFires: 5,
-                bulletForce: 5
+                bulletForce: 5,
+                size: .5
             })
         }), new PlayerModel({
             label: "JEISO",
@@ -1040,7 +1088,12 @@ var Application = AbstractApplication.extend({
             bulletForce: 3,
             bulletCoast: .12,
             bulletVel: 5,
-            toAble: 5e3
+            toAble: 5e3,
+            bulletBehaviour: new SequenceBehaviour({
+                angleOpen: 0,
+                totalFires: 25,
+                sinoid: !0
+            })
         }), new PlayerModel({
             label: "RODAIKA",
             outGame: "rodaika.png",
@@ -1056,7 +1109,8 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.5,
             bulletCoast: .08,
             bulletVel: 4,
-            toAble: 1e4
+            toAble: 1e4,
+            bulletBehaviour: new RandomBehaviour()
         }) ], this.birdModels = [ new BirdModel({
             source: "caralinho.png",
             particles: [ "cabeca2.png", "penas2.png" ],

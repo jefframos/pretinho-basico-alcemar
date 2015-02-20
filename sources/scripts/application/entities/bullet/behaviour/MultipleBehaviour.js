@@ -14,6 +14,7 @@ var MultipleBehaviour = Class.extend({
         var angleOpen = this.props.angleOpen ? this.props.angleOpen:0.08;
         var bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce;
         var invencible = this.props.invencible ? this.props.invencible : false;
+        var sinoid = this.props.sinoid ? this.props.sinoid : false;
         for (var i = 0; i <= totalFires; i++) {
 
             var angle = screen.red.rotation + angleOpen * (i - totalFires / 2);
@@ -23,6 +24,8 @@ var MultipleBehaviour = Class.extend({
                 timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
             bullet.invencible = invencible;
             bullet.build();
+            bullet.sinoid = sinoid;
+            bullet.getContent().rotation = angle;
             //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
             bullet.setPosition(screen.red.getPosition().x * 0.8, screen.red.getPosition().y - screen.red.getContent().height * 0.8);
             screen.layer.addChild(bullet);
