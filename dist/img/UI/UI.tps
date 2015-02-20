@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/wamp/www/pretinho-basico-alcemar/dist/img/UI/UI.tps</string>
+        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/UI/UI.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -247,6 +247,7 @@
             <filename>ovoquebrado.png</filename>
             <filename>penasfundo1.png</filename>
             <filename>moeda.png</filename>
+            <filename>target.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

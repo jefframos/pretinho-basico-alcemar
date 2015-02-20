@@ -38,7 +38,6 @@ var renderer;
 var APP;
 function update() {
 	requestAnimFrame(update );
-
 	if(!init && window.innerWidth > window.innerHeight){
 		resizeProportional = true;
 
@@ -72,6 +71,9 @@ function update() {
 
 		init = true;
 	}
+	// var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+	// renderer.view.scrollTop = scrollTop;
+	
 	// meter.tickStart();
 	var tempRation =  (window.innerHeight/windowHeight);
 	var ratioRez = resizeProportional ? tempRation < (window.innerWidth/realWindowWidth)?tempRation:(window.innerWidth/realWindowWidth) : 1;
