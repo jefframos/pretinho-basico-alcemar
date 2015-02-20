@@ -58,7 +58,7 @@ var Bullet = Entity.extend({
                 this.range = this.sprite.height;
                 var angle = Math.atan2(this.targetEntity.getPosition().y - this.getPosition().y, this.targetEntity.getPosition().x - this.getPosition().x);
                 // var angle = Math.atan2(this.getPosition().y - this.targetEntity.getPosition().y,this.getPosition().x - this.targetEntity.getPosition().x);
-                
+                this.getContent().rotation = angle;
                 angle = angle * 180 / Math.PI;
                 angle += 90;
                 angle = angle / 180 * Math.PI;
@@ -68,6 +68,7 @@ var Bullet = Entity.extend({
             }
             else{
                 this.homingStart --;
+
             }
         }
         if(this.collideArea){
@@ -81,9 +82,10 @@ var Bullet = Entity.extend({
         //     this.velocity.y -= 0.1;
         // }
     },
-    setHoming:function(entity, timetostart){
+    setHoming:function(entity, timetostart, angle){
         this.homingStart = timetostart;
         this.targetEntity = entity;
+        this.getContent().rotation = angle;
     },
     collide:function(arrayCollide){
         // console.log('fireCollide', arrayCollide[0]);

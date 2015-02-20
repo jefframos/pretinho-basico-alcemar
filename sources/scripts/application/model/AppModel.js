@@ -110,7 +110,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.15,
 				bulletVel:6,
 				toAble: 800,
-				bulletBehaviour: new MultipleBehaviour({vel:4, totalFires:8, bulletForce:2})
+				bulletBehaviour: new MultipleBehaviour({vel:3, totalFires:8, bulletForce:10, size:0.15})
 			}
 			),
 			new PlayerModel({
@@ -131,7 +131,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.11,
 				bulletVel:5,
 				toAble: 1200,
-				bulletBehaviour: new MultipleBehaviour({vel:4, invencible:true, totalFires:5, bulletForce:5})
+				bulletBehaviour: new MultipleBehaviour({vel:4.5, invencible:true, totalFires:5, bulletForce:5})
 			}
 			),
 			new PlayerModel({
@@ -419,7 +419,7 @@ var AppModel = Class.extend({
 		this.totalPoints = 999999;
 		this.totalBirds = 8;
 		this.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
-		this.cookieManager.setCookie('totalBirds', 6, 500);
+		this.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
 
 
 		for (var i = this.playerModels.length - 1; i >= 0; i--) {

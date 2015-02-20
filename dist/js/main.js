@@ -687,13 +687,14 @@ var Application = AbstractApplication.extend({
         this.targetEntity && !this.targetEntity.kill) if (this.homingStart <= 0) {
             this.range = this.sprite.height;
             var angle = Math.atan2(this.targetEntity.getPosition().y - this.getPosition().y, this.targetEntity.getPosition().x - this.getPosition().x);
-            angle = 180 * angle / Math.PI, angle += 90, angle = angle / 180 * Math.PI, this.velocity.x = Math.sin(angle) * this.defaultVelocity, 
+            this.getContent().rotation = angle, angle = 180 * angle / Math.PI, angle += 90, 
+            angle = angle / 180 * Math.PI, this.velocity.x = Math.sin(angle) * this.defaultVelocity, 
             this.velocity.y = -Math.cos(angle) * this.defaultVelocity;
         } else this.homingStart--;
         this.collideArea;
     },
-    setHoming: function(entity, timetostart) {
-        this.homingStart = timetostart, this.targetEntity = entity;
+    setHoming: function(entity, timetostart, angle) {
+        this.homingStart = timetostart, this.targetEntity = entity, this.getContent().rotation = angle;
     },
     collide: function(arrayCollide) {
         if (this.collidable) for (var i = arrayCollide.length - 1; i >= 0; i--) if ("bird" === arrayCollide[i].type) {
@@ -769,7 +770,11 @@ var Application = AbstractApplication.extend({
         return new HomingBehaviour(this.props);
     },
     build: function(screen) {
-        for (var birds = [], i = screen.layer.childs.length - 1; i >= 0; i--) "bird" === screen.layer.childs[i].type && birds.push(screen.layer.childs[i]);
+        for (var birds = [], i = screen.layer.childs.length - 1; i >= 0; i--) if ("bird" === screen.layer.childs[i].type) {
+            var target = new SimpleSprite("target.png");
+            screen.layer.childs[i].getContent().addChild(target.getContent()), target.getContent().position.x = -target.getContent().width / 2, 
+            target.getContent().position.y = -target.getContent().height / 2, birds.push(screen.layer.childs[i]);
+        }
         console.log(birds);
         var vel = this.props.vel ? this.props.vel : 7, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, angleOpen = this.props.angleOpen ? this.props.angleOpen : 3, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1;
         for (i = 0; i < birds.length; i++) {
@@ -777,9 +782,9 @@ var Application = AbstractApplication.extend({
                 x: Math.cos(angle) * vel,
                 y: Math.sin(angle) * vel
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
-            bullet.invencible = invencible, bullet.defaultVelocity = vel, bullet.setHoming(birds[i], 2), 
+            bullet.invencible = invencible, bullet.defaultVelocity = vel, bullet.setHoming(birds[i], 10, angle), 
             bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
-            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet);
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .2, bullet);
         }
     },
     destroy: function() {},
@@ -792,13 +797,13 @@ var Application = AbstractApplication.extend({
         return new MultipleBehaviour(this.props);
     },
     build: function(screen) {
-        for (var vel = this.props.vel ? this.props.vel : 2.5, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, angleOpen = this.props.angleOpen ? this.props.angleOpen : .08, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, i = 0; totalFires >= i; i++) {
+        for (var vel = this.props.vel ? this.props.vel : 2.5, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, size = this.props.size ? this.props.size : .3, angleOpen = this.props.angleOpen ? this.props.angleOpen : .08, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1, i = 0; totalFires >= i; i++) {
             var angle = screen.red.rotation + angleOpen * (i - totalFires / 2), bullet = new Bullet({
                 x: Math.cos(angle) * vel,
                 y: Math.sin(angle) * vel
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
             bullet.invencible = invencible, bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
-            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .3, bullet);
+            screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, size, bullet);
         }
     },
     destroy: function() {},
@@ -911,9 +916,10 @@ var Application = AbstractApplication.extend({
             bulletVel: 6,
             toAble: 800,
             bulletBehaviour: new MultipleBehaviour({
-                vel: 4,
+                vel: 3,
                 totalFires: 8,
-                bulletForce: 2
+                bulletForce: 10,
+                size: .15
             })
         }), new PlayerModel({
             label: "PORÃ",
@@ -933,7 +939,7 @@ var Application = AbstractApplication.extend({
             bulletVel: 5,
             toAble: 1200,
             bulletBehaviour: new MultipleBehaviour({
-                vel: 4,
+                vel: 4.5,
                 invencible: !0,
                 totalFires: 5,
                 bulletForce: 5
@@ -1170,7 +1176,7 @@ var Application = AbstractApplication.extend({
     },
     maxPoints: function() {
         this.currentHorde = 0, this.totalPoints = 999999, this.totalBirds = 8, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
-        this.cookieManager.setCookie("totalBirds", 6, 500);
+        this.cookieManager.setCookie("totalBirds", this.totalBirds, 500);
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
     getNewBird: function(player, screen) {

@@ -10,6 +10,15 @@ var HomingBehaviour = Class.extend({
         var birds = [];
         for (var i = screen.layer.childs.length - 1; i >= 0; i--) {
             if(screen.layer.childs[i].type === 'bird'){
+                var target = new SimpleSprite('target.png');
+                screen.layer.childs[i].getContent().addChild(target.getContent());
+                // target.getContent().position.x = -screen.layer.childs[i].getContent().width / 2;
+                // target.getContent().position.y = -screen.layer.childs[i].getContent().height / 2;
+
+                target.getContent().position.x = -target.getContent().width / 2;
+                target.getContent().position.y = -target.getContent().height / 2;
+
+                
                 birds.push(screen.layer.childs[i]);
             }
         }
@@ -30,12 +39,12 @@ var HomingBehaviour = Class.extend({
                 timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
             bullet.invencible = invencible;
             bullet.defaultVelocity = vel;
-            bullet.setHoming(birds[i], 2);
+            bullet.setHoming(birds[i], 10, angle);
             bullet.build();
             //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
             bullet.setPosition(screen.red.getPosition().x * 0.8, screen.red.getPosition().y - screen.red.getContent().height * 0.8);
             screen.layer.addChild(bullet);
-            scaleConverter(bullet.getContent().height,screen.red.getContent().height, 0.3, bullet);
+            scaleConverter(bullet.getContent().height,screen.red.getContent().height, 0.2, bullet);
         }
 	},
 	destroy:function(){
