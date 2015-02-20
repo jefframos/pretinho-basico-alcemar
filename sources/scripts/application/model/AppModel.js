@@ -212,7 +212,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.12,
 				bulletVel:5,
 				toAble: 5000,
-				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true})
+				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true, vel:2})
 			}
 			),
 			new PlayerModel({

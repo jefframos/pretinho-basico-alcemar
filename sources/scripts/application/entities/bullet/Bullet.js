@@ -74,8 +74,9 @@ var Bullet = Entity.extend({
         }
 
         if(this.sinoid){
-            this.velocity.y = Math.sin(this.sin) * this.velocity.x;
+            this.velocity.y = Math.sin(this.sin) * (this.velocity.x * 5);
             this.sin += 0.2;
+            this.getContent().rotation = 0;
         }
 
         if(this.collideArea){

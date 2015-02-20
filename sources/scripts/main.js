@@ -3,50 +3,75 @@
 function testMobile() {
 	return Modernizr.touch;// || window.innerWidth < 600;//true;// Modernizr.touch || window.innerWidth < 600;
 }
+
+
 var resizeProportional = true;
-// var windowWidth = 1136,
-// windowHeight = 640;
 
-// var realWindowWidth = 1136,
-// realWindowHeight = 640;
+var windowWidth = 1334;
+var windowHeight = 750;
 
-var windowWidth = 1334,
-windowHeight = 750;
-
-var realWindowWidth = 1334,
-realWindowHeight = 750;
+var realWindowWidth = 1334;
+var realWindowHeight = 750;
 
 var gameScale = 1.3;
+// alert(window.innerHeight+' - '+ screen.width);
 if(testMobile()){
-	windowWidth = window.innerWidth * gameScale;//640;
-	windowHeight = window.innerHeight * gameScale;//960;
-	// alert(windowWidth +' - '+windowHeight);
-	// windowWidth = window.screen.height * gameScale;//640;
-	// windowHeight = window.screen.width * gameScale;//960;
-	// alert(windowWidth +' - '+ windowHeight)
+	windowWidth = window.innerWidth * gameScale;
+	windowHeight = window.innerHeight * gameScale;
 	realWindowWidth = windowWidth;
 	realWindowHeight = windowHeight;
 }
-// alert(window.innerHeight+' - '+ screen.width);
-var windowWidthVar = window.innerWidth,
-windowHeightVar = window.innerHeight;
-var renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, false, true);
+var windowWidthVar = window.innerWidth;
+var windowHeightVar = window.innerHeight;
+// var renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, false, true);
 
-document.body.appendChild(renderer.view);
+// document.body.appendChild(renderer.view);
 
-renderer.view.style.width = windowWidth+'px';
-renderer.view.style.height = windowHeight+'px';
+// renderer.view.style.width = windowWidth+'px';
+// renderer.view.style.height = windowHeight+'px';
 
+var ratio = 1;
+
+var init = false;
+
+var renderer;
 var APP;
-APP = new Application();
-APP.build();
-APP.show();
-
-
-var ratio = 1;//devicePixelRatio / backingStoreRatio;
-
 function update() {
 	requestAnimFrame(update );
+
+	if(!init && window.innerWidth > window.innerHeight){
+		resizeProportional = true;
+
+		windowWidth = 1334;
+		windowHeight = 750;
+
+		realWindowWidth = 1334;
+		realWindowHeight = 750;
+
+		gameScale = 1.3;
+		if(testMobile()){
+			windowWidth = window.innerWidth * gameScale;
+			windowHeight = window.innerHeight * gameScale;
+			realWindowWidth = windowWidth;
+			realWindowHeight = windowHeight;
+		}
+		// alert(window.innerHeight+' - '+ screen.width);
+		windowWidthVar = window.innerWidth;
+		windowHeightVar = window.innerHeight;
+		renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, false, true);
+
+		document.body.appendChild(renderer.view);
+
+		renderer.view.style.width = windowWidth+'px';
+		renderer.view.style.height = windowHeight+'px';
+
+		
+		APP = new Application();
+		APP.build();
+		APP.show();
+
+		init = true;
+	}
 	// meter.tickStart();
 	var tempRation =  (window.innerHeight/windowHeight);
 	var ratioRez = resizeProportional ? tempRation < (window.innerWidth/realWindowWidth)?tempRation:(window.innerWidth/realWindowWidth) : 1;
@@ -103,7 +128,6 @@ function fullscreen(){
 	var App = {
 		init: function () {
 			initialize();
-
 		}
 	};
 	App.init();

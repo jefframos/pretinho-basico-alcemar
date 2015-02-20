@@ -93,7 +93,14 @@ function testMobile() {
 }
 
 function update() {
-    requestAnimFrame(update);
+    requestAnimFrame(update), !init && window.innerWidth > window.innerHeight && (resizeProportional = !0, 
+    windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, 
+    gameScale = 1.3, testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
+    realWindowWidth = windowWidth, realWindowHeight = windowHeight), windowWidthVar = window.innerWidth, 
+    windowHeightVar = window.innerHeight, renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, !1, !0), 
+    document.body.appendChild(renderer.view), renderer.view.style.width = windowWidth + "px", 
+    renderer.view.style.height = windowHeight + "px", APP = new Application(), APP.build(), 
+    APP.show(), init = !0);
     var tempRation = window.innerHeight / windowHeight, ratioRez = resizeProportional ? tempRation < window.innerWidth / realWindowWidth ? tempRation : window.innerWidth / realWindowWidth : 1;
     windowWidthVar = realWindowWidth * ratioRez * ratio, windowHeightVar = realWindowHeight * ratioRez * ratio, 
     windowWidthVar > realWindowWidth && (windowWidthVar = realWindowWidth), windowHeightVar > realWindowHeight && (windowHeightVar = realWindowHeight), 
@@ -692,8 +699,8 @@ var Application = AbstractApplication.extend({
             angle = angle / 180 * Math.PI, this.velocity.x = Math.sin(angle) * this.defaultVelocity, 
             this.velocity.y = -Math.cos(angle) * this.defaultVelocity;
         } else this.homingStart--;
-        this.sinoid && (this.velocity.y = Math.sin(this.sin) * this.velocity.x, this.sin += .2), 
-        this.collideArea;
+        this.sinoid && (this.velocity.y = 5 * Math.sin(this.sin) * this.velocity.x, this.sin += .2, 
+        this.getContent().rotation = 0), this.collideArea;
     },
     setHoming: function(entity, timetostart, angle) {
         this.homingStart = timetostart, this.targetEntity = entity, this.getContent().rotation = angle;
@@ -873,7 +880,8 @@ var Application = AbstractApplication.extend({
         }) : 7 === id ? new AkumaBehaviour() : 8 === id ? new SequenceBehaviour({
             angleOpen: 0,
             totalFires: 25,
-            sinoid: !0
+            sinoid: !0,
+            vel: 2
         }) : new RainBehaviour();
     },
     destroy: function() {},
@@ -1092,7 +1100,8 @@ var Application = AbstractApplication.extend({
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
                 totalFires: 25,
-                sinoid: !0
+                sinoid: !0,
+                vel: 2
             })
         }), new PlayerModel({
             label: "RODAIKA",
@@ -2321,16 +2330,7 @@ var Application = AbstractApplication.extend({
 testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
 realWindowWidth = windowWidth, realWindowHeight = windowHeight);
 
-var windowWidthVar = window.innerWidth, windowHeightVar = window.innerHeight, renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, !1, !0);
-
-document.body.appendChild(renderer.view), renderer.view.style.width = windowWidth + "px", 
-renderer.view.style.height = windowHeight + "px";
-
-var APP;
-
-APP = new Application(), APP.build(), APP.show();
-
-var ratio = 1, initialize = function() {
+var windowWidthVar = window.innerWidth, windowHeightVar = window.innerHeight, ratio = 1, init = !1, renderer, APP, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 };
 

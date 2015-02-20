@@ -22,7 +22,7 @@ var RandomBehaviour = Class.extend({
 		}else if(id === 7){
 			return new AkumaBehaviour();
 		}else if(id === 8){
-			return new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true});
+			return new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true, vel:2});
 		}else{
 			return new RainBehaviour();
 		}
