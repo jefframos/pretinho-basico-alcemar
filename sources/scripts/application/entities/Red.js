@@ -133,11 +133,36 @@ var Red = SpritesheetEntity.extend({
 				if(entity.type !== 'bullet'){
 					if(entity.type === 'item'){
 						this.playerModel.currentEnergy += this.playerModel.maxEnergy * 0.3;
+
+						var moreComb = new Particles({x:-0.5, y:-(Math.random() * 0.2 + 0.3)}, 120,
+			                new PIXI.Text('+ Combustível', {font:'20px Luckiest Guy', fill:'#79DB20', stroke:'#033E43', strokeThickness:3}),
+			                0);
+			            moreComb.build();
+			            moreComb.setPosition(this.getPosition().x,
+			                this.getPosition().y - Math.random() * 50);
+			            moreComb.alphadecress = 0.01;
+			            this.screen.addChild(moreComb);
+
 						if(this.playerModel.currentEnergy > this.playerModel.maxEnergy){
 							this.playerModel.currentEnergy = this.playerModel.maxEnergy;
 						}
 						// console.log(entity.type);
 						entity.preKill();
+					}else if(entity.type === 'obstacle'){
+						var demage = entity.demage * this.playerModel.maxEnergy;
+						if(!isNaN(demage)){
+							this.playerModel.currentEnergy -= demage;
+							entity.preKill();
+
+							var lowComb = new Particles({x:-0.5, y:(Math.random() * 0.2 + 0.3)}, 120,
+				                new PIXI.Text('- Combustível', {font:'20px Luckiest Guy', fill:'#F9003C', stroke:'#FFFFFF', strokeThickness:3}),
+				                0);
+				            lowComb.build();
+				            lowComb.setPosition(this.getPosition().x,
+				                this.getPosition().y - Math.random() * 10);
+				            lowComb.alphadecress = 0.01;
+				            this.screen.addChild(lowComb);
+						}
 					}else{
 						entity.preKill();
 					}

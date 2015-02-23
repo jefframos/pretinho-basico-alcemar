@@ -49,7 +49,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         var pistaScale = scaleConverter(this.pista.getContent().width, windowWidth, 0.4);
         this.pista.getContent().scale.x = pistaScale;
         this.pista.getContent().scale.y = pistaScale;
-        this.pista.setPosition(windowWidth  - this.pista.getContent().width - windowWidth * 0.05 , windowHeight - this.pista.getContent().height / 2);
+        this.pista.setPosition(windowWidth  - this.pista.getContent().width - windowWidth * 0.08 , windowHeight - this.pista.getContent().height / 2);
 
         this.pointsMask = [[510 / 1136 * windowWidth, 0],
         [1038 / 1136 * windowWidth, 0],

@@ -29,16 +29,27 @@ var AppModel = Class.extend({
 
 		this.obstacleModels = [
 			new BirdModel({
-				source:'belga.png',
-				particles:['cabeca5.png', 'penas5.png'],
-				sizePercent:0.15,
+				source:'obstaculo1.png',
+				particles:['smoke.png', 'smoke.png'],
+				sizePercent:0.10,
 			},
 			{
 				target:null,
 				demage:0.2,
 				vel:-1.5,
 				behaviour:new BirdBehaviourSinoid({sinAcc:0.05}),
-			})
+			}),
+			// new BirdModel({
+			// 	source:'obstaculo1.png',
+			// 	particles:['smoke.png', 'smoke.png'],
+			// 	sizePercent:0.10,
+			// },
+			// {
+			// 	target:null,
+			// 	demage:0.2,
+			// 	vel:-1,
+			// 	behaviour:new BirdBehaviourDiag({accX:1.5}),
+			// })
 		];
 		this.playerModels = [
 
@@ -60,6 +71,7 @@ var AppModel = Class.extend({
 				bulletForce:2.0,
 				bulletVel:5,
 				bulletCoast:0.1,
+				toSpec: 800,
 				bulletBehaviour: new GiantShootBehaviour({vel:2, invencible:true, bulletForce:10, size: 0.8})
 				// bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:10, vel:5})
 				//toAble: 400
@@ -84,6 +96,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.12,
 				bulletVel:7,
 				toAble: 10,
+				toSpec: 800,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25})
 			}
 			),
@@ -106,6 +119,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.15,
 				bulletVel:7,
 				toAble: 350,
+				toSpec: 800,
 				bulletBehaviour: new MultipleBehaviour({vel:3, totalFires:8, bulletForce:10, size:0.15, angleOpen:0.25})
 			}
 			),
@@ -127,6 +141,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.15,
 				bulletVel:6,
 				toAble: 800,
+				toSpec: 800,
 				bulletBehaviour: new SequenceBehaviour()
 			}
 			),
@@ -149,6 +164,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.11,
 				bulletVel:5,
 				toAble: 1200,
+				toSpec: 800,
 				bulletBehaviour: new MultipleBehaviour({vel:3.5, invencible:true, totalFires:5, bulletForce:5, size:0.5})
 			}
 			),
@@ -170,6 +186,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.07,
 				bulletVel:8,
 				toAble: 1500,
+				toSpec: 800,
 				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:50, vel:4})
 			}
 			),
@@ -192,6 +209,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.1,
 				bulletVel:5,
 				toAble: 2000,
+				toSpec: 800,
 				bulletBehaviour: new AkumaBehaviour()
 			}
 			),
@@ -213,6 +231,7 @@ var AppModel = Class.extend({
 				bulletVel:6,
 				bulletCoast:0.15,
 				toAble: 2500,
+				toSpec: 800,
 				bulletBehaviour: new RainBehaviour()
 			}
 			),
@@ -234,6 +253,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.12,
 				bulletVel:5,
 				toAble: 5000,
+				toSpec: 800,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true, vel:2})
 			}
 			),
@@ -255,6 +275,7 @@ var AppModel = Class.extend({
 				bulletCoast:0.08,
 				bulletVel:4,
 				toAble: 10000,
+				toSpec: 800,
 				bulletBehaviour: new RandomBehaviour()
 			}
 			)
@@ -266,7 +287,7 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'caralinho.png',
 				particles:['cabeca2.png', 'penas2.png'],
-				egg:'ovo2.png',
+				egg:'ovo_belga.png',
 				sizePercent:0.11,
 				label:'Caralinho da terra'
 			},
@@ -283,7 +304,7 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'belga.png',
 				particles:['cabeca5.png', 'penas5.png'],
-				egg:'ovo2.png',
+				egg:'ovo_belga.png',
 				sizePercent:0.15,
 				label:'Caralho Belga'
 
@@ -301,7 +322,7 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'lambecu.png',
 				particles:['cabeca4.png', 'penas4.png'],
-				egg:'ovo3.png',
+				egg:'ovo_lambecu.png',
 				sizePercent:0.15,
 				label:'Lambecu Francês'
 
@@ -319,7 +340,7 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'roxo.png',
 				particles:['cabeca6.png', 'penas6.png'],
-				egg:'ovo4.png',
+				egg:'ovo_papacu.png',
 				sizePercent:0.2,
 				label:'Papacu de cabeça roxa'
 
@@ -337,13 +358,13 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'papodebago.png',
 				particles:['cabeca7.png', 'penas7.png'],
-				egg:'ovo2.png',
+				egg:'ovo_galo.png',
 				sizePercent:0.21,
 				label:'Galo Papo de Bago'
 			},
 			{
 				target:null,
-				hp:1,
+				hp:4,
 				demage:0.2,
 				vel:-3.5,
 				behaviour:new BirdBehaviourDiag({accX:-0.01}),
@@ -354,7 +375,7 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'nocu.png',
 				particles:['cabeca3.png', 'penas3.png'],
-				egg:'ovo5.png',
+				egg:'ovo_nocu.png',
 				sizePercent:0.2,
 				label:'Nocututinha'
 
@@ -372,7 +393,7 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'calopsuda.png',
 				particles:['cabeca8.png', 'penas8.png'],
-				egg:'ovo2.png',
+				egg:'ovo_calopsuda.png',
 				sizePercent:0.21,
 				label:'Calopsuda'
 			},
@@ -390,7 +411,7 @@ var AppModel = Class.extend({
 			new BirdModel({
 				source:'nigeriano.png',
 				particles:['cabeca1.png', 'penas1.png'],
-				egg:'ovo6.png',
+				egg:'ovo_nigeriano.png',
 				sizePercent:0.3,
 				label:'Piçudão azul nigeriano'
 
@@ -455,6 +476,11 @@ var AppModel = Class.extend({
 				this.playerModels[i].able = false;
 			}
 		}
+	},
+	getNewObstacle:function(screen){
+		var id = Math.floor(this.obstacleModels.length * Math.random());
+		var obs = new Obstacle(this.obstacleModels[id], screen);
+		return obs;
 	},
 	getNewBird:function(player, screen){
 		this.currentHorde ++;

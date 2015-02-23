@@ -536,9 +536,37 @@ var Application = AbstractApplication.extend({
     collide: function(arrayCollide) {
         if (this.collidable) for (var i = arrayCollide.length - 1; i >= 0; i--) {
             var entity = arrayCollide[i];
-            "bullet" !== entity.type && ("item" === entity.type ? (this.playerModel.currentEnergy += .3 * this.playerModel.maxEnergy, 
-            this.playerModel.currentEnergy > this.playerModel.maxEnergy && (this.playerModel.currentEnergy = this.playerModel.maxEnergy), 
-            entity.preKill()) : entity.preKill());
+            if ("bullet" !== entity.type) if ("item" === entity.type) {
+                this.playerModel.currentEnergy += .3 * this.playerModel.maxEnergy;
+                var moreComb = new Particles({
+                    x: -.5,
+                    y: -(.2 * Math.random() + .3)
+                }, 120, new PIXI.Text("+ Combustível", {
+                    font: "20px Luckiest Guy",
+                    fill: "#79DB20",
+                    stroke: "#033E43",
+                    strokeThickness: 3
+                }), 0);
+                moreComb.build(), moreComb.setPosition(this.getPosition().x, this.getPosition().y - 50 * Math.random()), 
+                moreComb.alphadecress = .01, this.screen.addChild(moreComb), this.playerModel.currentEnergy > this.playerModel.maxEnergy && (this.playerModel.currentEnergy = this.playerModel.maxEnergy), 
+                entity.preKill();
+            } else if ("obstacle" === entity.type) {
+                var demage = entity.demage * this.playerModel.maxEnergy;
+                if (!isNaN(demage)) {
+                    this.playerModel.currentEnergy -= demage, entity.preKill();
+                    var lowComb = new Particles({
+                        x: -.5,
+                        y: .2 * Math.random() + .3
+                    }, 120, new PIXI.Text("- Combustível", {
+                        font: "20px Luckiest Guy",
+                        fill: "#F9003C",
+                        stroke: "#FFFFFF",
+                        strokeThickness: 3
+                    }), 0);
+                    lowComb.build(), lowComb.setPosition(this.getPosition().x, this.getPosition().y - 10 * Math.random()), 
+                    lowComb.alphadecress = .01, this.screen.addChild(lowComb);
+                }
+            } else entity.preKill();
         }
     },
     destroy: function() {
@@ -612,7 +640,7 @@ var Application = AbstractApplication.extend({
         }, this.acc = 0;
     },
     clone: function() {
-        return this.props.accX = .02 * Math.random() + .005, new BirdBehaviourDiag(this.props);
+        return this.props.accX = .02 * Math.random() + .008, new BirdBehaviourDiag(this.props);
     },
     update: function(entity) {
         this.acc += this.props.accX, entity.acceleration = 1, this.up ? (entity.velocity.y = Math.abs(entity.vel) - this.acc, 
@@ -852,37 +880,33 @@ var Application = AbstractApplication.extend({
         return 0 === id ? new GiantShootBehaviour({
             vel: 2,
             invencible: !0,
-            bulletForce: 10,
+            bulletForce: 60,
             size: .8
-        }) : 1 === id ? new HomingBehaviour({
-            invencible: !0,
-            bulletForce: 10,
-            vel: 5
-        }) : 2 === id ? new SequenceBehaviour({
+        }) : 1 === id ? new SequenceBehaviour({
             angleOpen: 0,
             totalFires: 25
-        }) : 3 === id ? new MultipleBehaviour({
+        }) : 2 === id ? new MultipleBehaviour({
             vel: 3,
             totalFires: 8,
             bulletForce: 10,
             size: .15,
             angleOpen: .25
-        }) : 4 === id ? new SequenceBehaviour() : 5 === id ? new MultipleBehaviour({
+        }) : 3 === id ? new SequenceBehaviour() : 4 === id ? new MultipleBehaviour({
             vel: 3.5,
             invencible: !0,
             totalFires: 5,
             bulletForce: 5,
             size: .5
-        }) : 6 === id ? new HomingBehaviour({
+        }) : 5 === id ? new HomingBehaviour({
             invencible: !0,
-            bulletForce: 50,
+            bulletForce: 99,
             vel: 4
-        }) : 7 === id ? new AkumaBehaviour() : 8 === id ? new SequenceBehaviour({
+        }) : 6 === id ? new AkumaBehaviour() : 7 === id ? new AkumaBehaviour() : 8 === id ? new RainBehaviour() : new SequenceBehaviour({
             angleOpen: 0,
             totalFires: 25,
             sinoid: !0,
             vel: 2
-        }) : new RainBehaviour();
+        });
     },
     destroy: function() {},
     serialize: function() {}
@@ -927,7 +951,7 @@ var Application = AbstractApplication.extend({
     },
     update: function() {
         this._super(), this.behaviour.update(this), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
-        this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
+        this.range = .7 * this.sprite.width, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
     },
     preKill: function() {
         for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
@@ -947,9 +971,9 @@ var Application = AbstractApplication.extend({
         var points = parseInt(this.cookieManager.getCookie("totalPoints")), tempBirds = parseInt(this.cookieManager.getCookie("totalBirds"));
         this.totalPoints = points ? points : 0, this.totalBirds = tempBirds ? tempBirds : 1, 
         this.currentPoints = 0, this.obstacleModels = [ new BirdModel({
-            source: "belga.png",
-            particles: [ "cabeca5.png", "penas5.png" ],
-            sizePercent: .15
+            source: "obstaculo1.png",
+            particles: [ "smoke.png", "smoke.png" ],
+            sizePercent: .1
         }, {
             target: null,
             demage: .2,
@@ -974,6 +998,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 2,
             bulletVel: 5,
             bulletCoast: .1,
+            toSpec: 800,
             bulletBehaviour: new GiantShootBehaviour({
                 vel: 2,
                 invencible: !0,
@@ -998,6 +1023,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .12,
             bulletVel: 7,
             toAble: 10,
+            toSpec: 800,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
                 totalFires: 25
@@ -1020,6 +1046,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .15,
             bulletVel: 7,
             toAble: 350,
+            toSpec: 800,
             bulletBehaviour: new MultipleBehaviour({
                 vel: 3,
                 totalFires: 8,
@@ -1044,6 +1071,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .15,
             bulletVel: 6,
             toAble: 800,
+            toSpec: 800,
             bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
             label: "PORÃ",
@@ -1063,6 +1091,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .11,
             bulletVel: 5,
             toAble: 1200,
+            toSpec: 800,
             bulletBehaviour: new MultipleBehaviour({
                 vel: 3.5,
                 invencible: !0,
@@ -1087,6 +1116,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .07,
             bulletVel: 8,
             toAble: 1500,
+            toSpec: 800,
             bulletBehaviour: new HomingBehaviour({
                 invencible: !0,
                 bulletForce: 50,
@@ -1110,6 +1140,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .1,
             bulletVel: 5,
             toAble: 2e3,
+            toSpec: 800,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "FETTER",
@@ -1128,6 +1159,7 @@ var Application = AbstractApplication.extend({
             bulletVel: 6,
             bulletCoast: .15,
             toAble: 2500,
+            toSpec: 800,
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
             label: "NETO",
@@ -1146,6 +1178,7 @@ var Application = AbstractApplication.extend({
             bulletCoast: .12,
             bulletVel: 5,
             toAble: 5e3,
+            toSpec: 800,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
                 totalFires: 25,
@@ -1169,11 +1202,12 @@ var Application = AbstractApplication.extend({
             bulletCoast: .08,
             bulletVel: 4,
             toAble: 1e4,
+            toSpec: 800,
             bulletBehaviour: new RandomBehaviour()
         }) ], this.birdModels = [ new BirdModel({
             source: "caralinho.png",
             particles: [ "cabeca2.png", "penas2.png" ],
-            egg: "ovo2.png",
+            egg: "ovo_belga.png",
             sizePercent: .11,
             label: "Caralinho da terra"
         }, {
@@ -1187,7 +1221,7 @@ var Application = AbstractApplication.extend({
         }), new BirdModel({
             source: "belga.png",
             particles: [ "cabeca5.png", "penas5.png" ],
-            egg: "ovo2.png",
+            egg: "ovo_belga.png",
             sizePercent: .15,
             label: "Caralho Belga"
         }, {
@@ -1203,7 +1237,7 @@ var Application = AbstractApplication.extend({
         }), new BirdModel({
             source: "lambecu.png",
             particles: [ "cabeca4.png", "penas4.png" ],
-            egg: "ovo3.png",
+            egg: "ovo_lambecu.png",
             sizePercent: .15,
             label: "Lambecu Francês"
         }, {
@@ -1220,7 +1254,7 @@ var Application = AbstractApplication.extend({
         }), new BirdModel({
             source: "roxo.png",
             particles: [ "cabeca6.png", "penas6.png" ],
-            egg: "ovo4.png",
+            egg: "ovo_papacu.png",
             sizePercent: .2,
             label: "Papacu de cabeça roxa"
         }, {
@@ -1236,12 +1270,12 @@ var Application = AbstractApplication.extend({
         }), new BirdModel({
             source: "papodebago.png",
             particles: [ "cabeca7.png", "penas7.png" ],
-            egg: "ovo2.png",
+            egg: "ovo_galo.png",
             sizePercent: .21,
             label: "Galo Papo de Bago"
         }, {
             target: null,
-            hp: 1,
+            hp: 4,
             demage: .2,
             vel: -3.5,
             behaviour: new BirdBehaviourDiag({
@@ -1252,7 +1286,7 @@ var Application = AbstractApplication.extend({
         }), new BirdModel({
             source: "nocu.png",
             particles: [ "cabeca3.png", "penas3.png" ],
-            egg: "ovo5.png",
+            egg: "ovo_nocu.png",
             sizePercent: .2,
             label: "Nocututinha"
         }, {
@@ -1269,7 +1303,7 @@ var Application = AbstractApplication.extend({
         }), new BirdModel({
             source: "calopsuda.png",
             particles: [ "cabeca8.png", "penas8.png" ],
-            egg: "ovo2.png",
+            egg: "ovo_calopsuda.png",
             sizePercent: .21,
             label: "Calopsuda"
         }, {
@@ -1286,7 +1320,7 @@ var Application = AbstractApplication.extend({
         }), new BirdModel({
             source: "nigeriano.png",
             particles: [ "cabeca1.png", "penas1.png" ],
-            egg: "ovo6.png",
+            egg: "ovo_nigeriano.png",
             sizePercent: .3,
             label: "Piçudão azul nigeriano"
         }, {
@@ -1317,6 +1351,10 @@ var Application = AbstractApplication.extend({
         this.currentHorde = 0, this.totalPoints = 999999, this.totalBirds = 8, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
         this.cookieManager.setCookie("totalBirds", this.totalBirds, 500);
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
+    },
+    getNewObstacle: function(screen) {
+        var id = Math.floor(this.obstacleModels.length * Math.random()), obs = new Obstacle(this.obstacleModels[id], screen);
+        return obs;
     },
     getNewBird: function(player, screen) {
         this.currentHorde++;
@@ -1382,7 +1420,8 @@ var Application = AbstractApplication.extend({
         this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 4 - this.energyCoast, 
         this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, this.velocity = statsObject.vel ? statsObject.vel : 2, 
         this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, 
-        this.toAble = statsObject.toAble ? statsObject.toAble : 0, this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour : new MultipleBehaviour(), 
+        this.toAble = statsObject.toAble ? statsObject.toAble : 0, this.toSpec = statsObject.toSpec ? statsObject.toSpec : 1e3, 
+        this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour : new MultipleBehaviour(), 
         this.able = !1;
     },
     reset: function() {
@@ -1419,7 +1458,7 @@ var Application = AbstractApplication.extend({
         this.pista = new SimpleSprite("pista.png"), this.addChild(this.pista);
         var pistaScale = scaleConverter(this.pista.getContent().width, windowWidth, .4);
         this.pista.getContent().scale.x = pistaScale, this.pista.getContent().scale.y = pistaScale, 
-        this.pista.setPosition(windowWidth - this.pista.getContent().width - .05 * windowWidth, windowHeight - this.pista.getContent().height / 2), 
+        this.pista.setPosition(windowWidth - this.pista.getContent().width - .08 * windowWidth, windowHeight - this.pista.getContent().height / 2), 
         this.pointsMask = [ [ 510 / 1136 * windowWidth, 0 ], [ 1038 / 1136 * windowWidth, 0 ], [ 465 / 1136 * windowWidth, windowHeight ], [ 25 / 1136 * windowWidth, windowHeight ] ], 
         this.faceContainer = new PIXI.DisplayObjectContainer(), this.faceMask = new PIXI.Graphics(), 
         this.faceMask.beginFill(6684757), this.faceMask.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), 
@@ -1671,7 +1710,7 @@ var Application = AbstractApplication.extend({
     },
     special: function() {
         var bulletBehaviour = this.playerModel.bulletBehaviour.clone();
-        bulletBehaviour.build(this);
+        bulletBehaviour.build(this), this.ableSpecial = this.playerModel.toSpec;
     },
     shoot: function() {
         var timeLive = this.red.getContent().width / this.playerModel.bulletVel + 200, vel = this.playerModel.bulletVel + this.playerModel.bulletVel, angle = this.red.rotation, bullet = new Bullet({
@@ -1700,8 +1739,11 @@ var Application = AbstractApplication.extend({
             this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
             this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
             this.updateBirds(), this.updateParticles(), this.updateItens(), this.updateClouds(), 
-            0 === this.createEggAccum ? (this.createEgg(), this.createEggAccum = -1) : this.createEggAccum--, 
-            this.labelAcum > 0 && this.labelAcum--, this.pointsLabel && this.pointsLabel.text !== String(APP.getGameModel().currentPoints) ? (this.pointsLabel.setText(APP.getGameModel().currentPoints), 
+            this.updateObstacles(), this.ableSpecial > 0 ? (this.ableSpecial--, this.specialContainer.alpha = .5, 
+            this.specialContainer.scale.x = this.specialContainer.scale.y = .8) : (this.specialContainer.alpha = 1, 
+            this.specialContainer.scale.x = this.specialContainer.scale.y = 1), 0 === this.createEggAccum ? (this.createEgg(), 
+            this.createEggAccum = -1) : this.createEggAccum--, this.labelAcum > 0 && this.labelAcum--, 
+            this.pointsLabel && this.pointsLabel.text !== String(APP.getGameModel().currentPoints) ? (this.pointsLabel.setText(APP.getGameModel().currentPoints), 
             this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1.5, this.pointsLabel.rotation = .7 * Math.random() - .25, 
             this.labelAcum = 20) : 0 === this.labelAcum && (this.pointsLabel.position.x = this.moneyContainer.width / this.moneyContainer.scale.x - this.pointsLabel.width - 20, 
             this.pointsLabel.scale.x = this.pointsLabel.scale.y = 1, this.pointsLabel.rotation = 0);
@@ -1736,13 +1778,22 @@ var Application = AbstractApplication.extend({
         if (this.acumCloud < 0) {
             this.acumCloud = 1200;
             var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
-            simpleEntity.velocity.x = -.1, simpleEntity.setPosition(windowWidth, +Math.random() * windowHeight * .2), 
+            simpleEntity.velocity.x = -.6, simpleEntity.setPosition(windowWidth, +Math.random() * windowHeight * .2), 
             this.backLayer.addChild(simpleEntity), scaleConverter(simpleEntity.getContent().height, windowHeight, .5, simpleEntity), 
             this.vecClouds.push(simpleEntity);
         } else {
             this.acumCloud--;
             for (var i = this.vecClouds.length - 1; i >= 0; i--) this.vecClouds[i].getContent().position.x + this.vecClouds[i].getContent().width < 0 && (this.vecClouds[i].kill = !0);
         }
+    },
+    updateObstacles: function() {
+        if (this.obsAccum < 0) {
+            this.obsAccum = 1e3 + 500 * Math.random();
+            var obs = APP.getGameModel().getNewObstacle(this);
+            obs.build(), this.layer.addChild(obs);
+            var scale = scaleConverter(obs.getContent().width, windowHeight, obs.birdModel.sizePercent);
+            obs.setScale(scale, scale), obs.setPosition(obs.behaviour.position.x, obs.behaviour.position.y);
+        } else this.obsAccum--;
     },
     updateParticles: function() {
         if (this.particleAccum < 0) {
@@ -1756,10 +1807,11 @@ var Application = AbstractApplication.extend({
         } else this.particleAccum--;
     },
     initApplication: function() {
-        this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, this.spawner = 150, 
-        this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, APP.getGameModel().currentPoints = 0, 
-        APP.getGameModel().currentHorde = 0, this.initApp = !0, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
-        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
+        this.obsAccum = 500, this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, 
+        this.spawner = 150, this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, 
+        APP.getGameModel().currentPoints = 0, APP.getGameModel().currentHorde = 0, this.initApp = !0, 
+        this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), this.addChild(this.sky), 
+        this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
         this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], this.layerManagerBack = new LayerManager(), 
         this.layerManagerBack.build("MainBack"), this.addChild(this.layerManagerBack);
         var environment = new Environment(windowWidth, windowHeight);
@@ -1770,7 +1822,7 @@ var Application = AbstractApplication.extend({
         this.layerManager.addLayer(this.layer), this.playerModel = APP.getGameModel().currentPlayerModel, 
         this.playerModel.reset(), this.red = new Red(this.playerModel), this.red.build(this), 
         this.layer.addChild(this.red), this.red.rotation = -1, this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight), 
-        this.gameOver = !1;
+        this.ableSpecial = this.playerModel.toSpec, this.gameOver = !1;
         var scale = scaleConverter(this.red.getContent().height, windowHeight, .25);
         TweenLite.to(this.red.spritesheet.position, 2, {
             x: .15 * windowWidth + this.red.getContent().width / 2,
@@ -1791,11 +1843,6 @@ var Application = AbstractApplication.extend({
         this.bulletIco.getContent().scale.y = .9, this.bulletIco.getContent().position.x = 46, 
         this.bulletIco.getContent().position.y = 15, this.bulletBar.getContent().addChild(this.bulletIco.getContent()), 
         this.addChild(barsContainer), barsContainer.position.x = 20, barsContainer.position.y = 20, 
-        this.specialButton = new DefaultButton("out.png", "out.png"), this.specialButton.build(), 
-        this.addChild(this.specialButton), this.specialButton.clickCallback = function() {
-            self.special();
-        }, scaleConverter(this.specialButton.getContent().height, windowHeight, .15, this.specialButton), 
-        this.specialButton.setPosition(windowWidth - this.specialButton.getContent().width - 20, windowHeight / 2 - this.specialButton.getContent().height / 2), 
         this.pauseButton = new DefaultButton("pauseButton.png", "pauseButton.png"), this.pauseButton.build(), 
         this.addChild(this.pauseButton), this.pauseButton.clickCallback = function() {
             self.pauseModal.show();
@@ -1809,15 +1856,21 @@ var Application = AbstractApplication.extend({
             fill: "#FFFFFF",
             stroke: "#033E43",
             strokeThickness: 5
-        }), this.moneyContainer.addChild(this.pointsLabel), this.pointsLabel.position.y = 2, 
-        scaleConverter(this.moneyContainer.width, windowWidth, .15, this.moneyContainer), 
+        }), this.moneyContainer.addChild(this.pointsLabel), this.specialContainer = new PIXI.DisplayObjectContainer(), 
+        this.specialButton = new DefaultButton("out.png", "out.png"), this.specialButton.build(), 
+        this.specialContainer.addChild(this.specialButton.getContent()), this.specialButton.clickCallback = function() {
+            self.ableSpecial > 0 || self.special();
+        }, scaleConverter(this.specialButton.getContent().height, windowHeight, .2, this.specialButton), 
+        this.specialButton.setPosition(-this.specialButton.getContent().width / 2, -this.specialButton.getContent().height / 2), 
+        this.specialContainer.position.x = this.specialButton.getContent().width / 2 + windowWidth - this.specialButton.getContent().width - 20, 
+        this.specialContainer.position.y = this.specialButton.getContent().height / 2 + this.moneyContainer.position.y + this.moneyContainer.height + .05 * windowHeight, 
+        this.addChild(this.specialContainer), this.pointsLabel.position.y = 2, scaleConverter(this.moneyContainer.width, windowWidth, .15, this.moneyContainer), 
         this.moneyContainer.position.y = 10, this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20, 
         this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10, 
         this.updateable = !0, this.endModal = new EndModal(this), this.newBirdModal = new NewBirdModal(this), 
-        this.pauseModal = new PauseModal(this), console.log(APP.getGameModel().totalBirds, APP.getGameModel().totalPlayers), 
-        this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
+        this.pauseModal = new PauseModal(this), this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
-        simpleEntity.velocity.x = -.1, simpleEntity.setPosition(.1 * windowWidth, +Math.random() * windowHeight * .2), 
+        simpleEntity.velocity.x = -.6, simpleEntity.setPosition(.1 * windowWidth, +Math.random() * windowHeight * .2), 
         this.backLayer.addChild(simpleEntity);
         var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, .5);
         simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale, 

@@ -7,7 +7,7 @@ var BirdBehaviourDiag = Class.extend({
 		this.acc = 0;
 	},
 	clone:function(){
-		this.props.accX = Math.random() * 0.02 + 0.005;
+		this.props.accX = Math.random() * 0.02 + 0.008;
 		return new BirdBehaviourDiag(this.props);
 	},
 	update:function(entity){

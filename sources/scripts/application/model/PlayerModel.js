@@ -34,6 +34,7 @@ var PlayerModel = Class.extend({
 		this.bulletVel = statsObject.bulletVel?statsObject.bulletVel:8;
 		this.bulletForce = statsObject.bulletForce?statsObject.bulletForce:1;
 		this.toAble = statsObject.toAble?statsObject.toAble:0;
+		this.toSpec = statsObject.toSpec?statsObject.toSpec:1000;
 
 		this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour: new MultipleBehaviour();
 		this.able = false;

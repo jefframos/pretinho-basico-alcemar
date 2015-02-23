@@ -127,6 +127,7 @@ var GameScreen = AbstractScreen.extend({
     special:function() {
         var bulletBehaviour = this.playerModel.bulletBehaviour.clone();
         bulletBehaviour.build(this);
+        this.ableSpecial = this.playerModel.toSpec;
     },
     shoot:function() {
         var timeLive = (this.red.getContent().width/ this.playerModel.bulletVel) + 200;
@@ -217,6 +218,16 @@ var GameScreen = AbstractScreen.extend({
         this.updateParticles();
         this.updateItens();
         this.updateClouds();
+        this.updateObstacles();
+        if(this.ableSpecial > 0){
+            this.ableSpecial --;
+            this.specialContainer.alpha = 0.5;//(1-(this.ableSpecial/this.playerModel.toSpec) * 0.7);
+            this.specialContainer.scale.x = this.specialContainer.scale.y = 0.8;
+        }else{
+            this.specialContainer.alpha = 1;
+            this.specialContainer.scale.x = this.specialContainer.scale.y = 1;
+        }
+        // console.log(this.ableSpecial);
         if(this.createEggAccum === 0){
             this.createEgg();
             this.createEggAccum = -1;
@@ -286,7 +297,7 @@ var GameScreen = AbstractScreen.extend({
         if(this.acumCloud < 0){
             this.acumCloud = 1200;
             var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
-            simpleEntity.velocity.x = -0.1;
+            simpleEntity.velocity.x = -0.6;
             simpleEntity.setPosition(windowWidth, + Math.random() * windowHeight * 0.2);
             this.backLayer.addChild(simpleEntity);
             scaleConverter(simpleEntity.getContent().height, windowHeight, 0.5, simpleEntity);
@@ -299,6 +310,24 @@ var GameScreen = AbstractScreen.extend({
                     this.vecClouds[i].kill = true;
                 }
             }
+        }
+    },
+    updateObstacles:function(){
+        if(this.obsAccum < 0){
+            this.obsAccum = 1000 + Math.random() * 500;
+
+            var obs = APP.getGameModel().getNewObstacle(this);
+            obs.build();
+            this.layer.addChild(obs);
+
+            var scale = scaleConverter(obs.getContent().width, windowHeight, obs.birdModel.sizePercent);
+            //// console.log(scale);
+            obs.setScale( scale,scale);
+            //// console.log(obs);
+            obs.setPosition(obs.behaviour.position.x ,obs.behaviour.position.y);
+
+        }else{
+            this.obsAccum --;
         }
     },
     updateParticles:function(){
@@ -317,6 +346,7 @@ var GameScreen = AbstractScreen.extend({
     },
     initApplication:function(){
         //console.log('INIT APLICATION');
+        this.obsAccum = 500;//1500;
         this.particleAccum = 500;
         this.itemAccum = 1000;
         this.acumCloud = 500;
@@ -379,6 +409,8 @@ var GameScreen = AbstractScreen.extend({
         this.red.rotation = -1;
         this.red.setPosition(windowWidth * 0.1 -this.red.getContent().width,windowHeight * 1.2);
 
+        this.ableSpecial = this.playerModel.toSpec;
+
         this.gameOver = false;
 
         // this.red.setPosition(windowWidth * 0.1 +this.red.getContent().width/2,windowHeight /2);
@@ -428,15 +460,6 @@ var GameScreen = AbstractScreen.extend({
 
         // barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
 
-        this.specialButton = new DefaultButton('out.png', 'out.png');
-        this.specialButton.build();
-        this.addChild(this.specialButton);
-        this.specialButton.clickCallback = function(){
-            self.special();
-        };
-        scaleConverter(this.specialButton.getContent().height, windowHeight, 0.15, this.specialButton);
-        this.specialButton.setPosition( windowWidth - (this.specialButton.getContent().width) - 20,windowHeight/2 - (this.specialButton.getContent().height/2));
-        
 
         this.pauseButton = new DefaultButton('pauseButton.png', 'pauseButton.png');
         this.pauseButton.build();
@@ -462,7 +485,22 @@ var GameScreen = AbstractScreen.extend({
         this.pointsLabel = new PIXI.Text('0', {font:'30px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5});
         this.moneyContainer.addChild(this.pointsLabel);
 
-
+        this.specialContainer = new PIXI.DisplayObjectContainer();
+        this.specialButton = new DefaultButton('out.png', 'out.png');
+        this.specialButton.build();
+        this.specialContainer.addChild(this.specialButton.getContent());
+        this.specialButton.clickCallback = function(){
+            if(self.ableSpecial > 0){
+                return;
+            }
+            self.special();
+        };
+        scaleConverter(this.specialButton.getContent().height, windowHeight, 0.20, this.specialButton);
+        this.specialButton.setPosition(-this.specialButton.getContent().width / 2, -this.specialButton.getContent().height/2);
+        this.specialContainer.position.x = this.specialButton.getContent().width / 2 + windowWidth - (this.specialButton.getContent().width) - 20;
+        this.specialContainer.position.y = this.specialButton.getContent().height/2 + this.moneyContainer.position.y + this.moneyContainer.height + windowHeight * 0.05;
+        
+        this.addChild(this.specialContainer);
 
         // var moneyScale = scaleConverter(this.moneyContainer.width, windowWidth, 0.25);
         // this.moneyContainer.scale.x = moneyScale;
@@ -486,7 +524,7 @@ var GameScreen = AbstractScreen.extend({
 
         this.pauseModal = new PauseModal(this);
 
-        console.log( APP.getGameModel().totalBirds , APP.getGameModel().totalPlayers);
+        // console.log( APP.getGameModel().totalBirds , APP.getGameModel().totalPlayers);
 
         if(APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
             this.createEggAccum = Math.floor(Math.random() * 800 + 200);
@@ -497,7 +535,7 @@ var GameScreen = AbstractScreen.extend({
         // this.createEgg();
         // add first cloud
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
-        simpleEntity.velocity.x = -0.1;
+        simpleEntity.velocity.x = -0.6;
         simpleEntity.setPosition(windowWidth * 0.1, + Math.random() * windowHeight * 0.2);
         this.backLayer.addChild(simpleEntity);
         var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, 0.5);
