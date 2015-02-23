@@ -26,6 +26,7 @@ var WaitScreen = AbstractScreen.extend({
         'dist/img/UI/netoGrande.png',
         'dist/img/UI/piangersGrande.png',
         'dist/img/UI/introScreen.jpg',
+        'dist/img/UI/creditos.png',
         'dist/img/UI/HUD.json'];
 
 
@@ -55,34 +56,48 @@ var WaitScreen = AbstractScreen.extend({
         this.background.getContent().scale.x = scaleBack;
         this.background.getContent().scale.y = scaleBack;
         var self = this;
-        this.btnBenchmark = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
-        // console.log(this.btnBenchmark.build);
-        this.btnBenchmark.build();
-        scaleConverter(this.btnBenchmark.height, windowHeight, 0.25, this.btnBenchmark);
-        this.btnBenchmark.setPosition( windowWidth - this.btnBenchmark.getContent().width  - 20, windowHeight - this.btnBenchmark.getContent().height - 20);
-        this.addChild(this.btnBenchmark);
+        this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+        // console.log(this.playButton.build);
+        this.playButton.build();
+        scaleConverter(this.playButton.height, windowHeight, 0.25, this.playButton);
+        this.playButton.setPosition( windowWidth - this.playButton.getContent().width  - 20, windowHeight - this.playButton.getContent().height - 20);
+        this.addChild(this.playButton);
 
         // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
 
-        // this.btnBenchmark.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
-        this.btnBenchmark.clickCallback = function(){
+        // this.playButton.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
+        this.playButton.clickCallback = function(){
             self.screenManager.change('Choice');
         };
 
-        if(possibleFullscreen() && testMobile()){
-            this.fullScreen = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
-            this.fullScreen.build(200, 100);
-            scaleConverter(this.fullScreen.height, windowHeight, 0.2, this.fullScreen);
+        this.creditsModal = new CreditsModal(this);
+        this.creditsButton = new DefaultButton('creditoButton.png', 'creditoButton.png');
+        this.creditsButton.build();
+        scaleConverter(this.creditsButton.getContent().height, windowHeight, 0.15, this.creditsButton);
 
-            this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.getContent().height - 20);
-            this.addChild(this.fullScreen);
-            this.fullScreen.addLabel(new PIXI.Text('Fullscreen', { align:'center', fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,28);
-            this.fullScreen.clickCallback = function(){
-                fullscreen();
-            };
-        }
+        this.creditsButton.setPosition(20 ,windowHeight - this.creditsButton.getContent().height - 20);
+        // TweenLite.from(this.creditsButton.getContent().position, 0.8, {delay:0.6, x:- this.creditsButton.getContent().width, ease:'easeOutBack'});
+        this.addChild(this.creditsButton);
+        // this.creditsButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
+        
+        this.creditsButton.clickCallback = function(){
+            self.creditsModal.show();
+        };
 
-        this.zerarCookie = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        // if(possibleFullscreen() && testMobile()){
+        //     this.fullScreen = new DefaultButton('creditoButton.png', 'creditoButton.png');
+        //     this.fullScreen.build(200, 100);
+        //     scaleConverter(this.fullScreen.height, windowHeight, 0.2, this.fullScreen);
+
+        //     this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.getContent().height - 20);
+        //     this.addChild(this.fullScreen);
+        //     this.fullScreen.addLabel(new PIXI.Text('Fullscreen', { align:'center', fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,28);
+        //     this.fullScreen.clickCallback = function(){
+        //         fullscreen();
+        //     };
+        // }
+
+        this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButton.png');
         this.zerarCookie.build(200, 200);
         scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
 
@@ -93,7 +108,7 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().zerarTudo();
         };
 
-        this.maxPoints = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        this.maxPoints = new DefaultButton('creditoButton.png', 'creditoButton.png');
         this.maxPoints.build(200, 200);
         scaleConverter(this.maxPoints.height, windowHeight, 0.2, this.maxPoints);
 
@@ -104,7 +119,7 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().maxPoints();
         };
 
-        this.more100button = new DefaultButton('simpleButtonUp.png', 'simpleButtonOver.png');
+        this.more100button = new DefaultButton('creditoButton.png', 'creditoButton.png');
         this.more100button.build(200, 200);
         scaleConverter(this.more100button.height, windowHeight, 0.2, this.more100button);
 

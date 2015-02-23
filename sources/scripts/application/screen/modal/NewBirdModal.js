@@ -30,9 +30,9 @@ var NewBirdModal = Class.extend({
 		this.boxContainer.position.y = windowHeight;// - this.boxContainer.height - 20;// - this.background.getContent().height * this.containerScale / 2;
 	},
 	show:function(bird){
-		console.log(bird);
+		// console.log(bird);
 		if(!bird){
-			bird = [APP.getGameModel().birdModels[3]];
+			bird = [APP.getGameModel().birdModels[Math.floor(Math.random() * APP.getGameModel().birdModels.length)]];
 		}
 		if(bird && bird.length > 0){
 			var self = this;
@@ -43,6 +43,7 @@ var NewBirdModal = Class.extend({
 			var pista = new SimpleSprite('pista.png');
 			var holofote = new SimpleSprite('holofote.png');
 			var novo = new SimpleSprite('nova_ave.png');
+			var ovoquebrado = new SimpleSprite('ovoquebrado.png');
 
 			var playerImage = null;
 			playerImage  = new SimpleSprite(bird[0].imgSource);
@@ -55,6 +56,7 @@ var NewBirdModal = Class.extend({
 			pista.setPosition(0, holofote.getContent().height - 35);
 
 			this.newCharContainer.addChild(holofote.getContent());
+			this.newCharContainer.addChild(ovoquebrado.getContent());
 			this.newCharContainer.addChild(playerImage.getContent());
 			this.newCharContainer.addChild(novo.getContent());
 			// scaleConverter(holofote.getContent().width, windowWidth, 0.35, holofote);
@@ -74,7 +76,9 @@ var NewBirdModal = Class.extend({
 			novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20);
 
 			scaleConverter(playerImage.getContent().height, this.newCharContainer.height, 0.3, playerImage);
+			scaleConverter(ovoquebrado.getContent().height, this.newCharContainer.height, 0.15, ovoquebrado);
 			playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width/2, pista.getContent().position.y - playerImage.getContent().height - 10);
+			ovoquebrado.setPosition(pista.getContent().width / 2 - ovoquebrado.getContent().width/2, holofote.getContent().height - ovoquebrado.getContent().height);
 			
 			scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer);
 

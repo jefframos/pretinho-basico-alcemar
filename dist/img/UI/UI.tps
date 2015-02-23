@@ -239,15 +239,29 @@
             <filename>trofeuButton.png</filename>
             <filename>penasfundo2.png</filename>
             <filename>nova_ave.png</filename>
-            <filename>ovo2.png</filename>
-            <filename>ovo3.png</filename>
-            <filename>ovo4.png</filename>
-            <filename>ovo5.png</filename>
-            <filename>ovo6.png</filename>
             <filename>ovoquebrado.png</filename>
             <filename>penasfundo1.png</filename>
             <filename>moeda.png</filename>
             <filename>target.png</filename>
+            <filename>Label_Rodaika.png</filename>
+            <filename>Label_Alcemar.png</filename>
+            <filename>Label_Arthur.png</filename>
+            <filename>Label_Fetter.png</filename>
+            <filename>Label_Jeiso.png</filename>
+            <filename>Label_MrPi.png</filename>
+            <filename>Label_Neto.png</filename>
+            <filename>Label_Piangers.png</filename>
+            <filename>Label_Pora.png</filename>
+            <filename>Label_Potter.png</filename>
+            <filename>ovo_calopsuda.png</filename>
+            <filename>ovo_galo.png</filename>
+            <filename>ovo_papacu.png</filename>
+            <filename>ovo_belga.png</filename>
+            <filename>ovo_lambecu.png</filename>
+            <filename>ovo_nigeriano.png</filename>
+            <filename>ovo_nocu.png</filename>
+            <filename>obstaculo1.png</filename>
+            <filename>creditoButton.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

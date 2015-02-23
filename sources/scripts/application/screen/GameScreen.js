@@ -467,7 +467,7 @@ var GameScreen = AbstractScreen.extend({
         this.pauseButton.clickCallback = function(){
             self.pauseModal.show();
         };
-        scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.12, this.pauseButton);
+        scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.15, this.pauseButton);
         this.pauseButton.setPosition( windowWidth - (this.pauseButton.getContent().width) - 20,windowHeight - (this.pauseButton.getContent().height) - 20);
         this.initBench = false;
 
@@ -520,7 +520,7 @@ var GameScreen = AbstractScreen.extend({
         this.endModal = new EndModal(this);
         // this.endModal.show();
         this.newBirdModal = new NewBirdModal(this);
-        // this.newBird.show();
+        // this.newBirdModal.show();
 
         this.pauseModal = new PauseModal(this);
 

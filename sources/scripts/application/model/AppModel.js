@@ -36,7 +36,7 @@ var AppModel = Class.extend({
 			{
 				target:null,
 				demage:0.2,
-				vel:-1.5,
+				vel:-1.8,
 				behaviour:new BirdBehaviourSinoid({sinAcc:0.05}),
 			}),
 			// new BirdModel({
@@ -185,9 +185,9 @@ var AppModel = Class.extend({
 				bulletForce:0.8,
 				bulletCoast:0.07,
 				bulletVel:8,
-				toAble: 1500,
+				toAble: 1800,
 				toSpec: 800,
-				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:50, vel:4})
+				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:99, vel:4})
 			}
 			),
 			new PlayerModel({
@@ -208,7 +208,7 @@ var AppModel = Class.extend({
 				bulletForce:1.4,
 				bulletCoast:0.1,
 				bulletVel:5,
-				toAble: 2000,
+				toAble: 2500,
 				toSpec: 800,
 				bulletBehaviour: new AkumaBehaviour()
 			}
@@ -230,7 +230,7 @@ var AppModel = Class.extend({
 				bulletForce:3,
 				bulletVel:6,
 				bulletCoast:0.15,
-				toAble: 2500,
+				toAble: 3500,
 				toSpec: 800,
 				bulletBehaviour: new RainBehaviour()
 			}
@@ -252,7 +252,7 @@ var AppModel = Class.extend({
 				bulletForce:3,
 				bulletCoast:0.12,
 				bulletVel:5,
-				toAble: 5000,
+				toAble: 8000,
 				toSpec: 800,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true, vel:2})
 			}
@@ -274,7 +274,7 @@ var AppModel = Class.extend({
 				bulletForce:1.5,
 				bulletCoast:0.08,
 				bulletVel:4,
-				toAble: 10000,
+				toAble: 15000,
 				toSpec: 800,
 				bulletBehaviour: new RandomBehaviour()
 			}
