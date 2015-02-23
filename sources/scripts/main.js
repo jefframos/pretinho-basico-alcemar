@@ -57,7 +57,7 @@ function update() {
 		// alert(window.innerHeight+' - '+ screen.width);
 		windowWidthVar = window.innerWidth;
 		windowHeightVar = window.innerHeight;
-		renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, false, true);
+		renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, null, false, true);
 
 		document.body.appendChild(renderer.view);
 

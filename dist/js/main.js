@@ -97,7 +97,7 @@ function update() {
     windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, 
     gameScale = 1.3, testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
     realWindowWidth = windowWidth, realWindowHeight = windowHeight), windowWidthVar = window.innerWidth, 
-    windowHeightVar = window.innerHeight, renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, !1, !0), 
+    windowHeightVar = window.innerHeight, renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, null, !1, !0), 
     document.body.appendChild(renderer.view), renderer.view.style.width = windowWidth + "px", 
     renderer.view.style.height = windowHeight + "px", APP = new Application(), APP.build(), 
     APP.show(), init = !0);
@@ -1966,7 +1966,7 @@ var Application = AbstractApplication.extend({
         this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
     },
     onAssetsLoaded: function() {
-        if (possibleFullscreen() && !isfull) {
+        if (testMobile() && possibleFullscreen() && !isfull) {
             this.labelLoader.setText("Toque para continuar"), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
             this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
             var self = this;

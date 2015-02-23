@@ -53,7 +53,7 @@ var WaitScreen = AbstractScreen.extend({
     onAssetsLoaded:function()
     {
         //testMobile() && 
-        if(possibleFullscreen() && !isfull){
+        if(testMobile() && possibleFullscreen() && !isfull){
             this.labelLoader.setText('Toque para continuar');
             this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
             this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
