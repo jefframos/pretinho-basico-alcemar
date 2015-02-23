@@ -138,6 +138,7 @@ var EndModal = Class.extend({
 
 	},
 	show:function(newPlayers){
+		this.screen.blockPause = true;
 		// console.log('newPlayers',newPlayers, newPlayers.length);
 		// newPlayers = [APP.getGameModel().playerModels[9]];
 		this.currentBirds.setText(APP.getGameModel().currentPoints);
@@ -214,14 +215,15 @@ var EndModal = Class.extend({
 
 		this.screen.addChild(this);
 		this.screen.updateable = false;
-		TweenLite.to(this.bg, 0.5, {alpha:0.8});
+		TweenLite.to(this.bg, 0.5, {alpha:0.5});
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 	},
 	showPoints:function(){
 		if(this.newCharContainer){
 			TweenLite.to(this.newCharContainer, 0.5, {alpha:0});
-			this.container.interactive = false;
 		}
+		this.container.interactive = true;
+		this.container.buttonMode = true;
 		this.boxContainer.visible = true;
 		this.contents.visible = true;
 		// TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.background.getContent().height * this.containerScale / 2, ease:'easeOutBack'});
@@ -230,6 +232,8 @@ var EndModal = Class.extend({
 		TweenLite.to(this.contents, 0.5, {alpha:1});
 	},
 	hide:function(callback){
+		this.screen.blockPause = false;
+
 		var self = this;
 		TweenLite.to(this.bg, 0.5, {alpha:0, onComplete:function(){
 			if(callback){

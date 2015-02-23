@@ -60,53 +60,58 @@ var GameScreen = AbstractScreen.extend({
         var self = this;
 
 
-        this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function(touchData){
-            // console.log(self.playerModel.currentBulletEnergy,self.playerModel.currentBulletForce, self.playerModel.maxBulletEnergy);
-            if(self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * (self.playerModel.bulletCoast + 0.2)){
-                return;
-            }
-            // self.textAcc.setText('TOUCH START!');
-            self.touchstart = true;
-            self.onBulletTouch = true;
-        };
-         
-        this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function(touchData){
-            // self.red.spritesheet.play('hurt');
-            if(!self.touchstart || self.gameOver){
-                return;
-            }
-            self.touchstart = false;
-            self.onBulletTouch = false;
-            self.shoot();
-        };
+        setTimeout(function(){
+
+        // self.screenManager.change('Game');
+        // }, 1000);
+            self.hitTouchAttack.mousedown = self.hitTouchAttack.touchstart = function(touchData){
+                // console.log(self.playerModel.currentBulletEnergy,self.playerModel.currentBulletForce, self.playerModel.maxBulletEnergy);
+                if(self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * (self.playerModel.bulletCoast + 0.2)){
+                    return;
+                }
+                // self.textAcc.setText('TOUCH START!');
+                self.touchstart = true;
+                self.onBulletTouch = true;
+            };
+             
+            self.hitTouchAttack.mouseup = self.hitTouchAttack.touchend = function(touchData){
+                // self.red.spritesheet.play('hurt');
+                if(!self.touchstart || self.gameOver){
+                    return;
+                }
+                self.touchstart = false;
+                self.onBulletTouch = false;
+                self.shoot();
+            };
 
 
-        this.hitTouch.touchstart = function(touchData){
-            if(self.gameOver){
-                return;
-            }
-            //self.textAcc.setText('TOUCH START!' + Math.random());
-            if(self.red){
-                self.red.setTarget(touchData.global.y + self.red.getContent().height * 0.8);
-            }
-        };
-         
-        this.hitTouch.touchend = function(touchData){
-            if(self.gameOver){
-                return;
-            }
-            //self.textAcc.setText('TOUCH END!');
-        };
+            self.hitTouch.touchstart = function(touchData){
+                if(self.gameOver){
+                    return;
+                }
+                //self.textAcc.setText('TOUCH START!' + Math.random());
+                if(self.red){
+                    self.red.setTarget(touchData.global.y + self.red.getContent().height * 0.8);
+                }
+            };
+             
+            self.hitTouch.touchend = function(touchData){
+                if(self.gameOver){
+                    return;
+                }
+                //self.textAcc.setText('TOUCH END!');
+            };
 
-        this.hitTouch.touchmove = function(touchData){
-            if(self.gameOver){
-                return;
-            }
-            //self.textAcc.setText(touchData.global.y);
-            if(self.red){
-                self.red.setTarget(touchData.global.y + self.red.getContent().height * 0.8);
-            }
-        };
+            self.hitTouch.touchmove = function(touchData){
+                if(self.gameOver){
+                    return;
+                }
+                //self.textAcc.setText(touchData.global.y);
+                if(self.red){
+                    self.red.setTarget(touchData.global.y + self.red.getContent().height * 0.8);
+                }
+            };
+        }, 2000);
         // this.textAcc.setText(this.textAcc.text+'\nbuild');
 
         //this.spawner = 0;
@@ -357,6 +362,7 @@ var GameScreen = AbstractScreen.extend({
         APP.getGameModel().currentPoints = 0;
         APP.getGameModel().currentHorde = 0;
         this.initApp = true;
+        this.blockPause = false;
 
         this.vecClouds = [];
 
@@ -465,11 +471,15 @@ var GameScreen = AbstractScreen.extend({
         this.pauseButton.build();
         this.addChild(this.pauseButton);
         this.pauseButton.clickCallback = function(){
+            if(self.blockPause){
+                return;
+            }
             self.pauseModal.show();
         };
         scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.15, this.pauseButton);
         this.pauseButton.setPosition( windowWidth - (this.pauseButton.getContent().width) - 20,windowHeight - (this.pauseButton.getContent().height) - 20);
         this.initBench = false;
+        TweenLite.from(this.pauseButton.getContent(), 0.5, {delay:1, x: windowWidth});
 
         this.gameHUD = new PIXI.DisplayObjectContainer();
         this.addChild(this.gameHUD);
@@ -542,26 +552,27 @@ var GameScreen = AbstractScreen.extend({
         simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale;
         this.vecClouds.push(simpleEntity);
         
-        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
-        TweenLite.to(this.frontShape, 0.8, {alpha:0});
-        // setTimeout(function(){
 
-        // self.screenManager.change('Game');
-        // }, 1000);
-    },
-    transitionIn:function()
-    {
-        // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
         this.frontShape = new PIXI.Graphics();
         this.frontShape.beginFill(0x406389);
         this.frontShape.drawRect(0,0,windowWidth, windowHeight);
         this.addChild(this.frontShape);
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        TweenLite.to(this.frontShape, 0.8, {alpha:0});
+        
+    },
+    transitionIn:function()
+    {
+        // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
+        
         this.build();
 
     },
     transitionOut:function(nextScreen, container)
     {
         // this._super();
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+
         var self = this;
         TweenLite.to(this.frontShape, 0.3, {alpha:1, onComplete:function(){
             self.destroy();

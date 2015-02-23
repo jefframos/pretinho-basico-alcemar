@@ -157,6 +157,8 @@ var WaitScreen = AbstractScreen.extend({
     transitionOut:function(nextScreen, container)
     {
         // this._super();
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        
         var self = this;
         TweenLite.to(this.frontShape, 0.3, {alpha:1, onComplete:function(){
             self.destroy();

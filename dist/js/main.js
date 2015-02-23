@@ -976,9 +976,9 @@ var Application = AbstractApplication.extend({
         }, {
             target: null,
             demage: .2,
-            vel: -1.8,
+            vel: -3,
             behaviour: new BirdBehaviourSinoid({
-                sinAcc: .05
+                sinAcc: .2
             })
         }) ], this.playerModels = [ new PlayerModel({
             label: "ALCEMAR",
@@ -1215,7 +1215,7 @@ var Application = AbstractApplication.extend({
             demage: .2,
             vel: -3.5,
             behaviour: new BirdBehaviourDefault(),
-            toNext: 50,
+            toNext: 30,
             money: 1
         }), new BirdModel({
             source: "belga.png",
@@ -1336,7 +1336,8 @@ var Application = AbstractApplication.extend({
         }) ], this.setModel(0), this.totalPlayers = 0;
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && (this.playerModels[i].able = !0, 
         this.totalPlayers++);
-        this.birdProbs = [ 0, 1, 0, 0, 2, 0, 1, 3, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7 ], this.currentHorde = 0;
+        this.birdProbs = [ 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 2, 3, 0, 0, 2, 0, 3, 4, 0, 5, 0, 6, 0, 7, 4, 5, 6, 7 ], 
+        this.currentHorde = 0;
     },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
@@ -1544,6 +1545,7 @@ var Application = AbstractApplication.extend({
         this.addChild(this.frontShape), this.build();
     },
     transitionOut: function(nextScreen, container) {
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         var self = this;
         TweenLite.to(this.frontShape, .3, {
             alpha: 1,
@@ -1700,19 +1702,21 @@ var Application = AbstractApplication.extend({
         this.hitTouchAttack.beginFill(0), this.hitTouchAttack.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.hitTouchAttack), this.hitTouchAttack.alpha = 0, this.hitTouchAttack.hitArea = new PIXI.Rectangle(.3 * windowWidth, 0, windowWidth, windowHeight);
         var self = this;
-        this.hitTouchAttack.mousedown = this.hitTouchAttack.touchstart = function() {
-            self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * (self.playerModel.bulletCoast + .2) || (self.touchstart = !0, 
-            self.onBulletTouch = !0);
-        }, this.hitTouchAttack.mouseup = this.hitTouchAttack.touchend = function() {
-            self.touchstart && !self.gameOver && (self.touchstart = !1, self.onBulletTouch = !1, 
-            self.shoot());
-        }, this.hitTouch.touchstart = function(touchData) {
-            self.gameOver || self.red && self.red.setTarget(touchData.global.y + .8 * self.red.getContent().height);
-        }, this.hitTouch.touchend = function() {
-            self.gameOver;
-        }, this.hitTouch.touchmove = function(touchData) {
-            self.gameOver || self.red && self.red.setTarget(touchData.global.y + .8 * self.red.getContent().height);
-        };
+        setTimeout(function() {
+            self.hitTouchAttack.mousedown = self.hitTouchAttack.touchstart = function() {
+                self.gameOver || self.playerModel.currentBulletEnergy < self.playerModel.maxBulletEnergy * (self.playerModel.bulletCoast + .2) || (self.touchstart = !0, 
+                self.onBulletTouch = !0);
+            }, self.hitTouchAttack.mouseup = self.hitTouchAttack.touchend = function() {
+                self.touchstart && !self.gameOver && (self.touchstart = !1, self.onBulletTouch = !1, 
+                self.shoot());
+            }, self.hitTouch.touchstart = function(touchData) {
+                self.gameOver || self.red && self.red.setTarget(touchData.global.y + .8 * self.red.getContent().height);
+            }, self.hitTouch.touchend = function() {
+                self.gameOver;
+            }, self.hitTouch.touchmove = function(touchData) {
+                self.gameOver || self.red && self.red.setTarget(touchData.global.y + .8 * self.red.getContent().height);
+            };
+        }, 2e3);
     },
     reset: function() {
         this.destroy(), this.build();
@@ -1825,8 +1829,8 @@ var Application = AbstractApplication.extend({
         this.obsAccum = 500, this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, 
         this.spawner = 150, this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, 
         APP.getGameModel().currentPoints = 0, APP.getGameModel().currentHorde = 0, this.initApp = !0, 
-        this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), this.addChild(this.sky), 
-        this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
+        this.blockPause = !1, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
+        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
         this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], this.layerManagerBack = new LayerManager(), 
         this.layerManagerBack.build("MainBack"), this.addChild(this.layerManagerBack);
         var environment = new Environment(windowWidth, windowHeight);
@@ -1860,10 +1864,13 @@ var Application = AbstractApplication.extend({
         this.addChild(barsContainer), barsContainer.position.x = 20, barsContainer.position.y = 20, 
         this.pauseButton = new DefaultButton("pauseButton.png", "pauseButton.png"), this.pauseButton.build(), 
         this.addChild(this.pauseButton), this.pauseButton.clickCallback = function() {
-            self.pauseModal.show();
+            self.blockPause || self.pauseModal.show();
         }, scaleConverter(this.pauseButton.getContent().height, windowHeight, .15, this.pauseButton), 
         this.pauseButton.setPosition(windowWidth - this.pauseButton.getContent().width - 20, windowHeight - this.pauseButton.getContent().height - 20), 
-        this.initBench = !1, this.gameHUD = new PIXI.DisplayObjectContainer(), this.addChild(this.gameHUD), 
+        this.initBench = !1, TweenLite.from(this.pauseButton.getContent(), .5, {
+            delay: 1,
+            x: windowWidth
+        }), this.gameHUD = new PIXI.DisplayObjectContainer(), this.addChild(this.gameHUD), 
         this.moneyContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.moneyContainer);
         var moneyBg = new SimpleSprite("moneyContainer.png");
         this.moneyContainer.addChild(moneyBg.getContent()), this.pointsLabel = new PIXI.Text("0", {
@@ -1889,16 +1896,18 @@ var Application = AbstractApplication.extend({
         this.backLayer.addChild(simpleEntity);
         var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, .5);
         simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale, 
-        this.vecClouds.push(simpleEntity), this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        this.vecClouds.push(simpleEntity), this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), 
+        this.frontShape.drawRect(0, 0, windowWidth, windowHeight), this.addChild(this.frontShape), 
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         TweenLite.to(this.frontShape, .8, {
             alpha: 0
         });
     },
     transitionIn: function() {
-        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
-        this.addChild(this.frontShape), this.build();
+        this.build();
     },
     transitionOut: function(nextScreen, container) {
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         var self = this;
         TweenLite.to(this.frontShape, .3, {
             alpha: 1,
@@ -2014,6 +2023,7 @@ var Application = AbstractApplication.extend({
         this.addChild(this.frontShape), this.build();
     },
     transitionOut: function(nextScreen, container) {
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         var self = this;
         TweenLite.to(this.frontShape, .3, {
             alpha: 1,
@@ -2033,10 +2043,10 @@ var Application = AbstractApplication.extend({
             self.hide();
         }, this.img = new SimpleSprite("dist/img/UI/creditos.png"), this.boxContainer.addChild(this.img.getContent()), 
         this.boxContainer.alpha = 0, this.boxContainer.visible = !1, this.boxLabels = [];
-        for (var tempLabelContainer = null, tempLabel = null, positions = [ [ .1 * windowWidth, .6 * windowHeight ], [ .3 * windowWidth, .06 * windowHeight ], [ .6 * windowWidth, .05 * windowHeight ], [ .8 * windowWidth, .8 * windowHeight ] ], labels = [ "Franer\nBlablabla", "Raviel\nBlablabla", "Jeff Ramos\nBlablabla", "Dani Romanenco\nBlablabla" ], i = positions.length - 1; i >= 0; i--) tempLabelContainer = new PIXI.DisplayObjectContainer(), 
+        for (var tempLabelContainer = null, tempLabel = null, positions = [ [ .2 * windowWidth, .6 * windowHeight ], [ .35 * windowWidth, .1 * windowHeight ], [ .6 * windowWidth, .08 * windowHeight ], [ .8 * windowWidth, .7 * windowHeight ] ], labels = [ "Franer Rodrigues\nProdutor\nfraner@chilimonk.com", "Raviel Carvalho\nProdutor\nraviel@chilimonk.com", "Jeff Ramos\nProgramador\njeffs.ramos@gmail.com", "Dani Romanenco\nDesigner\nromanenco7@gmail.com" ], i = positions.length - 1; i >= 0; i--) tempLabelContainer = new PIXI.DisplayObjectContainer(), 
         tempLabel = new PIXI.Text(labels[i], {
             align: "center",
-            font: "60px Luckiest Guy",
+            font: "20px Luckiest Guy",
             fill: "#FFFFFF",
             strokeThickness: 5,
             stroke: "#000000",
@@ -2160,8 +2170,9 @@ var Application = AbstractApplication.extend({
         this.contents.alpha = 0, this.contents.visible = !1, console.log(this.icons.position, this.contents.position, this.contents.width);
     },
     show: function(newPlayers) {
-        if (this.currentBirds.setText(APP.getGameModel().currentPoints), this.currentCoin.setText(APP.getGameModel().currentPoints), 
-        this.totalCoin.setText(APP.getGameModel().totalPoints), newPlayers && newPlayers.length > 0) {
+        if (this.screen.blockPause = !0, this.currentBirds.setText(APP.getGameModel().currentPoints), 
+        this.currentCoin.setText(APP.getGameModel().currentPoints), this.totalCoin.setText(APP.getGameModel().totalPoints), 
+        newPlayers && newPlayers.length > 0) {
             var self = this;
             this.newCharContainer = new PIXI.DisplayObjectContainer();
             var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("novorecruta.png"), playerImage = null;
@@ -2186,14 +2197,14 @@ var Application = AbstractApplication.extend({
             }, 2e3);
         } else this.showPoints();
         this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
-            alpha: .8
+            alpha: .5
         }), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
     },
     showPoints: function() {
-        this.newCharContainer && (TweenLite.to(this.newCharContainer, .5, {
+        this.newCharContainer && TweenLite.to(this.newCharContainer, .5, {
             alpha: 0
-        }), this.container.interactive = !1), this.boxContainer.visible = !0, this.contents.visible = !0, 
-        TweenLite.to(this.boxContainer.position, 1, {
+        }), this.container.interactive = !0, this.container.buttonMode = !0, this.boxContainer.visible = !0, 
+        this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
@@ -2203,6 +2214,7 @@ var Application = AbstractApplication.extend({
         });
     },
     hide: function(callback) {
+        this.screen.blockPause = !1;
         var self = this;
         TweenLite.to(this.bg, .5, {
             alpha: 0,
@@ -2236,10 +2248,11 @@ var Application = AbstractApplication.extend({
         bird && bird.length > 0) {
             var self = this;
             this.newCharContainer = new PIXI.DisplayObjectContainer();
-            var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("nova_ave.png"), ovoquebrado = new SimpleSprite("ovoquebrado.png"), playerImage = null;
+            var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("nova_ave.png"), ovoquebrado = new SimpleSprite("ovoquebrado.png"), penas1 = new SimpleSprite("penasfundo1.png"), penas2 = new SimpleSprite("penasfundo2.png"), playerImage = null;
             playerImage = new SimpleSprite(bird[0].imgSource), this.newCharContainer.addChild(pista.getContent()), 
             pista.setPosition(0, holofote.getContent().height - 35), this.newCharContainer.addChild(holofote.getContent()), 
-            this.newCharContainer.addChild(ovoquebrado.getContent()), this.newCharContainer.addChild(playerImage.getContent()), 
+            this.newCharContainer.addChild(ovoquebrado.getContent()), this.newCharContainer.addChild(penas1.getContent()), 
+            this.newCharContainer.addChild(penas2.getContent()), this.newCharContainer.addChild(playerImage.getContent()), 
             this.newCharContainer.addChild(novo.getContent()), holofote.setPosition(pista.getContent().width / 2 - holofote.getContent().width / 2, 0);
             var charLabel = new PIXI.Text(bird[0].label, {
                 align: "center",
@@ -2253,6 +2266,10 @@ var Application = AbstractApplication.extend({
             novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20), 
             scaleConverter(playerImage.getContent().height, this.newCharContainer.height, .3, playerImage), 
             scaleConverter(ovoquebrado.getContent().height, this.newCharContainer.height, .15, ovoquebrado), 
+            scaleConverter(penas1.getContent().height, this.newCharContainer.height, .2, penas1), 
+            scaleConverter(penas2.getContent().height, this.newCharContainer.height, .2, penas2), 
+            penas1.setPosition(pista.getContent().width / 2 - 2 * penas1.getContent().width, holofote.getContent().height - penas1.getContent().height), 
+            penas2.setPosition(pista.getContent().width / 2 + penas1.getContent().width, holofote.getContent().height - penas2.getContent().height), 
             playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width / 2, pista.getContent().position.y - playerImage.getContent().height - 10), 
             ovoquebrado.setPosition(pista.getContent().width / 2 - ovoquebrado.getContent().width / 2, holofote.getContent().height - ovoquebrado.getContent().height), 
             scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer), 
@@ -2267,7 +2284,7 @@ var Application = AbstractApplication.extend({
             }, 2e3);
         }
         this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
-            alpha: .8
+            alpha: .5
         }), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
     },
     hide: function(callback) {
@@ -2319,7 +2336,7 @@ var Application = AbstractApplication.extend({
     show: function() {
         this.screen.addChild(this), this.boxContainer.visible = !0, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
         this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
-            alpha: .8
+            alpha: .5
         }), TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight / 2 - this.boxContainer.height / 2 - this.continueButton.getContent().position.y,
             ease: "easeOutBack"

@@ -31,11 +31,11 @@ var CreditsModal = Class.extend({
 
 		var tempLabelContainer = null;
 		var tempLabel = null;
-		var positions = [[windowWidth * 0.1,windowHeight * 0.6], [windowWidth * 0.3,windowHeight * 0.06], [windowWidth * 0.6,windowHeight * 0.05], [windowWidth * 0.8,windowHeight * 0.8]];
-		var labels = ['Franer\nBlablabla', 'Raviel\nBlablabla', 'Jeff Ramos\nBlablabla', 'Dani Romanenco\nBlablabla'];
+		var positions = [[windowWidth * 0.2,windowHeight * 0.6], [windowWidth * 0.35,windowHeight * 0.1], [windowWidth * 0.6,windowHeight * 0.08], [windowWidth * 0.8,windowHeight * 0.7]];
+		var labels = ['Franer Rodrigues\nProdutor\nfraner@chilimonk.com', 'Raviel Carvalho\nProdutor\nraviel@chilimonk.com', 'Jeff Ramos\nProgramador\njeffs.ramos@gmail.com', 'Dani Romanenco\nDesigner\nromanenco7@gmail.com'];
 		for (var i = positions.length - 1; i >= 0; i--) {
 			tempLabelContainer = new PIXI.DisplayObjectContainer();
-			tempLabel = new PIXI.Text(labels[i], { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+			tempLabel = new PIXI.Text(labels[i], { align:'center',font:'20px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
 			tempLabelContainer.addChild(tempLabel);
 			scaleConverter(tempLabel.height, windowHeight, 0.15, tempLabel);
 			this.boxLabels.push(tempLabelContainer);
