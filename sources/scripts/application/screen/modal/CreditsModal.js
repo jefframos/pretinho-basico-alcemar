@@ -50,9 +50,9 @@ var CreditsModal = Class.extend({
 	},
 	show:function(points){
 		this.screen.addChild(this);
+
 		this.boxContainer.visible = true;
-		this.container.buttonMode = true;
-		this.container.interactive = true;
+		
 		this.boxContainer.position.y = windowHeight+this.boxContainer.height;
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 		this.boxContainer.alpha = 0;
@@ -65,8 +65,14 @@ var CreditsModal = Class.extend({
 
 		// TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.boxContainer.height / 2 - this.continueButton.getContent().position.y, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:1});
-		TweenLite.to(this.labelsContainer, 0.7, {delay:0.8, alpha:1});
 		TweenLite.to(this.labelsContainer.position, 0.6, {delay:0.8, y:0});
+		var self = this;
+		this.container.buttonMode = false;
+		this.container.interactive = false;
+		TweenLite.to(this.labelsContainer, 0.7, {delay:0.8, alpha:1, onComplete:function(){
+			self.container.buttonMode = true;
+			self.container.interactive = true;
+		}});
 	},
 	hide:function(callback){
 		var self = this;
@@ -80,7 +86,7 @@ var CreditsModal = Class.extend({
 				}
 			}
 		}});
-		TweenLite.to(this.boxContainer.position, 1, {y:windowHeight+this.boxContainer.height});
+		TweenLite.to(this.boxContainer, 1, {y:windowHeight/2});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:0});
 		TweenLite.to(this.labelsContainer, 0.2, {alpha:0});
 	},

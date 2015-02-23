@@ -542,6 +542,32 @@ var GameScreen = AbstractScreen.extend({
         simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale;
         this.vecClouds.push(simpleEntity);
         
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        TweenLite.to(this.frontShape, 0.8, {alpha:0});
+        // setTimeout(function(){
+
+        // self.screenManager.change('Game');
+        // }, 1000);
+    },
+    transitionIn:function()
+    {
+        // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
+        this.frontShape = new PIXI.Graphics();
+        this.frontShape.beginFill(0x406389);
+        this.frontShape.drawRect(0,0,windowWidth, windowHeight);
+        this.addChild(this.frontShape);
+        this.build();
+
+    },
+    transitionOut:function(nextScreen, container)
+    {
+        // this._super();
+        var self = this;
+        TweenLite.to(this.frontShape, 0.3, {alpha:1, onComplete:function(){
+            self.destroy();
+            container.removeChild(self.getContent());
+            nextScreen.transitionIn();
+        }});
     },
     createEgg:function(){
         console.log('(egg)');

@@ -3,12 +3,12 @@ var Application = AbstractApplication.extend({
 	init:function(){
 
         this._super(windowWidth, windowHeight);
-        this.stage.setBackgroundColor(0xBFF5FF);
+        this.stage.setBackgroundColor(0x406389);
         // this.stage.setBackgroundColor(0xFF9387);
         this.stage.removeChild(this.loadText);
-        this.isMobile = testMobile();
-        this.appContainer = document.getElementById('rect');
-        this.id = parseInt(Math.random() * 100000000000);
+        // this.isMobile = testMobile();
+        // this.appContainer = document.getElementById('rect');
+        // this.id = parseInt(Math.random() * 100000000000);
         this.gameModel = new AppModel();
 
         // this.objCounter = new PIXI.Text('', {font:'15px Arial'});

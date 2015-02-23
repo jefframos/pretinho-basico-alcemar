@@ -31,17 +31,24 @@ var WaitScreen = AbstractScreen.extend({
 
 
         if(assetsToLoader.length > 0){
+            this.labelLoader = new PIXI.Text('0 %', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+            scaleConverter(this.labelLoader.height, windowHeight, 0.2, this.labelLoader);
+            this.addChild(this.labelLoader);
             this.loader = new PIXI.AssetLoader(assetsToLoader);
             this.initLoad();
+
         }else{
             this.onAssetsLoaded();
         }
-         
+        
     },
     onProgress:function(){
         this._super();
-        APP.labelDebug.setText(Math.floor(this.loadPercent * 100));
-        console.log(this.loadPercent);
+        this.labelLoader.setText(Math.floor(this.loadPercent * 100)+' %');
+        this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
+        this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
+        // APP.labelDebug.setText(Math.floor(this.loadPercent * 100));
+        // console.log(this.loadPercent);
     },
     onAssetsLoaded:function()
     {
@@ -130,8 +137,8 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().add100Points();
         };
 
-        // this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
-        // TweenLite.to(this.frontShape.position, 1, {delay:0.2, y:windowHeight});
+        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        TweenLite.to(this.frontShape, 0.8, {alpha:0});
         // setTimeout(function(){
 
         // self.screenManager.change('Game');
@@ -140,22 +147,21 @@ var WaitScreen = AbstractScreen.extend({
     transitionIn:function()
     {
         // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
-        // this.frontShape = new PIXI.Graphics();
-        // this.frontShape.beginFill(0xFFFFFF);
-        // this.frontShape.drawRect(0,0,windowWidth, windowHeight + 10);
-        // this.addChild(this.frontShape);
+        this.frontShape = new PIXI.Graphics();
+        this.frontShape.beginFill(0x406389);
+        this.frontShape.drawRect(0,0,windowWidth, windowHeight);
+        this.addChild(this.frontShape);
         this.build();
 
     },
-    // transitionOut:function(nextScreen, container)
-    // {
-    //     this._super();
-    //     // var self = this;
-    //     // this.frontShape.position.y = - windowHeight;
-    //     // TweenLite.to(this.frontShape.position, 0.8, {y:0, ease:'easeOutBounce', onComplete:function(){
-    //     // self.destroy();
-    //     // container.removeChild(self.getContent());
-    //     // nextScreen.transitionIn();
-    //     // }});
-    // },
+    transitionOut:function(nextScreen, container)
+    {
+        // this._super();
+        var self = this;
+        TweenLite.to(this.frontShape, 0.3, {alpha:1, onComplete:function(){
+            self.destroy();
+            container.removeChild(self.getContent());
+            nextScreen.transitionIn();
+        }});
+    },
 });

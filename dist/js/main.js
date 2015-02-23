@@ -290,9 +290,8 @@ SmartSocket.SOCKET_ERROR = "socketError";
 
 var Application = AbstractApplication.extend({
     init: function() {
-        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(12580351), 
-        this.stage.removeChild(this.loadText), this.isMobile = testMobile(), this.appContainer = document.getElementById("rect"), 
-        this.id = parseInt(1e11 * Math.random()), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
+        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(4219785), 
+        this.stage.removeChild(this.loadText), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
         this.labelDebug.position.x = 20;
@@ -1535,7 +1534,23 @@ var Application = AbstractApplication.extend({
         this.addChild(this.returnButton), this.returnButton.clickCallback = function() {
             self.screenManager.change("Wait");
         }, this.arrButtons[APP.getGameModel().currentID].selectedFunction(), this.createStatsContainer(), 
-        this.updatePlayers(!0);
+        this.updatePlayers(!0), this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        TweenLite.to(this.frontShape, .8, {
+            alpha: 0
+        });
+    },
+    transitionIn: function() {
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.frontShape), this.build();
+    },
+    transitionOut: function(nextScreen, container) {
+        var self = this;
+        TweenLite.to(this.frontShape, .3, {
+            alpha: 1,
+            onComplete: function() {
+                self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn();
+            }
+        });
     },
     createStatsContainer: function() {
         this.statsContainer = new PIXI.DisplayObjectContainer(), this.addChild(this.statsContainer), 
@@ -1874,7 +1889,23 @@ var Application = AbstractApplication.extend({
         this.backLayer.addChild(simpleEntity);
         var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, .5);
         simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale, 
-        this.vecClouds.push(simpleEntity);
+        this.vecClouds.push(simpleEntity), this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        TweenLite.to(this.frontShape, .8, {
+            alpha: 0
+        });
+    },
+    transitionIn: function() {
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.frontShape), this.build();
+    },
+    transitionOut: function(nextScreen, container) {
+        var self = this;
+        TweenLite.to(this.frontShape, .3, {
+            alpha: 1,
+            onComplete: function() {
+                self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn();
+            }
+        });
     },
     createEgg: function() {
         console.log("(egg)"), APP.getGameModel().totalBirds >= APP.getGameModel().birdModels.length || (this.egg = new Egg(APP.getGameModel().birdModels[APP.getGameModel().totalBirds], this), 
@@ -1907,11 +1938,21 @@ var Application = AbstractApplication.extend({
     build: function() {
         this._super();
         var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/atlas/clouds.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/introScreen.jpg", "dist/img/UI/creditos.png", "dist/img/UI/HUD.json" ];
-        assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
+        assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("0 %", {
+            align: "center",
+            font: "60px Luckiest Guy",
+            fill: "#FFFFFF",
+            strokeThickness: 5,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), scaleConverter(this.labelLoader.height, windowHeight, .2, this.labelLoader), 
+        this.addChild(this.labelLoader), this.loader = new PIXI.AssetLoader(assetsToLoader), 
         this.initLoad()) : this.onAssetsLoaded();
     },
     onProgress: function() {
-        this._super(), APP.labelDebug.setText(Math.floor(100 * this.loadPercent)), console.log(this.loadPercent);
+        this._super(), this.labelLoader.setText(Math.floor(100 * this.loadPercent) + " %"), 
+        this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
     },
     onAssetsLoaded: function() {
         this.initApplication(), APP.labelDebug.visible = !1;
@@ -1963,10 +2004,23 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 80), this.more100button.clickCallback = function() {
             APP.getGameModel().add100Points();
-        };
+        }, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        TweenLite.to(this.frontShape, .8, {
+            alpha: 0
+        });
     },
     transitionIn: function() {
-        this.build();
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.addChild(this.frontShape), this.build();
+    },
+    transitionOut: function(nextScreen, container) {
+        var self = this;
+        TweenLite.to(this.frontShape, .3, {
+            alpha: 1,
+            onComplete: function() {
+                self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn();
+            }
+        });
     }
 }), CreditsModal = Class.extend({
     init: function(screen) {
@@ -1996,8 +2050,7 @@ var Application = AbstractApplication.extend({
         this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
     },
     show: function() {
-        this.screen.addChild(this), this.boxContainer.visible = !0, this.container.buttonMode = !0, 
-        this.container.interactive = !0, this.boxContainer.position.y = windowHeight + this.boxContainer.height, 
+        this.screen.addChild(this), this.boxContainer.visible = !0, this.boxContainer.position.y = windowHeight + this.boxContainer.height, 
         this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
         this.boxContainer.alpha = 0, this.labelsContainer.alpha = 0, this.labelsContainer.position.y = -50, 
         this.boxContainer.position.y = windowHeight / 2, this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
@@ -2007,12 +2060,17 @@ var Application = AbstractApplication.extend({
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
             alpha: 1
-        }), TweenLite.to(this.labelsContainer, .7, {
-            delay: .8,
-            alpha: 1
         }), TweenLite.to(this.labelsContainer.position, .6, {
             delay: .8,
             y: 0
+        });
+        var self = this;
+        this.container.buttonMode = !1, this.container.interactive = !1, TweenLite.to(this.labelsContainer, .7, {
+            delay: .8,
+            alpha: 1,
+            onComplete: function() {
+                self.container.buttonMode = !0, self.container.interactive = !0;
+            }
         });
     },
     hide: function(callback) {
@@ -2022,8 +2080,8 @@ var Application = AbstractApplication.extend({
             onComplete: function() {
                 callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));
             }
-        }), TweenLite.to(this.boxContainer.position, 1, {
-            y: windowHeight + this.boxContainer.height
+        }), TweenLite.to(this.boxContainer, 1, {
+            y: windowHeight / 2
         }), TweenLite.to(this.boxContainer, .5, {
             alpha: 0
         }), TweenLite.to(this.labelsContainer, .2, {
