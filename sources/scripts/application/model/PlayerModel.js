@@ -13,6 +13,7 @@ var PlayerModel = Class.extend({
 					
 
 		this.label = graphicsObject.label?graphicsObject.label:'NOME';
+		this.labelSource = graphicsObject.labelSource?graphicsObject.labelSource:'';
 		this.thumb = graphicsObject.thumb?graphicsObject.thumb:'thumb_jeiso';
 		this.thumbColor = this.thumb + '_color.png';
 		this.thumbGray = this.thumb + '_gray.png';
@@ -26,7 +27,6 @@ var PlayerModel = Class.extend({
 		this.bulletRotation = graphicsObject.bulletRotation?graphicsObject.bulletRotation:false;
 		this.energyCoast = statsObject.energyCoast?statsObject.energyCoast:1;
 		this.energyCoast = 4 - this.energyCoast;
-		console.log(this.energyCoast);
 		// this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2.5;
 		// console.log(this.energyCoast);
 		this.bulletCoast = statsObject.bulletCoast?statsObject.bulletCoast:0.2;

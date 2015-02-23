@@ -1,4 +1,4 @@
-/*! jefframos 20-02-2015 */
+/*! jefframos 23-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -912,12 +912,52 @@ var Application = AbstractApplication.extend({
     },
     destroy: function() {},
     serialize: function() {}
+}), Obstacle = Entity.extend({
+    init: function(birdModel, screen) {
+        this._super(!0), this.updateable = !1, this.deading = !1, this.range = 80, this.width = 1, 
+        this.height = 1, this.type = "obstacle", this.target = "enemy", this.fireType = "physical", 
+        this.birdModel = birdModel, this.vel = birdModel.vel, this.velocity.x = -this.vel, 
+        this.velocity.y = 0, this.screen = screen, this.demage = this.birdModel.demage, 
+        this.hp = this.birdModel.hp, this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
+        this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1;
+    },
+    build: function() {
+        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
+    },
+    update: function() {
+        this._super(), this.behaviour.update(this), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
+        this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
+    },
+    preKill: function() {
+        for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
+            var particle = new Particles({
+                x: 4 * Math.random() - 2,
+                y: -(2 * Math.random() + 1)
+            }, 120, this.birdModel.particles[i], .1 * Math.random());
+            particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
+            particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
+            this.layer.addChild(particle);
+        }
+        this.collidable = !1, this.kill = !0;
+    }
 }), AppModel = Class.extend({
     init: function() {
         this.currentPlayerModel = {}, this.cookieManager = new CookieManager();
         var points = parseInt(this.cookieManager.getCookie("totalPoints")), tempBirds = parseInt(this.cookieManager.getCookie("totalBirds"));
         this.totalPoints = points ? points : 0, this.totalBirds = tempBirds ? tempBirds : 1, 
-        this.currentPoints = 0, this.playerModels = [ new PlayerModel({
+        this.currentPoints = 0, this.obstacleModels = [ new BirdModel({
+            source: "belga.png",
+            particles: [ "cabeca5.png", "penas5.png" ],
+            sizePercent: .15
+        }, {
+            target: null,
+            demage: .2,
+            vel: -1.5,
+            behaviour: new BirdBehaviourSinoid({
+                sinAcc: .05
+            })
+        }) ], this.playerModels = [ new PlayerModel({
             label: "ALCEMAR",
             outGame: "alcemar.png",
             inGame: "alcemarGame.png",
@@ -926,7 +966,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partalcemar.png",
             color: 11719780,
             thumb: "thumb_alcemar",
-            coverSource: "dist/img/UI/alcemarGrande.png"
+            coverSource: "dist/img/UI/alcemarGrande.png",
+            labelSource: "Label_Alcemar.png"
         }, {
             energyCoast: 1.5,
             vel: .5,
@@ -948,7 +989,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partpiangers1.png",
             color: 7654879,
             thumb: "thumb_piangers",
-            coverSource: "dist/img/UI/piangersGrande.png"
+            coverSource: "dist/img/UI/piangersGrande.png",
+            labelSource: "Label_Piangers.png"
         }, {
             energyCoast: 1.5,
             vel: 2.5,
@@ -969,7 +1011,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partpotter.png",
             color: 16428876,
             thumb: "thumb_poter",
-            coverSource: "dist/img/UI/poterGrande.png"
+            coverSource: "dist/img/UI/poterGrande.png",
+            labelSource: "Label_Potter.png"
         }, {
             energyCoast: 1.9,
             vel: 1.5,
@@ -992,7 +1035,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partarthur.png",
             color: 11764665,
             thumb: "thumb_arthur",
-            coverSource: "dist/img/UI/arthurGrande.png"
+            coverSource: "dist/img/UI/arthurGrande.png",
+            labelSource: "Label_Arthur.png"
         }, {
             energyCoast: 2.4,
             vel: 1.5,
@@ -1010,7 +1054,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partexplosao.png",
             color: 16633351,
             thumb: "thumb_pora",
-            coverSource: "dist/img/UI/poraGrande.png"
+            coverSource: "dist/img/UI/poraGrande.png",
+            labelSource: "Label_Pora.png"
         }, {
             energyCoast: 2.6,
             vel: 1.5,
@@ -1033,7 +1078,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partjeiso.png",
             color: 8963136,
             thumb: "thumb_jeiso",
-            coverSource: "dist/img/UI/jeisoGrande.png"
+            coverSource: "dist/img/UI/jeisoGrande.png",
+            labelSource: "Label_Jeiso.png"
         }, {
             energyCoast: 1.5,
             vel: 3,
@@ -1055,7 +1101,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partpi.png",
             color: 9399727,
             thumb: "thumb_pi",
-            coverSource: "dist/img/UI/piGrande.png"
+            coverSource: "dist/img/UI/piGrande.png",
+            labelSource: "Label_MrPi.png"
         }, {
             energyCoast: 3,
             vel: 1,
@@ -1072,7 +1119,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partexplosao.png",
             color: 15614755,
             thumb: "thumb_feter",
-            coverSource: "dist/img/UI/feterGrande.png"
+            coverSource: "dist/img/UI/feterGrande.png",
+            labelSource: "Label_Fetter.png"
         }, {
             energyCoast: 2.3,
             vel: 1.5,
@@ -1089,7 +1137,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partneto.png",
             color: 11772272,
             thumb: "thumb_neto",
-            coverSource: "dist/img/UI/netoGrande.png"
+            coverSource: "dist/img/UI/netoGrande.png",
+            labelSource: "Label_Neto.png"
         }, {
             energyCoast: 2.5,
             vel: 2,
@@ -1111,7 +1160,8 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partrodaika2.png",
             color: 15893674,
             thumb: "thumb_rodaika",
-            coverSource: "dist/img/UI/rodaikaGrande.png"
+            coverSource: "dist/img/UI/rodaikaGrande.png",
+            labelSource: "Label_Rodaika.png"
         }, {
             energyCoast: 3,
             vel: 2,
@@ -1320,6 +1370,7 @@ var Application = AbstractApplication.extend({
         this.range = 40, this.maxEnergy = 7e3, this.currentEnergy = 8e3, this.maxBulletEnergy = 100, 
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
         this.currentBulletForce = 100, this.recoverEnergy = .5, this.label = graphicsObject.label ? graphicsObject.label : "NOME", 
+        this.labelSource = graphicsObject.labelSource ? graphicsObject.labelSource : "", 
         this.thumb = graphicsObject.thumb ? graphicsObject.thumb : "thumb_jeiso", this.thumbColor = this.thumb + "_color.png", 
         this.thumbGray = this.thumb + "_gray.png", this.color = graphicsObject.color ? graphicsObject.color : 8755, 
         this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 
@@ -1329,10 +1380,9 @@ var Application = AbstractApplication.extend({
         this.bulletParticleSource = graphicsObject.bulletParticle ? graphicsObject.bulletParticle : this.bulletSource, 
         this.smoke = graphicsObject.smoke ? graphicsObject.smoke : "smoke.png", this.bulletRotation = graphicsObject.bulletRotation ? graphicsObject.bulletRotation : !1, 
         this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 4 - this.energyCoast, 
-        console.log(this.energyCoast), this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
-        this.velocity = statsObject.vel ? statsObject.vel : 2, this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, 
-        this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, this.toAble = statsObject.toAble ? statsObject.toAble : 0, 
-        this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour : new MultipleBehaviour(), 
+        this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, this.velocity = statsObject.vel ? statsObject.vel : 2, 
+        this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, 
+        this.toAble = statsObject.toAble ? statsObject.toAble : 0, this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour : new MultipleBehaviour(), 
         this.able = !1;
     },
     reset: function() {
@@ -1460,7 +1510,8 @@ var Application = AbstractApplication.extend({
         }), this.moneyContainer.addChild(this.pointsLabel), this.pointsLabel.position.y = 2, 
         this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10, 
         this.backBars = new SimpleSprite("backBars.png"), this.statsContainer.addChild(this.backBars.getContent()), 
-        this.backBars.getContent().position.y = this.moneyContainer.height;
+        scaleConverter(this.moneyContainer.width, this.backBars.getContent().width, 1, this.moneyContainer), 
+        this.backBars.getContent().position.y = this.moneyContainer.height + 5;
         var barX = this.backBars.getContent().width / 2 - 75, barY = 60 + this.backBars.getContent().position.y;
         this.moneyContainer.position.x = this.statsContainer.width - this.moneyContainer.width, 
         this.energyBar = new BarView(150, 15, 1, 0), this.statsContainer.addChild(this.energyBar.getContent()), 
@@ -1512,17 +1563,12 @@ var Application = AbstractApplication.extend({
         this.velBar.updateBar(APP.getGameModel().currentPlayerModel.velocity, 3), this.powerBar.updateBar(APP.getGameModel().currentPlayerModel.bulletForce, 3);
     },
     updatePlayers: function(instant) {
-        this.currentID = APP.getGameModel().currentID, this.updateStatsBars(), this.playerName && this.playerName.parent && this.playerName.parent.removeChild(this.playerName), 
-        this.playerName = new PIXI.Text(APP.getGameModel().currentPlayerModel.label, {
-            align: "center",
-            fill: "#FFFFFF",
-            strokeThickness: 3,
-            stroke: "#033E43",
-            font: "45px Luckiest Guy",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        }), this.playerName.position.x = windowWidth / 2 - this.playerName.width / 2, this.playerName.position.y = this.char1.getContent().position.y - 10, 
-        this.addChild(this.playerName), this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
+        this.currentID = APP.getGameModel().currentID, this.updateStatsBars(), this.playerName && this.playerName.getContent().parent && this.playerName.getContent().parent.removeChild(this.playerName.getContent()), 
+        this.playerName = new SimpleSprite(APP.getGameModel().currentPlayerModel.labelSource), 
+        scaleConverter(this.playerName.getContent().height, windowHeight, .2, this.playerName), 
+        this.playerName.getContent().position.x = windowWidth / 2 - this.playerName.getContent().width / 2 + .05 * windowWidth, 
+        this.playerName.getContent().position.y = this.char1.getContent().position.y - 10, 
+        this.addChild(this.playerName.getContent()), this.faceColor && this.faceColor.parent && this.faceColor.parent.removeChild(this.faceColor), 
         this.faceColor = new PIXI.Graphics(), this.faceColor.beginFill(APP.getGameModel().currentPlayerModel.color), 
         this.faceColor.moveTo(this.pointsMask[0][0], this.pointsMask[0][1]), this.faceColor.lineTo(this.pointsMask[1][0], this.pointsMask[1][1]), 
         this.faceColor.lineTo(this.pointsMask[2][0], this.pointsMask[2][1]), this.faceColor.lineTo(this.pointsMask[3][0], this.pointsMask[3][1]), 
@@ -1850,8 +1896,8 @@ var Application = AbstractApplication.extend({
             APP.getGameModel().zerarTudo();
         }, this.maxPoints = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.maxPoints.build(200, 200), scaleConverter(this.maxPoints.height, windowHeight, .2, this.maxPoints), 
-        this.maxPoints.setPosition(20 + this.zerarCookie.getContent().width + 10, 20), this.addChild(this.maxPoints), 
-        this.maxPoints.addLabel(new PIXI.Text(" MAX ", {
+        this.maxPoints.setPosition(20, 20 + this.zerarCookie.getContent().height + 10), 
+        this.addChild(this.maxPoints), this.maxPoints.addLabel(new PIXI.Text(" MAX ", {
             align: "center",
             fill: "#033E43",
             font: "50px Luckiest Guy",
@@ -1861,7 +1907,7 @@ var Application = AbstractApplication.extend({
             APP.getGameModel().maxPoints();
         }, this.more100button = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
         this.more100button.build(200, 200), scaleConverter(this.more100button.height, windowHeight, .2, this.more100button), 
-        this.more100button.setPosition(this.maxPoints.getContent().position.x + this.maxPoints.getContent().width + 10, 20), 
+        this.more100button.setPosition(this.maxPoints.getContent().position.x, this.maxPoints.getContent().position.y + this.maxPoints.getContent().height + 10), 
         this.addChild(this.more100button), this.more100button.addLabel(new PIXI.Text(" +100 ", {
             align: "center",
             fill: "#033E43",
@@ -1998,16 +2044,11 @@ var Application = AbstractApplication.extend({
             this.newCharContainer.addChild(pista.getContent()), pista.setPosition(0, holofote.getContent().height - 35), 
             this.newCharContainer.addChild(holofote.getContent()), this.newCharContainer.addChild(playerImage.getContent()), 
             this.newCharContainer.addChild(novo.getContent()), holofote.setPosition(pista.getContent().width / 2 - holofote.getContent().width / 2, 0);
-            var charLabel = new PIXI.Text(newPlayers[0].label, {
-                align: "center",
-                fill: "#FFFFFF",
-                font: "50px Luckiest Guy",
-                wordWrap: !0,
-                wordWrapWidth: 300
-            });
-            this.newCharContainer.addChild(charLabel), this.container.addChild(this.newCharContainer), 
-            charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2, charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20, 
-            novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20), 
+            var charLabel = new SimpleSprite(newPlayers[0].labelSource);
+            this.newCharContainer.addChild(charLabel.getContent()), this.container.addChild(this.newCharContainer), 
+            scaleConverter(charLabel.getContent().height, windowHeight, .25, charLabel), charLabel.getContent().position.x = pista.getContent().width / 2 - charLabel.getContent().width / 2, 
+            charLabel.getContent().position.y = pista.getContent().position.y + pista.getContent().height - charLabel.getContent().height - 20, 
+            novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.getContent().position.y - novo.getContent().height - 20), 
             scaleConverter(playerImage.getContent().height, this.newCharContainer.height, .3, playerImage), 
             playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width / 2, pista.getContent().position.y - playerImage.getContent().height - 10), 
             scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer), 

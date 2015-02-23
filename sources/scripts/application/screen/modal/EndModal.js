@@ -139,7 +139,7 @@ var EndModal = Class.extend({
 	},
 	show:function(newPlayers){
 		// console.log('newPlayers',newPlayers, newPlayers.length);
-		// newPlayers = [APP.getGameModel().playerModels[0]];
+		// newPlayers = [APP.getGameModel().playerModels[9]];
 		this.currentBirds.setText(APP.getGameModel().currentPoints);
 		this.currentCoin.setText(APP.getGameModel().currentPoints);
 		this.totalCoin.setText(APP.getGameModel().totalPoints);
@@ -174,17 +174,18 @@ var EndModal = Class.extend({
 			holofote.setPosition(pista.getContent().width / 2 - holofote.getContent().width / 2, 0);
 
 
-			var charLabel = new PIXI.Text(newPlayers[0].label, { align:'center', fill:'#FFFFFF', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
-			this.newCharContainer.addChild(charLabel);
+			var charLabel = new SimpleSprite(newPlayers[0].labelSource);//PIXI.Text(newPlayers[0].label, { align:'center', fill:'#FFFFFF', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+			this.newCharContainer.addChild(charLabel.getContent());
 			this.container.addChild(this.newCharContainer);
 			// this.container.buttonMode = true;
 			// this.container.interactive = true;
 
+			scaleConverter(charLabel.getContent().height, windowHeight, 0.25, charLabel);
 
-			charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2;
-			charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20;
+			charLabel.getContent().position.x = pista.getContent().width / 2 - charLabel.getContent().width / 2;
+			charLabel.getContent().position.y = pista.getContent().position.y + pista.getContent().height - charLabel.getContent().height - 20;
 
-			novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20);
+			novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.getContent().position.y - novo.getContent().height - 20);
 
 			scaleConverter(playerImage.getContent().height, this.newCharContainer.height, 0.3, playerImage);
 			playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width/2, pista.getContent().position.y - playerImage.getContent().height - 10);

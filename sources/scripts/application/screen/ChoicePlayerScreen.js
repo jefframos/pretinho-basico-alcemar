@@ -340,7 +340,8 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.backBars = new SimpleSprite('backBars.png');
         this.statsContainer.addChild(this.backBars.getContent());
 
-        this.backBars.getContent().position.y = this.moneyContainer.height;
+        scaleConverter(this.moneyContainer.width, this.backBars.getContent().width, 1, this.moneyContainer);
+        this.backBars.getContent().position.y = this.moneyContainer.height + 5;
 
         var barX = this.backBars.getContent().width / 2 - 150 / 2;
         var barY = 60 + this.backBars.getContent().position.y;
@@ -421,13 +422,16 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         this.currentID = APP.getGameModel().currentID;
         this.updateStatsBars();
 
-        if(this.playerName && this.playerName.parent){
-            this.playerName.parent.removeChild(this.playerName);
+        if(this.playerName && this.playerName.getContent().parent){
+            this.playerName.getContent().parent.removeChild(this.playerName.getContent());
         }
-        this.playerName = new PIXI.Text(APP.getGameModel().currentPlayerModel.label, { align:'center',fill:'#FFFFFF', strokeThickness:3, stroke:'#033E43', font:'45px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
-        this.playerName.position.x = windowWidth /2 - this.playerName.width / 2;
-        this.playerName.position.y = this.char1.getContent().position.y - 10;
-        this.addChild(this.playerName);
+
+        // this.playerName = new PIXI.Text(APP.getGameModel().currentPlayerModel.label, { align:'center',fill:'#FFFFFF', strokeThickness:3, stroke:'#033E43', font:'45px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+        this.playerName = new SimpleSprite(APP.getGameModel().currentPlayerModel.labelSource);//, { align:'center',fill:'#FFFFFF', strokeThickness:3, stroke:'#033E43', font:'45px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+        scaleConverter(this.playerName.getContent().height, windowHeight, 0.20, this.playerName);
+        this.playerName.getContent().position.x = windowWidth /2 - this.playerName.getContent().width / 2 + windowWidth * 0.05;
+        this.playerName.getContent().position.y = this.char1.getContent().position.y - 10;
+        this.addChild(this.playerName.getContent());
         if(this.faceColor && this.faceColor.parent){
             this.faceColor.parent.removeChild(this.faceColor);
             // this.removeChild(this.playerImgBig);

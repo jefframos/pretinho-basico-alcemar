@@ -97,7 +97,7 @@ var WaitScreen = AbstractScreen.extend({
         this.maxPoints.build(200, 200);
         scaleConverter(this.maxPoints.height, windowHeight, 0.2, this.maxPoints);
 
-        this.maxPoints.setPosition( 20 + this.zerarCookie.getContent().width + 10, 20);
+        this.maxPoints.setPosition( 20 , 20+ this.zerarCookie.getContent().height + 10);
         this.addChild(this.maxPoints);
         this.maxPoints.addLabel(new PIXI.Text(' MAX ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
         this.maxPoints.clickCallback = function(){
@@ -108,7 +108,7 @@ var WaitScreen = AbstractScreen.extend({
         this.more100button.build(200, 200);
         scaleConverter(this.more100button.height, windowHeight, 0.2, this.more100button);
 
-        this.more100button.setPosition( this.maxPoints.getContent().position.x + this.maxPoints.getContent().width + 10, 20);
+        this.more100button.setPosition( this.maxPoints.getContent().position.x ,this.maxPoints.getContent().position.y + this.maxPoints.getContent().height + 10);
         this.addChild(this.more100button);
         this.more100button.addLabel(new PIXI.Text(' +100 ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
         this.more100button.clickCallback = function(){
