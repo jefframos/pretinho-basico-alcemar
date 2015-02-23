@@ -112,16 +112,6 @@ var NewBirdModal = Class.extend({
 		TweenLite.to(this.bg, 0.5, {alpha:0.5});
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 	},
-	// showPoints:function(){
-	// 	if(this.newCharContainer){
-	// 		TweenLite.to(this.newCharContainer, 0.5, {alpha:0});
-	// 		this.container.interactive = false;
-	// 	}
-	// 	this.boxContainer.visible = true;
-	// 	// TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.background.getContent().height * this.containerScale / 2, ease:'easeOutBack'});
-	// 	TweenLite.to(this.boxContainer.position, 1, {y:windowHeight - this.boxContainer.height - 20, ease:'easeOutBack'});
-	// 	TweenLite.to(this.boxContainer, 0.5, {alpha:1});
-	// },
 	hide:function(callback){
 		var self = this;
 		TweenLite.to(this.bg, 0.5, {alpha:0, onComplete:function(){

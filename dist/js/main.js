@@ -115,7 +115,9 @@ function possibleFullscreen() {
 
 function fullscreen() {
     var elem = renderer.view;
-    elem.requestFullscreen ? elem.requestFullscreen() : elem.msRequestFullscreen ? elem.msRequestFullscreen() : elem.mozRequestFullScreen ? elem.mozRequestFullScreen() : elem.webkitRequestFullscreen && elem.webkitRequestFullscreen();
+    elem.requestFullscreen ? elem.requestFullscreen() : elem.msRequestFullscreen ? elem.msRequestFullscreen() : elem.mozRequestFullScreen ? elem.mozRequestFullScreen() : elem.webkitRequestFullscreen && elem.webkitRequestFullscreen(), 
+    windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
+    realWindowWidth = windowWidth, realWindowHeight = windowHeight, isfull = !0;
 }
 
 var DungeonGenerator = Class.extend({
@@ -1964,12 +1966,23 @@ var Application = AbstractApplication.extend({
         this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
     },
     onAssetsLoaded: function() {
-        this.initApplication(), APP.labelDebug.visible = !1;
+        if (possibleFullscreen() && !isfull) {
+            this.labelLoader.setText("Toque para continuar"), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
+            this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
+            var self = this;
+            this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
+            this.playButton.build(), scaleConverter(this.playButton.height, windowHeight, .25, this.playButton), 
+            this.playButton.setPosition(windowWidth - this.playButton.getContent().width - 20, windowHeight - this.playButton.getContent().height - 20), 
+            this.addChild(this.playButton), this.playButton.clickCallback = function() {
+                fullscreen(), self.initApplication();
+            };
+        } else this.initApplication();
+        APP.labelDebug.visible = !1;
     },
     initApplication: function() {
-        this.background = new SimpleSprite("dist/img/UI/introScreen.jpg"), this.addChild(this.background.getContent());
-        var scaleBack = scaleConverter(this.background.getContent().width, windowWidth, 1);
-        this.background.getContent().scale.x = scaleBack, this.background.getContent().scale.y = scaleBack;
+        this.background = new SimpleSprite("dist/img/UI/introScreen.jpg"), this.addChild(this.background.getContent()), 
+        scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
+        this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
         var self = this;
         this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
         this.playButton.build(), scaleConverter(this.playButton.height, windowHeight, .25, this.playButton), 
@@ -2518,7 +2531,7 @@ realWindowWidth = windowWidth, realWindowHeight = windowHeight);
 
 var windowWidthVar = window.innerWidth, windowHeightVar = window.innerHeight, ratio = 1, init = !1, renderer, APP, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
-};
+}, isfull = !1;
 
 !function() {
     var App = {

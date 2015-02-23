@@ -109,8 +109,11 @@ function possibleFullscreen(){
 	var elem = renderer.view;
 	return  elem.requestFullscreen || elem.msRequestFullscreen || elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
 }
+var isfull = false;
 function fullscreen(){
-
+	// if(isfull && possibleFullscreen()){
+	// 	return;
+	// }
 	var elem = renderer.view;
 	if (elem.requestFullscreen) {
 		elem.requestFullscreen();
@@ -121,6 +124,16 @@ function fullscreen(){
 	} else if (elem.webkitRequestFullscreen) {
 		elem.webkitRequestFullscreen();
 	}
+
+	windowWidth = window.innerWidth * gameScale;
+	windowHeight = window.innerHeight * gameScale;
+	realWindowWidth = windowWidth;
+	realWindowHeight = windowHeight;
+
+	isfull = true;
+	// renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, null, false, true);
+
+	//renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, null, false, true);
 }
 
 

@@ -188,8 +188,6 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>simpleButtonOver.png</filename>
-            <filename>simpleButtonUp.png</filename>
             <filename>selected.png</filename>
             <filename>out.png</filename>
             <filename>pista.png</filename>

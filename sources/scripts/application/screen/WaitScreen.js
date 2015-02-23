@@ -52,17 +52,58 @@ var WaitScreen = AbstractScreen.extend({
     },
     onAssetsLoaded:function()
     {
-        this.initApplication();
+        //testMobile() && 
+        if(possibleFullscreen() && !isfull){
+            this.labelLoader.setText('Toque para continuar');
+            this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
+            this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
+
+            // this.screenShape = new PIXI.Graphics();
+            // this.screenShape.beginFill(0x406389);
+            // this.screenShape.drawRect(0,0,windowWidth, windowHeight);
+            // this.addChild(this.screenShape);
+            // this.screenShape.alpha = 0;
+            var self = this;
+
+            this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+            // console.log(this.playButton.build);
+            this.playButton.build();
+            scaleConverter(this.playButton.height, windowHeight, 0.25, this.playButton);
+            this.playButton.setPosition( windowWidth - this.playButton.getContent().width  - 20, windowHeight - this.playButton.getContent().height - 20);
+            this.addChild(this.playButton);
+
+            // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
+
+            // this.playButton.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
+            this.playButton.clickCallback = function(){
+                fullscreen();
+                self.initApplication();
+                
+                // self.screenManager.change('Choice');
+            };
+
+            // self.screenShape.buttonMode = true;
+            // self.screenShape.interactive = true;
+            // self.screenShape.mousedown = self.screenShape.touchstart = function(data){
+            //     // fullscreen();
+            //     self.initApplication();
+            // };
+
+        }else{
+            this.initApplication();
+        }
+        // fullscreen();
         APP.labelDebug.visible = false;
     },
     initApplication:function(){
 
         this.background = new SimpleSprite('dist/img/UI/introScreen.jpg');
         this.addChild(this.background.getContent());
-        var scaleBack = scaleConverter(this.background.getContent().width, windowWidth, 1);
-        this.background.getContent().scale.x = scaleBack;
-        this.background.getContent().scale.y = scaleBack;
+        scaleConverter(this.background.getContent().height, windowHeight, 1, this.background);
+        this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
+
         var self = this;
+
         this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
         // console.log(this.playButton.build);
         this.playButton.build();
@@ -74,6 +115,7 @@ var WaitScreen = AbstractScreen.extend({
 
         // this.playButton.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
         this.playButton.clickCallback = function(){
+            // fullscreen();
             self.screenManager.change('Choice');
         };
 
@@ -158,7 +200,7 @@ var WaitScreen = AbstractScreen.extend({
     {
         // this._super();
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
-        
+
         var self = this;
         TweenLite.to(this.frontShape, 0.3, {alpha:1, onComplete:function(){
             self.destroy();
