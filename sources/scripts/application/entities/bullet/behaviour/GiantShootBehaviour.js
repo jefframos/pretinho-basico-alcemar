@@ -18,7 +18,7 @@ var GiantShootBehaviour = Class.extend({
 
         var bullet = new Bullet({x:Math.cos(angle) * vel,
             y:Math.sin(angle) * vel},
-            timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
+            timeLive, bulletForce, screen.playerModel.specSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
         bullet.invencible = invencible;
         bullet.build();
         //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO

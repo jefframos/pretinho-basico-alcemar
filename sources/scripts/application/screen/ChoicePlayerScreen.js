@@ -261,7 +261,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.arrButtons[i].mouseUpCallback = this.resetButtons;
         }
 
-        this.play = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+        this.play = new DefaultButton('continueButtonBig.png', 'continueButtonBigOver.png');
         this.play.build();
         scaleConverter(this.play.getContent().height, windowHeight, 0.25, this.play);
         this.play.setPosition( windowWidth - this.play.getContent().width - 20,windowHeight - this.play.getContent().height - 20);
@@ -274,7 +274,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             self.screenManager.change('Game');
         };
 
-        this.returnButton = new DefaultButton('voltarButton.png', 'voltarButton.png');
+        this.returnButton = new DefaultButton('voltarButton.png', 'voltarButtonOver.png');
         this.returnButton.build();
         scaleConverter(this.returnButton.getContent().height, windowHeight, 0.15, this.returnButton);
 
@@ -331,21 +331,25 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         var moneyBg = new SimpleSprite('moneyContainer.png');
         this.moneyContainer.addChild(moneyBg.getContent());
 
-        this.pointsLabel = new PIXI.Text(APP.getGameModel().totalPoints, {font:'28px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5});
+        this.pointsLabel = new PIXI.Text(APP.getGameModel().totalPoints, {font:'20px Luckiest Guy', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5});
         this.moneyContainer.addChild(this.pointsLabel);
 
-        this.pointsLabel.position.y = 2;
-        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10;
+        this.pointsLabel.position.y = this.moneyContainer.height / 2 - this.pointsLabel.height / 2;
+        this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - this.moneyContainer.height;
 
 
-        this.backBars = new SimpleSprite('backBars.png');
-        this.statsContainer.addChild(this.backBars.getContent());
+        this.backGraphics = new PIXI.Graphics();
+        this.backGraphics.beginFill(0x033e43);
+        this.backGraphics.drawRoundedRect (0,0,230,238, 30);
+        // this.backBars = new SimpleSprite('backBars.png');
+        // this.statsContainer.addChild(this.backGraphics);
+        this.statsContainer.addChild(this.backGraphics);
 
-        scaleConverter(this.moneyContainer.width, this.backBars.getContent().width, 1, this.moneyContainer);
-        this.backBars.getContent().position.y = this.moneyContainer.height + 5;
+        scaleConverter(this.moneyContainer.width, this.backGraphics.width, 1, this.moneyContainer);
+        this.backGraphics.position.y = this.moneyContainer.height + 5;
 
-        var barX = this.backBars.getContent().width / 2 - 150 / 2;
-        var barY = 60 + this.backBars.getContent().position.y;
+        var barX = this.backGraphics.width / 2 - 150 / 2;
+        var barY = 60 + this.backGraphics.position.y;
 
         // this.moneyContainer.position.y = - this.moneyContainer.height;
         this.moneyContainer.position.x = this.statsContainer.width - this.moneyContainer.width;
@@ -374,18 +378,18 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         var energyLabel = new PIXI.Text('ENERGIA', { align:'center',fill:'#FFFFFF', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
         this.statsContainer.addChild(energyLabel);
-        energyLabel.position.x = this.backBars.getContent().width / 2 - energyLabel.width / 2;
+        energyLabel.position.x = this.backGraphics.width / 2 - energyLabel.width / 2;
         energyLabel.position.y = this.energyBar.getContent().position.y - energyLabel.height;
 
         var velLabel = new PIXI.Text('VELOCIDADE', { align:'center',fill:'#FFFFFF', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
         this.statsContainer.addChild(velLabel);
-        velLabel.position.x = this.backBars.getContent().width / 2 - velLabel.width / 2;
+        velLabel.position.x = this.backGraphics.width / 2 - velLabel.width / 2;
         velLabel.position.y = this.velBar.getContent().position.y - velLabel.height;
 
 
         var tiroLabel = new PIXI.Text('TIRO', { align:'center',fill:'#FFFFFF', font:'25px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
         this.statsContainer.addChild(tiroLabel);
-        tiroLabel.position.x = this.backBars.getContent().width / 2 - tiroLabel.width / 2;
+        tiroLabel.position.x = this.backGraphics.width / 2 - tiroLabel.width / 2;
         tiroLabel.position.y = this.powerBar.getContent().position.y - tiroLabel.height;
 
         var statsScale = scaleConverter(this.statsContainer.width, windowWidth, 0.18);

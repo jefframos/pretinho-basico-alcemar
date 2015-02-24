@@ -27,7 +27,7 @@ var init = false;
 var renderer;
 var APP;
 
-var retina = window.devicePixelRatio >= 2 ? 2 : 1;
+var retina = 1;//window.devicePixelRatio >= 2 ? 2 : 1;
 
 function updateResolution(orientation, scale){
 	if(orientation === 'portait'){

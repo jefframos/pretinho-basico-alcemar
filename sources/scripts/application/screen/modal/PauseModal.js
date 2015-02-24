@@ -14,7 +14,7 @@ var PauseModal = Class.extend({
 
 		var self = this;
 
-		this.backButton = new DefaultButton('voltarButton.png', 'voltarButton.png');
+		this.backButton = new DefaultButton('voltarButton.png', 'voltarButtonOver.png');
 		this.backButton.build();
 		// this.backButton.getContent().scale.x = this.backButton.getContent().scale.y = 0.8;
 		this.backButton.setPosition(0, 0);
@@ -25,7 +25,7 @@ var PauseModal = Class.extend({
 		};
 		this.boxContainer.addChild(this.backButton.getContent());
 
-		this.continueButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+		this.continueButton = new DefaultButton('continueButtonBig.png', 'continueButtonBigOver.png');
         this.continueButton.build();
         this.continueButton.setPosition(this.backButton.getContent().width + 20, -this.continueButton.getContent().height / 2 + this.backButton.getContent().height / 2);//this.backBars.getContent().height / 2 - this.continueButton.height / 2 - 10);
         this.continueButton.clickCallback = function(){
@@ -33,7 +33,7 @@ var PauseModal = Class.extend({
         };
         this.boxContainer.addChild(this.continueButton.getContent());
 
-        this.restartButton = new DefaultButton('replayButton.png', 'replayButton.png');
+        this.restartButton = new DefaultButton('replayButton.png', 'replayButtonOver.png');
 		this.restartButton.build();
 		// this.restartButton.getContent().scale.x = this.restartButton.getContent().scale.y = 0.8;
 		this.restartButton.setPosition(this.continueButton.getContent().width + this.continueButton.getContent().position.x + 20, 0);

@@ -30,7 +30,7 @@ var EndModal = Class.extend({
 		this.backShape.width = this.feito.getContent().width + 50;
 		this.backShape.position.x = windowWidth / 2 - this.backShape.width / 2;
 
-		this.backButton = new DefaultButton('menuButton.png', 'menuButton.png');
+		this.backButton = new DefaultButton('menuButton.png', 'menuButtonOver.png');
 		this.backButton.build();
 		this.backButton.setPosition(0,0);
 			// this.background.getContent().height - this.backButton.height / 2);
@@ -42,7 +42,7 @@ var EndModal = Class.extend({
 			});
 		};
 
-		this.trofeuButton = new DefaultButton('trofeuButton.png', 'trofeuButton.png');
+		this.trofeuButton = new DefaultButton('trofeuButton.png', 'trofeuButtonOver.png');
 		this.trofeuButton.build();
 		this.trofeuButton.setPosition(this.backButton.getContent().position.x + this.backButton.getContent().width + 10, 0);
 			// this.background.getContent().height - this.trofeuButton.height / 2);
@@ -55,7 +55,7 @@ var EndModal = Class.extend({
 		};
 
 
-		this.exitButton = new DefaultButton('replayButton.png', 'replayButton.png');
+		this.exitButton = new DefaultButton('replayButton.png', 'replayButtonOver.png');
 		this.exitButton.build();
 		this.exitButton.setPosition(this.trofeuButton.getContent().position.x + this.exitButton.getContent().width+ 10, 0);
 		// 	this.background.getContent().height - this.exitButton.height / 2);

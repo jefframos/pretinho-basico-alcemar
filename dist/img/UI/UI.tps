@@ -192,7 +192,6 @@
             <filename>out.png</filename>
             <filename>pista.png</filename>
             <filename>selectedInner.png</filename>
-            <filename>backBars.png</filename>
             <filename>gasoline.png</filename>
             <filename>reducingPB/thumb_alcemar_gray.png</filename>
             <filename>reducingPB/thumb_arthur_gray.png</filename>
@@ -219,14 +218,10 @@
             <filename>continueButton.png</filename>
             <filename>continueButtonBig.png</filename>
             <filename>fbButton.png</filename>
-            <filename>gasBar.png</filename>
-            <filename>gasBarBack.png</filename>
             <filename>menuButton.png</filename>
             <filename>pauseButton.png</filename>
             <filename>replayButton.png</filename>
             <filename>twitterButton.png</filename>
-            <filename>gasBarBack2.png</filename>
-            <filename>gasBar2.png</filename>
             <filename>bulletIco.png</filename>
             <filename>moneyContainer.png</filename>
             <filename>coin.png</filename>
@@ -260,6 +255,22 @@
             <filename>ovo_nocu.png</filename>
             <filename>obstaculo1.png</filename>
             <filename>creditoButton.png</filename>
+            <filename>menuButtonOver.png</filename>
+            <filename>voltarButtonOver.png</filename>
+            <filename>creditoButtonOver.png</filename>
+            <filename>pauseButtonOver.png</filename>
+            <filename>continueButtonOver.png</filename>
+            <filename>replayButtonOver.png</filename>
+            <filename>continueButtonBigOver.png</filename>
+            <filename>specs/especial_fetter.png</filename>
+            <filename>trofeuButtonOver.png</filename>
+            <filename>specs/especial_potter.png</filename>
+            <filename>specs/power_alcemar.png</filename>
+            <filename>specs/especial_alcemar.png</filename>
+            <filename>specs/especial_arthur.png</filename>
+            <filename>specs/especial_jeiso.png</filename>
+            <filename>specs/especial_piangers.png</filename>
+            <filename>specs/especial_pora.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

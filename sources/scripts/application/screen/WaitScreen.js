@@ -26,7 +26,6 @@ var WaitScreen = AbstractScreen.extend({
         'dist/img/UI/netoGrande.png',
         'dist/img/UI/piangersGrande.png',
         'dist/img/UI/introScreen.jpg',
-        'dist/img/UI/creditos.png',
         'dist/img/UI/HUD.json'];
 
 
@@ -93,7 +92,7 @@ var WaitScreen = AbstractScreen.extend({
 
         var self = this;
 
-        this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+        this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBigOver.png');
         // console.log(this.playButton.build);
         this.playButton.build();
         scaleConverter(this.playButton.height, windowHeight, 0.25, this.playButton);
@@ -109,7 +108,7 @@ var WaitScreen = AbstractScreen.extend({
         };
 
         this.creditsModal = new CreditsModal(this);
-        this.creditsButton = new DefaultButton('creditoButton.png', 'creditoButton.png');
+        this.creditsButton = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
         this.creditsButton.build();
         scaleConverter(this.creditsButton.getContent().height, windowHeight, 0.15, this.creditsButton);
 
@@ -123,7 +122,7 @@ var WaitScreen = AbstractScreen.extend({
         };
 
 
-        this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButton.png');
+        this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
         this.zerarCookie.build(200, 200);
         scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
 
@@ -134,7 +133,7 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().zerarTudo();
         };
 
-        this.maxPoints = new DefaultButton('creditoButton.png', 'creditoButton.png');
+        this.maxPoints = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
         this.maxPoints.build(200, 200);
         scaleConverter(this.maxPoints.height, windowHeight, 0.2, this.maxPoints);
 
@@ -145,7 +144,7 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().maxPoints();
         };
 
-        this.more100button = new DefaultButton('creditoButton.png', 'creditoButton.png');
+        this.more100button = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
         this.more100button.build(200, 200);
         scaleConverter(this.more100button.height, windowHeight, 0.2, this.more100button);
 

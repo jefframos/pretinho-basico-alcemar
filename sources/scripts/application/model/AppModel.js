@@ -63,7 +63,9 @@ var AppModel = Class.extend({
 				color:0xB2D464,
 				thumb:'thumb_alcemar',
 				coverSource:'dist/img/UI/alcemarGrande.png',
-				labelSource:'Label_Alcemar.png'
+				labelSource:'Label_Alcemar.png',
+				specSource:'power_alcemar.png',
+				icoSpecSource:'especial_alcemar.png'
 			},
 			{
 				energyCoast:1.5,
@@ -87,7 +89,8 @@ var AppModel = Class.extend({
 				color:0x74CDDF,
 				thumb:'thumb_piangers',
 				coverSource:'dist/img/UI/piangersGrande.png',
-				labelSource:'Label_Piangers.png'
+				labelSource:'Label_Piangers.png',
+				icoSpecSource:'especial_piangers.png'
 			},
 			{
 				energyCoast:1.5,
@@ -110,7 +113,8 @@ var AppModel = Class.extend({
 				color:0xFAAF4C,
 				thumb:'thumb_poter',
 				coverSource:'dist/img/UI/poterGrande.png',
-				labelSource:'Label_Potter.png'
+				labelSource:'Label_Potter.png',
+				icoSpecSource:'especial_potter.png'
 			},
 			{
 				energyCoast:1.9,
@@ -132,7 +136,8 @@ var AppModel = Class.extend({
 				color:0xB383B9,
 				thumb:'thumb_arthur',
 				coverSource:'dist/img/UI/arthurGrande.png',
-				labelSource:'Label_Arthur.png'
+				labelSource:'Label_Arthur.png',
+				icoSpecSource:'especial_arthur.png'
 			},
 			{
 				energyCoast:2.4,
@@ -155,7 +160,8 @@ var AppModel = Class.extend({
 				color:0xFDCE07,
 				thumb:'thumb_pora',
 				coverSource:'dist/img/UI/poraGrande.png',
-				labelSource:'Label_Pora.png'
+				labelSource:'Label_Pora.png',
+				icoSpecSource:'especial_pora.png'
 			},
 			{
 				energyCoast:2.6,
@@ -177,7 +183,8 @@ var AppModel = Class.extend({
 				color:0x88C440,
 				thumb:'thumb_jeiso',
 				coverSource:'dist/img/UI/jeisoGrande.png',
-				labelSource:'Label_Jeiso.png'
+				labelSource:'Label_Jeiso.png',
+				icoSpecSource:'especial_jeiso.png'
 			},
 			{
 				energyCoast:1.5,
@@ -200,7 +207,8 @@ var AppModel = Class.extend({
 				color:0x8F6DAF,
 				thumb:'thumb_pi',
 				coverSource:'dist/img/UI/piGrande.png',
-				labelSource:'Label_MrPi.png'
+				labelSource:'Label_MrPi.png',
+				icoSpecSource:''
 			},
 			{
 				energyCoast:3,
@@ -222,7 +230,8 @@ var AppModel = Class.extend({
 				color:0xEE4323,
 				thumb:'thumb_feter',
 				coverSource:'dist/img/UI/feterGrande.png',
-				labelSource:'Label_Fetter.png'
+				labelSource:'Label_Fetter.png',
+				icoSpecSource:''
 			},
 			{
 				energyCoast:2.3,
@@ -244,7 +253,8 @@ var AppModel = Class.extend({
 				color:0xB3A170,
 				thumb:'thumb_neto',
 				coverSource:'dist/img/UI/netoGrande.png',
-				labelSource:'Label_Neto.png'
+				labelSource:'Label_Neto.png',
+				icoSpecSource:''
 			},
 			{
 				energyCoast:2.5,
@@ -266,7 +276,8 @@ var AppModel = Class.extend({
 				color:0xF284AA,
 				thumb:'thumb_rodaika',
 				coverSource:'dist/img/UI/rodaikaGrande.png',
-				labelSource:'Label_Rodaika.png'
+				labelSource:'Label_Rodaika.png',
+				icoSpecSource:''
 			},
 			{
 				energyCoast:3,
