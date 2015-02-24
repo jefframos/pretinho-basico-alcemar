@@ -31,7 +31,7 @@ var WaitScreen = AbstractScreen.extend({
 
 
         if(assetsToLoader.length > 0){
-            this.labelLoader = new PIXI.Text('0 %', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+            this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
             scaleConverter(this.labelLoader.height, windowHeight, 0.2, this.labelLoader);
             this.addChild(this.labelLoader);
             this.loader = new PIXI.AssetLoader(assetsToLoader);
@@ -78,7 +78,7 @@ var WaitScreen = AbstractScreen.extend({
             this.playButton.clickCallback = function(){
                 fullscreen();
                 self.initApplication();
-                
+
                 // self.screenManager.change('Choice');
             };
 

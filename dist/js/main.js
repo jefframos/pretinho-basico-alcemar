@@ -1,4 +1,4 @@
-/*! jefframos 23-02-2015 */
+/*! jefframos 24-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -92,15 +92,24 @@ function testMobile() {
     return Modernizr.touch;
 }
 
+function updateResolution(orientation, scale) {
+    "portait" === orientation ? screen.height > screen.width ? (windowWidth = screen.width * scale, 
+    windowHeight = screen.height * scale, windowWidthVar = screen.width, windowHeightVar = screen.height) : (windowWidth = screen.height * scale, 
+    windowHeight = screen.width * scale, windowWidthVar = screen.height, windowHeightVar = screen.width) : screen.height < screen.width ? (windowWidth = screen.width * scale, 
+    windowHeight = screen.height * scale, windowWidthVar = screen.width, windowHeightVar = screen.height) : (windowWidth = screen.height * scale, 
+    windowHeight = screen.width * scale, windowWidthVar = screen.height, windowHeightVar = screen.width), 
+    realWindowWidth = windowWidth, realWindowHeight = windowHeight;
+}
+
 function update() {
     requestAnimFrame(update), !init && window.innerWidth > window.innerHeight && (resizeProportional = !0, 
     windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, 
-    gameScale = 1.3, testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
-    realWindowWidth = windowWidth, realWindowHeight = windowHeight), windowWidthVar = window.innerWidth, 
-    windowHeightVar = window.innerHeight, renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, null, !1, !0), 
-    document.body.appendChild(renderer.view), renderer.view.style.width = windowWidth + "px", 
-    renderer.view.style.height = windowHeight + "px", APP = new Application(), APP.build(), 
-    APP.show(), init = !0);
+    gameScale = 1.3, updateResolution("landscape", gameScale), renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {
+        antialias: !0,
+        resolution: 1,
+        view: gameView
+    }), renderer.view.style.width = windowWidth + "px", renderer.view.style.height = windowHeight + "px", 
+    APP = new Application(), APP.build(), APP.show(), init = !0);
     var tempRation = window.innerHeight / windowHeight, ratioRez = resizeProportional ? tempRation < window.innerWidth / realWindowWidth ? tempRation : window.innerWidth / realWindowWidth : 1;
     windowWidthVar = realWindowWidth * ratioRez * ratio, windowHeightVar = realWindowHeight * ratioRez * ratio, 
     windowWidthVar > realWindowWidth && (windowWidthVar = realWindowWidth), windowHeightVar > realWindowHeight && (windowHeightVar = realWindowHeight), 
@@ -109,15 +118,15 @@ function update() {
 }
 
 function possibleFullscreen() {
-    var elem = renderer.view;
+    var elem = gameView;
     return elem.requestFullscreen || elem.msRequestFullscreen || elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
 }
 
 function fullscreen() {
-    var elem = renderer.view;
+    var elem = gameView;
     elem.requestFullscreen ? elem.requestFullscreen() : elem.msRequestFullscreen ? elem.msRequestFullscreen() : elem.mozRequestFullScreen ? elem.mozRequestFullScreen() : elem.webkitRequestFullscreen && elem.webkitRequestFullscreen(), 
-    windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
-    realWindowWidth = windowWidth, realWindowHeight = windowHeight, isfull = !0;
+    updateResolution("landscape", gameScale), renderer.width = realWindowWidth, renderer.height = realWindowHeight, 
+    isfull = !0;
 }
 
 var DungeonGenerator = Class.extend({
@@ -1851,14 +1860,14 @@ var Application = AbstractApplication.extend({
         }), this.red.setScale(scale, scale);
         var self = this, barsContainer = new PIXI.DisplayObjectContainer();
         this.energyBar = new GasBarView("gasBarBack.png", "gasBar.png", 51, 2), barsContainer.addChild(this.energyBar.getContent()), 
-        this.energyBar.setPosition(0, 0), scaleConverter(this.energyBar.getContent().width, windowWidth, .25, this.energyBar), 
+        this.energyBar.setPosition(0, 0), scaleConverter(this.energyBar.getContent().width, windowWidth, .2, this.energyBar), 
         this.gasolineIco = new SimpleSprite("gasoline.png"), this.gasolineIco.getContent().anchor.x = .5, 
         this.gasolineIco.getContent().anchor.y = .5, this.gasolineIco.getContent().scale.x = .8, 
         this.gasolineIco.getContent().scale.y = .8, this.gasolineIco.getContent().position.x = 50, 
         this.gasolineIco.getContent().position.y = 20, this.energyBar.getContent().addChild(this.gasolineIco.getContent()), 
         this.bulletBar = new GasBarView("gasBarBack2.png", "gasBar2.png", 51, 2), barsContainer.addChild(this.bulletBar.getContent()), 
-        scaleConverter(this.bulletBar.getContent().width, windowWidth, .25, this.bulletBar), 
-        this.bulletBar.setPosition(0, windowHeight - this.bulletBar.getContent().height - 40), 
+        scaleConverter(this.bulletBar.getContent().width, windowWidth, .2, this.bulletBar), 
+        this.bulletBar.setPosition(this.energyBar.getContent().x + this.energyBar.getContent().width + 10, 0), 
         this.bulletIco = new SimpleSprite("bulletIco.png"), this.bulletIco.getContent().anchor.x = .5, 
         this.bulletIco.getContent().anchor.y = .5, this.bulletIco.getContent().scale.x = .9, 
         this.bulletIco.getContent().scale.y = .9, this.bulletIco.getContent().position.x = 46, 
@@ -1868,7 +1877,7 @@ var Application = AbstractApplication.extend({
         this.addChild(this.pauseButton), this.pauseButton.clickCallback = function() {
             self.blockPause || self.pauseModal.show();
         }, scaleConverter(this.pauseButton.getContent().height, windowHeight, .15, this.pauseButton), 
-        this.pauseButton.setPosition(windowWidth - this.pauseButton.getContent().width - 20, windowHeight - this.pauseButton.getContent().height - 20), 
+        this.pauseButton.setPosition(windowWidth - this.pauseButton.getContent().width - 10, 10), 
         this.initBench = !1, TweenLite.from(this.pauseButton.getContent(), .5, {
             delay: 1,
             x: windowWidth
@@ -1883,13 +1892,13 @@ var Application = AbstractApplication.extend({
         }), this.moneyContainer.addChild(this.pointsLabel), this.specialContainer = new PIXI.DisplayObjectContainer(), 
         this.specialButton = new DefaultButton("out.png", "out.png"), this.specialButton.build(), 
         this.specialContainer.addChild(this.specialButton.getContent()), this.specialButton.clickCallback = function() {
-            self.ableSpecial > 0 || self.special();
+            self.ableSpecial > 0 && !self.blockPause || self.special();
         }, scaleConverter(this.specialButton.getContent().height, windowHeight, .2, this.specialButton), 
         this.specialButton.setPosition(-this.specialButton.getContent().width / 2, -this.specialButton.getContent().height / 2), 
-        this.specialContainer.position.x = this.specialButton.getContent().width / 2 + windowWidth - this.specialButton.getContent().width - 20, 
-        this.specialContainer.position.y = this.specialButton.getContent().height / 2 + this.moneyContainer.position.y + this.moneyContainer.height + .05 * windowHeight, 
+        this.specialContainer.position.x = windowWidth - this.specialButton.getContent().width / 2 - 10, 
+        this.specialContainer.position.y = windowHeight - this.specialButton.getContent().height / 2 - 10, 
         this.addChild(this.specialContainer), this.pointsLabel.position.y = 2, scaleConverter(this.moneyContainer.width, windowWidth, .15, this.moneyContainer), 
-        this.moneyContainer.position.y = 10, this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20, 
+        this.moneyContainer.position.y = 10, this.moneyContainer.position.x = windowWidth / 2, 
         this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10, 
         this.updateable = !0, this.endModal = new EndModal(this), this.newBirdModal = new NewBirdModal(this), 
         this.pauseModal = new PauseModal(this), this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
@@ -1949,7 +1958,7 @@ var Application = AbstractApplication.extend({
     build: function() {
         this._super();
         var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/atlas/clouds.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/introScreen.jpg", "dist/img/UI/creditos.png", "dist/img/UI/HUD.json" ];
-        assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("0 %", {
+        assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("", {
             align: "center",
             font: "60px Luckiest Guy",
             fill: "#FFFFFF",
@@ -2183,9 +2192,9 @@ var Application = AbstractApplication.extend({
         this.contents.alpha = 0, this.contents.visible = !1, console.log(this.icons.position, this.contents.position, this.contents.width);
     },
     show: function(newPlayers) {
-        if (this.screen.blockPause = !0, this.currentBirds.setText(APP.getGameModel().currentPoints), 
-        this.currentCoin.setText(APP.getGameModel().currentPoints), this.totalCoin.setText(APP.getGameModel().totalPoints), 
-        newPlayers && newPlayers.length > 0) {
+        if (this.screen.blockPause = !0, newPlayers || (newPlayers = [ APP.getGameModel().playerModels[Math.floor(Math.random() * APP.getGameModel().playerModels.length)] ]), 
+        this.currentBirds.setText(APP.getGameModel().currentPoints), this.currentCoin.setText(APP.getGameModel().currentPoints), 
+        this.totalCoin.setText(APP.getGameModel().totalPoints), newPlayers && newPlayers.length > 0) {
             var self = this;
             this.newCharContainer = new PIXI.DisplayObjectContainer();
             var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("novorecruta.png"), playerImage = null;
@@ -2214,9 +2223,9 @@ var Application = AbstractApplication.extend({
         }), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
     },
     showPoints: function() {
-        this.newCharContainer && TweenLite.to(this.newCharContainer, .5, {
+        this.newCharContainer && (TweenLite.to(this.newCharContainer, .5, {
             alpha: 0
-        }), this.container.interactive = !0, this.container.buttonMode = !0, this.boxContainer.visible = !0, 
+        }), this.container.interactive = !1, this.container.buttonMode = !1), this.boxContainer.visible = !0, 
         this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
@@ -2524,12 +2533,7 @@ var Application = AbstractApplication.extend({
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
     }
-}), resizeProportional = !0, windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, gameScale = 1.3;
-
-testMobile() && (windowWidth = window.innerWidth * gameScale, windowHeight = window.innerHeight * gameScale, 
-realWindowWidth = windowWidth, realWindowHeight = windowHeight);
-
-var windowWidthVar = window.innerWidth, windowHeightVar = window.innerHeight, ratio = 1, init = !1, renderer, APP, initialize = function() {
+}), resizeProportional = !0, windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 }, isfull = !1;
 

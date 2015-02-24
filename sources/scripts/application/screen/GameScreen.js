@@ -432,7 +432,7 @@ var GameScreen = AbstractScreen.extend({
         this.energyBar = new GasBarView('gasBarBack.png', 'gasBar.png', 51,2);
         barsContainer.addChild(this.energyBar.getContent());
         this.energyBar.setPosition(0, 0);
-        scaleConverter(this.energyBar.getContent().width, windowWidth, 0.25, this.energyBar);
+        scaleConverter(this.energyBar.getContent().width, windowWidth, 0.2, this.energyBar);
 
 
         this.gasolineIco = new SimpleSprite('gasoline.png');
@@ -447,8 +447,9 @@ var GameScreen = AbstractScreen.extend({
         // this.bulletBar = new GasBarView('fireBarBack.png', 'fireBar.png', 2, 4);
         this.bulletBar = new GasBarView('gasBarBack2.png', 'gasBar2.png', 51,2);
         barsContainer.addChild(this.bulletBar.getContent());
-        scaleConverter(this.bulletBar.getContent().width, windowWidth, 0.25, this.bulletBar);
-        this.bulletBar.setPosition(0, windowHeight - this.bulletBar.getContent().height - 40);
+        scaleConverter(this.bulletBar.getContent().width, windowWidth, 0.2, this.bulletBar);
+        this.bulletBar.setPosition(this.energyBar.getContent().x + this.energyBar.getContent().width + 10, 0);
+        // this.bulletBar.setPosition(0, windowHeight - this.bulletBar.getContent().height - 40);
 
         this.bulletIco = new SimpleSprite('bulletIco.png');
         this.bulletIco.getContent().anchor.x = 0.5;
@@ -477,7 +478,7 @@ var GameScreen = AbstractScreen.extend({
             self.pauseModal.show();
         };
         scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.15, this.pauseButton);
-        this.pauseButton.setPosition( windowWidth - (this.pauseButton.getContent().width) - 20,windowHeight - (this.pauseButton.getContent().height) - 20);
+        this.pauseButton.setPosition( windowWidth - this.pauseButton.getContent().width - 10, 10);
         this.initBench = false;
         TweenLite.from(this.pauseButton.getContent(), 0.5, {delay:1, x: windowWidth});
 
@@ -500,15 +501,15 @@ var GameScreen = AbstractScreen.extend({
         this.specialButton.build();
         this.specialContainer.addChild(this.specialButton.getContent());
         this.specialButton.clickCallback = function(){
-            if(self.ableSpecial > 0){
+            if(self.ableSpecial > 0 && !self.blockPause){
                 return;
             }
             self.special();
         };
         scaleConverter(this.specialButton.getContent().height, windowHeight, 0.20, this.specialButton);
         this.specialButton.setPosition(-this.specialButton.getContent().width / 2, -this.specialButton.getContent().height/2);
-        this.specialContainer.position.x = this.specialButton.getContent().width / 2 + windowWidth - (this.specialButton.getContent().width) - 20;
-        this.specialContainer.position.y = this.specialButton.getContent().height/2 + this.moneyContainer.position.y + this.moneyContainer.height + windowHeight * 0.05;
+        this.specialContainer.position.x = windowWidth - this.specialButton.getContent().width/2 -10;
+        this.specialContainer.position.y = windowHeight - this.specialButton.getContent().height/2 -10;
         
         this.addChild(this.specialContainer);
 
@@ -521,7 +522,7 @@ var GameScreen = AbstractScreen.extend({
         scaleConverter(this.moneyContainer.width, windowWidth, 0.15, this.moneyContainer);
 
         this.moneyContainer.position.y = 10;
-        this.moneyContainer.position.x = windowWidth - this.moneyContainer.width - 20;//this.moneyContainer.width * 0.05;
+        this.moneyContainer.position.x = windowWidth / 2 ;//this.moneyContainer.width * 0.05;
         this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - 10;
 
 

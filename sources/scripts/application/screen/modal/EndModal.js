@@ -140,6 +140,9 @@ var EndModal = Class.extend({
 	show:function(newPlayers){
 		this.screen.blockPause = true;
 		// console.log('newPlayers',newPlayers, newPlayers.length);
+		if(!newPlayers){
+			newPlayers = [APP.getGameModel().playerModels[Math.floor(Math.random() * APP.getGameModel().playerModels.length)]];
+		}
 		// newPlayers = [APP.getGameModel().playerModels[9]];
 		this.currentBirds.setText(APP.getGameModel().currentPoints);
 		this.currentCoin.setText(APP.getGameModel().currentPoints);
@@ -221,9 +224,11 @@ var EndModal = Class.extend({
 	showPoints:function(){
 		if(this.newCharContainer){
 			TweenLite.to(this.newCharContainer, 0.5, {alpha:0});
+			this.container.interactive = false;
+			this.container.buttonMode = false;
 		}
-		this.container.interactive = true;
-		this.container.buttonMode = true;
+		// this.container.interactive = true;
+		// this.container.buttonMode = true;
 		this.boxContainer.visible = true;
 		this.contents.visible = true;
 		// TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.background.getContent().height * this.containerScale / 2, ease:'easeOutBack'});
