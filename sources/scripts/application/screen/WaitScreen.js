@@ -58,36 +58,22 @@ var WaitScreen = AbstractScreen.extend({
             this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
             this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
 
-            // this.screenShape = new PIXI.Graphics();
-            // this.screenShape.beginFill(0x406389);
-            // this.screenShape.drawRect(0,0,windowWidth, windowHeight);
-            // this.addChild(this.screenShape);
-            // this.screenShape.alpha = 0;
             var self = this;
 
-            this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
-            // console.log(this.playButton.build);
-            this.playButton.build();
-            scaleConverter(this.playButton.height, windowHeight, 0.25, this.playButton);
-            this.playButton.setPosition( windowWidth - this.playButton.getContent().width  - 20, windowHeight - this.playButton.getContent().height - 20);
-            this.addChild(this.playButton);
-
+            this.fullscreenButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
+            // console.log(this.fullscreenButton.build);
+            this.fullscreenButton.build(windowWidth, windowHeight);
+            // scaleConverter(this.fullscreenButton.height, windowHeight, 0.25, this.fullscreenButton);
+            this.fullscreenButton.setPosition( windowWidth - this.fullscreenButton.getContent().width  - 20, windowHeight - this.fullscreenButton.getContent().height - 20);
+            this.addChild(this.fullscreenButton);
+            this.fullscreenButton.getContent().alpha = 0;
             // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
 
-            // this.playButton.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
-            this.playButton.clickCallback = function(){
+            // this.fullscreenButton.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
+            this.fullscreenButton.clickCallback = function(){
                 fullscreen();
                 self.initApplication();
-
-                // self.screenManager.change('Choice');
             };
-
-            // self.screenShape.buttonMode = true;
-            // self.screenShape.interactive = true;
-            // self.screenShape.mousedown = self.screenShape.touchstart = function(data){
-            //     // fullscreen();
-            //     self.initApplication();
-            // };
 
         }else{
             this.initApplication();
@@ -96,7 +82,10 @@ var WaitScreen = AbstractScreen.extend({
         APP.labelDebug.visible = false;
     },
     initApplication:function(){
-
+        if(this.fullscreenButton && this.fullscreenButton.getContent().parent){
+            this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent());
+            this.fullscreenButton = null;
+        }
         this.background = new SimpleSprite('dist/img/UI/introScreen.jpg');
         this.addChild(this.background.getContent());
         scaleConverter(this.background.getContent().height, windowHeight, 1, this.background);
@@ -133,18 +122,6 @@ var WaitScreen = AbstractScreen.extend({
             self.creditsModal.show();
         };
 
-        // if(possibleFullscreen() && testMobile()){
-        //     this.fullScreen = new DefaultButton('creditoButton.png', 'creditoButton.png');
-        //     this.fullScreen.build(200, 100);
-        //     scaleConverter(this.fullScreen.height, windowHeight, 0.2, this.fullScreen);
-
-        //     this.fullScreen.setPosition( 20, windowHeight - this.fullScreen.getContent().height - 20);
-        //     this.addChild(this.fullScreen);
-        //     this.fullScreen.addLabel(new PIXI.Text('Fullscreen', { align:'center', fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,28);
-        //     this.fullScreen.clickCallback = function(){
-        //         fullscreen();
-        //     };
-        // }
 
         this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButton.png');
         this.zerarCookie.build(200, 200);
@@ -190,7 +167,7 @@ var WaitScreen = AbstractScreen.extend({
     {
         // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
         this.frontShape = new PIXI.Graphics();
-        this.frontShape.beginFill(0x406389);
+        this.frontShape.beginFill(0x000000);
         this.frontShape.drawRect(0,0,windowWidth, windowHeight);
         this.addChild(this.frontShape);
         this.build();

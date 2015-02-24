@@ -369,7 +369,7 @@ var GameScreen = AbstractScreen.extend({
         this.sky = new SimpleSprite('sky.png');
         this.addChild(this.sky);
         this.sky.container.width = windowWidth;
-        this.sky.container.height = windowHeight * 0.9;
+        this.sky.container.height = windowHeight * 0.95;
         // var clouds = new Environment(windowWidth, windowHeight);
         // clouds.build(['1b.png','2b.png','3b.png','4b.png']);
         // clouds.velocity.x = -0.2;
@@ -388,7 +388,6 @@ var GameScreen = AbstractScreen.extend({
         environment.build(['env1.png','env2.png','env3.png','env4.png']);
         environment.velocity.x = -0.35;
         this.addChild(environment);
-
 
         this.layerManager = new LayerManager();
         this.layerManager.build('Main');
@@ -555,7 +554,7 @@ var GameScreen = AbstractScreen.extend({
         
 
         this.frontShape = new PIXI.Graphics();
-        this.frontShape.beginFill(0x406389);
+        this.frontShape.beginFill(0x000000);
         this.frontShape.drawRect(0,0,windowWidth, windowHeight);
         this.addChild(this.frontShape);
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
@@ -582,7 +581,7 @@ var GameScreen = AbstractScreen.extend({
         }});
     },
     createEgg:function(){
-        console.log('(egg)');
+        // console.log('(egg)');
         if(APP.getGameModel().totalBirds >= APP.getGameModel().birdModels.length){
             return;
         }

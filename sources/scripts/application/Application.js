@@ -78,15 +78,11 @@ var Application = AbstractApplication.extend({
     initApplication:function(){
         this.waitScreen = new WaitScreen('Wait');
         this.gameScreen = new GameScreen('Game');
-        this.endGameScreen = new EndGameScreen('EndGame');
         this.choicePlayerScreen = new ChoicePlayerScreen('Choice');
         this.screenManager.addScreen(this.waitScreen);
         this.screenManager.addScreen(this.gameScreen);
-        this.screenManager.addScreen(this.endGameScreen);
         this.screenManager.addScreen(this.choicePlayerScreen);
         this.screenManager.change('Wait');
-
-        console.log(this.screenManager.container);
     },
     onAssetsLoaded:function()
     {

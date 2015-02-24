@@ -133,7 +133,7 @@ var EndModal = Class.extend({
 		this.contents.alpha = 0;
 		this.contents.visible = false;
 
-		console.log(this.icons.position, this.contents.position, this.contents.width);
+		// console.log(this.icons.position, this.contents.position, this.contents.width);
 
 
 	},
@@ -184,7 +184,7 @@ var EndModal = Class.extend({
 			// this.container.buttonMode = true;
 			// this.container.interactive = true;
 
-			scaleConverter(charLabel.getContent().height, windowHeight, 0.25, charLabel);
+			scaleConverter(charLabel.getContent().height, pista.getContent().height, 0.5, charLabel);
 
 			charLabel.getContent().position.x = pista.getContent().width / 2 - charLabel.getContent().width / 2;
 			charLabel.getContent().position.y = pista.getContent().position.y + pista.getContent().height - charLabel.getContent().height - 20;

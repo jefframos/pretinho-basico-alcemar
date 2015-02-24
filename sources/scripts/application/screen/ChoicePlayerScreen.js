@@ -305,7 +305,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
     {
         // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
         this.frontShape = new PIXI.Graphics();
-        this.frontShape.beginFill(0x406389);
+        this.frontShape.beginFill(0x000000);
         this.frontShape.drawRect(0,0,windowWidth, windowHeight);
         this.addChild(this.frontShape);
         this.build();
@@ -465,7 +465,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         // this.faceColor.tint = APP.getGameModel().currentPlayerModel.color;
         this.faceColorBlink.alpha = 1;
         TweenLite.to(this.faceColorBlink, instant?0:0.2, {alpha:0});
-        TweenLite.from(this.playerImgBig.getContent().position, instant?0:0.8, {x: this.playerImgBig.getContent().position.x + windowWidth * 0.1});
+        TweenLite.from(this.playerImgBig.getContent().position, instant?0:0.8, {x: this.playerImgBig.getContent().position.x + windowWidth * 0.05});
         // TweenLite.from(this.playerImgBig.getContent(), instant?0:0.3, {alpha:  0});
 
 
@@ -496,7 +496,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         // this.playerImg  = new PIXI.Sprite.fromFrame(this.imgSource);
         this.planeContainer.addChild(this.playerImg.getContent());
         this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2);
-        TweenLite.from(this.playerImg.getContent().position, instant?0:0.8, {ease:'easeOutBack', x: this.playerImg.getContent().position.x - windowWidth * 0.2,y:  this.playerImg.getContent().position.y - windowHeight * 0.2});
+        TweenLite.from(this.playerImg.getContent().position, instant?0:0.8, {ease:'easeOutBack', x: this.playerImg.getContent().position.x - windowWidth * 0.1,y:  this.playerImg.getContent().position.y - windowHeight * 0.2});
         // TweenLite.from(this.playerImg.getContent(), 0.3, {alpha:  0});
         // this.playerImg.getContent().rotation = 0.4;
         // TweenLite.to(this.playerImg.getContent(), 0.5, {rotation: 0});

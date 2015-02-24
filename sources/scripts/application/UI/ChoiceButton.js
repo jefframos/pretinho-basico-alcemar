@@ -81,13 +81,15 @@ var ChoiceButton = DefaultButton.extend({
 	},
 	block:function(value){
 		this.isBlocked = true;
-		var desblock = new PIXI.Text(value, { align:'center',fill:'#FFFFFF', font:'20px Roboto'});
+		var desblock = new PIXI.Text(value, { align:'center',fill:'#FFFFFF', font:'30px Roboto'});
 		this.thumbGray.tint = 0;
 		this.shapeButton.tint = 0x555555;
 		var coin = new SimpleSprite('coins.png');
 
 		coin.getContent().position.x = this.background.width / 2 - coin.getContent().width / 2;
 		coin.getContent().position.y = this.background.height / 2 - coin.getContent().height / 2 - 10;
+
+		scaleConverter(desblock.height, this.container.height, 0.3, desblock);
 
 		desblock.position.x = this.background.width / 2 - desblock.width / 2;
 		desblock.position.y = this.background.height / 2 - desblock.height / 2 + 15;

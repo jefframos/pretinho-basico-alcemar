@@ -106,7 +106,7 @@ function update() {
     windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, 
     gameScale = 1.3, updateResolution("landscape", gameScale), renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {
         antialias: !0,
-        resolution: 1,
+        resolution: retina,
         view: gameView
     }), renderer.view.style.width = windowWidth + "px", renderer.view.style.height = windowHeight + "px", 
     APP = new Application(), APP.build(), APP.show(), init = !0);
@@ -339,10 +339,9 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         this.waitScreen = new WaitScreen("Wait"), this.gameScreen = new GameScreen("Game"), 
-        this.endGameScreen = new EndGameScreen("EndGame"), this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), 
-        this.screenManager.addScreen(this.waitScreen), this.screenManager.addScreen(this.gameScreen), 
-        this.screenManager.addScreen(this.endGameScreen), this.screenManager.addScreen(this.choicePlayerScreen), 
-        this.screenManager.change("Wait"), console.log(this.screenManager.container);
+        this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), this.screenManager.addScreen(this.waitScreen), 
+        this.screenManager.addScreen(this.gameScreen), this.screenManager.addScreen(this.choicePlayerScreen), 
+        this.screenManager.change("Wait");
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -412,14 +411,15 @@ var Application = AbstractApplication.extend({
         var desblock = new PIXI.Text(value, {
             align: "center",
             fill: "#FFFFFF",
-            font: "20px Roboto"
+            font: "30px Roboto"
         });
         this.thumbGray.tint = 0, this.shapeButton.tint = 5592405;
         var coin = new SimpleSprite("coins.png");
         coin.getContent().position.x = this.background.width / 2 - coin.getContent().width / 2, 
         coin.getContent().position.y = this.background.height / 2 - coin.getContent().height / 2 - 10, 
-        desblock.position.x = this.background.width / 2 - desblock.width / 2, desblock.position.y = this.background.height / 2 - desblock.height / 2 + 15, 
-        this.container.addChild(desblock), this.container.addChild(coin.getContent());
+        scaleConverter(desblock.height, this.container.height, .3, desblock), desblock.position.x = this.background.width / 2 - desblock.width / 2, 
+        desblock.position.y = this.background.height / 2 - desblock.height / 2 + 15, this.container.addChild(desblock), 
+        this.container.addChild(coin.getContent());
     },
     selectedFunction: function() {
         null !== this.mouseDownCallback && this.mouseDownCallback(), this.shapeButton.tint = this.color, 
@@ -1552,7 +1552,7 @@ var Application = AbstractApplication.extend({
         });
     },
     transitionIn: function() {
-        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.frontShape), this.build();
     },
     transitionOut: function(nextScreen, container) {
@@ -1649,7 +1649,7 @@ var Application = AbstractApplication.extend({
         TweenLite.to(this.faceColorBlink, instant ? 0 : .2, {
             alpha: 0
         }), TweenLite.from(this.playerImgBig.getContent().position, instant ? 0 : .8, {
-            x: this.playerImgBig.getContent().position.x + .1 * windowWidth
+            x: this.playerImgBig.getContent().position.x + .05 * windowWidth
         }), this.playerImg && this.playerImg.getContent().parent && (this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
         this.removeChild(this.playerImg)), this.playerImg = new SimpleSprite(windowHeight > 450 ? APP.getGameModel().currentPlayerModel.imgSource : APP.getGameModel().currentPlayerModel.imgSourceGame), 
         this.playerImg) {
@@ -1659,39 +1659,10 @@ var Application = AbstractApplication.extend({
             this.planeContainer.addChild(this.playerImg.getContent()), this.playerImg.setPosition(this.pista.getContent().position.x + this.pista.getContent().width / 2, this.pista.getContent().position.y - this.playerImg.container.height / 2), 
             TweenLite.from(this.playerImg.getContent().position, instant ? 0 : .8, {
                 ease: "easeOutBack",
-                x: this.playerImg.getContent().position.x - .2 * windowWidth,
+                x: this.playerImg.getContent().position.x - .1 * windowWidth,
                 y: this.playerImg.getContent().position.y - .2 * windowHeight
             });
         }
-    }
-}), EndGameScreen = AbstractScreen.extend({
-    init: function(label) {
-        this._super(label);
-    },
-    destroy: function() {
-        this._super();
-    },
-    build: function() {
-        this._super();
-        var assetsToLoader = [];
-        assetsToLoader.length > 0 ? (this.loader = new PIXI.AssetLoader(assetsToLoader), 
-        this.initLoad()) : this.onAssetsLoaded();
-    },
-    onProgress: function() {
-        this._super();
-    },
-    onAssetsLoaded: function() {
-        this.initApplication();
-    },
-    initApplication: function() {
-        var self = this;
-        this.btnBenchmark = new DefaultButton("simpleButtonUp.png", "simpleButtonOver.png"), 
-        this.btnBenchmark.build(300, 120), this.btnBenchmark.setPosition(windowWidth / 2 - this.btnBenchmark.width / 2, windowHeight / 2), 
-        this.addChild(this.btnBenchmark), this.btnBenchmark.addLabel(new PIXI.Text("REINIT", {
-            font: "50px Arial"
-        }), 25, 15), this.btnBenchmark.clickCallback = function() {
-            self.screenManager.change("Choice");
-        };
     }
 }), GameScreen = AbstractScreen.extend({
     init: function(label) {
@@ -1841,7 +1812,7 @@ var Application = AbstractApplication.extend({
         this.spawner = 150, this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, 
         APP.getGameModel().currentPoints = 0, APP.getGameModel().currentHorde = 0, this.initApp = !0, 
         this.blockPause = !1, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
-        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .9 * windowHeight, 
+        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .95 * windowHeight, 
         this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], this.layerManagerBack = new LayerManager(), 
         this.layerManagerBack.build("MainBack"), this.addChild(this.layerManagerBack);
         var environment = new Environment(windowWidth, windowHeight);
@@ -1907,7 +1878,7 @@ var Application = AbstractApplication.extend({
         this.backLayer.addChild(simpleEntity);
         var itemScale = scaleConverter(simpleEntity.getContent().height, windowHeight, .5);
         simpleEntity.getContent().scale.x = simpleEntity.getContent().scale.y = itemScale, 
-        this.vecClouds.push(simpleEntity), this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), 
+        this.vecClouds.push(simpleEntity), this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), 
         this.frontShape.drawRect(0, 0, windowWidth, windowHeight), this.addChild(this.frontShape), 
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         TweenLite.to(this.frontShape, .8, {
@@ -1928,7 +1899,7 @@ var Application = AbstractApplication.extend({
         });
     },
     createEgg: function() {
-        console.log("(egg)"), APP.getGameModel().totalBirds >= APP.getGameModel().birdModels.length || (this.egg = new Egg(APP.getGameModel().birdModels[APP.getGameModel().totalBirds], this), 
+        APP.getGameModel().totalBirds >= APP.getGameModel().birdModels.length || (this.egg = new Egg(APP.getGameModel().birdModels[APP.getGameModel().totalBirds], this), 
         this.egg.build(), this.egg.setPosition(windowWidth, .1 * windowHeight + .8 * windowHeight * Math.random()), 
         this.layer.addChild(this.egg), scaleConverter(this.egg.getContent().height, windowHeight, .15, this.egg), 
         this.layer.addChild(this.egg));
@@ -1979,18 +1950,19 @@ var Application = AbstractApplication.extend({
             this.labelLoader.setText("Toque para continuar"), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
             this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
             var self = this;
-            this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
-            this.playButton.build(), scaleConverter(this.playButton.height, windowHeight, .25, this.playButton), 
-            this.playButton.setPosition(windowWidth - this.playButton.getContent().width - 20, windowHeight - this.playButton.getContent().height - 20), 
-            this.addChild(this.playButton), this.playButton.clickCallback = function() {
+            this.fullscreenButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
+            this.fullscreenButton.build(windowWidth, windowHeight), this.fullscreenButton.setPosition(windowWidth - this.fullscreenButton.getContent().width - 20, windowHeight - this.fullscreenButton.getContent().height - 20), 
+            this.addChild(this.fullscreenButton), this.fullscreenButton.getContent().alpha = 0, 
+            this.fullscreenButton.clickCallback = function() {
                 fullscreen(), self.initApplication();
             };
         } else this.initApplication();
         APP.labelDebug.visible = !1;
     },
     initApplication: function() {
-        this.background = new SimpleSprite("dist/img/UI/introScreen.jpg"), this.addChild(this.background.getContent()), 
-        scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
+        this.fullscreenButton && this.fullscreenButton.getContent().parent && (this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent()), 
+        this.fullscreenButton = null), this.background = new SimpleSprite("dist/img/UI/introScreen.jpg"), 
+        this.addChild(this.background.getContent()), scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
         var self = this;
         this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
@@ -2041,7 +2013,7 @@ var Application = AbstractApplication.extend({
         });
     },
     transitionIn: function() {
-        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(4219785), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
         this.addChild(this.frontShape), this.build();
     },
     transitionOut: function(nextScreen, container) {
@@ -2056,68 +2028,191 @@ var Application = AbstractApplication.extend({
     }
 }), CreditsModal = Class.extend({
     init: function(screen) {
-        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.boxContainer = new PIXI.DisplayObjectContainer(), 
-        this.labelsContainer = new PIXI.DisplayObjectContainer(), this.bg = new PIXI.Graphics(), 
-        this.bg.beginFill(0), this.bg.drawRect(0, 0, windowWidth, windowHeight), this.bg.alpha = 0, 
-        this.container.addChild(this.bg), this.container.addChild(this.boxContainer), this.container.addChild(this.labelsContainer);
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.labelsContainer = new PIXI.DisplayObjectContainer(), 
+        this.labelsContainerRight = new PIXI.DisplayObjectContainer(), this.footer = new PIXI.DisplayObjectContainer(), 
+        this.header = new PIXI.DisplayObjectContainer(), this.bg = new PIXI.Graphics(), 
+        this.bg.beginFill(0), this.bg.drawRect(0, 0, windowWidth, windowHeight), this.bg.alpha = .8, 
+        this.container.addChild(this.bg), this.container.addChild(this.labelsContainer), 
+        this.container.addChild(this.labelsContainerRight), this.container.addChild(this.footer), 
+        this.container.addChild(this.header);
         var self = this;
         this.container.buttonMode = !0, this.container.interactive = !0, this.container.mousedown = this.container.touchstart = function() {
             self.hide();
-        }, this.img = new SimpleSprite("dist/img/UI/creditos.png"), this.boxContainer.addChild(this.img.getContent()), 
-        this.boxContainer.alpha = 0, this.boxContainer.visible = !1, this.boxLabels = [];
-        for (var tempLabelContainer = null, tempLabel = null, positions = [ [ .2 * windowWidth, .6 * windowHeight ], [ .35 * windowWidth, .1 * windowHeight ], [ .6 * windowWidth, .08 * windowHeight ], [ .8 * windowWidth, .7 * windowHeight ] ], labels = [ "Franer Rodrigues\nProdutor\nfraner@chilimonk.com", "Raviel Carvalho\nProdutor\nraviel@chilimonk.com", "Jeff Ramos\nProgramador\njeffs.ramos@gmail.com", "Dani Romanenco\nDesigner\nromanenco7@gmail.com" ], i = positions.length - 1; i >= 0; i--) tempLabelContainer = new PIXI.DisplayObjectContainer(), 
-        tempLabel = new PIXI.Text(labels[i], {
+        }, this.boxLabels = [];
+        var tempText, cast = "";
+        tempText = new PIXI.Text("ELENCO", {
             align: "center",
-            font: "20px Luckiest Guy",
-            fill: "#FFFFFF",
-            strokeThickness: 5,
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
             stroke: "#000000",
             wordWrap: !0,
             wordWrapWidth: 600
-        }), tempLabelContainer.addChild(tempLabel), scaleConverter(tempLabel.height, windowHeight, .15, tempLabel), 
-        this.boxLabels.push(tempLabelContainer), this.labelsContainer.addChild(tempLabelContainer), 
-        tempLabelContainer.position.x = positions[i][0] - tempLabelContainer.width / 2, 
-        tempLabelContainer.position.y = positions[i][1];
-        scaleConverter(this.boxContainer.height, windowHeight, .75, this.boxContainer), 
-        this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
+        }), tempText.position.x = -tempText.width / 2, this.labelsContainer.addChild(tempText), 
+        cast = "Alexandre Fetter\nEverton Cunha (Mr. Pi)\nPorã (Iglenho Burtet Bernardes)\nLuciano Potter\nMarcos Piangers\nPedro Smaniotto (Alcemar)\nDuda Garbi (Jeiso)\nArthur Gubert\nNeto Fagundes\nRodaika Dienstbach", 
+        tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "25px Roboto",
+            fill: "#FFFFFF",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainer.height, 
+        this.labelsContainer.addChild(tempText), tempText = new PIXI.Text("VOZES E ENREDO", {
+            align: "center",
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainer.height + .01 * windowHeight, 
+        this.labelsContainer.addChild(tempText), cast = "Pedro Smaniotto", tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "25px Roboto",
+            fill: "#FFFFFF",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), this.labelsContainer.addChild(tempText), tempText.position.x = -tempText.width / 2, 
+        tempText.position.y = this.labelsContainer.height, tempText = new PIXI.Text("DIRETOR DO PROJETO", {
+            align: "center",
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainer.height + .01 * windowHeight, 
+        this.labelsContainer.addChild(tempText), cast = "Marcos Piangers", tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "25px Roboto",
+            fill: "#FFFFFF",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), this.labelsContainer.addChild(tempText), tempText.position.x = -tempText.width / 2, 
+        tempText.position.y = this.labelsContainer.height, scaleConverter(this.labelsContainer.height, windowHeight, .65, this.labelsContainer), 
+        this.labelsContainer.position.x = windowWidth / 2 - windowWidth / 5, this.labelsContainer.position.y = .15 * windowHeight, 
+        tempText = new PIXI.Text("MARKETING", {
+            align: "center",
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, this.labelsContainerRight.addChild(tempText), 
+        cast = "Fulano A da RBS\nFulano B da RBS", tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "25px Roboto",
+            fill: "#FFFFFF",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height, 
+        this.labelsContainerRight.addChild(tempText), tempText = new PIXI.Text("PRODUÇÃO", {
+            align: "center",
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height + .01 * windowHeight, 
+        this.labelsContainerRight.addChild(tempText), cast = "Chilimonk Tecnologia\nwww.chilimonk.com", 
+        tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "25px Roboto",
+            fill: "#FFFFFF",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
+        tempText.position.y = this.labelsContainerRight.height, tempText = new PIXI.Text("EQUIPE DE PRODUÇÃO", {
+            align: "center",
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height + .01 * windowHeight, 
+        this.labelsContainerRight.addChild(tempText), cast = "Franer Rodrigues (diretor executivo)\nRaviel Carvalho (diretor de produção)\nJefferson Ramos (game developer)\nDaniel Romanenco (designer)\nTiago Cunha (backend developer)", 
+        tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "25px Roboto",
+            fill: "#FFFFFF",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
+        tempText.position.y = this.labelsContainerRight.height, tempText = new PIXI.Text("SONOPLASTIA", {
+            align: "center",
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height + .01 * windowHeight, 
+        this.labelsContainerRight.addChild(tempText), cast = "Magnus Wichmann\nAutor da trilha do pretinho", 
+        tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "25px Roboto",
+            fill: "#FFFFFF",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
+        tempText.position.y = this.labelsContainerRight.height, scaleConverter(this.labelsContainerRight.height, windowHeight, .65, this.labelsContainerRight), 
+        this.labelsContainerRight.position.x = windowWidth / 2 + windowWidth / 5, this.labelsContainerRight.position.y = .15 * windowHeight, 
+        cast = "ESTE GAME É UM OFERECIMENTO DE:\nGRUPO RBS / RÁDIO ATLÂNTIDA / PRETINHO BÁSICO", 
+        tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "30px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 1e3
+        }), this.footer.addChild(tempText), scaleConverter(this.footer.height, windowHeight, .1, this.footer), 
+        this.footer.position.x = windowWidth / 2 - this.footer.width / 2, this.footer.position.y = windowHeight - this.footer.height - .03 * windowHeight, 
+        cast = "CRÉDITOS", tempText = new PIXI.Text(cast, {
+            align: "center",
+            font: "50px Roboto",
+            fill: "#EFD952",
+            strokeThickness: 1,
+            stroke: "#000000",
+            wordWrap: !0,
+            wordWrapWidth: 1e3
+        }), this.header.addChild(tempText), scaleConverter(this.header.height, windowHeight, .1, this.header), 
+        this.header.position.x = windowWidth / 2 - this.header.width / 2, this.header.position.y = .03 * windowHeight;
     },
     show: function() {
-        this.screen.addChild(this), this.boxContainer.visible = !0, this.boxContainer.position.y = windowHeight + this.boxContainer.height, 
-        this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
-        this.boxContainer.alpha = 0, this.labelsContainer.alpha = 0, this.labelsContainer.position.y = -50, 
-        this.boxContainer.position.y = windowHeight / 2, this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
-            alpha: .8
-        }), TweenLite.to(this.boxContainer.position, .8, {
-            y: windowHeight - this.boxContainer.height,
-            ease: "easeOutBack"
-        }), TweenLite.to(this.boxContainer, .5, {
-            alpha: 1
-        }), TweenLite.to(this.labelsContainer.position, .6, {
-            delay: .8,
-            y: 0
-        });
+        this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
         var self = this;
-        this.container.buttonMode = !1, this.container.interactive = !1, TweenLite.to(this.labelsContainer, .7, {
-            delay: .8,
+        this.screen.updateable = !1, this.container.alpha = 0, TweenLite.to(this.container, .5, {
             alpha: 1,
             onComplete: function() {
                 self.container.buttonMode = !0, self.container.interactive = !0;
             }
-        });
+        }), this.container.buttonMode = !1, this.container.interactive = !1;
     },
     hide: function(callback) {
         var self = this;
-        this.container.buttonMode = !1, this.container.interactive = !1, TweenLite.to(this.bg, .5, {
+        this.container.buttonMode = !1, this.container.interactive = !1, TweenLite.to(this.container, .5, {
             alpha: 0,
             onComplete: function() {
                 callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));
             }
-        }), TweenLite.to(this.boxContainer, 1, {
-            y: windowHeight / 2
-        }), TweenLite.to(this.boxContainer, .5, {
-            alpha: 0
-        }), TweenLite.to(this.labelsContainer, .2, {
-            alpha: 0
         });
     },
     getContent: function() {
@@ -2189,7 +2284,7 @@ var Application = AbstractApplication.extend({
         this.contents.addChild(this.labels), scaleConverter(this.contents.height, windowHeight, .4, this.contents), 
         this.labels.position.x = this.icons.x + this.icons.width + 20, this.contents.position.x = windowWidth / 2 - this.mascadaLabel.width * this.contents.scale.x, 
         this.contents.position.y = windowHeight / 2 - this.contents.height / 2, this.container.addChild(this.contents), 
-        this.contents.alpha = 0, this.contents.visible = !1, console.log(this.icons.position, this.contents.position, this.contents.width);
+        this.contents.alpha = 0, this.contents.visible = !1;
     },
     show: function(newPlayers) {
         if (this.screen.blockPause = !0, newPlayers || (newPlayers = [ APP.getGameModel().playerModels[Math.floor(Math.random() * APP.getGameModel().playerModels.length)] ]), 
@@ -2204,7 +2299,8 @@ var Application = AbstractApplication.extend({
             this.newCharContainer.addChild(novo.getContent()), holofote.setPosition(pista.getContent().width / 2 - holofote.getContent().width / 2, 0);
             var charLabel = new SimpleSprite(newPlayers[0].labelSource);
             this.newCharContainer.addChild(charLabel.getContent()), this.container.addChild(this.newCharContainer), 
-            scaleConverter(charLabel.getContent().height, windowHeight, .25, charLabel), charLabel.getContent().position.x = pista.getContent().width / 2 - charLabel.getContent().width / 2, 
+            scaleConverter(charLabel.getContent().height, pista.getContent().height, .5, charLabel), 
+            charLabel.getContent().position.x = pista.getContent().width / 2 - charLabel.getContent().width / 2, 
             charLabel.getContent().position.y = pista.getContent().position.y + pista.getContent().height - charLabel.getContent().height - 20, 
             novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.getContent().position.y - novo.getContent().height - 20), 
             scaleConverter(playerImage.getContent().height, this.newCharContainer.height, .3, playerImage), 
@@ -2533,7 +2629,7 @@ var Application = AbstractApplication.extend({
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
     }
-}), resizeProportional = !0, windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, initialize = function() {
+}), resizeProportional = !0, windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = window.devicePixelRatio >= 2 ? 2 : 1, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 }, isfull = !1;
 

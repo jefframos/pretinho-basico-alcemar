@@ -26,6 +26,9 @@ var init = false;
 
 var renderer;
 var APP;
+
+var retina = window.devicePixelRatio >= 2 ? 2 : 1;
+
 function updateResolution(orientation, scale){
 	if(orientation === 'portait'){
 		if(screen.height > screen.width){
@@ -74,25 +77,11 @@ function update() {
 		realWindowHeight = 750;
 
 		gameScale = 1.3;
-		// if(testMobile()){
-			// windowWidth = window.innerWidth * gameScale;
-			// windowHeight = window.innerHeight * gameScale;
+
 		updateResolution('landscape', gameScale);
 
-		// windowWidth = screen.height * gameScale;
-		// windowHeight = screen.width * gameScale;
-		// realWindowWidth = windowWidth;
-		// realWindowHeight = windowHeight;
-		// }
-
-		// windowWidthVar = window.innerWidth;
-		// windowHeightVar = window.innerHeight;
-
-
-		// windowWidthVar = screen.height;
-		// windowHeightVar = screen.width;
-
-		renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:1, view:gameView});
+		// alert(window.devicePixelRatio);
+		renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
 
 		renderer.view.style.width = windowWidth+'px';
 		renderer.view.style.height = windowHeight+'px';
