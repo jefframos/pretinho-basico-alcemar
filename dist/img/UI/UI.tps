@@ -271,6 +271,7 @@
             <filename>specs/especial_jeiso.png</filename>
             <filename>specs/especial_piangers.png</filename>
             <filename>specs/especial_pora.png</filename>
+            <filename>specs/especial_mr_pi.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
