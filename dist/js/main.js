@@ -1187,7 +1187,7 @@ var Application = AbstractApplication.extend({
             thumb: "thumb_pi",
             coverSource: "dist/img/UI/piGrande.png",
             labelSource: "Label_MrPi.png",
-            icoSpecSource: ""
+            icoSpecSource: "especial_mr_pi.png"
         }, {
             energyCoast: 3,
             vel: 1,
