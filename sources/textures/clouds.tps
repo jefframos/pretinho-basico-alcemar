@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/wamp/www/pretinho-basico-alcemar/dist/img/atlas/atlas.tps</string>
+        <string>C:/xampp/htdocs/pretinho-basico-alcemar/sources/textures/clouds.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>atlas1.png</filename>
+        <filename>../../dist/img/atlas/nuvens.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -88,7 +88,7 @@
             <key>width</key>
             <int>2048</int>
             <key>height</key>
-            <int>2048</int>
+            <int>1024</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>atlas1.json</filename>
+                <filename>../../dist/img/atlas/nuvens.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -188,66 +188,12 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>smoke.png</filename>
-            <filename>piangersN.png</filename>
-            <filename>feter.png</filename>
-            <filename>neto.png</filename>
-            <filename>jeso.png</filename>
-            <filename>pi.png</filename>
-            <filename>pora.png</filename>
-            <filename>poter.png</filename>
-            <filename>rodaika.png</filename>
-            <filename>alcemar.png</filename>
-            <filename>arthur.png</filename>
-            <filename>netoGame.png</filename>
-            <filename>rodaikaGame.png</filename>
-            <filename>arthurGame.png</filename>
-            <filename>alcemarGame.png</filename>
-            <filename>jesoGame.png</filename>
-            <filename>piangersNGame.png</filename>
-            <filename>poterGame.png</filename>
-            <filename>poraGame.png</filename>
-            <filename>piGame.png</filename>
-            <filename>feterGame.png</filename>
-            <filename>birds/belga.png</filename>
-            <filename>birds/caralinho.png</filename>
-            <filename>birds/lambecu.png</filename>
-            <filename>birds/nigeriano.png</filename>
-            <filename>birds/nocu.png</filename>
-            <filename>birds/roxo.png</filename>
-            <filename>bullets/alcemarFire.png</filename>
-            <filename>bullets/arthurFire.png</filename>
-            <filename>bullets/feterFire.png</filename>
-            <filename>bullets/jeisoFire.png</filename>
-            <filename>bullets/netoFire.png</filename>
-            <filename>bullets/piangersFire.png</filename>
-            <filename>bullets/piFire.png</filename>
-            <filename>bullets/poraFire.png</filename>
-            <filename>bullets/potterFire.png</filename>
-            <filename>bullets/rodaikaFire.png</filename>
-            <filename>particles/partalcemar.png</filename>
-            <filename>particles/partarthur.png</filename>
-            <filename>particles/partexplosao.png</filename>
-            <filename>particles/partjeiso.png</filename>
-            <filename>particles/partneto.png</filename>
-            <filename>particles/partpi.png</filename>
-            <filename>particles/partpiangers1.png</filename>
-            <filename>particles/partpiangers2.png</filename>
-            <filename>particles/partpotter.png</filename>
-            <filename>particles/partrodaika1.png</filename>
-            <filename>particles/partrodaika2.png</filename>
-            <filename>particles/cabeca6.png</filename>
-            <filename>particles/penas1.png</filename>
-            <filename>particles/penas2.png</filename>
-            <filename>particles/penas3.png</filename>
-            <filename>particles/penas4.png</filename>
-            <filename>particles/penas5.png</filename>
-            <filename>particles/penas6.png</filename>
-            <filename>particles/cabeca1.png</filename>
-            <filename>particles/cabeca2.png</filename>
-            <filename>particles/cabeca3.png</filename>
-            <filename>particles/cabeca4.png</filename>
-            <filename>particles/cabeca5.png</filename>
+            <filename>clouds/1b.png</filename>
+            <filename>clouds/2b.png</filename>
+            <filename>clouds/3b.png</filename>
+            <filename>clouds/4b.png</filename>
+            <filename>clouds/5b.png</filename>
+            <filename>clouds/sky.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

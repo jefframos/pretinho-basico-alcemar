@@ -7,13 +7,13 @@ function testMobile() {
 
 var resizeProportional = true;
 
-var windowWidth = 1334;
-var windowHeight = 750;
+var windowWidth = 1334 / 2;
+var windowHeight = 750 / 2;
 
-var realWindowWidth = 1334;
-var realWindowHeight = 750;
+var realWindowWidth = 1334 / 2;
+var realWindowHeight = 750 / 2;
 
-var gameScale = 1;//1.3;
+var gameScale = 1.3;
 
 var windowWidthVar = window.innerHeight;
 var windowHeightVar = window.innerWidth;
@@ -70,11 +70,11 @@ function update() {
 	if(!init && window.innerWidth > window.innerHeight){
 		resizeProportional = true;
 
-		windowWidth = 1334;
-		windowHeight = 750;
+		windowWidth = 1334 / 2;
+		windowHeight = 750 / 2;
 
-		realWindowWidth = 1334;
-		realWindowHeight = 750;
+		realWindowWidth = 1334 / 2;
+		realWindowHeight = 750 / 2;
 
 		gameScale = 1.3;
 

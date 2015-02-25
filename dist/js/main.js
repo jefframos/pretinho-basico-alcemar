@@ -103,7 +103,7 @@ function updateResolution(orientation, scale) {
 
 function update() {
     requestAnimFrame(update), !init && window.innerWidth > window.innerHeight && (resizeProportional = !0, 
-    windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, 
+    windowWidth = 667, windowHeight = 375, realWindowWidth = 667, realWindowHeight = 375, 
     gameScale = 1.3, updateResolution("landscape", gameScale), renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {
         antialias: !0,
         resolution: retina,
@@ -552,7 +552,7 @@ var Application = AbstractApplication.extend({
     },
     build: function(screen) {
         var self = this, motionIdle = new SpritesheetAnimation();
-        windowHeight > 450 ? motionIdle.build("idle", [ this.playerModel.imgSource ], 1, !0, null) : motionIdle.build("idle", [ this.playerModel.imgSourceGame ], 1, !0, null);
+        motionIdle.build("idle", [ this.playerModel.imgSourceGame ], 1, !0, null);
         var motionHurt = new SpritesheetAnimation();
         motionHurt.build("hurt", this.getFramesByRange("piangers0", 2, 2), 1, !1, function() {
             self.spritesheet.play("idle");
@@ -1037,7 +1037,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partalcemar.png",
             color: 11719780,
             thumb: "thumb_alcemar",
-            coverSource: "dist/img/UI/alcemarGrande.png",
+            coverSource: "dist/img/UI/covers/alcemarGrande.png",
             labelSource: "Label_Alcemar.png",
             specSource: "power_alcemar.png",
             icoSpecSource: "especial_alcemar.png"
@@ -1063,7 +1063,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partpiangers1.png",
             color: 7654879,
             thumb: "thumb_piangers",
-            coverSource: "dist/img/UI/piangersGrande.png",
+            coverSource: "dist/img/UI/covers/piangersGrande.png",
             labelSource: "Label_Piangers.png",
             icoSpecSource: "especial_piangers.png"
         }, {
@@ -1087,7 +1087,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partpotter.png",
             color: 16428876,
             thumb: "thumb_poter",
-            coverSource: "dist/img/UI/poterGrande.png",
+            coverSource: "dist/img/UI/covers/poterGrande.png",
             labelSource: "Label_Potter.png",
             icoSpecSource: "especial_potter.png"
         }, {
@@ -1113,7 +1113,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partarthur.png",
             color: 11764665,
             thumb: "thumb_arthur",
-            coverSource: "dist/img/UI/arthurGrande.png",
+            coverSource: "dist/img/UI/covers/arthurGrande.png",
             labelSource: "Label_Arthur.png",
             icoSpecSource: "especial_arthur.png"
         }, {
@@ -1134,7 +1134,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partexplosao.png",
             color: 16633351,
             thumb: "thumb_pora",
-            coverSource: "dist/img/UI/poraGrande.png",
+            coverSource: "dist/img/UI/covers/poraGrande.png",
             labelSource: "Label_Pora.png",
             icoSpecSource: "especial_pora.png"
         }, {
@@ -1160,7 +1160,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partjeiso.png",
             color: 8963136,
             thumb: "thumb_jeiso",
-            coverSource: "dist/img/UI/jeisoGrande.png",
+            coverSource: "dist/img/UI/covers/jeisoGrande.png",
             labelSource: "Label_Jeiso.png",
             icoSpecSource: "especial_jeiso.png"
         }, {
@@ -1185,7 +1185,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partpi.png",
             color: 9399727,
             thumb: "thumb_pi",
-            coverSource: "dist/img/UI/piGrande.png",
+            coverSource: "dist/img/UI/covers/piGrande.png",
             labelSource: "Label_MrPi.png",
             icoSpecSource: "especial_mr_pi.png"
         }, {
@@ -1205,7 +1205,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partexplosao.png",
             color: 15614755,
             thumb: "thumb_feter",
-            coverSource: "dist/img/UI/feterGrande.png",
+            coverSource: "dist/img/UI/covers/feterGrande.png",
             labelSource: "Label_Fetter.png",
             icoSpecSource: "especial_fetter.png"
         }, {
@@ -1225,7 +1225,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partneto.png",
             color: 11772272,
             thumb: "thumb_neto",
-            coverSource: "dist/img/UI/netoGrande.png",
+            coverSource: "dist/img/UI/covers/netoGrande.png",
             labelSource: "Label_Neto.png",
             icoSpecSource: "especial_neto.png"
         }, {
@@ -1250,7 +1250,7 @@ var Application = AbstractApplication.extend({
             bulletParticle: "partrodaika2.png",
             color: 15893674,
             thumb: "thumb_rodaika",
-            coverSource: "dist/img/UI/rodaikaGrande.png",
+            coverSource: "dist/img/UI/covers/rodaikaGrande.png",
             labelSource: "Label_Rodaika.png",
             specSource: "power_rodaika.png",
             icoSpecSource: "especial_rodaika.png"
@@ -1702,7 +1702,7 @@ var Application = AbstractApplication.extend({
         }), TweenLite.from(this.playerImgBig.getContent().position, instant ? 0 : .8, {
             x: this.playerImgBig.getContent().position.x + .05 * windowWidth
         }), this.playerImg && this.playerImg.getContent().parent && (this.playerImg.getContent().parent.removeChild(this.playerImg.getContent()), 
-        this.removeChild(this.playerImg)), this.playerImg = new SimpleSprite(windowHeight > 450 ? APP.getGameModel().currentPlayerModel.imgSource : APP.getGameModel().currentPlayerModel.imgSourceGame), 
+        this.removeChild(this.playerImg)), this.playerImg = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame), 
         this.playerImg) {
             this.playerImg.container.anchor.x = .5, this.playerImg.container.anchor.y = .5;
             var scale = 1;
@@ -1971,7 +1971,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/atlas/atlas1.json", "dist/img/atlas/clouds.json", "dist/img/UI/bgChoice.png", "dist/img/UI/jeisoGrande.png", "dist/img/UI/arthurGrande.png", "dist/img/UI/piGrande.png", "dist/img/UI/rodaikaGrande.png", "dist/img/UI/poterGrande.png", "dist/img/UI/poraGrande.png", "dist/img/UI/feterGrande.png", "dist/img/UI/alcemarGrande.png", "dist/img/UI/netoGrande.png", "dist/img/UI/piangersGrande.png", "dist/img/UI/introScreen.jpg", "dist/img/UI/HUD.json" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD.json", "dist/img/atlas/players.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/introScreen.jpg" ];
         assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("", {
             align: "center",
             font: "60px Luckiest Guy",
@@ -2672,7 +2672,7 @@ var Application = AbstractApplication.extend({
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
     }
-}), resizeProportional = !0, windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, gameScale = 1, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
+}), resizeProportional = !0, windowWidth = 667, windowHeight = 375, realWindowWidth = 667, realWindowHeight = 375, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 }, isfull = !1;
 

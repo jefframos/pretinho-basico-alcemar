@@ -62,7 +62,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partalcemar.png',
 				color:0xB2D464,
 				thumb:'thumb_alcemar',
-				coverSource:'dist/img/UI/alcemarGrande.png',
+				coverSource:'dist/img/UI/covers/alcemarGrande.png',
 				labelSource:'Label_Alcemar.png',
 				specSource:'power_alcemar.png',
 				icoSpecSource:'especial_alcemar.png'
@@ -88,7 +88,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partpiangers1.png',
 				color:0x74CDDF,
 				thumb:'thumb_piangers',
-				coverSource:'dist/img/UI/piangersGrande.png',
+				coverSource:'dist/img/UI/covers/piangersGrande.png',
 				labelSource:'Label_Piangers.png',
 				icoSpecSource:'especial_piangers.png'
 			},
@@ -112,7 +112,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partpotter.png',
 				color:0xFAAF4C,
 				thumb:'thumb_poter',
-				coverSource:'dist/img/UI/poterGrande.png',
+				coverSource:'dist/img/UI/covers/poterGrande.png',
 				labelSource:'Label_Potter.png',
 				icoSpecSource:'especial_potter.png'
 			},
@@ -135,7 +135,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partarthur.png',
 				color:0xB383B9,
 				thumb:'thumb_arthur',
-				coverSource:'dist/img/UI/arthurGrande.png',
+				coverSource:'dist/img/UI/covers/arthurGrande.png',
 				labelSource:'Label_Arthur.png',
 				icoSpecSource:'especial_arthur.png'
 			},
@@ -159,7 +159,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partexplosao.png',
 				color:0xFDCE07,
 				thumb:'thumb_pora',
-				coverSource:'dist/img/UI/poraGrande.png',
+				coverSource:'dist/img/UI/covers/poraGrande.png',
 				labelSource:'Label_Pora.png',
 				icoSpecSource:'especial_pora.png'
 			},
@@ -182,7 +182,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partjeiso.png',
 				color:0x88C440,
 				thumb:'thumb_jeiso',
-				coverSource:'dist/img/UI/jeisoGrande.png',
+				coverSource:'dist/img/UI/covers/jeisoGrande.png',
 				labelSource:'Label_Jeiso.png',
 				icoSpecSource:'especial_jeiso.png'
 			},
@@ -206,7 +206,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partpi.png',
 				color:0x8F6DAF,
 				thumb:'thumb_pi',
-				coverSource:'dist/img/UI/piGrande.png',
+				coverSource:'dist/img/UI/covers/piGrande.png',
 				labelSource:'Label_MrPi.png',
 				icoSpecSource:'especial_mr_pi.png'
 			},
@@ -229,7 +229,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partexplosao.png',
 				color:0xEE4323,
 				thumb:'thumb_feter',
-				coverSource:'dist/img/UI/feterGrande.png',
+				coverSource:'dist/img/UI/covers/feterGrande.png',
 				labelSource:'Label_Fetter.png',
 				icoSpecSource:'especial_fetter.png'
 			},
@@ -252,7 +252,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partneto.png',
 				color:0xB3A170,
 				thumb:'thumb_neto',
-				coverSource:'dist/img/UI/netoGrande.png',
+				coverSource:'dist/img/UI/covers/netoGrande.png',
 				labelSource:'Label_Neto.png',
 				icoSpecSource:'especial_neto.png'
 			},
@@ -275,7 +275,7 @@ var AppModel = Class.extend({
 				bulletParticle:'partrodaika2.png',
 				color:0xF284AA,
 				thumb:'thumb_rodaika',
-				coverSource:'dist/img/UI/rodaikaGrande.png',
+				coverSource:'dist/img/UI/covers/rodaikaGrande.png',
 				labelSource:'Label_Rodaika.png',
 				specSource:'power_rodaika.png',
 				icoSpecSource:'especial_rodaika.png'

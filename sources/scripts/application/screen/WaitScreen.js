@@ -12,21 +12,23 @@ var WaitScreen = AbstractScreen.extend({
         
 
         var assetsToLoader = ['dist/img/atlas/atlas.json',
-        'dist/img/atlas/atlas1.json',
-        'dist/img/atlas/clouds.json',
+        'dist/img/UI/HUD.json',
+        'dist/img/atlas/players.json',
+        'dist/img/atlas/nuvens.json',
         'dist/img/UI/bgChoice.png',
-        'dist/img/UI/jeisoGrande.png',
-        'dist/img/UI/arthurGrande.png',
-        'dist/img/UI/piGrande.png',
-        'dist/img/UI/rodaikaGrande.png',
-        'dist/img/UI/poterGrande.png',
-        'dist/img/UI/poraGrande.png',
-        'dist/img/UI/feterGrande.png',
-        'dist/img/UI/alcemarGrande.png',
-        'dist/img/UI/netoGrande.png',
-        'dist/img/UI/piangersGrande.png',
-        'dist/img/UI/introScreen.jpg',
-        'dist/img/UI/HUD.json'];
+        'dist/img/UI/covers/jeisoGrande.png',
+        'dist/img/UI/covers/arthurGrande.png',
+        'dist/img/UI/covers/piGrande.png',
+        'dist/img/UI/covers/rodaikaGrande.png',
+        'dist/img/UI/covers/poterGrande.png',
+        'dist/img/UI/covers/poraGrande.png',
+        'dist/img/UI/covers/feterGrande.png',
+        'dist/img/UI/covers/alcemarGrande.png',
+        'dist/img/UI/covers/netoGrande.png',
+        'dist/img/UI/covers/piangersGrande.png',
+        'dist/img/UI/introScreen.jpg'];
+        // 'dist/img/UI/introScreen.jpg',
+        // 'dist/img/UI/HUD.json'];
 
 
         if(assetsToLoader.length > 0){

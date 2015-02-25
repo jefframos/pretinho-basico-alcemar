@@ -477,11 +477,11 @@ var ChoicePlayerScreen = AbstractScreen.extend({
             this.playerImg.getContent().parent.removeChild(this.playerImg.getContent());
             this.removeChild(this.playerImg);
         }
-        if(windowHeight > 450){
-            this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
-        }else{
-            this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame);
-        }
+        // if(windowHeight > 450){
+        //     this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
+        // }else{
+        // }
+        this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame);
         if(!this.playerImg){
             return;
         }

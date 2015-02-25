@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/xampp/htdocs/pretinho-basico-alcemar/dist/img/atlas/atlasEnv.tps</string>
+        <string>C:/xampp/htdocs/pretinho-basico-alcemar/sources/textures/UI/UI.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>atlas.png</filename>
+        <filename>../../../dist/img/UI/HUD.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -88,7 +88,7 @@
             <key>width</key>
             <int>2048</int>
             <key>height</key>
-            <int>1024</int>
+            <int>2048</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>atlas.json</filename>
+                <filename>../../../dist/img/UI/HUD.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -188,10 +188,93 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>env1.png</filename>
-            <filename>env2.png</filename>
-            <filename>env3.png</filename>
-            <filename>env4.png</filename>
+            <filename>selected.png</filename>
+            <filename>out.png</filename>
+            <filename>pista.png</filename>
+            <filename>selectedInner.png</filename>
+            <filename>gasoline.png</filename>
+            <filename>reducingPB/thumb_alcemar_gray.png</filename>
+            <filename>reducingPB/thumb_arthur_gray.png</filename>
+            <filename>reducingPB/thumb_feter_gray.png</filename>
+            <filename>reducingPB/thumb_jeiso_gray.png</filename>
+            <filename>reducingPB/thumb_neto_gray.png</filename>
+            <filename>reducingPB/thumb_pi_gray.png</filename>
+            <filename>reducingPB/thumb_piangers_gray.png</filename>
+            <filename>reducingPB/thumb_pora_gray.png</filename>
+            <filename>reducingPB/thumb_poter_gray.png</filename>
+            <filename>reducingPB/thumb_rodaika_gray.png</filename>
+            <filename>reducing/thumb_alcemar_color.png</filename>
+            <filename>reducing/thumb_arthur_color.png</filename>
+            <filename>reducing/thumb_feter_color.png</filename>
+            <filename>reducing/thumb_jeiso_color.png</filename>
+            <filename>reducing/thumb_neto_color.png</filename>
+            <filename>reducing/thumb_pi_color.png</filename>
+            <filename>reducing/thumb_piangers_color.png</filename>
+            <filename>reducing/thumb_pora_color.png</filename>
+            <filename>reducing/thumb_poter_color.png</filename>
+            <filename>reducing/thumb_rodaika_color.png</filename>
+            <filename>border.png</filename>
+            <filename>voltarButton.png</filename>
+            <filename>continueButton.png</filename>
+            <filename>continueButtonBig.png</filename>
+            <filename>fbButton.png</filename>
+            <filename>menuButton.png</filename>
+            <filename>pauseButton.png</filename>
+            <filename>replayButton.png</filename>
+            <filename>twitterButton.png</filename>
+            <filename>bulletIco.png</filename>
+            <filename>moneyContainer.png</filename>
+            <filename>coin.png</filename>
+            <filename>coins.png</filename>
+            <filename>feitoo.png</filename>
+            <filename>holofote.png</filename>
+            <filename>novorecruta.png</filename>
+            <filename>trofeuButton.png</filename>
+            <filename>penasfundo2.png</filename>
+            <filename>nova_ave.png</filename>
+            <filename>ovoquebrado.png</filename>
+            <filename>penasfundo1.png</filename>
+            <filename>moeda.png</filename>
+            <filename>target.png</filename>
+            <filename>Label_Rodaika.png</filename>
+            <filename>Label_Alcemar.png</filename>
+            <filename>Label_Arthur.png</filename>
+            <filename>Label_Fetter.png</filename>
+            <filename>Label_Jeiso.png</filename>
+            <filename>Label_MrPi.png</filename>
+            <filename>Label_Neto.png</filename>
+            <filename>Label_Piangers.png</filename>
+            <filename>Label_Pora.png</filename>
+            <filename>Label_Potter.png</filename>
+            <filename>ovo_calopsuda.png</filename>
+            <filename>ovo_galo.png</filename>
+            <filename>ovo_papacu.png</filename>
+            <filename>ovo_belga.png</filename>
+            <filename>ovo_lambecu.png</filename>
+            <filename>ovo_nigeriano.png</filename>
+            <filename>ovo_nocu.png</filename>
+            <filename>obstaculo1.png</filename>
+            <filename>creditoButton.png</filename>
+            <filename>menuButtonOver.png</filename>
+            <filename>voltarButtonOver.png</filename>
+            <filename>creditoButtonOver.png</filename>
+            <filename>pauseButtonOver.png</filename>
+            <filename>continueButtonOver.png</filename>
+            <filename>replayButtonOver.png</filename>
+            <filename>continueButtonBigOver.png</filename>
+            <filename>specs/especial_fetter.png</filename>
+            <filename>trofeuButtonOver.png</filename>
+            <filename>specs/especial_potter.png</filename>
+            <filename>specs/power_alcemar.png</filename>
+            <filename>specs/especial_alcemar.png</filename>
+            <filename>specs/especial_arthur.png</filename>
+            <filename>specs/especial_jeiso.png</filename>
+            <filename>specs/especial_piangers.png</filename>
+            <filename>specs/especial_pora.png</filename>
+            <filename>specs/especial_mr_pi.png</filename>
+            <filename>specs/power_rodaika.png</filename>
+            <filename>specs/especial_neto.png</filename>
+            <filename>specs/especial_rodaika.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

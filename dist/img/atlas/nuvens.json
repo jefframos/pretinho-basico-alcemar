@@ -57,10 +57,10 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "clouds.png",
+	"image": "nuvens.png",
 	"format": "RGBA8888",
 	"size": {"w":882,"h":819},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:692290fbde93e16acb67237cec7f4984:a873de402a4b3f33f561a7d32a162e06:e96b5453eed6fb7cc3a8e55168758fa4$"
+	"smartupdate": "$TexturePacker:SmartUpdate:73a32f51340cc6989daf210e9cbbc5fc:a873de402a4b3f33f561a7d32a162e06:7307a1181f713d09f0e99aa87ad74da6$"
 }
 }
