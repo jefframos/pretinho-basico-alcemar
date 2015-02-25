@@ -100,7 +100,7 @@ var AppModel = Class.extend({
 				bulletVel:7,
 				toAble: 10,
 				toSpec: 800,
-				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25})
+				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 35})
 			}
 			),
 			new PlayerModel({
@@ -231,7 +231,7 @@ var AppModel = Class.extend({
 				thumb:'thumb_feter',
 				coverSource:'dist/img/UI/feterGrande.png',
 				labelSource:'Label_Fetter.png',
-				icoSpecSource:''
+				icoSpecSource:'especial_fetter.png'
 			},
 			{
 				energyCoast:2.3,
@@ -254,7 +254,7 @@ var AppModel = Class.extend({
 				thumb:'thumb_neto',
 				coverSource:'dist/img/UI/netoGrande.png',
 				labelSource:'Label_Neto.png',
-				icoSpecSource:''
+				icoSpecSource:'especial_neto.png'
 			},
 			{
 				energyCoast:2.5,
@@ -277,7 +277,8 @@ var AppModel = Class.extend({
 				thumb:'thumb_rodaika',
 				coverSource:'dist/img/UI/rodaikaGrande.png',
 				labelSource:'Label_Rodaika.png',
-				icoSpecSource:''
+				specSource:'power_rodaika.png',
+				icoSpecSource:'especial_rodaika.png'
 			},
 			{
 				energyCoast:3,

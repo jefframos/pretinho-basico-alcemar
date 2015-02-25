@@ -8,7 +8,7 @@ var RandomBehaviour = Class.extend({
 		if(id === 0){
 			return new GiantShootBehaviour({vel:2, invencible:true, bulletForce:60, size: 0.8});
 		}else if(id === 1){
-			return new SequenceBehaviour({angleOpen:0, totalFires: 25});
+			return new SequenceBehaviour({angleOpen:0, totalFires: 35});
 		}else if(id === 2){
 			return new MultipleBehaviour({vel:3, totalFires:8, bulletForce:10, size:0.15, angleOpen:0.25});
 		}else if(id === 3){

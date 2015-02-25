@@ -13,7 +13,7 @@ var windowHeight = 750;
 var realWindowWidth = 1334;
 var realWindowHeight = 750;
 
-var gameScale = 1.3;
+var gameScale = 1;//1.3;
 
 var windowWidthVar = window.innerHeight;
 var windowHeightVar = window.innerWidth;
@@ -82,6 +82,7 @@ function update() {
 
 		// alert(window.devicePixelRatio);
 		renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
+		// renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:window.devicePixelRatio, view:gameView});
 
 		renderer.view.style.width = windowWidth+'px';
 		renderer.view.style.height = windowHeight+'px';

@@ -1,4 +1,4 @@
-/*! jefframos 24-02-2015 */
+/*! jefframos 25-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -931,7 +931,7 @@ var Application = AbstractApplication.extend({
             size: .8
         }) : 1 === id ? new SequenceBehaviour({
             angleOpen: 0,
-            totalFires: 25
+            totalFires: 35
         }) : 2 === id ? new MultipleBehaviour({
             vel: 3,
             totalFires: 8,
@@ -1076,7 +1076,7 @@ var Application = AbstractApplication.extend({
             toSpec: 800,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
-                totalFires: 25
+                totalFires: 35
             })
         }), new PlayerModel({
             label: "POTTER",
@@ -1207,7 +1207,7 @@ var Application = AbstractApplication.extend({
             thumb: "thumb_feter",
             coverSource: "dist/img/UI/feterGrande.png",
             labelSource: "Label_Fetter.png",
-            icoSpecSource: ""
+            icoSpecSource: "especial_fetter.png"
         }, {
             energyCoast: 2.3,
             vel: 1.5,
@@ -1227,7 +1227,7 @@ var Application = AbstractApplication.extend({
             thumb: "thumb_neto",
             coverSource: "dist/img/UI/netoGrande.png",
             labelSource: "Label_Neto.png",
-            icoSpecSource: ""
+            icoSpecSource: "especial_neto.png"
         }, {
             energyCoast: 2.5,
             vel: 2,
@@ -1252,7 +1252,8 @@ var Application = AbstractApplication.extend({
             thumb: "thumb_rodaika",
             coverSource: "dist/img/UI/rodaikaGrande.png",
             labelSource: "Label_Rodaika.png",
-            icoSpecSource: ""
+            specSource: "power_rodaika.png",
+            icoSpecSource: "especial_rodaika.png"
         }, {
             energyCoast: 3,
             vel: 2,
@@ -2671,7 +2672,7 @@ var Application = AbstractApplication.extend({
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
     }
-}), resizeProportional = !0, windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
+}), resizeProportional = !0, windowWidth = 1334, windowHeight = 750, realWindowWidth = 1334, realWindowHeight = 750, gameScale = 1, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 }, isfull = !1;
 
