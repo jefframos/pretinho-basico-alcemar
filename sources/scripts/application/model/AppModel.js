@@ -212,12 +212,12 @@ var AppModel = Class.extend({
 			},
 			{
 				energyCoast:3,
-				vel:1,
-				bulletForce:1.3,
+				vel:0.8,
+				bulletForce:1.2,
 				bulletCoast:0.15,
 				bulletVel:5,
 				toAble: 2500,
-				toSpec: 1000,
+				toSpec: 1200,
 				bulletBehaviour: new AkumaBehaviour()
 			}
 			),

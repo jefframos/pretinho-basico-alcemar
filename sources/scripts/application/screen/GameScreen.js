@@ -517,8 +517,8 @@ var GameScreen = AbstractScreen.extend({
             self.special();
         };
         scaleConverter(this.specialButton.getContent().height, windowHeight, 0.20, this.specialButton);
-        this.specialButton.setPosition(-this.specialButton.getContent().width, -this.specialButton.getContent().height);
-        this.specialContainer.position.x = windowWidth;
+        this.specialButton.setPosition(-this.specialButton.getContent().width/2, -this.specialButton.getContent().height);
+        this.specialContainer.position.x = windowWidth/2;
         this.specialContainer.position.y = windowHeight;
         
         this.addChild(this.specialContainer);

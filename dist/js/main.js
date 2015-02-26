@@ -1190,12 +1190,12 @@ var Application = AbstractApplication.extend({
             icoSpecSource: "especial_mr_pi.png"
         }, {
             energyCoast: 3,
-            vel: 1,
-            bulletForce: 1.3,
+            vel: .8,
+            bulletForce: 1.2,
             bulletCoast: .15,
             bulletVel: 5,
             toAble: 2500,
-            toSpec: 1e3,
+            toSpec: 1200,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "FETTER",
@@ -1913,8 +1913,8 @@ var Application = AbstractApplication.extend({
         this.specialButton.clickCallback = function() {
             self.ableSpecial > 0 && !self.blockPause || self.special();
         }, scaleConverter(this.specialButton.getContent().height, windowHeight, .2, this.specialButton), 
-        this.specialButton.setPosition(-this.specialButton.getContent().width, -this.specialButton.getContent().height), 
-        this.specialContainer.position.x = windowWidth, this.specialContainer.position.y = windowHeight, 
+        this.specialButton.setPosition(-this.specialButton.getContent().width / 2, -this.specialButton.getContent().height), 
+        this.specialContainer.position.x = windowWidth / 2, this.specialContainer.position.y = windowHeight, 
         this.addChild(this.specialContainer), this.updateable = !0, this.endModal = new EndModal(this), 
         this.newBirdModal = new NewBirdModal(this), this.pauseModal = new PauseModal(this), 
         this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
