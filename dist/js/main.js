@@ -1,4 +1,4 @@
-/*! jefframos 25-02-2015 */
+/*! jefframos 26-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -301,8 +301,8 @@ SmartSocket.SOCKET_ERROR = "socketError";
 
 var Application = AbstractApplication.extend({
     init: function() {
-        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(4219785), 
-        this.stage.removeChild(this.loadText), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
+        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(0), this.stage.removeChild(this.loadText), 
+        this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
         this.labelDebug.position.x = 20;
@@ -1167,10 +1167,10 @@ var Application = AbstractApplication.extend({
             energyCoast: 1.5,
             vel: 3,
             bulletForce: .8,
-            bulletCoast: .07,
+            bulletCoast: .05,
             bulletVel: 8,
             toAble: 1800,
-            toSpec: 800,
+            toSpec: 500,
             bulletBehaviour: new HomingBehaviour({
                 invencible: !0,
                 bulletForce: 99,
@@ -1191,11 +1191,11 @@ var Application = AbstractApplication.extend({
         }, {
             energyCoast: 3,
             vel: 1,
-            bulletForce: 1.4,
-            bulletCoast: .1,
+            bulletForce: 1.3,
+            bulletCoast: .15,
             bulletVel: 5,
             toAble: 2500,
-            toSpec: 800,
+            toSpec: 1e3,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "FETTER",
@@ -1257,8 +1257,8 @@ var Application = AbstractApplication.extend({
         }, {
             energyCoast: 3,
             vel: 2,
-            bulletForce: 1.5,
-            bulletCoast: .08,
+            bulletForce: 1,
+            bulletCoast: .09,
             bulletVel: 4,
             toAble: 15e3,
             toSpec: 800,
@@ -1396,7 +1396,7 @@ var Application = AbstractApplication.extend({
         }) ], this.setModel(0), this.totalPlayers = 0;
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && (this.playerModels[i].able = !0, 
         this.totalPlayers++);
-        this.birdProbs = [ 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 2, 3, 0, 0, 2, 0, 3, 4, 0, 5, 0, 6, 0, 7, 4, 5, 6, 7 ], 
+        this.birdProbs = [ 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 2, 3, 0, 0, 2, 0, 3, 4, 4, 4, 4, 4, 0, 5, 5, 5, 5, 5, 0, 6, 6, 6, 6, 0, 7, 7, 7, 7, 4, 5, 6, 7 ], 
         this.currentHorde = 0;
     },
     setModel: function(id) {
@@ -1971,7 +1971,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD.json", "dist/img/atlas/players.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/introScreen.jpg" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/introScreen.jpg" ];
         assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("", {
             align: "center",
             font: "60px Luckiest Guy",

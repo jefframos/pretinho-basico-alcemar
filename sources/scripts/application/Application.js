@@ -3,7 +3,7 @@ var Application = AbstractApplication.extend({
 	init:function(){
 
         this._super(windowWidth, windowHeight);
-        this.stage.setBackgroundColor(0x406389);
+        this.stage.setBackgroundColor(0x000);
         // this.stage.setBackgroundColor(0xFF9387);
         this.stage.removeChild(this.loadText);
         // this.isMobile = testMobile();

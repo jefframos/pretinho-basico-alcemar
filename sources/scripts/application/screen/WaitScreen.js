@@ -13,7 +13,7 @@ var WaitScreen = AbstractScreen.extend({
 
         var assetsToLoader = ['dist/img/atlas/atlas.json',
         'dist/img/UI/HUD.json',
-        'dist/img/atlas/players.json',
+        'dist/img/atlas/players2.json',
         'dist/img/atlas/nuvens.json',
         'dist/img/UI/bgChoice.png',
         'dist/img/UI/covers/jeisoGrande.png',

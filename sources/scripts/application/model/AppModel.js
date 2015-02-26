@@ -190,10 +190,10 @@ var AppModel = Class.extend({
 				energyCoast:1.5,
 				vel:3,
 				bulletForce:0.8,
-				bulletCoast:0.07,
+				bulletCoast:0.05,
 				bulletVel:8,
 				toAble: 1800,
-				toSpec: 800,
+				toSpec: 500,
 				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:99, vel:4})
 			}
 			),
@@ -213,11 +213,11 @@ var AppModel = Class.extend({
 			{
 				energyCoast:3,
 				vel:1,
-				bulletForce:1.4,
-				bulletCoast:0.1,
+				bulletForce:1.3,
+				bulletCoast:0.15,
 				bulletVel:5,
 				toAble: 2500,
-				toSpec: 800,
+				toSpec: 1000,
 				bulletBehaviour: new AkumaBehaviour()
 			}
 			),
@@ -283,8 +283,8 @@ var AppModel = Class.extend({
 			{
 				energyCoast:3,
 				vel:2,
-				bulletForce:1.5,
-				bulletCoast:0.08,
+				bulletForce:1,
+				bulletCoast:0.09,
 				bulletVel:4,
 				toAble: 15000,
 				toSpec: 800,
@@ -294,7 +294,6 @@ var AppModel = Class.extend({
 		];
 
 		this.birdModels = [
-
 			
 			new BirdModel({
 				source:'caralinho.png',
@@ -447,7 +446,7 @@ var AppModel = Class.extend({
 				this.totalPlayers ++;
 			}
 		}
-		this.birdProbs = [0,1,0,0,0,2,0,0,0,1,2,3,0,0,2,0,3,4,0,5,0,6,0,7,4,5,6,7];
+		this.birdProbs = [0,1,0,0,0,2,0,0,0,1,2,3,0,0,2,0,3,4,4,4,4,4,0,5,5,5,5,5,0,6,6,6,6,0,7,7,7,7,4,5,6,7];
 
 		this.currentHorde = 0;
 
