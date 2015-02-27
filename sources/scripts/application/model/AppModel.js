@@ -68,12 +68,13 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_alcemar.png'
 			},
 			{
+				maxEnergy: 8000,
 				energyCoast:1.5,
 				vel:0.5,
-				bulletForce:2.0,
-				bulletVel:5,
-				bulletCoast:0.1,
-				toSpec: 800,
+				bulletForce:2.2,
+				bulletVel:6,
+				bulletCoast:0.08,
+				toSpec: 600,
 				bulletBehaviour: new GiantShootBehaviour({vel:2, invencible:true, bulletForce:10, size: 0.8})
 				// bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:10, vel:5})
 				//toAble: 400
@@ -93,13 +94,13 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_piangers.png'
 			},
 			{
-				energyCoast:1.5,
+				energyCoast:1.7,
 				vel:2.5,
-				bulletForce:1.2,
-				bulletCoast:0.12,
+				bulletForce:1.3,
+				bulletCoast:0.11,
 				bulletVel:7,
 				toAble: 10,
-				toSpec: 800,
+				toSpec: 600,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 35})
 			}
 			),
@@ -117,13 +118,13 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_potter.png'
 			},
 			{
-				energyCoast:1.9,
+				energyCoast:2,
 				vel:1.5,
 				bulletForce:1.5,
-				bulletCoast:0.15,
+				bulletCoast:0.125,
 				bulletVel:7,
 				toAble: 350,
-				toSpec: 800,
+				toSpec: 700,
 				bulletBehaviour: new MultipleBehaviour({vel:3, totalFires:8, bulletForce:10, size:0.15, angleOpen:0.25})
 			}
 			),
@@ -164,14 +165,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_pora.png'
 			},
 			{
-				maxEnergy: 6500,
+				maxEnergy: 6000,
 				energyCoast:2.6,
 				vel:1.5,
-				bulletForce:1.3,
-				bulletCoast:0.13,
+				bulletForce:1.1,
+				bulletCoast:0.14,
 				bulletVel:5,
 				toAble: 1200,
-				toSpec: 800,
+				toSpec: 1000,
 				bulletBehaviour: new MultipleBehaviour({vel:3.5, invencible:true, totalFires:5, bulletForce:5, size:0.5})
 			}
 			),
@@ -216,11 +217,11 @@ var AppModel = Class.extend({
 				maxEnergy: 6500,
 				energyCoast:3,
 				vel:0.8,
-				bulletForce:1.2,
-				bulletCoast:0.14,
+				bulletForce:1.0,
+				bulletCoast:0.145,
 				bulletVel:4,
 				toAble: 2500,
-				toSpec: 1400,
+				toSpec: 1600,
 				bulletBehaviour: new AkumaBehaviour()
 			}
 			),
@@ -243,7 +244,7 @@ var AppModel = Class.extend({
 				bulletVel:6,
 				bulletCoast:0.15,
 				toAble: 3500,
-				toSpec: 1000,
+				toSpec: 1200,
 				bulletBehaviour: new RainBehaviour()
 			}
 			),
@@ -260,13 +261,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_neto.png'
 			},
 			{
+				maxEnergy: 7000,
 				energyCoast:2.5,
 				vel:2,
 				bulletForce:3,
-				bulletCoast:0.12,
+				bulletCoast:0.16,
 				bulletVel:5,
 				toAble: 8000,
-				toSpec: 800,
+				toSpec: 1500,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true, vel:2})
 			}
 			),
@@ -284,13 +286,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_rodaika.png'
 			},
 			{
+				maxEnergy: 7000,
 				energyCoast:3,
 				vel:2,
 				bulletForce:1,
-				bulletCoast:0.09,
+				bulletCoast:0.12,
 				bulletVel:4,
 				toAble: 15000,
-				toSpec: 800,
+				toSpec: 1200,
 				bulletBehaviour: new RandomBehaviour()
 			}
 			)

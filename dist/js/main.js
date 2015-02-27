@@ -1042,12 +1042,13 @@ var Application = AbstractApplication.extend({
             specSource: "power_alcemar.png",
             icoSpecSource: "especial_alcemar.png"
         }, {
+            maxEnergy: 8e3,
             energyCoast: 1.5,
             vel: .5,
-            bulletForce: 2,
-            bulletVel: 5,
-            bulletCoast: .1,
-            toSpec: 800,
+            bulletForce: 2.2,
+            bulletVel: 6,
+            bulletCoast: .08,
+            toSpec: 600,
             bulletBehaviour: new GiantShootBehaviour({
                 vel: 2,
                 invencible: !0,
@@ -1067,13 +1068,13 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Piangers.png",
             icoSpecSource: "especial_piangers.png"
         }, {
-            energyCoast: 1.5,
+            energyCoast: 1.7,
             vel: 2.5,
-            bulletForce: 1.2,
-            bulletCoast: .12,
+            bulletForce: 1.3,
+            bulletCoast: .11,
             bulletVel: 7,
             toAble: 10,
-            toSpec: 800,
+            toSpec: 600,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
                 totalFires: 35
@@ -1091,13 +1092,13 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Potter.png",
             icoSpecSource: "especial_potter.png"
         }, {
-            energyCoast: 1.9,
+            energyCoast: 2,
             vel: 1.5,
             bulletForce: 1.5,
-            bulletCoast: .15,
+            bulletCoast: .125,
             bulletVel: 7,
             toAble: 350,
-            toSpec: 800,
+            toSpec: 700,
             bulletBehaviour: new MultipleBehaviour({
                 vel: 3,
                 totalFires: 8,
@@ -1138,14 +1139,14 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Pora.png",
             icoSpecSource: "especial_pora.png"
         }, {
-            maxEnergy: 6500,
+            maxEnergy: 6e3,
             energyCoast: 2.6,
             vel: 1.5,
-            bulletForce: 1.3,
-            bulletCoast: .13,
+            bulletForce: 1.1,
+            bulletCoast: .14,
             bulletVel: 5,
             toAble: 1200,
-            toSpec: 800,
+            toSpec: 1e3,
             bulletBehaviour: new MultipleBehaviour({
                 vel: 3.5,
                 invencible: !0,
@@ -1194,11 +1195,11 @@ var Application = AbstractApplication.extend({
             maxEnergy: 6500,
             energyCoast: 3,
             vel: .8,
-            bulletForce: 1.2,
-            bulletCoast: .14,
+            bulletForce: 1,
+            bulletCoast: .145,
             bulletVel: 4,
             toAble: 2500,
-            toSpec: 1400,
+            toSpec: 1600,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "FETTER",
@@ -1218,7 +1219,7 @@ var Application = AbstractApplication.extend({
             bulletVel: 6,
             bulletCoast: .15,
             toAble: 3500,
-            toSpec: 1e3,
+            toSpec: 1200,
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
             label: "NETO",
@@ -1232,13 +1233,14 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Neto.png",
             icoSpecSource: "especial_neto.png"
         }, {
+            maxEnergy: 7e3,
             energyCoast: 2.5,
             vel: 2,
             bulletForce: 3,
-            bulletCoast: .12,
+            bulletCoast: .16,
             bulletVel: 5,
             toAble: 8e3,
-            toSpec: 800,
+            toSpec: 1500,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
                 totalFires: 25,
@@ -1258,13 +1260,14 @@ var Application = AbstractApplication.extend({
             specSource: "power_rodaika.png",
             icoSpecSource: "especial_rodaika.png"
         }, {
+            maxEnergy: 7e3,
             energyCoast: 3,
             vel: 2,
             bulletForce: 1,
-            bulletCoast: .09,
+            bulletCoast: .12,
             bulletVel: 4,
             toAble: 15e3,
-            toSpec: 800,
+            toSpec: 1200,
             bulletBehaviour: new RandomBehaviour()
         }) ], this.birdModels = [ new BirdModel({
             source: "caralinho.png",
