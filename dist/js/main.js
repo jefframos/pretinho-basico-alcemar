@@ -1042,7 +1042,7 @@ var Application = AbstractApplication.extend({
             specSource: "power_alcemar.png",
             icoSpecSource: "especial_alcemar.png"
         }, {
-            maxEnergy: 8e3,
+            maxEnergy: 8500,
             energyCoast: 1.5,
             vel: .5,
             bulletForce: 2.2,
@@ -1068,13 +1068,14 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Piangers.png",
             icoSpecSource: "especial_piangers.png"
         }, {
+            maxEnergy: 7500,
             energyCoast: 1.7,
             vel: 2.5,
             bulletForce: 1.3,
             bulletCoast: .11,
             bulletVel: 7,
             toAble: 10,
-            toSpec: 600,
+            toSpec: 500,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
                 totalFires: 35
@@ -1139,7 +1140,7 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Pora.png",
             icoSpecSource: "especial_pora.png"
         }, {
-            maxEnergy: 6e3,
+            maxEnergy: 6300,
             energyCoast: 2.6,
             vel: 1.5,
             bulletForce: 1.1,
@@ -1233,7 +1234,7 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Neto.png",
             icoSpecSource: "especial_neto.png"
         }, {
-            maxEnergy: 7e3,
+            maxEnergy: 6e3,
             energyCoast: 2.5,
             vel: 2,
             bulletForce: 3,
@@ -1260,10 +1261,10 @@ var Application = AbstractApplication.extend({
             specSource: "power_rodaika.png",
             icoSpecSource: "especial_rodaika.png"
         }, {
-            maxEnergy: 7e3,
+            maxEnergy: 6300,
             energyCoast: 3,
             vel: 2,
-            bulletForce: 1,
+            bulletForce: 1.2,
             bulletCoast: .12,
             bulletVel: 4,
             toAble: 15e3,
@@ -1818,7 +1819,7 @@ var Application = AbstractApplication.extend({
     },
     updateItens: function() {
         if (this.itemAccum < 0) {
-            console.log(this.playerModel.energyCoast, "coast"), this.itemAccum = 1400 + 2e3 * Math.random() + 3e3 / this.playerModel.energyCoast;
+            console.log(this.playerModel.energyCoast, "coast"), this.itemAccum = 1400 + 2e3 * Math.random() + 3e3 / this.playerModel.energyCoast + 999999;
             var item = new Item();
             item.build(), item.setPosition(windowWidth, .1 * windowHeight + .8 * windowHeight * Math.random()), 
             this.layer.addChild(item), scaleConverter(item.getContent().height, windowHeight, .1, item);

@@ -277,7 +277,7 @@ var GameScreen = AbstractScreen.extend({
     updateItens:function(){
         if(this.itemAccum < 0){
             console.log(this.playerModel.energyCoast, 'coast');
-            this.itemAccum = 1400 + Math.random() * 2000 + 3000 / this.playerModel.energyCoast;
+            this.itemAccum = 1400 + Math.random() * 2000 + 3000 / this.playerModel.energyCoast + 999999;
             var item = new Item();
             item.build();
             item.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));

@@ -68,7 +68,7 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_alcemar.png'
 			},
 			{
-				maxEnergy: 8000,
+				maxEnergy: 8500,
 				energyCoast:1.5,
 				vel:0.5,
 				bulletForce:2.2,
@@ -94,13 +94,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_piangers.png'
 			},
 			{
+				maxEnergy: 7500,
 				energyCoast:1.7,
 				vel:2.5,
 				bulletForce:1.3,
 				bulletCoast:0.11,
 				bulletVel:7,
 				toAble: 10,
-				toSpec: 600,
+				toSpec: 500,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 35})
 			}
 			),
@@ -165,7 +166,7 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_pora.png'
 			},
 			{
-				maxEnergy: 6000,
+				maxEnergy: 6300,
 				energyCoast:2.6,
 				vel:1.5,
 				bulletForce:1.1,
@@ -261,7 +262,7 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_neto.png'
 			},
 			{
-				maxEnergy: 7000,
+				maxEnergy: 6000,
 				energyCoast:2.5,
 				vel:2,
 				bulletForce:3,
@@ -286,10 +287,10 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_rodaika.png'
 			},
 			{
-				maxEnergy: 7000,
+				maxEnergy: 6300,
 				energyCoast:3,
 				vel:2,
-				bulletForce:1,
+				bulletForce:1.2,
 				bulletCoast:0.12,
 				bulletVel:4,
 				toAble: 15000,
