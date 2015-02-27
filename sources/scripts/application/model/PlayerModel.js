@@ -31,6 +31,7 @@ var PlayerModel = Class.extend({
 		this.energyCoast = 4 - this.energyCoast;
 		// this.energyCoast = (3 * (3)/2 + 1) - this.energyCoast * (this.energyCoast)/2.5;
 		// console.log(this.energyCoast);
+		this.maxEnergy = statsObject.maxEnergy?statsObject.maxEnergy:7000;
 		this.bulletCoast = statsObject.bulletCoast?statsObject.bulletCoast:0.2;
 		this.velocity = statsObject.vel?statsObject.vel:2;
 		this.bulletVel = statsObject.bulletVel?statsObject.bulletVel:8;

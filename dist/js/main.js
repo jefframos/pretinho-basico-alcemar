@@ -1,4 +1,4 @@
-/*! jefframos 26-02-2015 */
+/*! jefframos 27-02-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1117,13 +1117,13 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Arthur.png",
             icoSpecSource: "especial_arthur.png"
         }, {
-            energyCoast: 2.4,
-            vel: 1.5,
-            bulletForce: 2.2,
+            energyCoast: 2.3,
+            vel: 1.3,
+            bulletForce: 2.1,
             bulletCoast: .15,
-            bulletVel: 6,
+            bulletVel: 5,
             toAble: 800,
-            toSpec: 800,
+            toSpec: 900,
             bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
             label: "PORÃ",
@@ -1138,10 +1138,11 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Pora.png",
             icoSpecSource: "especial_pora.png"
         }, {
+            maxEnergy: 6500,
             energyCoast: 2.6,
             vel: 1.5,
             bulletForce: 1.3,
-            bulletCoast: .11,
+            bulletCoast: .13,
             bulletVel: 5,
             toAble: 1200,
             toSpec: 800,
@@ -1164,13 +1165,14 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Jeiso.png",
             icoSpecSource: "especial_jeiso.png"
         }, {
-            energyCoast: 1.5,
+            maxEnergy: 8e3,
+            energyCoast: 1.6,
             vel: 3,
-            bulletForce: .8,
+            bulletForce: .9,
             bulletCoast: .05,
             bulletVel: 8,
             toAble: 1800,
-            toSpec: 500,
+            toSpec: 300,
             bulletBehaviour: new HomingBehaviour({
                 invencible: !0,
                 bulletForce: 99,
@@ -1189,13 +1191,14 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_MrPi.png",
             icoSpecSource: "especial_mr_pi.png"
         }, {
+            maxEnergy: 6500,
             energyCoast: 3,
             vel: .8,
             bulletForce: 1.2,
-            bulletCoast: .15,
-            bulletVel: 5,
+            bulletCoast: .14,
+            bulletVel: 4,
             toAble: 2500,
-            toSpec: 1200,
+            toSpec: 1400,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "FETTER",
@@ -1209,13 +1212,13 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Fetter.png",
             icoSpecSource: "especial_fetter.png"
         }, {
-            energyCoast: 2.3,
+            energyCoast: 2.2,
             vel: 1.5,
             bulletForce: 3,
             bulletVel: 6,
             bulletCoast: .15,
             toAble: 3500,
-            toSpec: 800,
+            toSpec: 1e3,
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
             label: "NETO",
@@ -1480,10 +1483,10 @@ var Application = AbstractApplication.extend({
         this.icoSpecSource = graphicsObject.icoSpecSource ? graphicsObject.icoSpecSource : "especial_fetter.png", 
         this.bulletRotation = graphicsObject.bulletRotation ? graphicsObject.bulletRotation : !1, 
         this.energyCoast = statsObject.energyCoast ? statsObject.energyCoast : 1, this.energyCoast = 4 - this.energyCoast, 
-        this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, this.velocity = statsObject.vel ? statsObject.vel : 2, 
-        this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, 
-        this.toAble = statsObject.toAble ? statsObject.toAble : 0, this.toSpec = statsObject.toSpec ? statsObject.toSpec : 1e3, 
-        this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour : new MultipleBehaviour(), 
+        this.maxEnergy = statsObject.maxEnergy ? statsObject.maxEnergy : 7e3, this.bulletCoast = statsObject.bulletCoast ? statsObject.bulletCoast : .2, 
+        this.velocity = statsObject.vel ? statsObject.vel : 2, this.bulletVel = statsObject.bulletVel ? statsObject.bulletVel : 8, 
+        this.bulletForce = statsObject.bulletForce ? statsObject.bulletForce : 1, this.toAble = statsObject.toAble ? statsObject.toAble : 0, 
+        this.toSpec = statsObject.toSpec ? statsObject.toSpec : 1e3, this.bulletBehaviour = statsObject.bulletBehaviour ? statsObject.bulletBehaviour : new MultipleBehaviour(), 
         this.able = !1;
     },
     reset: function() {

@@ -140,13 +140,13 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_arthur.png'
 			},
 			{
-				energyCoast:2.4,
-				vel:1.5,
-				bulletForce:2.2,
+				energyCoast:2.3,
+				vel:1.3,
+				bulletForce:2.1,
 				bulletCoast:0.15,
-				bulletVel:6,
+				bulletVel:5,
 				toAble: 800,
-				toSpec: 800,
+				toSpec: 900,
 				bulletBehaviour: new SequenceBehaviour()
 			}
 			),
@@ -164,10 +164,11 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_pora.png'
 			},
 			{
+				maxEnergy: 6500,
 				energyCoast:2.6,
 				vel:1.5,
 				bulletForce:1.3,
-				bulletCoast:0.11,
+				bulletCoast:0.13,
 				bulletVel:5,
 				toAble: 1200,
 				toSpec: 800,
@@ -187,13 +188,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_jeiso.png'
 			},
 			{
-				energyCoast:1.5,
+				maxEnergy: 8000,
+				energyCoast:1.6,
 				vel:3,
-				bulletForce:0.8,
+				bulletForce:0.9,
 				bulletCoast:0.05,
 				bulletVel:8,
 				toAble: 1800,
-				toSpec: 500,
+				toSpec: 300,
 				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:99, vel:4})
 			}
 			),
@@ -211,13 +213,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_mr_pi.png'
 			},
 			{
+				maxEnergy: 6500,
 				energyCoast:3,
 				vel:0.8,
 				bulletForce:1.2,
-				bulletCoast:0.15,
-				bulletVel:5,
+				bulletCoast:0.14,
+				bulletVel:4,
 				toAble: 2500,
-				toSpec: 1200,
+				toSpec: 1400,
 				bulletBehaviour: new AkumaBehaviour()
 			}
 			),
@@ -234,13 +237,13 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_fetter.png'
 			},
 			{
-				energyCoast:2.3,
+				energyCoast:2.2,
 				vel:1.5,
 				bulletForce:3,
 				bulletVel:6,
 				bulletCoast:0.15,
 				toAble: 3500,
-				toSpec: 800,
+				toSpec: 1000,
 				bulletBehaviour: new RainBehaviour()
 			}
 			),

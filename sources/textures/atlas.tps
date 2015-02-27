@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>../../dist/img/atlas/players.png</filename>
+        <filename>../../dist/img/atlas/players2.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -86,7 +86,7 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>1024</int>
             <key>height</key>
             <int>1024</int>
         </QSize>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../dist/img/atlas/players.json</filename>
+                <filename>../../dist/img/atlas/players2.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -238,6 +238,12 @@
             <filename>players/poraGame.png</filename>
             <filename>players/poterGame.png</filename>
             <filename>players/rodaikaGame.png</filename>
+            <filename>birds/calopsuda.png</filename>
+            <filename>birds/papodebago.png</filename>
+            <filename>particles/cabeca7.png</filename>
+            <filename>particles/cabeca8.png</filename>
+            <filename>particles/penas7.png</filename>
+            <filename>particles/penas8.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

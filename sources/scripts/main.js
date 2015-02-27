@@ -79,8 +79,7 @@ function update() {
 		gameScale = 1.3;
 
 		updateResolution('landscape', gameScale);
-
-		// alert(window.devicePixelRatio);
+		
 		renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
 		// renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:window.devicePixelRatio, view:gameView});
 
