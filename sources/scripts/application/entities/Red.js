@@ -163,7 +163,7 @@ var Red = SpritesheetEntity.extend({
 				            lowComb.alphadecress = 0.01;
 				            this.screen.addChild(lowComb);
 						}
-					}else{
+					}else if(entity.type !== 'bird'){
 						entity.preKill();
 					}
 					// else{

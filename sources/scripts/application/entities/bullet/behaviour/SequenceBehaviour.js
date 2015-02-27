@@ -29,7 +29,7 @@ var SequenceBehaviour = Class.extend({
 			bullet.getContent().rotation = angle;
 			bullet.sinoid = sinoid;
 			//UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
-			bullet.setPosition(screen.red.getPosition().x * 0.8, screen.red.getPosition().y - screen.red.getContent().height * 0.8);
+			bullet.setPosition(screen.red.getPosition().x * 0.9, screen.red.getPosition().y - screen.red.getContent().height * 0.8);
 			screen.layer.addChild(bullet);
 			scaleConverter(bullet.getContent().height,screen.red.getContent().height, size, bullet);
 			if(--self.totalFires <= 0){

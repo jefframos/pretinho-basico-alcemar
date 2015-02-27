@@ -18,7 +18,6 @@ var HomingBehaviour = Class.extend({
             }
         }
 
-        console.log(birds);
         var vel = this.props.vel ? this.props.vel:7;
         var timeLive = windowWidth / vel;
         var totalFires = this.props.totalFires ? this.props.totalFires: 5;
@@ -37,7 +36,7 @@ var HomingBehaviour = Class.extend({
             bullet.setHoming(birds[i], 10, angle);
             bullet.build();
             //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
-            bullet.setPosition(screen.red.getPosition().x * 0.8, screen.red.getPosition().y - screen.red.getContent().height * 0.8);
+            bullet.setPosition(screen.red.getPosition().x * 0.9, screen.red.getPosition().y - screen.red.getContent().height * 0.8);
             screen.layer.addChild(bullet);
             scaleConverter(bullet.getContent().height,screen.red.getContent().height, 0.2, bullet);
         }

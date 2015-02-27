@@ -36,8 +36,8 @@ var Bullet = Entity.extend({
         this.updateable = true;
         this.collidable = true;
 
-        this.getContent().alpha = 0;
-        TweenLite.to(this.getContent(), 0.5, {alpha:1});
+        this.getContent().alpha = 0.5;
+        TweenLite.to(this.getContent(), 0.3, {alpha:1});
 
         this.birdsCollided = [];
     },

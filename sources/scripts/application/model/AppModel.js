@@ -68,14 +68,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_alcemar.png'
 			},
 			{
-				maxEnergy: 8500,
+				maxEnergy: 8600,
 				energyCoast:1.5,
 				vel:0.5,
 				bulletForce:2.2,
 				bulletVel:6,
 				bulletCoast:0.08,
 				toSpec: 600,
-				bulletBehaviour: new GiantShootBehaviour({vel:2, invencible:true, bulletForce:10, size: 0.8})
+				bulletBehaviour: new GiantShootBehaviour({vel:2.5, invencible:true, bulletForce:60, size: 0.8})
 				// bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:10, vel:5})
 				//toAble: 400
 			}
@@ -262,14 +262,14 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_neto.png'
 			},
 			{
-				maxEnergy: 6000,
+				maxEnergy: 5800,
 				energyCoast:2.5,
 				vel:2,
 				bulletForce:3,
 				bulletCoast:0.16,
 				bulletVel:5,
 				toAble: 8000,
-				toSpec: 1500,
+				toSpec: 1800,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true, vel:2})
 			}
 			),
@@ -287,7 +287,7 @@ var AppModel = Class.extend({
 				icoSpecSource:'especial_rodaika.png'
 			},
 			{
-				maxEnergy: 6300,
+				maxEnergy: 6000,
 				energyCoast:3,
 				vel:2,
 				bulletForce:1.2,

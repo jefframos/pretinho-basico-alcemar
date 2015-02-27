@@ -144,11 +144,11 @@ var GameScreen = AbstractScreen.extend({
             timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletParticleSource, this.playerModel.bulletRotation);
         bullet.build();
         //UTILIZAR O ANGULO PARA CALCULAR A POSIÇÃO CORRETA DO TIRO
-        bullet.setPosition(this.red.getPosition().x * 0.8, this.red.getPosition().y - this.red.getContent().height * 0.8);
+        bullet.setPosition(this.red.getPosition().x * 0.9, this.red.getPosition().y - this.red.getContent().height * 0.8);
         this.layer.addChild(bullet);
 
 
-        scaleConverter(bullet.getContent().height,this.red.getContent().height, 0.2, bullet);
+        scaleConverter(bullet.getContent().height,windowHeight, 0.05, bullet);
         this.playerModel.currentBulletEnergy -= this.playerModel.maxBulletEnergy * this.playerModel.bulletCoast;
 
         if(this.playerModel.currentBulletEnergy < 0){

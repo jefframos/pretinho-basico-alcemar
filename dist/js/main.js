@@ -613,7 +613,7 @@ var Application = AbstractApplication.extend({
                     lowComb.build(), lowComb.setPosition(this.getPosition().x, this.getPosition().y - 10 * Math.random()), 
                     lowComb.alphadecress = .01, this.screen.addChild(lowComb);
                 }
-            } else entity.preKill();
+            } else "bird" !== entity.type && entity.preKill();
         }
     },
     destroy: function() {
@@ -758,8 +758,8 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.getContent().alpha = 0, 
-        TweenLite.to(this.getContent(), .5, {
+        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.getContent().alpha = .5, 
+        TweenLite.to(this.getContent(), .3, {
             alpha: 1
         }), this.birdsCollided = [];
     },
@@ -859,7 +859,6 @@ var Application = AbstractApplication.extend({
             screen.layer.childs[i].getContent().addChild(target.getContent()), target.getContent().position.x = -target.getContent().width / 2, 
             target.getContent().position.y = -target.getContent().height / 2, birds.push(screen.layer.childs[i]);
         }
-        console.log(birds);
         var vel = this.props.vel ? this.props.vel : 7, timeLive = windowWidth / vel, totalFires = this.props.totalFires ? this.props.totalFires : 5, angleOpen = this.props.angleOpen ? this.props.angleOpen : 3, bulletForce = this.props.bulletForce ? this.props.bulletForce : screen.playerModel.bulletForce, invencible = this.props.invencible ? this.props.invencible : !1;
         for (i = 0; i < birds.length; i++) {
             var angle = screen.red.rotation + angleOpen * (i - totalFires / 2), bullet = new Bullet({
@@ -867,7 +866,7 @@ var Application = AbstractApplication.extend({
                 y: Math.sin(angle) * vel
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
             bullet.invencible = invencible, bullet.defaultVelocity = vel, bullet.setHoming(birds[i], 10, angle), 
-            bullet.build(), bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            bullet.build(), bullet.setPosition(.9 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
             screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, .2, bullet);
         }
     },
@@ -887,7 +886,7 @@ var Application = AbstractApplication.extend({
                 y: Math.sin(angle) * vel
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
             bullet.invencible = invencible, bullet.build(), bullet.sinoid = sinoid, bullet.getContent().rotation = angle, 
-            bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            bullet.setPosition(.9 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
             screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, size, bullet);
         }
     },
@@ -925,7 +924,7 @@ var Application = AbstractApplication.extend({
     clone: function() {
         var id = Math.floor(9 * Math.random());
         return 0 === id ? new GiantShootBehaviour({
-            vel: 2,
+            vel: 2.5,
             invencible: !0,
             bulletForce: 60,
             size: .8
@@ -976,7 +975,7 @@ var Application = AbstractApplication.extend({
                 y: Math.sin(angle) * vel
             }, timeLive, bulletForce, screen.playerModel.bulletSource, screen.playerModel.bulletParticleSource, screen.playerModel.bulletRotation);
             bullet.invencible = invencible, bullet.build(), bullet.getContent().rotation = angle, 
-            bullet.sinoid = sinoid, bullet.setPosition(.8 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
+            bullet.sinoid = sinoid, bullet.setPosition(.9 * screen.red.getPosition().x, screen.red.getPosition().y - .8 * screen.red.getContent().height), 
             screen.layer.addChild(bullet), scaleConverter(bullet.getContent().height, screen.red.getContent().height, size, bullet), 
             --self.totalFires <= 0 && clearInterval(self.interval);
         }, timeInterval);
@@ -1042,7 +1041,7 @@ var Application = AbstractApplication.extend({
             specSource: "power_alcemar.png",
             icoSpecSource: "especial_alcemar.png"
         }, {
-            maxEnergy: 8500,
+            maxEnergy: 8600,
             energyCoast: 1.5,
             vel: .5,
             bulletForce: 2.2,
@@ -1050,9 +1049,9 @@ var Application = AbstractApplication.extend({
             bulletCoast: .08,
             toSpec: 600,
             bulletBehaviour: new GiantShootBehaviour({
-                vel: 2,
+                vel: 2.5,
                 invencible: !0,
-                bulletForce: 10,
+                bulletForce: 60,
                 size: .8
             })
         }), new PlayerModel({
@@ -1234,14 +1233,14 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Neto.png",
             icoSpecSource: "especial_neto.png"
         }, {
-            maxEnergy: 6e3,
+            maxEnergy: 5800,
             energyCoast: 2.5,
             vel: 2,
             bulletForce: 3,
             bulletCoast: .16,
             bulletVel: 5,
             toAble: 8e3,
-            toSpec: 1500,
+            toSpec: 1800,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
                 totalFires: 25,
@@ -1261,7 +1260,7 @@ var Application = AbstractApplication.extend({
             specSource: "power_rodaika.png",
             icoSpecSource: "especial_rodaika.png"
         }, {
-            maxEnergy: 6300,
+            maxEnergy: 6e3,
             energyCoast: 3,
             vel: 2,
             bulletForce: 1.2,
@@ -1776,8 +1775,8 @@ var Application = AbstractApplication.extend({
             x: Math.cos(angle) * vel,
             y: Math.sin(angle) * vel
         }, timeLive, this.playerModel.bulletForce, this.playerModel.bulletSource, this.playerModel.bulletParticleSource, this.playerModel.bulletRotation);
-        bullet.build(), bullet.setPosition(.8 * this.red.getPosition().x, this.red.getPosition().y - .8 * this.red.getContent().height), 
-        this.layer.addChild(bullet), scaleConverter(bullet.getContent().height, this.red.getContent().height, .2, bullet), 
+        bullet.build(), bullet.setPosition(.9 * this.red.getPosition().x, this.red.getPosition().y - .8 * this.red.getContent().height), 
+        this.layer.addChild(bullet), scaleConverter(bullet.getContent().height, windowHeight, .05, bullet), 
         this.playerModel.currentBulletEnergy -= this.playerModel.maxBulletEnergy * this.playerModel.bulletCoast, 
         this.playerModel.currentBulletEnergy < 0 && (this.playerModel.currentBulletEnergy = 0);
     },

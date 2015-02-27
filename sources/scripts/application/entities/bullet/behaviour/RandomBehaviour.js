@@ -6,7 +6,7 @@ var RandomBehaviour = Class.extend({
 	clone:function(){
 		var id = Math.floor(Math.random() * 9);
 		if(id === 0){
-			return new GiantShootBehaviour({vel:2, invencible:true, bulletForce:60, size: 0.8});
+			return new GiantShootBehaviour({vel:2.5, invencible:true, bulletForce:60, size: 0.8});
 		}else if(id === 1){
 			return new SequenceBehaviour({angleOpen:0, totalFires: 35});
 		}else if(id === 2){
