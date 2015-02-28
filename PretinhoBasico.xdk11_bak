@@ -1,12 +1,12 @@
 {
   "project": {
-    "projectSettingsVersion": "1.2",
+    "projectSettingsVersion": "1.1",
     "creationData": {
       "type": "Import",
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "",
       "projectGuid": "73e787f9-3c13-429d-b5f7-b57c8827f336",
-      "lastModifiedDate": 1425002112511,
+      "lastModifiedDate": 1421969677650,
       "creationDate": 1421969677548
     },
     "sourceDirectory": "",
@@ -14,7 +14,22 @@
     "startFile": "index.html",
     "projectFiles": {},
     "projectDirectories": {},
-    "libraries": [],
+    "libraries": [
+      {
+        "name": "Cordova",
+        "version": "2.9.0",
+        "data": {
+          "default": true
+        }
+      },
+      {
+        "name": "intelXDK",
+        "version": "4.0.0",
+        "data": {
+          "default": true
+        }
+      }
+    ],
     "cordovaPlugins": [
       {
         "id": "org.apache.cordova.device",
@@ -40,23 +55,17 @@
         "preferences_": {
           "android-minSdkVersion": "10",
           "android-targetSdkVersion": "19",
-          "android-installLocation": "auto",
-          "Orientation": "landscape",
-          "Fullscreen": true
+          "android-installLocation": "auto"
         },
         "isActive_": true,
         "appName_": "PretinhoBasico",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
-        "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
         "appVersion_": "0.0.1",
         "appVersionCode_": "1",
@@ -69,27 +78,21 @@
         "preferences_": {
           "android-minSdkVersion": "14",
           "android-targetSdkVersion": "19",
-          "android-installLocation": "auto",
-          "Orientation": "landscape",
-          "Fullscreen": true
+          "android-installLocation": "auto"
         },
         "isActive_": true,
         "appName_": "PretinhoBasico",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
-        "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
         "appVersion_": "0.0.1",
         "appVersionCode_": "1",
-        "crosswalkVersion_": "10"
+        "crosswalkVersion_": "stable"
       },
       "iOS": {
         "platform_": "ios",
@@ -97,23 +100,17 @@
         "name_": "iOS",
         "preferences_": {
           "ios-target": "5",
-          "ios-configuration": "adhoc",
-          "Fullscreen": true,
-          "Orientation": "landscape"
+          "ios-configuration": "adhoc"
         },
         "isActive_": true,
         "appName_": "PretinhoBasico",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
-        "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
         "appVersion_": "0.0.1"
       },
@@ -121,29 +118,36 @@
         "platform_": "windows8",
         "runtime_": "Cordova 3.x",
         "name_": "Windows8",
-        "preferences_": {
-          "Fullscreen": true,
-          "Orientation": "landscape"
-        },
+        "preferences_": {},
         "isActive_": true,
         "appName_": "PretinhoBasico",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
+        "cordovaCLIVersion_": "3.5",
+        "appVersion_": "0.0.0.1"
+      },
+      "WindowsPhone8": {
+        "platform_": "wp8",
+        "runtime_": "Cordova 3.x",
+        "name_": "WindowsPhone8",
+        "preferences_": {},
+        "isActive_": true,
+        "appName_": "PretinhoBasico",
+        "appID_": "not.yet.specified",
+        "appAccess_": "*",
+        "icons_": [],
+        "splashes_": [],
         "iosProvs_": [],
+        "addlPermissions_": "",
+        "excludedLibraries_": "",
         "cordovaCLIVersion_": "3.5",
         "appVersion_": "0.0.0.1"
       }
-    },
-    "gameAssetDirectory": "asset",
-    "gameMetadata": {},
-    "projectTags": []
+    }
   }
 }

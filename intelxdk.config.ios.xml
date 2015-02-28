@@ -11,4 +11,6 @@
 <intelxdk:plugin intelxdk:name="SplashScreen" intelxdk:value="org.apache.cordova.splashscreen" intelxdk:version="0.3.0"/>
 <preference name="ios-target" value="5"/>
 <preference name="ios-configuration" value="adhoc"/>
+<preference name="Fullscreen" value="true"/>
+<preference name="Orientation" value="landscape"/>
 <!--creationInfo:{"src":"","projectTypeName":"com.intel.xdk.projecttype.jsapp"}--></widget>
