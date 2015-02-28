@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "",
       "projectGuid": "73e787f9-3c13-429d-b5f7-b57c8827f336",
-      "lastModifiedDate": 1425002112511,
+      "lastModifiedDate": 1425083300060,
       "creationDate": 1421969677548
     },
     "sourceDirectory": "",
@@ -45,7 +45,7 @@
           "Fullscreen": true
         },
         "isActive_": true,
-        "appName_": "PretinhoBasico",
+        "appName_": "A Fuga das Aves Raras",
         "appID_": "not.yet.specified",
         "appAccess_": [
           {
@@ -74,7 +74,7 @@
           "Fullscreen": true
         },
         "isActive_": true,
-        "appName_": "PretinhoBasico",
+        "appName_": "A Fuga das Aves Raras",
         "appID_": "not.yet.specified",
         "appAccess_": [
           {
@@ -102,7 +102,7 @@
           "Orientation": "landscape"
         },
         "isActive_": true,
-        "appName_": "PretinhoBasico",
+        "appName_": "A Fuga das Aves Raras",
         "appID_": "not.yet.specified",
         "appAccess_": [
           {
@@ -126,7 +126,7 @@
           "Orientation": "landscape"
         },
         "isActive_": true,
-        "appName_": "PretinhoBasico",
+        "appName_": "A Fuga das Aves Raras",
         "appID_": "not.yet.specified",
         "appAccess_": [
           {
