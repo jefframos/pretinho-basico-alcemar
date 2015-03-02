@@ -44,17 +44,27 @@ var Bird = Entity.extend({
         this.getContent().tint = 0xFF0000;
     },
     build: function(){
-        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource);
+        this.sprite = new PIXI.Sprite();
 
         this.sprite.anchor.x = 0.5;
         this.sprite.anchor.y = 0.5;
 
+        // this.sprite.alpha = 0;
+
         this.updateable = true;
         this.collidable = true;
 
-        this.range = this.sprite.width;
 
+        var self = this;
+        var motionIdle = new SpritesheetAnimation();
+        motionIdle.build('idle', this.imgSource, 5, true, null);
+
+        this.spritesheet = new Spritesheet();
+        this.spritesheet.addAnimation(motionIdle);
+        this.spritesheet.play('idle');
+        this.getContent().addChild(this.spritesheet.container);
         
+        this.range = this.spritesheet.texture.width;
         // this.centerPosition.x = -this.sprite.width/2;
         // this.centerPosition.y = -this.sprite.height/2;
        
@@ -62,7 +72,7 @@ var Bird = Entity.extend({
     update: function(){
         this._super();
         this.behaviour.update(this);
-
+        this.spritesheet.update();
 
         if(Math.abs(this.velocity.x) < Math.abs(this.vel)){
             this.velocity.x -= this.acceleration;
@@ -72,7 +82,7 @@ var Bird = Entity.extend({
 
 
         // console.log(this.velocity);
-        this.range = this.sprite.height * 0.7;// * this.sprite.scale.x;
+        //this.range = this.sprite.height * 0.7;// * this.sprite.scale.x;
 
         if(this.collideArea){
             return;

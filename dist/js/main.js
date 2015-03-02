@@ -1,4 +1,4 @@
-/*! jefframos 27-02-2015 */
+/*! jefframos 02-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -602,15 +602,15 @@ var Application = AbstractApplication.extend({
                 if (!isNaN(demage)) {
                     this.playerModel.currentEnergy -= demage, entity.preKill();
                     var lowComb = new Particles({
-                        x: -.5,
-                        y: .2 * Math.random() + .3
+                        x: 0,
+                        y: .2 * Math.random() - .5
                     }, 120, new PIXI.Text("- Combustível", {
-                        font: "20px Luckiest Guy",
+                        font: "35px Luckiest Guy",
                         fill: "#F9003C",
                         stroke: "#FFFFFF",
                         strokeThickness: 3
                     }), 0);
-                    lowComb.build(), lowComb.setPosition(this.getPosition().x, this.getPosition().y - 10 * Math.random()), 
+                    lowComb.build(), lowComb.setPosition(windowWidth / 2 - lowComb.getContent().width / 2, windowHeight / 2 - lowComb.getContent().height / 2), 
                     lowComb.alphadecress = .01, this.screen.addChild(lowComb);
                 }
             } else "bird" !== entity.type && entity.preKill();
@@ -646,12 +646,16 @@ var Application = AbstractApplication.extend({
         this.getContent().tint = 16711680;
     },
     build: function() {
-        this.sprite = new PIXI.Sprite.fromFrame(this.imgSource), this.sprite.anchor.x = .5, 
-        this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.range = this.sprite.width;
+        this.sprite = new PIXI.Sprite(), this.sprite.anchor.x = .5, this.sprite.anchor.y = .5, 
+        this.updateable = !0, this.collidable = !0;
+        var motionIdle = new SpritesheetAnimation();
+        motionIdle.build("idle", this.imgSource, 5, !0, null), this.spritesheet = new Spritesheet(), 
+        this.spritesheet.addAnimation(motionIdle), this.spritesheet.play("idle"), this.getContent().addChild(this.spritesheet.container), 
+        this.range = this.spritesheet.texture.width;
     },
     update: function() {
-        this._super(), this.behaviour.update(this), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
-        this.range = .7 * this.sprite.height, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
+        this._super(), this.behaviour.update(this), this.spritesheet.update(), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
+        this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
     },
     preKill: function() {
         for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
@@ -1000,11 +1004,11 @@ var Application = AbstractApplication.extend({
         this.range = .7 * this.sprite.width, this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
     },
     preKill: function() {
-        for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
+        for (var parts = [ "fogo.png", "fumaca1.png", "fumaca2.png" ], i = parts.length - 1; i >= 0; i--) {
             var particle = new Particles({
                 x: 4 * Math.random() - 2,
                 y: -(2 * Math.random() + 1)
-            }, 120, this.birdModel.particles[i], .1 * Math.random());
+            }, 120, parts[i], .1 * Math.random());
             particle.build(), particle.gravity = .1 * Math.random(), particle.alphadecres = .08, 
             particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
             this.layer.addChild(particle);
@@ -1270,10 +1274,10 @@ var Application = AbstractApplication.extend({
             toSpec: 1200,
             bulletBehaviour: new RandomBehaviour()
         }) ], this.birdModels = [ new BirdModel({
-            source: "caralinho.png",
+            source: [ "caralinhoAnima0001.png", "caralinhoAnima0002.png", "caralinhoAnima0003.png", "caralinhoAnima0002.png" ],
             particles: [ "cabeca2.png", "penas2.png" ],
             egg: "ovo_belga.png",
-            sizePercent: .11,
+            sizePercent: .1,
             label: "Caralinho da terra"
         }, {
             target: null,
@@ -1284,7 +1288,7 @@ var Application = AbstractApplication.extend({
             toNext: 30,
             money: 1
         }), new BirdModel({
-            source: "belga.png",
+            source: [ "belgaAnima0001.png", "belgaAnima0002.png", "belgaAnima0003.png", "belgaAnima0002.png" ],
             particles: [ "cabeca5.png", "penas5.png" ],
             egg: "ovo_belga.png",
             sizePercent: .15,
@@ -1300,7 +1304,7 @@ var Application = AbstractApplication.extend({
             toNext: 110,
             money: 3
         }), new BirdModel({
-            source: "lambecu.png",
+            source: [ "lambecuAnima0001.png", "lambecuAnima0002.png", "lambecuAnima0003.png", "lambecuAnima0004.png" ],
             particles: [ "cabeca4.png", "penas4.png" ],
             egg: "ovo_lambecu.png",
             sizePercent: .15,
@@ -1317,7 +1321,7 @@ var Application = AbstractApplication.extend({
             toNext: 150,
             money: 4
         }), new BirdModel({
-            source: "roxo.png",
+            source: [ "roxoAnima0001.png", "roxoAnima0002.png", "roxoAnima0003.png", "roxoAnima0004.png" ],
             particles: [ "cabeca6.png", "penas6.png" ],
             egg: "ovo_papacu.png",
             sizePercent: .2,
@@ -1333,26 +1337,26 @@ var Application = AbstractApplication.extend({
             toNext: 150,
             money: 6
         }), new BirdModel({
-            source: "papodebago.png",
+            source: [ "papodebagoAnima0001.png", "papodebagoAnima0002.png", "papodebagoAnima0003.png", "papodebagoAnima0004.png" ],
             particles: [ "cabeca7.png", "penas7.png" ],
             egg: "ovo_galo.png",
-            sizePercent: .21,
+            sizePercent: .15,
             label: "Galo Papo de Bago"
         }, {
             target: null,
             hp: 4,
             demage: .2,
-            vel: -3.5,
+            vel: -3,
             behaviour: new BirdBehaviourDiag({
                 accX: -.01
             }),
             toNext: 80,
             money: 12
         }), new BirdModel({
-            source: "nocu.png",
+            source: [ "nocututinhaAnima0001.png", "nocututinhaAnima0002.png", "nocututinhaAnima0003.png", "nocututinhaAnima0004.png" ],
             particles: [ "cabeca3.png", "penas3.png" ],
             egg: "ovo_nocu.png",
-            sizePercent: .2,
+            sizePercent: .25,
             label: "Nocututinha"
         }, {
             target: null,
@@ -1366,16 +1370,16 @@ var Application = AbstractApplication.extend({
             toNext: 250,
             money: 20
         }), new BirdModel({
-            source: "calopsuda.png",
+            source: [ "calopsudaAnima0001.png", "calopsudaAnima0002.png", "calopsudaAnima0003.png", "calopsudaAnima0004.png" ],
             particles: [ "cabeca8.png", "penas8.png" ],
             egg: "ovo_calopsuda.png",
-            sizePercent: .21,
+            sizePercent: .28,
             label: "Calopsuda"
         }, {
             target: null,
             hp: 40,
             demage: .2,
-            vel: -1,
+            vel: -.8,
             behaviour: new BirdBehaviourSinoid2({
                 sinAcc: .05,
                 velY: -6
@@ -1383,7 +1387,7 @@ var Application = AbstractApplication.extend({
             toNext: 180,
             money: 25
         }), new BirdModel({
-            source: "nigeriano.png",
+            source: [ "nigerianoAnima0001.png", "nigerianoAnima0002.png", "nigerianoAnima0003.png", "nigerianoAnima0004.png" ],
             particles: [ "cabeca1.png", "penas1.png" ],
             egg: "ovo_nigeriano.png",
             sizePercent: .3,
@@ -1461,7 +1465,8 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), BirdModel = Class.extend({
     init: function(graphicsObject, statsObjec) {
-        this.imgSource = graphicsObject.source ? graphicsObject.source : "belga.png", this.particles = graphicsObject.particles ? graphicsObject.particles : [ "smoke.png" ], 
+        this.imgSource = graphicsObject.source ? graphicsObject.source : [ "belga.png" ], 
+        this.particles = graphicsObject.particles ? graphicsObject.particles : [ "smoke.png" ], 
         this.egg = graphicsObject.egg ? graphicsObject.egg : [ "smoke.png" ], this.sizePercent = graphicsObject.sizePercent ? graphicsObject.sizePercent : .2, 
         this.label = graphicsObject.label ? graphicsObject.label : "", this.demage = statsObjec.demage, 
         this.vel = statsObjec.vel, this.hp = statsObjec.hp, this.target = statsObjec.target, 
@@ -1810,10 +1815,10 @@ var Application = AbstractApplication.extend({
     updateBirds: function() {
         if (this.spawner <= 0) {
             var bird = APP.getGameModel().getNewBird(this.red, this);
-            bird.build(), this.layer.addChild(bird);
-            var scale = scaleConverter(bird.getContent().width, windowHeight, bird.birdModel.sizePercent);
-            bird.setScale(scale, scale), bird.setPosition(bird.behaviour.position.x, bird.behaviour.position.y), 
-            this.spawner = bird.birdModel.toNext;
+            bird.build();
+            var scale = scaleConverter(bird.spritesheet.texture.height, windowHeight, bird.birdModel.sizePercent);
+            bird.spritesheet.setScale(scale, scale), bird.setPosition(bird.behaviour.position.x, bird.behaviour.position.y), 
+            this.spawner = bird.birdModel.toNext, this.layer.addChild(bird);
         } else this.spawner--;
     },
     updateItens: function() {
@@ -2297,9 +2302,9 @@ var Application = AbstractApplication.extend({
         this.boxContainer.visible = !1, scaleConverter(this.boxContainer.height, windowHeight, .18, this.boxContainer), 
         this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2, this.boxContainer.position.y = windowHeight, 
         this.contents = new PIXI.DisplayObjectContainer(), this.icons = new PIXI.DisplayObjectContainer(), 
-        this.birdIco = new SimpleSprite(APP.getGameModel().birdModels[0].imgSource), this.icons.addChild(this.birdIco.getContent()), 
-        this.coinIco = new SimpleSprite("moeda.png"), this.icons.addChild(this.coinIco.getContent()), 
-        this.labels = [ "MASCADA", "LOUVA-DEUS", "BOM JESUS", "CARPINEJAR", "ILUMINATI", "CAMIGOL" ], 
+        this.birdIco = new SimpleSprite(APP.getGameModel().birdModels[0].imgSource[0]), 
+        this.icons.addChild(this.birdIco.getContent()), this.coinIco = new SimpleSprite("moeda.png"), 
+        this.icons.addChild(this.coinIco.getContent()), this.labels = [ "MASCADA", "LOUVA-DEUS", "BOM JESUS", "CARPINEJAR", "ILUMINATI", "CAMIGOL" ], 
         shuffle(this.labels), this.mascadaLabel = new PIXI.Text(this.labels[0] + "\n" + this.labels[1], {
             align: "right",
             fill: "#FFFFFF",

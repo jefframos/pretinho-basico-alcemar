@@ -189,7 +189,6 @@
         <key>fileList</key>
         <array>
             <filename>birds/belga.png</filename>
-            <filename>birds/caralinho.png</filename>
             <filename>birds/lambecu.png</filename>
             <filename>birds/nigeriano.png</filename>
             <filename>birds/nocu.png</filename>
@@ -244,6 +243,17 @@
             <filename>particles/cabeca8.png</filename>
             <filename>particles/penas7.png</filename>
             <filename>particles/penas8.png</filename>
+            <filename>birds/caralinhoAnima0001.png</filename>
+            <filename>birds/caralinhoAnima0002.png</filename>
+            <filename>birds/caralinhoAnima0003.png</filename>
+            <filename>birds/calopsudaAnima0004.png</filename>
+            <filename>birds/belgaAnima0001.png</filename>
+            <filename>birds/belgaAnima0002.png</filename>
+            <filename>birds/belgaAnima0003.png</filename>
+            <filename>birds/belgaAnima0004.png</filename>
+            <filename>birds/calopsudaAnima0001.png</filename>
+            <filename>birds/calopsudaAnima0002.png</filename>
+            <filename>birds/calopsudaAnima0003.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

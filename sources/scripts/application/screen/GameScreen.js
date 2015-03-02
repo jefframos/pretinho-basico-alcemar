@@ -260,15 +260,17 @@ var GameScreen = AbstractScreen.extend({
         if(this.spawner <= 0){
             var bird = APP.getGameModel().getNewBird(this.red, this);
             bird.build();
-            this.layer.addChild(bird);
 
-            var scale = scaleConverter(bird.getContent().width, windowHeight, bird.birdModel.sizePercent);
-            //// console.log(scale);
-            bird.setScale( scale,scale);
+            var scale = scaleConverter(bird.spritesheet.texture.height, windowHeight, bird.birdModel.sizePercent);
+            // console.log(scale);
+            bird.spritesheet.setScale( scale,scale);
+            // bird.setScale( scale,scale);
             //// console.log(bird);
             bird.setPosition(bird.behaviour.position.x ,bird.behaviour.position.y);
             // console.log(bird.behaviour.position.y);
             this.spawner = bird.birdModel.toNext;
+
+            this.layer.addChild(bird);
 
         }else{
             this.spawner --;

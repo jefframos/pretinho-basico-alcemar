@@ -303,10 +303,10 @@ var AppModel = Class.extend({
 		this.birdModels = [
 			
 			new BirdModel({
-				source:'caralinho.png',
+				source:['caralinhoAnima0001.png','caralinhoAnima0002.png','caralinhoAnima0003.png','caralinhoAnima0002.png'],
 				particles:['cabeca2.png', 'penas2.png'],
 				egg:'ovo_belga.png',
-				sizePercent:0.11,
+				sizePercent:0.10,
 				label:'Caralinho da terra'
 			},
 			{
@@ -320,7 +320,7 @@ var AppModel = Class.extend({
 			}),
 
 			new BirdModel({
-				source:'belga.png',
+				source:['belgaAnima0001.png','belgaAnima0002.png','belgaAnima0003.png','belgaAnima0002.png'],
 				particles:['cabeca5.png', 'penas5.png'],
 				egg:'ovo_belga.png',
 				sizePercent:0.15,
@@ -338,7 +338,7 @@ var AppModel = Class.extend({
 			}),
 
 			new BirdModel({
-				source:'lambecu.png',
+				source:['lambecuAnima0001.png','lambecuAnima0002.png','lambecuAnima0003.png','lambecuAnima0004.png'],
 				particles:['cabeca4.png', 'penas4.png'],
 				egg:'ovo_lambecu.png',
 				sizePercent:0.15,
@@ -356,7 +356,7 @@ var AppModel = Class.extend({
 			}),
 
 			new BirdModel({
-				source:'roxo.png',
+				source:['roxoAnima0001.png','roxoAnima0002.png','roxoAnima0003.png','roxoAnima0004.png'],
 				particles:['cabeca6.png', 'penas6.png'],
 				egg:'ovo_papacu.png',
 				sizePercent:0.2,
@@ -374,27 +374,27 @@ var AppModel = Class.extend({
 			}),
 			
 			new BirdModel({
-				source:'papodebago.png',
+				source:['papodebagoAnima0001.png','papodebagoAnima0002.png','papodebagoAnima0003.png','papodebagoAnima0004.png'],
 				particles:['cabeca7.png', 'penas7.png'],
 				egg:'ovo_galo.png',
-				sizePercent:0.21,
+				sizePercent:0.15,
 				label:'Galo Papo de Bago'
 			},
 			{
 				target:null,
 				hp:4,
 				demage:0.2,
-				vel:-3.5,
+				vel:-3,
 				behaviour:new BirdBehaviourDiag({accX:-0.01}),
 				toNext:80,
 				money:12
 			}),
 
 			new BirdModel({
-				source:'nocu.png',
+				source:['nocututinhaAnima0001.png','nocututinhaAnima0002.png','nocututinhaAnima0003.png','nocututinhaAnima0004.png'],
 				particles:['cabeca3.png', 'penas3.png'],
 				egg:'ovo_nocu.png',
-				sizePercent:0.2,
+				sizePercent:0.25,
 				label:'Nocututinha'
 
 			},
@@ -409,17 +409,17 @@ var AppModel = Class.extend({
 			}),
 
 			new BirdModel({
-				source:'calopsuda.png',
+				source:['calopsudaAnima0001.png','calopsudaAnima0002.png','calopsudaAnima0003.png','calopsudaAnima0004.png'],
 				particles:['cabeca8.png', 'penas8.png'],
 				egg:'ovo_calopsuda.png',
-				sizePercent:0.21,
+				sizePercent:0.28,
 				label:'Calopsuda'
 			},
 			{
 				target:null,
 				hp:40,
 				demage:0.2,
-				vel:-1,
+				vel:-0.8,
 				behaviour: new BirdBehaviourSinoid2({sinAcc:0.05, velY:-6}),
 				toNext:180,
 				money:25
@@ -427,7 +427,7 @@ var AppModel = Class.extend({
 
 
 			new BirdModel({
-				source:'nigeriano.png',
+				source:['nigerianoAnima0001.png','nigerianoAnima0002.png','nigerianoAnima0003.png','nigerianoAnima0004.png'],
 				particles:['cabeca1.png', 'penas1.png'],
 				egg:'ovo_nigeriano.png',
 				sizePercent:0.3,

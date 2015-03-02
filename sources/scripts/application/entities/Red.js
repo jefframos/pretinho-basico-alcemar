@@ -11,15 +11,6 @@ var Red = SpritesheetEntity.extend({
 
 		var self = this;
 		var motionIdle = new SpritesheetAnimation();
-		// motionIdle.build('idle', this.getFramesByRange('piangers0', 2, 8), 1, true, null);
-		// console.log(this.playerModel);
-		// if(windowHeight > 450){
-  //           //this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSource);
-		// 	motionIdle.build('idle', [this.playerModel.imgSource], 1, true, null);
-
-  //       }else{
-  //           //this.playerImg  = new SimpleSprite(APP.getGameModel().currentPlayerModel.imgSourceGame);
-  //       }
 		motionIdle.build('idle', [this.playerModel.imgSourceGame], 1, true, null);
 		
 		var motionHurt = new SpritesheetAnimation();
@@ -29,19 +20,12 @@ var Red = SpritesheetEntity.extend({
 
 		this.spritesheet = new Spritesheet();
 		this.spritesheet.addAnimation(motionIdle);
-		// this.spritesheet.addAnimation(motionHurt);
 		this.spritesheet.play('idle');
 
 		this.screen = screen;
 		this.defaultVel = 50 * gameScale;
-
 		this.upVel = this.playerModel.velocity * gameScale;
 
-		// TweenLite.to(this.getContent().position, 0.5, {x:500});
-		// console.log(this.spritesheet.texture.rotation = 10);
-		// TweenLite.to(this.spritesheet.texture, 0.5, {rotation:90});
-		// this.getContent().pivot.x = this.spritesheet.texture.width * 1.5 ;// / 2;
-		// this.getContent().pivot.y = this.spritesheet.texture.height* 1.5;// / 2;
 		this.spritesheet.texture.anchor.x = 0.5;
 		this.spritesheet.texture.anchor.y = 0.5;
 		this.rotation = 0;
@@ -154,12 +138,12 @@ var Red = SpritesheetEntity.extend({
 							this.playerModel.currentEnergy -= demage;
 							entity.preKill();
 
-							var lowComb = new Particles({x:-0.5, y:(Math.random() * 0.2 + 0.3)}, 120,
-				                new PIXI.Text('- Combustível', {font:'20px Luckiest Guy', fill:'#F9003C', stroke:'#FFFFFF', strokeThickness:3}),
+							var lowComb = new Particles({x:0, y:(Math.random() * 0.2 - 0.5)}, 120,
+				                new PIXI.Text('- Combustível', {font:'35px Luckiest Guy', fill:'#F9003C', stroke:'#FFFFFF', strokeThickness:3}),
 				                0);
 				            lowComb.build();
-				            lowComb.setPosition(this.getPosition().x,
-				                this.getPosition().y - Math.random() * 10);
+				            lowComb.setPosition(windowWidth / 2 - lowComb.getContent().width / 2,
+				                windowHeight / 2 - lowComb.getContent().height / 2);
 				            lowComb.alphadecress = 0.01;
 				            this.screen.addChild(lowComb);
 						}

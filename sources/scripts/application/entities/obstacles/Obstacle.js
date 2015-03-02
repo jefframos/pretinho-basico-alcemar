@@ -68,10 +68,11 @@ var Obstacle = Entity.extend({
         // this.getContent().addChild(this.collideArea);
     },
     preKill:function(){
-        for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
+        var parts = ['fogo.png', 'fumaca1.png', 'fumaca2.png'];
+        for (var i = parts.length - 1; i >= 0; i--) {
             
 
-            var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, this.birdModel.particles[i], Math.random() * 0.1);
+            var particle = new Particles({x: Math.random() * 4 - 2, y:-(Math.random() * 2 + 1)}, 120, parts[i], Math.random() * 0.1);
             particle.build();
             particle.gravity = 0.1 * Math.random();
             particle.alphadecres = 0.08;

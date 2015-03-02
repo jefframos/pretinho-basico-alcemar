@@ -85,7 +85,7 @@ var EndModal = Class.extend({
 		this.contents = new PIXI.DisplayObjectContainer();
 		this.icons = new PIXI.DisplayObjectContainer();
 
-		this.birdIco = new SimpleSprite(APP.getGameModel().birdModels[0].imgSource);
+		this.birdIco = new SimpleSprite(APP.getGameModel().birdModels[0].imgSource[0]);
 		this.icons.addChild(this.birdIco.getContent());
 
 		this.coinIco = new SimpleSprite('moeda.png');
