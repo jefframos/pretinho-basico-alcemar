@@ -6,7 +6,7 @@ var NewBirdModal = Class.extend({
 		this.container = new PIXI.DisplayObjectContainer();
 		this.boxContainer = new PIXI.DisplayObjectContainer();
 		this.bg = new PIXI.Graphics();
-		this.bg.beginFill(0x000000);
+		this.bg.beginFill(0x012223);
 		this.bg.drawRect(0,0,windowWidth, windowHeight);
 		this.bg.alpha = 0.0;
 		this.container.addChild(this.bg);
@@ -109,7 +109,7 @@ var NewBirdModal = Class.extend({
 		}
 		this.screen.addChild(this);
 		this.screen.updateable = false;
-		TweenLite.to(this.bg, 0.5, {alpha:0.5});
+		TweenLite.to(this.bg, 0.5, {alpha:0.8});
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 	},
 	hide:function(callback){

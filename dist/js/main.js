@@ -1078,10 +1078,10 @@ var Application = AbstractApplication.extend({
             bulletCoast: .095,
             bulletVel: 7,
             toAble: 10,
-            toSpec: 400,
+            toSpec: 450,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
-                totalFires: 45
+                totalFires: 40
             })
         }), new PlayerModel({
             label: "POTTER",
@@ -1268,10 +1268,10 @@ var Application = AbstractApplication.extend({
             energyCoast: 3,
             vel: 2,
             bulletForce: 1,
-            bulletCoast: .125,
+            bulletCoast: .14,
             bulletVel: 5,
             toAble: 15e3,
-            toSpec: 1200,
+            toSpec: 1300,
             bulletBehaviour: new RandomBehaviour()
         }) ], this.birdModels = [ new BirdModel({
             source: [ "caralinhoAnima0001.png", "caralinhoAnima0002.png", "caralinhoAnima0003.png", "caralinhoAnima0002.png" ],
@@ -1401,7 +1401,7 @@ var Application = AbstractApplication.extend({
                 sinAcc: .08,
                 velY: -2
             }),
-            toNext: 600,
+            toNext: 450,
             money: 50
         }) ], this.setModel(0), this.totalPlayers = 0;
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && (this.playerModels[i].able = !0, 
@@ -2085,7 +2085,7 @@ var Application = AbstractApplication.extend({
         this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.labelsContainer = new PIXI.DisplayObjectContainer(), 
         this.labelsContainerRight = new PIXI.DisplayObjectContainer(), this.footer = new PIXI.DisplayObjectContainer(), 
         this.header = new PIXI.DisplayObjectContainer(), this.bg = new PIXI.Graphics(), 
-        this.bg.beginFill(0), this.bg.drawRect(0, 0, windowWidth, windowHeight), this.bg.alpha = .8, 
+        this.bg.beginFill(74275), this.bg.drawRect(0, 0, windowWidth, windowHeight), this.bg.alpha = .8, 
         this.container.addChild(this.bg), this.container.addChild(this.labelsContainer), 
         this.container.addChild(this.labelsContainerRight), this.container.addChild(this.footer), 
         this.container.addChild(this.header);
@@ -2275,10 +2275,10 @@ var Application = AbstractApplication.extend({
 }), EndModal = Class.extend({
     init: function(screen) {
         this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.boxContainer = new PIXI.DisplayObjectContainer(), 
-        this.bg = new PIXI.Graphics(), this.bg.beginFill(0), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
+        this.bg = new PIXI.Graphics(), this.bg.beginFill(74275), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
         this.bg.alpha = 0, this.container.addChild(this.bg);
         var self = this;
-        this.backShape = new PIXI.Graphics(), this.backShape.beginFill(0), this.backShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.backShape = new PIXI.Graphics(), this.backShape.beginFill(74275), this.backShape.drawRect(0, 0, windowWidth, windowHeight), 
         this.backShape.alpha = .4, this.container.addChild(this.backShape), this.feito = new SimpleSprite("feitoo.png"), 
         this.container.addChild(this.boxContainer), this.container.addChild(this.feito.getContent()), 
         scaleConverter(this.feito.getContent().width, windowWidth, .35, this.feito), this.feito.setPosition(windowWidth / 2 - this.feito.getContent().width / 2, -10), 
@@ -2369,7 +2369,7 @@ var Application = AbstractApplication.extend({
             }, 2e3);
         } else this.showPoints();
         this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
-            alpha: .5
+            alpha: .8
         }), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
     },
     showPoints: function() {
@@ -2408,7 +2408,7 @@ var Application = AbstractApplication.extend({
 }), NewBirdModal = Class.extend({
     init: function(screen) {
         this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.boxContainer = new PIXI.DisplayObjectContainer(), 
-        this.bg = new PIXI.Graphics(), this.bg.beginFill(0), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
+        this.bg = new PIXI.Graphics(), this.bg.beginFill(74275), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
         this.bg.alpha = 0, this.container.addChild(this.bg), this.container.addChild(this.boxContainer);
         this.feito = new SimpleSprite("feitoo.png"), this.container.addChild(this.feito.getContent()), 
         scaleConverter(this.feito.getContent().width, windowWidth, .35, this.feito), this.feito.setPosition(windowWidth / 2 - this.feito.getContent().width / 2, -10), 
@@ -2456,7 +2456,7 @@ var Application = AbstractApplication.extend({
             }, 2e3);
         }
         this.screen.addChild(this), this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
-            alpha: .5
+            alpha: .8
         }), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
     },
     hide: function(callback) {
@@ -2481,7 +2481,7 @@ var Application = AbstractApplication.extend({
 }), PauseModal = Class.extend({
     init: function(screen) {
         this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.boxContainer = new PIXI.DisplayObjectContainer(), 
-        this.bg = new PIXI.Graphics(), this.bg.beginFill(0), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
+        this.bg = new PIXI.Graphics(), this.bg.beginFill(74275), this.bg.drawRect(0, 0, windowWidth, windowHeight), 
         this.bg.alpha = 0, this.container.addChild(this.bg), this.container.addChild(this.boxContainer);
         var self = this;
         this.backButton = new DefaultButton("voltarButton.png", "voltarButtonOver.png"), 
@@ -2508,7 +2508,7 @@ var Application = AbstractApplication.extend({
     show: function() {
         this.screen.addChild(this), this.boxContainer.visible = !0, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
         this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
-            alpha: .5
+            alpha: .8
         }), TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight / 2 - this.boxContainer.height / 2 - this.continueButton.getContent().position.y,
             ease: "easeOutBack"

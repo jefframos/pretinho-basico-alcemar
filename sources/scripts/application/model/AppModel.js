@@ -101,8 +101,8 @@ var AppModel = Class.extend({
 				bulletCoast:0.095,
 				bulletVel:7,
 				toAble: 10,
-				toSpec: 400,
-				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 45})
+				toSpec: 450,
+				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 40})
 			}
 			),
 			new PlayerModel({
@@ -291,10 +291,10 @@ var AppModel = Class.extend({
 				energyCoast:3,
 				vel:2,
 				bulletForce:1,
-				bulletCoast:0.125,
+				bulletCoast:0.14,
 				bulletVel:5,
 				toAble: 15000,
-				toSpec: 1200,
+				toSpec: 1300,
 				bulletBehaviour: new RandomBehaviour()
 			}
 			)
@@ -440,7 +440,7 @@ var AppModel = Class.extend({
 				demage:0.2,
 				vel:-0.5,
 				behaviour: new BirdBehaviourSinoid2({sinAcc:0.08, velY:-2}),
-				toNext:600,
+				toNext:450,
 				money:50
 			}),
 		];

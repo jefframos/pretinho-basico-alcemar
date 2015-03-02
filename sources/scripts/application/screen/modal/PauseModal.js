@@ -6,7 +6,7 @@ var PauseModal = Class.extend({
 		this.container = new PIXI.DisplayObjectContainer();
 		this.boxContainer = new PIXI.DisplayObjectContainer();
 		this.bg = new PIXI.Graphics();
-		this.bg.beginFill(0x000000);
+		this.bg.beginFill(0x012223);
 		this.bg.drawRect(0,0,windowWidth, windowHeight);
 		this.bg.alpha = 0.0;
 		this.container.addChild(this.bg);
@@ -58,7 +58,7 @@ var PauseModal = Class.extend({
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 
 		this.screen.updateable = false;
-		TweenLite.to(this.bg, 0.5, {alpha:0.5});
+		TweenLite.to(this.bg, 0.5, {alpha:0.8});
 		TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.boxContainer.height / 2 - this.continueButton.getContent().position.y, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:1});
 	},

@@ -10,7 +10,7 @@ var CreditsModal = Class.extend({
 		this.footer = new PIXI.DisplayObjectContainer();
 		this.header = new PIXI.DisplayObjectContainer();
 		this.bg = new PIXI.Graphics();
-		this.bg.beginFill(0x000000);
+		this.bg.beginFill(0x012223);
 		this.bg.drawRect(0,0,windowWidth, windowHeight);
 		this.bg.alpha = 0.8;
 		this.container.addChild(this.bg);
