@@ -40,6 +40,7 @@ var NewBirdModal = Class.extend({
 			// APP.getGameModel().ableNewBird();
 
 
+			var degrade = new SimpleSprite('dist/img/UI/fundo_degrade.png');
 			var pista = new SimpleSprite('pista.png');
 			var holofote = new SimpleSprite('holofote.png');
 			var novo = new SimpleSprite('nova_ave.png');
@@ -47,27 +48,36 @@ var NewBirdModal = Class.extend({
 			var penas1 = new SimpleSprite('penasfundo1.png');
 			var penas2 = new SimpleSprite('penasfundo2.png');
 
-			var playerImage = null;
-			playerImage  = new SimpleSprite(bird[0].imgSource);
+			this.playerImage = null;
+			this.playerImage  = new SimpleSprite(bird[0].cover);
 
 
-			// var playerImage = new SimpleSprite(APP.getGameModel().playerModels[0].im);
+			// var this.playerImage = new SimpleSprite(APP.getGameModel().playerModels[0].im);
 
-			this.newCharContainer.addChild(pista.getContent());
+			this.container.addChild(degrade.getContent());
+			degrade.getContent().width = windowWidth / 1.5;
+			
+			var sH = scaleConverter(degrade.getContent().height, windowHeight, 1);
+			// console.log(sH);
+			degrade.getContent().scale.y = sH;
+			degrade.getContent().height = windowHeight;
+			degrade.setPosition(windowWidth / 2 - degrade.getContent().width / 2, windowHeight / 2 - degrade.getContent().height / 2);
+
 			// scaleConverter(pista.getContent().width, windowWidth, 0.35, pista);
+			this.newCharContainer.addChild(pista.getContent());
 			pista.setPosition(0, holofote.getContent().height - 35);
 
 			this.newCharContainer.addChild(holofote.getContent());
 			this.newCharContainer.addChild(ovoquebrado.getContent());
 			this.newCharContainer.addChild(penas1.getContent());
 			this.newCharContainer.addChild(penas2.getContent());
-			this.newCharContainer.addChild(playerImage.getContent());
+			this.container.addChild(this.playerImage.getContent());
 			this.newCharContainer.addChild(novo.getContent());
 			// scaleConverter(holofote.getContent().width, windowWidth, 0.35, holofote);
 			holofote.setPosition(pista.getContent().width / 2 - holofote.getContent().width / 2, 0);
 
 
-			var charLabel = new PIXI.Text(bird[0].label, { align:'center', fill:'#FFFFFF', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+			var charLabel = new PIXI.Text(bird[0].label, { align:'center', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5, font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
 			this.newCharContainer.addChild(charLabel);
 			this.container.addChild(this.newCharContainer);
 			// this.container.buttonMode = true;
@@ -79,17 +89,19 @@ var NewBirdModal = Class.extend({
 
 			novo.setPosition(pista.getContent().width / 2 - novo.getContent().width / 2, charLabel.position.y - novo.getContent().height - 20);
 
-			scaleConverter(playerImage.getContent().height, this.newCharContainer.height, 0.3, playerImage);
+
 			scaleConverter(ovoquebrado.getContent().height, this.newCharContainer.height, 0.15, ovoquebrado);
 			scaleConverter(penas1.getContent().height, this.newCharContainer.height, 0.2, penas1);
 			scaleConverter(penas2.getContent().height, this.newCharContainer.height, 0.2, penas2);
 			penas1.setPosition(pista.getContent().width / 2 - penas1.getContent().width * 2, holofote.getContent().height - penas1.getContent().height);
 			penas2.setPosition(pista.getContent().width / 2 + penas1.getContent().width, holofote.getContent().height - penas2.getContent().height);
 			
-			playerImage.setPosition(pista.getContent().width / 2 - playerImage.getContent().width/2, pista.getContent().position.y - playerImage.getContent().height - 10);
 			ovoquebrado.setPosition(pista.getContent().width / 2 - ovoquebrado.getContent().width/2, holofote.getContent().height - ovoquebrado.getContent().height);
 			
 			scaleConverter(this.newCharContainer.height, windowHeight, 1, this.newCharContainer);
+			// scaleConverter(this.playerImage.getContent().height, this.newCharContainer.height, -this.newCharContainer.scale.x - 1, this.playerImage);
+			this.playerImage.setPosition(windowWidth / 2 - this.playerImage.getContent().width/2, windowHeight / 2 - this.playerImage.getContent().height / 2 - 20);
+
 
 			this.newCharContainer.position.x = windowWidth / 2 - this.newCharContainer.width / 2;
 
@@ -111,6 +123,7 @@ var NewBirdModal = Class.extend({
 		this.screen.updateable = false;
 		TweenLite.to(this.bg, 0.5, {alpha:0.8});
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
+		this.playerImage.getContent().parent.setChildIndex(this.playerImage.getContent(),this.playerImage.getContent().parent.children.length -1);
 	},
 	hide:function(callback){
 		var self = this;

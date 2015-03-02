@@ -795,10 +795,10 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "HUD.png",
+	"image": "HUD2.png",
 	"format": "RGBA8888",
 	"size": {"w":1151,"h":1882},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:21b4400d4ad714448ab890b0ca7c5b96:f7b3835632675eda54f1a1a6e377da58:ab8edaf43021c39a73bb7d040bcb4897$"
+	"smartupdate": "$TexturePacker:SmartUpdate:df167875b27806a4836c7b1ad73385d4:f7b3835632675eda54f1a1a6e377da58:02fe2405cb94074685b74d04d98c6857$"
 }
 }

@@ -12,7 +12,7 @@ var WaitScreen = AbstractScreen.extend({
         
 
         var assetsToLoader = ['dist/img/atlas/atlas.json',
-        'dist/img/UI/HUD.json',
+        'dist/img/UI/HUD2.json',
         'dist/img/atlas/players2.json',
         'dist/img/atlas/nuvens.json',
         'dist/img/UI/bgChoice.png',
@@ -26,6 +26,7 @@ var WaitScreen = AbstractScreen.extend({
         'dist/img/UI/covers/alcemarGrande.png',
         'dist/img/UI/covers/netoGrande.png',
         'dist/img/UI/covers/piangersGrande.png',
+        'dist/img/UI/fundo_degrade.png',
         'dist/img/UI/introScreen.jpg'];
         // 'dist/img/UI/introScreen.jpg',
         // 'dist/img/UI/HUD.json'];

@@ -15,8 +15,8 @@ var EndModal = Class.extend({
 
 		this.backShape = new PIXI.Graphics();
 		this.backShape.beginFill(0x012223);
-		this.backShape.drawRect(0,0,windowWidth, windowHeight);
-		this.backShape.alpha = 0.4;
+		this.backShape.drawEllipse(windowWidth / 3, windowHeight * 1.2,windowWidth / 3, windowHeight * 1.2);
+		this.backShape.alpha = 0.5;
 		this.container.addChild(this.backShape);
 		this.feito  = new SimpleSprite('feitoo.png');
 
@@ -27,12 +27,18 @@ var EndModal = Class.extend({
 		scaleConverter(this.feito.getContent().width, windowWidth, 0.35, this.feito);
 		this.feito.setPosition(windowWidth / 2 - this.feito.getContent().width / 2, -10);
 
-		this.backShape.width = this.feito.getContent().width + 50;
+		// this.backShape.width = this.feito.getContent().width + 50;
+
+		
 		this.backShape.position.x = windowWidth / 2 - this.backShape.width / 2;
+		this.backShape.position.y = windowHeight / 2 - this.backShape.height / 2;
 
 		this.backButton = new DefaultButton('menuButton.png', 'menuButtonOver.png');
 		this.backButton.build();
 		this.backButton.setPosition(0,0);
+
+
+		// this.backButton.getPosition().x
 			// this.background.getContent().height - this.backButton.height / 2);
 		// this.backButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
 		this.boxContainer.addChild(this.backButton.getContent());
@@ -82,22 +88,23 @@ var EndModal = Class.extend({
 		this.boxContainer.position.y = windowHeight;
 
 
+
 		this.contents = new PIXI.DisplayObjectContainer();
 		this.icons = new PIXI.DisplayObjectContainer();
 
-		this.birdIco = new SimpleSprite(APP.getGameModel().birdModels[0].imgSource[0]);
-		this.icons.addChild(this.birdIco.getContent());
+		// this.birdIco = new SimpleSprite(APP.getGameModel().birdModels[0].imgSource[0]);
+		// this.icons.addChild(this.birdIco.getContent());
 
 		this.coinIco = new SimpleSprite('moeda.png');
 		this.icons.addChild(this.coinIco.getContent());
 
-		this.labels = ['MASCADA', 'LOUVA-DEUS', 'BOM JESUS', 'CARPINEJAR','ILUMINATI', 'CAMIGOL'];
-		shuffle(this.labels);
-		this.mascadaLabel = new PIXI.Text(this.labels[0] +'\n'+ this.labels[1], { align:'right', fill:'#FFFFFF', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+		this.labelsArray = ['MASCADA', 'LOUVA-DEUS', 'BOM JESUS', 'CARPINEJAR','ILUMINATI', 'CAMIGOL'];
+		shuffle(this.labelsArray);
+		this.mascadaLabel = new PIXI.Text('TOTAL DE\n'+this.labelsArray[0] +'\n'+ this.labelsArray[1], { align:'right', fill:'#FFFFFF', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
 		
 
-		this.birdIco.setPosition(this.mascadaLabel.width - this.birdIco.getContent().width, 0);
-		this.coinIco.setPosition(this.mascadaLabel.width - this.coinIco.getContent().width + 5, this.birdIco.getContent().height + 15);
+		// this.birdIco.setPosition(this.mascadaLabel.width - this.birdIco.getContent().width, 0);
+		this.coinIco.setPosition(this.mascadaLabel.width - this.coinIco.getContent().width + 5, 0);
 		this.mascadaLabel.position.y = this.coinIco.getContent().position.y + this.coinIco.getContent().height + 30;
 
 		this.icons.addChild(this.mascadaLabel);
@@ -108,18 +115,23 @@ var EndModal = Class.extend({
 
 		this.labels = new PIXI.DisplayObjectContainer();
 
-		this.currentBirds = new PIXI.Text(0, { align:'center', fill:'#FFFFFF', font:'40px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
-		this.labels.addChild(this.currentBirds);
+		// this.currentBirds = new PIXI.Text(0, { align:'center', fill:'#FFFFFF', font:'40px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+		// this.labels.addChild(this.currentBirds);
 
-		this.currentCoin = new PIXI.Text(0, { align:'center', fill:'#FFFFFF', font:'40px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+		this.currentCoin = new PIXI.Text(0, { align:'center', fill:'#FFFFFF', font:'40px Luckiest Guy', stroke:'#000', strokeThickness:5, wordWrap:true, wordWrapWidth:300});
 		this.labels.addChild(this.currentCoin);
 
-		this.totalCoin = new PIXI.Text(0, { align:'center', fill:'#FFCe00', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+		this.totalCoin = new PIXI.Text(0, { align:'center', fill:'#FFCe00', font:'50px Luckiest Guy', stroke:'#000', strokeThickness:5, wordWrap:true, wordWrapWidth:300});
 		this.labels.addChild(this.totalCoin);
 
-		this.currentBirds.position.y = 10;
-		this.currentCoin.position.y = this.currentBirds.position.y + this.currentBirds.height + 30;
-		this.totalCoin.position.y = this.currentCoin.position.y + this.currentCoin.height + 35;
+		// this.currentBirds.position.y = 10;
+		// this.currentCoin.position.y = this.currentBirds.position.y + this.currentBirds.height + 30;
+		// this.pointsLabel.position.y = this.moneyContainer.height / 2 - this.pointsLabel.height / 2;
+  //       this.pointsLabel.position.x = this.moneyContainer.width - this.pointsLabel.width - this.moneyContainer.height;
+
+		this.currentCoin.position.y = this.coinIco.getContent().position.y + this.coinIco.getContent().height / 2 - this.currentCoin.height /2;
+		
+		this.totalCoin.position.y = this.mascadaLabel.position.y + this.mascadaLabel.height / 2 - this.totalCoin.height /2;
 
 		this.contents.addChild(this.labels);
 
@@ -130,6 +142,13 @@ var EndModal = Class.extend({
 		this.contents.position.y = windowHeight / 2 - this.contents.height / 2;
 		this.container.addChild(this.contents);
 
+
+		this.novoRecruta = new SimpleSprite('novoRecrutaSelo.png');
+		this.container.addChild(this.novoRecruta.getContent());
+		scaleConverter(this.novoRecruta.getContent().height, windowHeight, 0.3, this.novoRecruta);
+		this.novoRecruta.getContent().position.x = this.boxContainer.position.x - this.novoRecruta.getContent().width / 1.5;
+		this.novoRecruta.getContent().position.y = windowHeight - this.boxContainer.height - 20 - this.novoRecruta.getContent().height / 1.3;
+		this.novoRecruta.getContent().alpha = 0;
 		this.contents.alpha = 0;
 		this.contents.visible = false;
 
@@ -144,7 +163,7 @@ var EndModal = Class.extend({
 			newPlayers = [APP.getGameModel().playerModels[Math.floor(Math.random() * APP.getGameModel().playerModels.length)]];
 		}
 		// newPlayers = [APP.getGameModel().playerModels[9]];
-		this.currentBirds.setText(APP.getGameModel().currentPoints);
+		// this.currentBirds.setText(APP.getGameModel().currentPoints);
 		this.currentCoin.setText(APP.getGameModel().currentPoints);
 		this.totalCoin.setText(APP.getGameModel().totalPoints);
 		if(newPlayers && newPlayers.length > 0){
@@ -204,7 +223,7 @@ var EndModal = Class.extend({
 					self.container.buttonMode = true;
 					self.container.interactive = true;
 					self.container.mousedown = self.container.touchstart = function(data){
-						self.showPoints();
+						self.showPoints(true);
 					};
 				}, 2000);
 			
@@ -221,11 +240,17 @@ var EndModal = Class.extend({
 		TweenLite.to(this.bg, 0.5, {alpha:0.8});
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 	},
-	showPoints:function(){
+	showPoints:function(hasNew){
 		if(this.newCharContainer){
 			TweenLite.to(this.newCharContainer, 0.5, {alpha:0});
 			this.container.interactive = false;
 			this.container.buttonMode = false;
+		}
+		if(hasNew){
+
+			TweenLite.from(this.novoRecruta.getContent().scale, 0.8, {delay:1,y:0.2, x:0.2, ease:'easeOutElastic'});
+			TweenLite.to(this.novoRecruta.getContent(), 0.2, {delay:1, alpha:1});
+
 		}
 		// this.container.interactive = true;
 		// this.container.buttonMode = true;

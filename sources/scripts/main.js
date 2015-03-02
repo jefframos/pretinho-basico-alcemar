@@ -78,15 +78,19 @@ function update() {
 
 		gameScale = 1.3;
 
-		updateResolution('landscape', gameScale);
 		
-		renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
+		if(testMobile()){
+			updateResolution('landscape', gameScale);
+			renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
+		}else{
+			renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
+		}
 		// renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:window.devicePixelRatio, view:gameView});
 
 		renderer.view.style.width = windowWidth+'px';
 		renderer.view.style.height = windowHeight+'px';
 
-		
+		// alert(realWindowWidth+' - '+ realWindowHeight+' - '+ retina +' - '+windowWidth);
 		APP = new Application();
 		APP.build();
 		APP.show();

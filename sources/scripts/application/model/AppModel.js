@@ -55,7 +55,7 @@ var AppModel = Class.extend({
 
 			new PlayerModel({
 				label:'ALCEMAR',
-				outGame:'alcemar.png',
+				// outGame:'alcemar.png',
 				inGame:'alcemarGame.png',
 				bullet:'alcemarFire.png',
 				bulletRotation: true,
@@ -82,7 +82,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'PIANGERS',
-				outGame:'piangersN.png',
+				// outGame:'piangersN.png',
 				inGame:'piangersNGame.png',
 				bullet:'piangersFire.png',
 				bulletRotation: true,
@@ -107,7 +107,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'POTTER',
-				outGame:'poter.png',
+				// outGame:'poter.png',
 				inGame:'poterGame.png',
 				bullet:'potterFire.png',
 				bulletRotation: true,
@@ -131,7 +131,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'ARTHUR',
-				outGame:'arthur.png',
+				// outGame:'arthur.png',
 				inGame:'arthurGame.png',
 				bullet:'arthurFire.png',
 				bulletParticle:'partarthur.png',
@@ -154,7 +154,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'PORÃ',
-				outGame:'pora.png',
+				// outGame:'pora.png',
 				inGame:'poraGame.png',
 				bullet:'poraFire.png',
 				bulletRotation: true,
@@ -179,7 +179,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'JEISO',
-				outGame:'jeso.png',
+				// outGame:'jeso.png',
 				inGame:'jesoGame.png',
 				bullet:'jeisoFire.png',
 				bulletParticle:'partjeiso.png',
@@ -203,7 +203,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Mr. PI',
-				outGame:'pi.png',
+				// outGame:'pi.png',
 				inGame:'piGame.png',
 				bullet:'piFire.png',
 				bulletRotation: true,
@@ -228,7 +228,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'FETTER',
-				outGame:'feter.png',
+				// outGame:'feter.png',
 				inGame:'feterGame.png',
 				bullet:'feterFire.png',
 				bulletParticle:'partexplosao.png',
@@ -251,7 +251,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'NETO',
-				outGame:'neto.png',
+				// outGame:'neto.png',
 				inGame:'netoGame.png',
 				bullet:'netoFire.png',
 				bulletParticle:'partneto.png',
@@ -275,7 +275,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'RODAIKA',
-				outGame:'rodaika.png',
+				// outGame:'rodaika.png',
 				inGame:'rodaikaGame.png',
 				bullet:'rodaikaFire.png',
 				bulletParticle:'partrodaika2.png',
@@ -291,7 +291,7 @@ var AppModel = Class.extend({
 				energyCoast:3,
 				vel:2,
 				bulletForce:1,
-				bulletCoast:0.14,
+				bulletCoast:0.13,
 				bulletVel:5,
 				toAble: 15000,
 				toSpec: 1300,
@@ -306,8 +306,10 @@ var AppModel = Class.extend({
 				source:['caralinhoAnima0001.png','caralinhoAnima0002.png','caralinhoAnima0003.png','caralinhoAnima0002.png'],
 				particles:['cabeca2.png', 'penas2.png'],
 				egg:'ovo_belga.png',
+				cover:'caralinho.png',
 				sizePercent:0.10,
-				label:'Caralinho da terra'
+				label:'CARALINHO DA TERRA'
+				// label:'Caralinho da terra'
 			},
 			{
 				target:null,
@@ -323,8 +325,10 @@ var AppModel = Class.extend({
 				source:['belgaAnima0001.png','belgaAnima0002.png','belgaAnima0003.png','belgaAnima0002.png'],
 				particles:['cabeca5.png', 'penas5.png'],
 				egg:'ovo_belga.png',
+				cover:'belga.png',
 				sizePercent:0.15,
-				label:'Caralho Belga'
+				label:'CARALHO BELGA'
+				// label:'Caralho Belga'
 
 			},
 			{
@@ -341,8 +345,10 @@ var AppModel = Class.extend({
 				source:['lambecuAnima0001.png','lambecuAnima0002.png','lambecuAnima0003.png','lambecuAnima0004.png'],
 				particles:['cabeca4.png', 'penas4.png'],
 				egg:'ovo_lambecu.png',
+				cover:'lambecu.png',
 				sizePercent:0.15,
-				label:'Lambecu Francês'
+				label:'LAMBECU FRANCÊS'
+				// label:'Lambecu Francês'
 
 			},
 			{
@@ -359,8 +365,10 @@ var AppModel = Class.extend({
 				source:['roxoAnima0001.png','roxoAnima0002.png','roxoAnima0003.png','roxoAnima0004.png'],
 				particles:['cabeca6.png', 'penas6.png'],
 				egg:'ovo_papacu.png',
+				cover:'roxo.png',
 				sizePercent:0.2,
-				label:'Papacu de cabeça roxa'
+				label:'PAPACU DE CABEÇA ROXA'
+				// label:'Papacu de cabeça roxa'
 
 			},
 			{
@@ -377,8 +385,10 @@ var AppModel = Class.extend({
 				source:['papodebagoAnima0001.png','papodebagoAnima0002.png','papodebagoAnima0003.png','papodebagoAnima0004.png'],
 				particles:['cabeca7.png', 'penas7.png'],
 				egg:'ovo_galo.png',
+				cover:'papodebago.png',
 				sizePercent:0.15,
-				label:'Galo Papo de Bago'
+				label:'GALO PAPO DE BAGO'
+				// label:'Galo Papo de Bago'
 			},
 			{
 				target:null,
@@ -394,8 +404,10 @@ var AppModel = Class.extend({
 				source:['nocututinhaAnima0001.png','nocututinhaAnima0002.png','nocututinhaAnima0003.png','nocututinhaAnima0004.png'],
 				particles:['cabeca3.png', 'penas3.png'],
 				egg:'ovo_nocu.png',
+				cover:'nocu.png',
 				sizePercent:0.25,
-				label:'Nocututinha'
+				label:'NOCUTUTINHA'
+				// label:'Nocututinha'
 
 			},
 			{
@@ -412,8 +424,10 @@ var AppModel = Class.extend({
 				source:['calopsudaAnima0001.png','calopsudaAnima0002.png','calopsudaAnima0003.png','calopsudaAnima0004.png'],
 				particles:['cabeca8.png', 'penas8.png'],
 				egg:'ovo_calopsuda.png',
+				cover:'calopsuda.png',
 				sizePercent:0.28,
-				label:'Calopsuda'
+				label:'CALOPSUDA'
+				// label:'Calopsuda'
 			},
 			{
 				target:null,
@@ -430,8 +444,10 @@ var AppModel = Class.extend({
 				source:['nigerianoAnima0001.png','nigerianoAnima0002.png','nigerianoAnima0003.png','nigerianoAnima0004.png'],
 				particles:['cabeca1.png', 'penas1.png'],
 				egg:'ovo_nigeriano.png',
+				cover:'nigeriano.png',
 				sizePercent:0.3,
-				label:'Piçudão azul nigeriano'
+				label:'PIÇUDÃO AZUL NIGERIANO'
+				// label:'Piçudão azul nigeriano'
 
 			},
 			{

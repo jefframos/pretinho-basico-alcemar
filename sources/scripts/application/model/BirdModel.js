@@ -2,6 +2,7 @@
 var BirdModel = Class.extend({
 	init:function(graphicsObject, statsObjec){
 
+		this.cover = graphicsObject.cover?graphicsObject.cover:'belga.png';
 		this.imgSource = graphicsObject.source?graphicsObject.source:['belga.png'];
 		this.particles = graphicsObject.particles?graphicsObject.particles:['smoke.png'];
 		this.egg = graphicsObject.egg?graphicsObject.egg:['smoke.png'];
