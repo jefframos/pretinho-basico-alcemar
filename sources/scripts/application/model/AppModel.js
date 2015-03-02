@@ -98,7 +98,7 @@ var AppModel = Class.extend({
 				energyCoast:1.7,
 				vel:2.5,
 				bulletForce:1.3,
-				bulletCoast:0.11,
+				bulletCoast:0.095,
 				bulletVel:7,
 				toAble: 10,
 				toSpec: 500,
@@ -266,10 +266,10 @@ var AppModel = Class.extend({
 				energyCoast:2.5,
 				vel:2,
 				bulletForce:3,
-				bulletCoast:0.16,
+				bulletCoast:0.15,
 				bulletVel:5,
 				toAble: 8000,
-				toSpec: 1800,
+				toSpec: 1600,
 				bulletBehaviour: new SequenceBehaviour({angleOpen:0, totalFires: 25, sinoid:true, vel:2})
 			}
 			),
