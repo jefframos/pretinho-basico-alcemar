@@ -1071,17 +1071,17 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Piangers.png",
             icoSpecSource: "especial_piangers.png"
         }, {
-            maxEnergy: 7500,
+            maxEnergy: 7800,
             energyCoast: 1.7,
             vel: 2.5,
             bulletForce: 1.3,
             bulletCoast: .095,
             bulletVel: 7,
             toAble: 10,
-            toSpec: 500,
+            toSpec: 400,
             bulletBehaviour: new SequenceBehaviour({
                 angleOpen: 0,
-                totalFires: 35
+                totalFires: 45
             })
         }), new PlayerModel({
             label: "POTTER",
@@ -1170,10 +1170,10 @@ var Application = AbstractApplication.extend({
             labelSource: "Label_Jeiso.png",
             icoSpecSource: "especial_jeiso.png"
         }, {
-            maxEnergy: 8e3,
+            maxEnergy: 8200,
             energyCoast: 1.6,
             vel: 3,
-            bulletForce: .9,
+            bulletForce: 1,
             bulletCoast: .05,
             bulletVel: 8,
             toAble: 1800,
@@ -1267,9 +1267,9 @@ var Application = AbstractApplication.extend({
             maxEnergy: 6e3,
             energyCoast: 3,
             vel: 2,
-            bulletForce: 1.2,
-            bulletCoast: .12,
-            bulletVel: 4,
+            bulletForce: 1,
+            bulletCoast: .125,
+            bulletVel: 5,
             toAble: 15e3,
             toSpec: 1200,
             bulletBehaviour: new RandomBehaviour()
