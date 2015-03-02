@@ -2347,7 +2347,11 @@ var Application = AbstractApplication.extend({
         this.currentCoin.setText(APP.getGameModel().currentPoints), this.totalCoin.setText(APP.getGameModel().totalPoints), 
         newPlayers && newPlayers.length > 0) {
             var self = this;
-            this.newCharContainer = new PIXI.DisplayObjectContainer();
+            this.newCharContainer = new PIXI.DisplayObjectContainer(), this.degrade = new SimpleSprite("dist/img/UI/fundo_degrade.png"), 
+            this.container.addChild(this.degrade.getContent()), this.degrade.getContent().width = windowWidth / 1.5;
+            var sH = scaleConverter(this.degrade.getContent().height, windowHeight, 1);
+            this.degrade.getContent().scale.y = sH, this.degrade.getContent().height = windowHeight, 
+            this.degrade.setPosition(windowWidth / 2 - this.degrade.getContent().width / 2, windowHeight / 2 - this.degrade.getContent().height / 2);
             var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("novorecruta.png"), playerImage = null;
             playerImage = new SimpleSprite(windowHeight > 450 ? newPlayers[0].imgSource : newPlayers[0].imgSourceGame), 
             this.newCharContainer.addChild(pista.getContent()), pista.setPosition(0, holofote.getContent().height - 35), 
@@ -2377,13 +2381,14 @@ var Application = AbstractApplication.extend({
     showPoints: function(hasNew) {
         this.newCharContainer && (TweenLite.to(this.newCharContainer, .5, {
             alpha: 0
-        }), this.container.interactive = !1, this.container.buttonMode = !1), hasNew && (TweenLite.from(this.novoRecruta.getContent().scale, .8, {
-            delay: 1,
+        }), this.container.interactive = !1, this.container.buttonMode = !1, this.degrade && this.degrade.getContent().parent.removeChild(this.degrade.getContent())), 
+        hasNew && (TweenLite.from(this.novoRecruta.getContent().scale, .8, {
+            delay: .8,
             y: .2,
             x: .2,
             ease: "easeOutElastic"
         }), TweenLite.to(this.novoRecruta.getContent(), .2, {
-            delay: 1,
+            delay: .8,
             alpha: 1
         })), this.boxContainer.visible = !0, this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
@@ -2429,9 +2434,10 @@ var Application = AbstractApplication.extend({
         bird && bird.length > 0) {
             var self = this;
             this.newCharContainer = new PIXI.DisplayObjectContainer();
-            var degrade = new SimpleSprite("dist/img/UI/fundo_degrade.png"), pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("nova_ave.png"), ovoquebrado = new SimpleSprite("ovoquebrado.png"), penas1 = new SimpleSprite("penasfundo1.png"), penas2 = new SimpleSprite("penasfundo2.png");
-            this.playerImage = null, this.playerImage = new SimpleSprite(bird[0].cover), this.container.addChild(degrade.getContent()), 
-            degrade.getContent().width = windowWidth / 1.5;
+            var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("nova_ave.png"), ovoquebrado = new SimpleSprite("ovoquebrado.png"), penas1 = new SimpleSprite("penasfundo1.png"), penas2 = new SimpleSprite("penasfundo2.png");
+            this.playerImage = null, this.playerImage = new SimpleSprite(bird[0].cover);
+            var degrade = new SimpleSprite("dist/img/UI/fundo_degrade.png");
+            this.container.addChild(degrade.getContent()), degrade.getContent().width = windowWidth / 1.5;
             var sH = scaleConverter(degrade.getContent().height, windowHeight, 1);
             degrade.getContent().scale.y = sH, degrade.getContent().height = windowHeight, degrade.setPosition(windowWidth / 2 - degrade.getContent().width / 2, windowHeight / 2 - degrade.getContent().height / 2), 
             this.newCharContainer.addChild(pista.getContent()), pista.setPosition(0, holofote.getContent().height - 35), 

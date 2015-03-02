@@ -40,7 +40,6 @@ var NewBirdModal = Class.extend({
 			// APP.getGameModel().ableNewBird();
 
 
-			var degrade = new SimpleSprite('dist/img/UI/fundo_degrade.png');
 			var pista = new SimpleSprite('pista.png');
 			var holofote = new SimpleSprite('holofote.png');
 			var novo = new SimpleSprite('nova_ave.png');
@@ -54,6 +53,7 @@ var NewBirdModal = Class.extend({
 
 			// var this.playerImage = new SimpleSprite(APP.getGameModel().playerModels[0].im);
 
+			var degrade = new SimpleSprite('dist/img/UI/fundo_degrade.png');
 			this.container.addChild(degrade.getContent());
 			degrade.getContent().width = windowWidth / 1.5;
 			

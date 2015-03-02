@@ -170,6 +170,15 @@ var EndModal = Class.extend({
 			var self = this;
 			this.newCharContainer = new PIXI.DisplayObjectContainer();
 			// APP.getGameModel().ableNewBird();
+			this.degrade = new SimpleSprite('dist/img/UI/fundo_degrade.png');
+			this.container.addChild(this.degrade.getContent());
+			this.degrade.getContent().width = windowWidth / 1.5;
+			
+			var sH = scaleConverter(this.degrade.getContent().height, windowHeight, 1);
+			// console.log(sH);
+			this.degrade.getContent().scale.y = sH;
+			this.degrade.getContent().height = windowHeight;
+			this.degrade.setPosition(windowWidth / 2 - this.degrade.getContent().width / 2, windowHeight / 2 - this.degrade.getContent().height / 2);
 
 
 			var pista = new SimpleSprite('pista.png');
@@ -245,11 +254,14 @@ var EndModal = Class.extend({
 			TweenLite.to(this.newCharContainer, 0.5, {alpha:0});
 			this.container.interactive = false;
 			this.container.buttonMode = false;
+			if(this.degrade){
+				this.degrade.getContent().parent.removeChild(this.degrade.getContent());
+			}
 		}
 		if(hasNew){
 
-			TweenLite.from(this.novoRecruta.getContent().scale, 0.8, {delay:1,y:0.2, x:0.2, ease:'easeOutElastic'});
-			TweenLite.to(this.novoRecruta.getContent(), 0.2, {delay:1, alpha:1});
+			TweenLite.from(this.novoRecruta.getContent().scale, 0.8, {delay:0.8,y:0.2, x:0.2, ease:'easeOutElastic'});
+			TweenLite.to(this.novoRecruta.getContent(), 0.2, {delay:0.8, alpha:1});
 
 		}
 		// this.container.interactive = true;
