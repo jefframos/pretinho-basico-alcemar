@@ -1,4 +1,4 @@
-/*! jefframos 02-03-2015 */
+/*! jefframos 03-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1280,7 +1280,7 @@ var Application = AbstractApplication.extend({
             demage: .2,
             vel: -3.5,
             behaviour: new BirdBehaviourDefault(),
-            toNext: 30,
+            toNext: 22,
             money: 1
         }), new BirdModel({
             source: [ "belgaAnima0001.png", "belgaAnima0002.png", "belgaAnima0003.png", "belgaAnima0002.png" ],
@@ -1985,7 +1985,29 @@ var Application = AbstractApplication.extend({
     build: function() {
         this._super();
         var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/introScreen.jpg" ];
-        assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("", {
+        soundManager.onready(function() {
+            soundManager.createSound({
+                id: "trilha",
+                url: "dist/audio/trilha.mp3",
+                autoLoad: !0,
+                autoPlay: !0,
+                loops: 9999999,
+                volume: 5,
+                onready: function() {}
+            }), soundManager.createSound({
+                id: "aves_raras",
+                url: "dist/audio/aves_raras.mp3",
+                autoLoad: !0,
+                autoPlay: !0,
+                loops: 1,
+                volume: 35,
+                ondataerror: function() {
+                    alert("The sound " + this.id + " finished playing.");
+                },
+                onload: function() {},
+                onready: function() {}
+            });
+        }), assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("", {
             align: "center",
             font: "60px Luckiest Guy",
             fill: "#FFFFFF",
@@ -2028,7 +2050,7 @@ var Application = AbstractApplication.extend({
             self.screenManager.change("Choice");
         }, this.creditsModal = new CreditsModal(this), this.creditsButton = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
         this.creditsButton.build(), scaleConverter(this.creditsButton.getContent().height, windowHeight, .15, this.creditsButton), 
-        this.creditsButton.setPosition(20, windowHeight - this.creditsButton.getContent().height - 20), 
+        this.creditsButton.setPosition(this.playButton.getContent().position.x - this.creditsButton.getContent().width - 20, windowHeight - this.creditsButton.getContent().height - 20), 
         this.addChild(this.creditsButton), this.creditsButton.clickCallback = function() {
             self.creditsModal.show();
         }, this.zerarCookie = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
@@ -2041,7 +2063,7 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 80), this.zerarCookie.clickCallback = function() {
             APP.getGameModel().zerarTudo();
-        }, this.maxPoints = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
+        }, this.zerarCookie.getContent().alpha = 0, this.maxPoints = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
         this.maxPoints.build(200, 200), scaleConverter(this.maxPoints.height, windowHeight, .2, this.maxPoints), 
         this.maxPoints.setPosition(20, 20 + this.zerarCookie.getContent().height + 10), 
         this.addChild(this.maxPoints), this.maxPoints.addLabel(new PIXI.Text(" MAX ", {
@@ -2052,17 +2074,18 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 80), this.maxPoints.clickCallback = function() {
             APP.getGameModel().maxPoints();
-        }, this.more100button = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
-        this.more100button.build(200, 200), scaleConverter(this.more100button.height, windowHeight, .2, this.more100button), 
-        this.more100button.setPosition(this.maxPoints.getContent().position.x, this.maxPoints.getContent().position.y + this.maxPoints.getContent().height + 10), 
-        this.addChild(this.more100button), this.more100button.addLabel(new PIXI.Text(" +100 ", {
+        }, this.maxPoints.getContent().alpha = 0, this.more100button = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
+        this.more100button.build(), scaleConverter(this.more100button.height, windowHeight, .15, this.more100button), 
+        this.more100button.setPosition(windowWidth - this.more100button.getContent().width - 20, 20), 
+        this.addChild(this.more100button), this.more100button.addLabel(new PIXI.Text("STOP", {
             align: "center",
             fill: "#033E43",
-            font: "50px Luckiest Guy",
+            font: "50x Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
-        }), 28, 80), this.more100button.clickCallback = function() {
-            APP.getGameModel().add100Points();
+        }), 25, 25), this.more100button.clickCallback = function() {
+            soundManager.muted ? (soundManager.unmute(), soundManager.play("trilha"), alert("play")) : (soundManager.mute(), 
+            soundManager.stop("trilha"), alert("stop"));
         }, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         TweenLite.to(this.frontShape, .8, {
             alpha: 0

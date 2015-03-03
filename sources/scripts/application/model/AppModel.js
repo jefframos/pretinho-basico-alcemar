@@ -317,7 +317,7 @@ var AppModel = Class.extend({
 				demage:0.2,
 				vel:-3.5,
 				behaviour:new BirdBehaviourDefault(),
-				toNext:30,
+				toNext:22,
 				money:1
 			}),
 

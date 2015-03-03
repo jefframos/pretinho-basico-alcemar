@@ -32,6 +32,44 @@ var WaitScreen = AbstractScreen.extend({
         // 'dist/img/UI/HUD.json'];
 
 
+
+        soundManager.onready(function() {
+            soundManager.createSound({
+                id: 'trilha',
+                url: 'dist/audio/trilha.mp3',
+                autoLoad: true,
+                autoPlay: true,
+                loops: 9999999,
+                volume: 5,
+                onready: function() {
+                    // alert('load trilha');
+                    // soundManager.play('trilha');
+                    // soundManager.play('trilha');
+                },
+            });
+            // alert('load onready');
+            soundManager.createSound({
+                id: 'aves_raras',
+                url: 'dist/audio/aves_raras.mp3',
+                autoLoad: true,
+                autoPlay: true,
+                loops: 1,
+                volume: 35,
+                ondataerror: function() {
+                    alert('The sound '+this.id+' finished playing.');
+                },
+                onload: function() {
+                    // alert('load onload');
+                    // soundManager.play('aves_raras');
+                },
+                onready: function() {
+                    // alert('load aves_raras');
+                    // soundManager.play('aves_raras');
+
+                },
+            });
+        });
+        // soundManager.play('aves_raras');
         if(assetsToLoader.length > 0){
             this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
             scaleConverter(this.labelLoader.height, windowHeight, 0.2, this.labelLoader);
@@ -115,7 +153,7 @@ var WaitScreen = AbstractScreen.extend({
         this.creditsButton.build();
         scaleConverter(this.creditsButton.getContent().height, windowHeight, 0.15, this.creditsButton);
 
-        this.creditsButton.setPosition(20 ,windowHeight - this.creditsButton.getContent().height - 20);
+        this.creditsButton.setPosition(this.playButton.getContent().position.x -  this.creditsButton.getContent().width - 20,windowHeight - this.creditsButton.getContent().height - 20);
         // TweenLite.from(this.creditsButton.getContent().position, 0.8, {delay:0.6, x:- this.creditsButton.getContent().width, ease:'easeOutBack'});
         this.addChild(this.creditsButton);
         // this.creditsButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
@@ -135,6 +173,7 @@ var WaitScreen = AbstractScreen.extend({
         this.zerarCookie.clickCallback = function(){
             APP.getGameModel().zerarTudo();
         };
+        this.zerarCookie.getContent().alpha = 0;
 
         this.maxPoints = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
         this.maxPoints.build(200, 200);
@@ -146,16 +185,24 @@ var WaitScreen = AbstractScreen.extend({
         this.maxPoints.clickCallback = function(){
             APP.getGameModel().maxPoints();
         };
-
+        this.maxPoints.getContent().alpha = 0;
         this.more100button = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
-        this.more100button.build(200, 200);
-        scaleConverter(this.more100button.height, windowHeight, 0.2, this.more100button);
+        this.more100button.build();
+        scaleConverter(this.more100button.height, windowHeight, 0.15, this.more100button);
 
-        this.more100button.setPosition( this.maxPoints.getContent().position.x ,this.maxPoints.getContent().position.y + this.maxPoints.getContent().height + 10);
+        this.more100button.setPosition( windowWidth - this.more100button.getContent().width  - 20, 20);
         this.addChild(this.more100button);
-        this.more100button.addLabel(new PIXI.Text(' +100 ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
+        this.more100button.addLabel(new PIXI.Text('STOP', { align:'center', fill:'#033E43', font:'50x Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,25);
         this.more100button.clickCallback = function(){
-            APP.getGameModel().add100Points();
+            if(soundManager.muted){
+                soundManager.unmute();//stop('trilha');
+                soundManager.play('trilha');
+                alert('play');
+            }else{
+                soundManager.mute();//stop('trilha');
+                soundManager.stop('trilha');
+                alert('stop');
+            }
         };
 
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
@@ -164,6 +211,10 @@ var WaitScreen = AbstractScreen.extend({
 
         // self.screenManager.change('Game');
         // }, 1000);
+
+        // soundManager.play('trilha');
+        // soundManager.play('aves_raras');
+
     },
     transitionIn:function()
     {
