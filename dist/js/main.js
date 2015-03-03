@@ -1977,7 +1977,7 @@ var Application = AbstractApplication.extend({
     }
 }), WaitScreen = AbstractScreen.extend({
     init: function(label) {
-        this._super(label);
+        this._super(label), this.isLoaded = !1, APP.labelDebug.visible = !1;
     },
     destroy: function() {
         this._super();
@@ -1985,48 +1985,67 @@ var Application = AbstractApplication.extend({
     build: function() {
         this._super();
         var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/introScreen.jpg" ];
-        soundManager.onready(function() {
-            soundManager.createSound({
-                id: "trilha",
-                url: "dist/audio/trilha.mp3",
-                autoLoad: !0,
-                autoPlay: !0,
-                loops: 9999999,
-                volume: 5,
-                onready: function() {}
-            }), soundManager.createSound({
-                id: "aves_raras",
-                url: "dist/audio/aves_raras.mp3",
-                autoLoad: !0,
-                autoPlay: !0,
-                loops: 1,
-                volume: 35,
-                ondataerror: function() {
-                    alert("The sound " + this.id + " finished playing.");
-                },
-                onload: function() {},
-                onready: function() {}
-            });
-        }), assetsToLoader.length > 0 ? (this.labelLoader = new PIXI.Text("", {
-            align: "center",
-            font: "60px Luckiest Guy",
-            fill: "#FFFFFF",
-            strokeThickness: 5,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), scaleConverter(this.labelLoader.height, windowHeight, .2, this.labelLoader), 
-        this.addChild(this.labelLoader), this.loader = new PIXI.AssetLoader(assetsToLoader), 
-        this.initLoad()) : this.onAssetsLoaded();
+        if (assetsToLoader.length > 0 && !this.isLoaded) {
+            this.loader = new PIXI.AssetLoader(assetsToLoader), this.loaderContainer = new PIXI.DisplayObjectContainer(), 
+            this.addChild(this.loaderContainer), frontShape = new PIXI.Graphics(), frontShape.beginFill(16777215), 
+            frontShape.drawRect(0, 0, windowWidth, windowHeight), this.loaderContainer.addChild(frontShape), 
+            this.logoAtl = new SimpleSprite("dist/img/logo_atlantida.png"), this.logoChilli = new SimpleSprite("dist/img/logo_chilli.png"), 
+            this.loaderContainer.addChild(this.logoAtl.getContent()), this.loaderContainer.addChild(this.logoChilli.getContent()), 
+            this.alcemar = new SimpleSprite("dist/img/alcemarLoader.png"), this.loaderContainer.addChild(this.alcemar.getContent()), 
+            this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width, 
+            this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height;
+            var barHeight = 20;
+            this.bulletBar = new LifeBarHUD(.4 * windowWidth, barHeight, barHeight, 43775, 1921177), 
+            this.loaderContainer.addChild(this.bulletBar.getContent()), this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2, 
+            this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - .1 * windowHeight, 
+            this.bulletBar.updateBar(0, 100), this.initLoad();
+        } else this.onAssetsLoaded();
+    },
+    update: function() {
+        if (this.alcemar && this.alcemar.getContent().width > 1 && 1 === this.alcemar.getContent().scale.y) {
+            this.logoAtl.getContent().position.x = windowWidth - this.logoAtl.getContent().width - 20, 
+            this.logoAtl.getContent().position.y = windowHeight - this.logoAtl.getContent().height - 20, 
+            this.logoChilli.getContent().position.x = windowWidth - this.logoChilli.getContent().width - 40 - this.logoAtl.getContent().width, 
+            this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height / 2 - this.logoChilli.getContent().height / 2, 
+            scaleConverter(this.alcemar.getContent().height, windowHeight, .3, this.alcemar.getContent()), 
+            this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2, 
+            this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height / 2;
+            var centerY = windowHeight / 2 - this.alcemar.getContent().width / 2;
+            this.timeline = new TimelineLite(), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            }));
+        }
     },
     onProgress: function() {
-        this._super(), this.labelLoader.setText(Math.floor(100 * this.loadPercent) + " %"), 
-        this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
+        this._super(), this.bulletBar.updateBar(Math.floor(100 * this.loadPercent), 100);
     },
     onAssetsLoaded: function() {
         if (testMobile() && possibleFullscreen() && !isfull) {
-            this.labelLoader.setText("Toque para continuar"), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
-            this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
+            this.labelLoader = new PIXI.Text("", {
+                align: "center",
+                font: "60px Luckiest Guy",
+                fill: "#FFFFFF",
+                strokeThickness: 5,
+                stroke: "#000000",
+                wordWrap: !0,
+                wordWrapWidth: 600
+            }), scaleConverter(this.labelLoader.height, windowHeight, .05, this.labelLoader), 
+            this.loaderContainer.addChild(this.labelLoader), this.labelLoader.setText("Toque para continuar"), 
+            this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
             var self = this;
             this.fullscreenButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
             this.fullscreenButton.build(windowWidth, windowHeight), this.fullscreenButton.setPosition(windowWidth - this.fullscreenButton.getContent().width - 20, windowHeight - this.fullscreenButton.getContent().height - 20), 
@@ -2038,7 +2057,7 @@ var Application = AbstractApplication.extend({
         APP.labelDebug.visible = !1;
     },
     initApplication: function() {
-        this.fullscreenButton && this.fullscreenButton.getContent().parent && (this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent()), 
+        this.isLoaded = !0, this.fullscreenButton && this.fullscreenButton.getContent().parent && (this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent()), 
         this.fullscreenButton = null), this.background = new SimpleSprite("dist/img/UI/introScreen.jpg"), 
         this.addChild(this.background.getContent()), scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
@@ -2083,11 +2102,12 @@ var Application = AbstractApplication.extend({
             font: "50x Luckiest Guy",
             wordWrap: !0,
             wordWrapWidth: 300
-        }), 25, 25), this.more100button.clickCallback = function() {
-            soundManager.muted ? (soundManager.unmute(), soundManager.play("trilha"), alert("play")) : (soundManager.mute(), 
-            soundManager.stop("trilha"), alert("stop"));
-        }, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
-        TweenLite.to(this.frontShape, .8, {
+        }), 25, 25), this.more100button.clickCallback = function() {}, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        this.loaderContainer && this.loaderContainer.parent && (this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1), 
+        TweenLite.to(this.loaderContainer, .8, {
+            delay: 1,
+            alpha: 0
+        }), this.timeline && this.timeline.kill()), TweenLite.to(this.frontShape, .8, {
             alpha: 0
         });
     },

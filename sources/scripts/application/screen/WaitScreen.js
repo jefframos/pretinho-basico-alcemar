@@ -2,6 +2,9 @@
 var WaitScreen = AbstractScreen.extend({
     init: function (label) {
         this._super(label);
+        this.isLoaded = false;
+        APP.labelDebug.visible = false;
+        // alert(this.isLoaded);
     },
     destroy: function () {
         this._super();
@@ -32,68 +35,128 @@ var WaitScreen = AbstractScreen.extend({
         // 'dist/img/UI/HUD.json'];
 
 
+        // soundManager.onready(function() {
+        //     soundManager.createSound({
+        //         id: 'trilha',
+        //         url: 'dist/audio/trilha.mp3',
+        //         autoLoad: true,
+        //         autoPlay: true,
+        //         useHTML5Audio: true,
+        //         preferFlash: true,
+        //         loops: 9999999,
+        //         volume: 5,
+        //         onready: function() {
+        //             // alert('load trilha');
+        //             // soundManager.play('trilha');
+        //             // soundManager.play('trilha');
+        //         },
+        //     });
+        //     // alert('load onready');
+        //     soundManager.createSound({
+        //         id: 'aves_raras',
+        //         url: 'dist/audio/aves_raras.mp3',
+        //         autoLoad: true,
+        //         autoPlay: true,
+        //         useHTML5Audio: true,
+        //         preferFlash: true,
+        //         loops: 1,
+        //         volume: 35,
+        //         ondataerror: function() {
+        //             alert('The sound '+this.id+' finished playing.');
+        //         },
+        //         onload: function() {
+        //             // alert('load onload');
+        //             // soundManager.play('aves_raras');
+        //         },
+        //         onready: function() {
+        //             // alert('load aves_raras');
+        //             // soundManager.play('aves_raras');
 
-        soundManager.onready(function() {
-            soundManager.createSound({
-                id: 'trilha',
-                url: 'dist/audio/trilha.mp3',
-                autoLoad: true,
-                autoPlay: true,
-                loops: 9999999,
-                volume: 5,
-                onready: function() {
-                    // alert('load trilha');
-                    // soundManager.play('trilha');
-                    // soundManager.play('trilha');
-                },
-            });
-            // alert('load onready');
-            soundManager.createSound({
-                id: 'aves_raras',
-                url: 'dist/audio/aves_raras.mp3',
-                autoLoad: true,
-                autoPlay: true,
-                loops: 1,
-                volume: 35,
-                ondataerror: function() {
-                    alert('The sound '+this.id+' finished playing.');
-                },
-                onload: function() {
-                    // alert('load onload');
-                    // soundManager.play('aves_raras');
-                },
-                onready: function() {
-                    // alert('load aves_raras');
-                    // soundManager.play('aves_raras');
+        //         },
+        //     });
+        // });
 
-                },
-            });
-        });
         // soundManager.play('aves_raras');
-        if(assetsToLoader.length > 0){
-            this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
-            scaleConverter(this.labelLoader.height, windowHeight, 0.2, this.labelLoader);
-            this.addChild(this.labelLoader);
+        if(assetsToLoader.length > 0 && !this.isLoaded){
+            // this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+            // scaleConverter(this.labelLoader.height, windowHeight, 0.2, this.labelLoader);
+            // this.addChild(this.labelLoader);
             this.loader = new PIXI.AssetLoader(assetsToLoader);
+
+            this.loaderContainer = new PIXI.DisplayObjectContainer();
+
+            this.addChild(this.loaderContainer);
+
+            frontShape = new PIXI.Graphics();
+            frontShape.beginFill(0xFFFFFF);
+            frontShape.drawRect(0,0,windowWidth, windowHeight);
+            this.loaderContainer.addChild(frontShape);
+            // this.build();
+            this.logoAtl = new SimpleSprite('dist/img/logo_atlantida.png');
+            this.logoChilli = new SimpleSprite('dist/img/logo_chilli.png');
+            this.loaderContainer.addChild(this.logoAtl.getContent());
+            this.loaderContainer.addChild(this.logoChilli.getContent());
+
+            
+
+            this.alcemar = new SimpleSprite('dist/img/alcemarLoader.png');
+            this.loaderContainer.addChild(this.alcemar.getContent());
+            this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width;
+            this.alcemar.getContent().position.y = windowHeight / 2  - this.alcemar.getContent().height;
+
+            var barHeight = 20;
+            this.bulletBar = new LifeBarHUD(windowWidth * 0.4, barHeight, barHeight, 0x00aaff, 0x1d5099);
+            this.loaderContainer.addChild(this.bulletBar.getContent());
+            this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2;
+            this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - windowHeight * 0.1;
+            this.bulletBar.updateBar(0, 100);
+
             this.initLoad();
+
 
         }else{
             this.onAssetsLoaded();
         }
         
     },
+    update:function(){
+        if(this.alcemar){
+            if(this.alcemar.getContent().width > 1 && this.alcemar.getContent().scale.y === 1){
+                this.logoAtl.getContent().position.x = windowWidth  - this.logoAtl.getContent().width - 20;
+                this.logoAtl.getContent().position.y = windowHeight  - this.logoAtl.getContent().height - 20;
+
+                this.logoChilli.getContent().position.x = windowWidth  - this.logoChilli.getContent().width - 40 - this.logoAtl.getContent().width;
+                this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height /2 - this.logoChilli.getContent().height /2;
+
+                scaleConverter(this.alcemar.getContent().height, windowHeight, 0.3, this.alcemar.getContent());
+                this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2;
+                this.alcemar.getContent().position.y = windowHeight / 2  - this.alcemar.getContent().height / 2;
+                var centerY = windowHeight /2 - this.alcemar.getContent().width / 2;
+                this.timeline = new TimelineLite();
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+            }
+            
+        }
+        
+    },
     onProgress:function(){
         this._super();
-        this.labelLoader.setText(Math.floor(this.loadPercent * 100)+' %');
-        this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
-        this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
-        // APP.labelDebug.setText(Math.floor(this.loadPercent * 100));
-        // console.log(this.loadPercent);
+        this.bulletBar.updateBar(Math.floor(this.loadPercent * 100), 100);
     },
     onAssetsLoaded:function()
     {
         //testMobile() && 
         if(testMobile() && possibleFullscreen() && !isfull){
+            this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+            scaleConverter(this.labelLoader.height, windowHeight, 0.05, this.labelLoader);
+            this.loaderContainer.addChild(this.labelLoader);
             this.labelLoader.setText('Toque para continuar');
             this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
             this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
@@ -122,6 +185,7 @@ var WaitScreen = AbstractScreen.extend({
         APP.labelDebug.visible = false;
     },
     initApplication:function(){
+        this.isLoaded = true;
         if(this.fullscreenButton && this.fullscreenButton.getContent().parent){
             this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent());
             this.fullscreenButton = null;
@@ -194,18 +258,26 @@ var WaitScreen = AbstractScreen.extend({
         this.addChild(this.more100button);
         this.more100button.addLabel(new PIXI.Text('STOP', { align:'center', fill:'#033E43', font:'50x Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,25);
         this.more100button.clickCallback = function(){
-            if(soundManager.muted){
-                soundManager.unmute();//stop('trilha');
-                soundManager.play('trilha');
-                alert('play');
-            }else{
-                soundManager.mute();//stop('trilha');
-                soundManager.stop('trilha');
-                alert('stop');
-            }
+            // if(soundManager.muted){
+            //     soundManager.unmute();//stop('trilha');
+            //     soundManager.play('trilha');
+            //     alert('play');
+            // }else{
+            //     soundManager.mute();//stop('trilha');
+            //     soundManager.stop('trilha');
+            //     alert('stop');
+            // }
         };
 
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+        if(this.loaderContainer && this.loaderContainer.parent){
+            this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1);
+            TweenLite.to(this.loaderContainer, 0.8, {delay:1, alpha:0});
+
+            if(this.timeline){
+                this.timeline.kill();
+            }
+        }
         TweenLite.to(this.frontShape, 0.8, {alpha:0});
         // setTimeout(function(){
 
