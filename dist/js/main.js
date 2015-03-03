@@ -305,7 +305,7 @@ SmartSocket.SOCKET_ERROR = "socketError";
 
 var Application = AbstractApplication.extend({
     init: function() {
-        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(0), this.stage.removeChild(this.loadText), 
+        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(4095), this.stage.removeChild(this.loadText), 
         this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
