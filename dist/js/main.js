@@ -1992,8 +1992,8 @@ var Application = AbstractApplication.extend({
             this.logoAtl = new SimpleSprite("dist/img/logo_atlantida.png"), this.logoChilli = new SimpleSprite("dist/img/logo_chilli.png"), 
             this.loaderContainer.addChild(this.logoAtl.getContent()), this.loaderContainer.addChild(this.logoChilli.getContent()), 
             this.alcemar = new SimpleSprite("dist/img/alcemarLoader.png"), this.loaderContainer.addChild(this.alcemar.getContent()), 
-            this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width, 
-            this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height;
+            this.logoAtl.getContent().position.x = windowWidth, this.logoChilli.getContent().position.x = windowWidth, 
+            this.alcemar.getContent().position.x = windowWidth, this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height;
             var barHeight = 20;
             this.bulletBar = new LifeBarHUD(.4 * windowWidth, barHeight, barHeight, 43775, 1921177), 
             this.loaderContainer.addChild(this.bulletBar.getContent()), this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2, 
@@ -2012,6 +2012,34 @@ var Application = AbstractApplication.extend({
             this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height / 2;
             var centerY = windowHeight / 2 - this.alcemar.getContent().width / 2;
             this.timeline = new TimelineLite(), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY - .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+                y: centerY + .1 * this.alcemar.getContent().height
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
                 y: centerY - .1 * this.alcemar.getContent().height
             })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
                 y: centerY + .1 * this.alcemar.getContent().height

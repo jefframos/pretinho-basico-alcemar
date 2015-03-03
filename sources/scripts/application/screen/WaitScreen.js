@@ -101,7 +101,9 @@ var WaitScreen = AbstractScreen.extend({
 
             this.alcemar = new SimpleSprite('dist/img/alcemarLoader.png');
             this.loaderContainer.addChild(this.alcemar.getContent());
-            this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width;
+            this.logoAtl.getContent().position.x = windowWidth;
+            this.logoChilli.getContent().position.x = windowWidth;
+            this.alcemar.getContent().position.x = windowWidth;
             this.alcemar.getContent().position.y = windowHeight / 2  - this.alcemar.getContent().height;
 
             var barHeight = 20;
@@ -133,6 +135,20 @@ var WaitScreen = AbstractScreen.extend({
                 this.alcemar.getContent().position.y = windowHeight / 2  - this.alcemar.getContent().height / 2;
                 var centerY = windowHeight /2 - this.alcemar.getContent().width / 2;
                 this.timeline = new TimelineLite();
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
                 this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
                 this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
                 this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
