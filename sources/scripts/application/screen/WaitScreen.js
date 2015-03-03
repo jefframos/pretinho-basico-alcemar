@@ -154,12 +154,12 @@ var WaitScreen = AbstractScreen.extend({
     {
         //testMobile() && 
         if(testMobile() && possibleFullscreen() && !isfull){
-            this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
-            scaleConverter(this.labelLoader.height, windowHeight, 0.05, this.labelLoader);
+            this.labelLoader = new PIXI.Text('', { align:'center',font:'20px Roboto', fill:'#000', wordWrap:true, wordWrapWidth:600});
             this.loaderContainer.addChild(this.labelLoader);
             this.labelLoader.setText('Toque para continuar');
+            scaleConverter(this.labelLoader.width, windowWidth, 0.3, this.labelLoader);
             this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
-            this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
+            this.labelLoader.position.y = this.bulletBar.getContent().position.y - this.labelLoader.height - 10;
 
             var self = this;
 

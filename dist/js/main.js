@@ -2029,15 +2029,13 @@ var Application = AbstractApplication.extend({
         if (testMobile() && possibleFullscreen() && !isfull) {
             this.labelLoader = new PIXI.Text("", {
                 align: "center",
-                font: "60px Luckiest Guy",
-                fill: "#FFFFFF",
-                strokeThickness: 5,
-                stroke: "#000000",
+                font: "20px Roboto",
+                fill: "#000",
                 wordWrap: !0,
                 wordWrapWidth: 600
-            }), scaleConverter(this.labelLoader.height, windowHeight, .05, this.labelLoader), 
-            this.loaderContainer.addChild(this.labelLoader), this.labelLoader.setText("Toque para continuar"), 
-            this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, this.labelLoader.position.y = windowHeight / 2 - this.labelLoader.height / 2;
+            }), this.loaderContainer.addChild(this.labelLoader), this.labelLoader.setText("Toque para continuar"), 
+            scaleConverter(this.labelLoader.width, windowWidth, .3, this.labelLoader), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
+            this.labelLoader.position.y = this.bulletBar.getContent().position.y - this.labelLoader.height - 10;
             var self = this;
             this.fullscreenButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
             this.fullscreenButton.build(windowWidth, windowHeight), this.fullscreenButton.setPosition(windowWidth - this.fullscreenButton.getContent().width - 20, windowHeight - this.fullscreenButton.getContent().height - 20), 
