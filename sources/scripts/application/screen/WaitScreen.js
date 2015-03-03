@@ -134,27 +134,11 @@ var WaitScreen = AbstractScreen.extend({
                 this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2;
                 this.alcemar.getContent().position.y = windowHeight / 2  - this.alcemar.getContent().height / 2;
                 var centerY = windowHeight /2 - this.alcemar.getContent().width / 2;
-                this.timeline = new TimelineLite();
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+
+                var self = this;
+                this.timeline = new TimelineLite({onComplete:function(){
+                    self.timeline.restart();
+                }});
                 this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
                 this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
             }
