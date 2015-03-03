@@ -1998,15 +1998,16 @@ var Application = AbstractApplication.extend({
             this.bulletBar = new LifeBarHUD(.4 * windowWidth, barHeight, barHeight, 43775, 1921177), 
             this.loaderContainer.addChild(this.bulletBar.getContent()), this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2, 
             this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - .1 * windowHeight, 
-            this.bulletBar.updateBar(0, 100), this.initLoad();
+            this.bulletBar.updateBar(0, 100), this.loaderContainer.alpha = 0, TweenLite.to(this.loaderContainer, 2, {
+                alpha: 1
+            }), this.initLoad();
         } else this.onAssetsLoaded();
     },
     update: function() {
-        if (this.alcemar && this.alcemar.getContent().width > 1 && 1 === this.alcemar.getContent().scale.y) {
-            this.logoAtl.getContent().position.x = windowWidth - this.logoAtl.getContent().width - 20, 
-            this.logoAtl.getContent().position.y = windowHeight - this.logoAtl.getContent().height - 20, 
-            this.logoChilli.getContent().position.x = windowWidth - this.logoChilli.getContent().width - 40 - this.logoAtl.getContent().width, 
-            this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height / 2 - this.logoChilli.getContent().height / 2, 
+        if (this.alcemar && (this.logoAtl.getContent().width > 1 && this.logoChilli.getContent().width > 1 && (this.logoAtl.getContent().position.x = windowWidth - this.logoAtl.getContent().width - 20, 
+        this.logoAtl.getContent().position.y = windowHeight - this.logoAtl.getContent().height - 20, 
+        this.logoChilli.getContent().position.x = 20, this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height / 2 - this.logoChilli.getContent().height / 2), 
+        this.alcemar.getContent().width > 1 && 1 === this.alcemar.getContent().scale.y)) {
             scaleConverter(this.alcemar.getContent().height, windowHeight, .3, this.alcemar.getContent()), 
             this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2, 
             this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height / 2;

@@ -112,6 +112,8 @@ var WaitScreen = AbstractScreen.extend({
             this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2;
             this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - windowHeight * 0.1;
             this.bulletBar.updateBar(0, 100);
+            this.loaderContainer.alpha = 0;
+            TweenLite.to(this.loaderContainer, 2,{alpha:1});
 
             this.initLoad();
 
@@ -122,13 +124,18 @@ var WaitScreen = AbstractScreen.extend({
         
     },
     update:function(){
+
         if(this.alcemar){
-            if(this.alcemar.getContent().width > 1 && this.alcemar.getContent().scale.y === 1){
+            if(this.logoAtl.getContent().width > 1 && this.logoChilli.getContent().width > 1)
+            {
                 this.logoAtl.getContent().position.x = windowWidth  - this.logoAtl.getContent().width - 20;
                 this.logoAtl.getContent().position.y = windowHeight  - this.logoAtl.getContent().height - 20;
 
-                this.logoChilli.getContent().position.x = windowWidth  - this.logoChilli.getContent().width - 40 - this.logoAtl.getContent().width;
+                this.logoChilli.getContent().position.x = 20;
                 this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height /2 - this.logoChilli.getContent().height /2;
+            }
+            if(this.alcemar.getContent().width > 1 && this.alcemar.getContent().scale.y === 1){
+                
 
                 scaleConverter(this.alcemar.getContent().height, windowHeight, 0.3, this.alcemar.getContent());
                 this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2;
