@@ -257,23 +257,48 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().maxPoints();
         };
         this.maxPoints.getContent().alpha = 0;
-        this.more100button = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
-        this.more100button.build();
-        scaleConverter(this.more100button.height, windowHeight, 0.15, this.more100button);
 
-        this.more100button.setPosition( windowWidth - this.more100button.getContent().width  - 20, 20);
-        this.addChild(this.more100button);
-        this.more100button.addLabel(new PIXI.Text('STOP', { align:'center', fill:'#033E43', font:'50x Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,25);
-        this.more100button.clickCallback = function(){
-            // if(soundManager.muted){
-            //     soundManager.unmute();//stop('trilha');
-            //     soundManager.play('trilha');
-            //     alert('play');
-            // }else{
-            //     soundManager.mute();//stop('trilha');
-            //     soundManager.stop('trilha');
-            //     alert('stop');
-            // }
+
+        this.audioOn = new DefaultButton('volumeButton_on.png', 'volumeButton_on_over.png');
+        this.audioOn.build();
+        scaleConverter(this.audioOn.height, windowHeight, 0.15, this.audioOn);
+        this.audioOn.setPosition( windowWidth - this.audioOn.getContent().width  - 20, 20);
+
+        this.audioOff = new DefaultButton('volumeButton_off.png', 'volumeButton_off_over.png');
+        this.audioOff.build();
+        scaleConverter(this.audioOff.height, windowHeight, 0.15, this.audioOff);
+        this.audioOff.setPosition( windowWidth - this.audioOff.getContent().width  - 20, 20);
+        
+        if(!APP.mute){
+            this.container.addChild(this.audioOn.getContent());
+        }else{
+            this.container.addChild(this.audioOff.getContent());
+        }
+
+        this.audioOn.clickCallback = function(){
+            APP.mute = false;
+            // console.log(APP.mute);
+            if(self.audioOn.getContent().parent)
+            {
+                self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
+            }
+            if(self.audioOff.getContent())
+            {
+                self.addChild(self.audioOff);
+            }
+        };
+        this.audioOff.clickCallback = function(){
+            APP.mute = true;
+            // console.log(APP.mute);
+            if(self.audioOff.getContent().parent)
+            {
+                self.audioOff.getContent().parent.removeChild(self.audioOff.getContent());
+            }
+            if(self.audioOn.getContent())
+            {
+                self.addChild(self.audioOn);
+            }
+
         };
 
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);

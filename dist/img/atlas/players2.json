@@ -11,7 +11,7 @@
 },
 "alcemarGame.png":
 {
-	"frame": {"x":116,"y":726,"w":139,"h":132},
+	"frame": {"x":348,"y":586,"w":139,"h":132},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":139,"h":132},
@@ -29,7 +29,7 @@
 },
 "arthurGame.png":
 {
-	"frame": {"x":132,"y":473,"w":135,"h":111},
+	"frame": {"x":350,"y":473,"w":135,"h":111},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":135,"h":111},
@@ -47,7 +47,7 @@
 },
 "belgaAnima0001.png":
 {
-	"frame": {"x":2,"y":200,"w":66,"h":62},
+	"frame": {"x":70,"y":200,"w":66,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":62},
@@ -56,7 +56,7 @@
 },
 "belgaAnima0002.png":
 {
-	"frame": {"x":70,"y":200,"w":66,"h":62},
+	"frame": {"x":468,"y":136,"w":66,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":62},
@@ -65,7 +65,7 @@
 },
 "belgaAnima0003.png":
 {
-	"frame": {"x":468,"y":136,"w":66,"h":62},
+	"frame": {"x":2,"y":200,"w":66,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":62},
@@ -74,7 +74,7 @@
 },
 "belgaAnima0004.png":
 {
-	"frame": {"x":70,"y":200,"w":66,"h":62},
+	"frame": {"x":468,"y":136,"w":66,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":62},
@@ -155,7 +155,7 @@
 },
 "calopsuda.png":
 {
-	"frame": {"x":2,"y":592,"w":86,"h":121},
+	"frame": {"x":146,"y":586,"w":86,"h":121},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":121},
@@ -164,7 +164,7 @@
 },
 "calopsudaAnima0001.png":
 {
-	"frame": {"x":290,"y":864,"w":94,"h":137},
+	"frame": {"x":290,"y":858,"w":94,"h":137},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":137},
@@ -173,7 +173,7 @@
 },
 "calopsudaAnima0002.png":
 {
-	"frame": {"x":2,"y":864,"w":94,"h":137},
+	"frame": {"x":2,"y":858,"w":94,"h":137},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":137},
@@ -182,7 +182,7 @@
 },
 "calopsudaAnima0003.png":
 {
-	"frame": {"x":98,"y":864,"w":94,"h":137},
+	"frame": {"x":98,"y":858,"w":94,"h":137},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":137},
@@ -191,7 +191,7 @@
 },
 "calopsudaAnima0004.png":
 {
-	"frame": {"x":194,"y":864,"w":94,"h":137},
+	"frame": {"x":194,"y":858,"w":94,"h":137},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":137},
@@ -200,7 +200,7 @@
 },
 "caralinho.png":
 {
-	"frame": {"x":308,"y":81,"w":56,"h":50},
+	"frame": {"x":104,"y":81,"w":56,"h":50},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":56,"h":50},
@@ -245,7 +245,7 @@
 },
 "feterGame.png":
 {
-	"frame": {"x":386,"y":864,"w":175,"h":150},
+	"frame": {"x":386,"y":858,"w":175,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":175,"h":150},
@@ -272,7 +272,7 @@
 },
 "fumaca2.png":
 {
-	"frame": {"x":500,"y":81,"w":58,"h":53},
+	"frame": {"x":494,"y":81,"w":58,"h":53},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":58,"h":53},
@@ -290,7 +290,7 @@
 },
 "jesoGame.png":
 {
-	"frame": {"x":357,"y":473,"w":142,"h":117},
+	"frame": {"x":2,"y":586,"w":142,"h":117},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":142,"h":117},
@@ -308,7 +308,7 @@
 },
 "lambecuAnima0001.png":
 {
-	"frame": {"x":69,"y":136,"w":57,"h":56},
+	"frame": {"x":187,"y":136,"w":57,"h":56},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":57,"h":56},
@@ -317,7 +317,7 @@
 },
 "lambecuAnima0002.png":
 {
-	"frame": {"x":187,"y":136,"w":57,"h":56},
+	"frame": {"x":69,"y":136,"w":57,"h":56},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":57,"h":56},
@@ -335,7 +335,7 @@
 },
 "lambecuAnima0004.png":
 {
-	"frame": {"x":187,"y":136,"w":57,"h":56},
+	"frame": {"x":69,"y":136,"w":57,"h":56},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":57,"h":56},
@@ -353,16 +353,16 @@
 },
 "netoGame.png":
 {
-	"frame": {"x":315,"y":592,"w":153,"h":132},
+	"frame": {"x":132,"y":473,"w":128,"h":110},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":153,"h":132},
-	"sourceSize": {"w":153,"h":132},
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":110},
+	"sourceSize": {"w":128,"h":110},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "nigeriano.png":
 {
-	"frame": {"x":204,"y":592,"w":109,"h":132},
+	"frame": {"x":116,"y":720,"w":109,"h":132},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":109,"h":132},
@@ -371,7 +371,7 @@
 },
 "nigerianoAnima0001.png":
 {
-	"frame": {"x":90,"y":592,"w":112,"h":132},
+	"frame": {"x":227,"y":720,"w":112,"h":132},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":132},
@@ -380,7 +380,7 @@
 },
 "nigerianoAnima0002.png":
 {
-	"frame": {"x":2,"y":726,"w":112,"h":132},
+	"frame": {"x":2,"y":720,"w":112,"h":132},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":132},
@@ -389,7 +389,7 @@
 },
 "nigerianoAnima0003.png":
 {
-	"frame": {"x":257,"y":726,"w":112,"h":132},
+	"frame": {"x":234,"y":586,"w":112,"h":132},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":132},
@@ -398,7 +398,7 @@
 },
 "nigerianoAnima0004.png":
 {
-	"frame": {"x":2,"y":726,"w":112,"h":132},
+	"frame": {"x":2,"y":720,"w":112,"h":132},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":132},
@@ -407,7 +407,7 @@
 },
 "nocu.png":
 {
-	"frame": {"x":269,"y":473,"w":86,"h":111},
+	"frame": {"x":262,"y":473,"w":86,"h":111},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":111},
@@ -416,7 +416,7 @@
 },
 "nocututinhaAnima0001.png":
 {
-	"frame": {"x":410,"y":275,"w":64,"h":84},
+	"frame": {"x":278,"y":275,"w":64,"h":84},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":84},
@@ -425,7 +425,7 @@
 },
 "nocututinhaAnima0002.png":
 {
-	"frame": {"x":165,"y":275,"w":64,"h":84},
+	"frame": {"x":410,"y":275,"w":64,"h":84},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":84},
@@ -434,7 +434,7 @@
 },
 "nocututinhaAnima0003.png":
 {
-	"frame": {"x":231,"y":275,"w":64,"h":84},
+	"frame": {"x":344,"y":275,"w":64,"h":84},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":84},
@@ -443,7 +443,7 @@
 },
 "nocututinhaAnima0004.png":
 {
-	"frame": {"x":165,"y":275,"w":64,"h":84},
+	"frame": {"x":410,"y":275,"w":64,"h":84},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":84},
@@ -461,7 +461,7 @@
 },
 "papodebagoAnima0001.png":
 {
-	"frame": {"x":110,"y":81,"w":64,"h":50},
+	"frame": {"x":294,"y":81,"w":64,"h":50},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":50},
@@ -470,7 +470,7 @@
 },
 "papodebagoAnima0002.png":
 {
-	"frame": {"x":176,"y":81,"w":64,"h":50},
+	"frame": {"x":162,"y":81,"w":64,"h":50},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":50},
@@ -479,7 +479,7 @@
 },
 "papodebagoAnima0003.png":
 {
-	"frame": {"x":242,"y":81,"w":64,"h":50},
+	"frame": {"x":228,"y":81,"w":64,"h":50},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":50},
@@ -488,7 +488,7 @@
 },
 "papodebagoAnima0004.png":
 {
-	"frame": {"x":176,"y":81,"w":64,"h":50},
+	"frame": {"x":162,"y":81,"w":64,"h":50},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":50},
@@ -596,7 +596,7 @@
 },
 "penas1.png":
 {
-	"frame": {"x":297,"y":200,"w":79,"h":73},
+	"frame": {"x":459,"y":200,"w":79,"h":73},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":73},
@@ -605,7 +605,7 @@
 },
 "penas2.png":
 {
-	"frame": {"x":2,"y":81,"w":55,"h":49},
+	"frame": {"x":484,"y":30,"w":55,"h":49},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":55,"h":49},
@@ -623,7 +623,7 @@
 },
 "penas4.png":
 {
-	"frame": {"x":366,"y":81,"w":65,"h":51},
+	"frame": {"x":427,"y":81,"w":65,"h":51},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":51},
@@ -632,7 +632,7 @@
 },
 "penas5.png":
 {
-	"frame": {"x":433,"y":81,"w":65,"h":51},
+	"frame": {"x":360,"y":81,"w":65,"h":51},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":51},
@@ -650,7 +650,7 @@
 },
 "penas7.png":
 {
-	"frame": {"x":459,"y":200,"w":79,"h":73},
+	"frame": {"x":378,"y":200,"w":79,"h":73},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":73},
@@ -659,7 +659,7 @@
 },
 "penas8.png":
 {
-	"frame": {"x":378,"y":200,"w":79,"h":73},
+	"frame": {"x":297,"y":200,"w":79,"h":73},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":73},
@@ -686,7 +686,7 @@
 },
 "piangersFire.png":
 {
-	"frame": {"x":59,"y":81,"w":49,"h":49},
+	"frame": {"x":53,"y":81,"w":49,"h":49},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":49,"h":49},
@@ -704,7 +704,7 @@
 },
 "poraFire.png":
 {
-	"frame": {"x":484,"y":30,"w":49,"h":49},
+	"frame": {"x":2,"y":81,"w":49,"h":49},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":49,"h":49},
@@ -749,7 +749,7 @@
 },
 "rodaikaGame.png":
 {
-	"frame": {"x":371,"y":726,"w":143,"h":136},
+	"frame": {"x":341,"y":720,"w":143,"h":136},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":143,"h":136},
@@ -758,7 +758,7 @@
 },
 "roxo.png":
 {
-	"frame": {"x":297,"y":275,"w":111,"h":84},
+	"frame": {"x":165,"y":275,"w":111,"h":84},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":84},
@@ -767,7 +767,7 @@
 },
 "roxoAnima0001.png":
 {
-	"frame": {"x":320,"y":136,"w":72,"h":57},
+	"frame": {"x":394,"y":136,"w":72,"h":57},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":72,"h":57},
@@ -776,7 +776,7 @@
 },
 "roxoAnima0002.png":
 {
-	"frame": {"x":394,"y":136,"w":72,"h":57},
+	"frame": {"x":320,"y":136,"w":72,"h":57},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":72,"h":57},
@@ -794,7 +794,7 @@
 },
 "roxoAnima0004.png":
 {
-	"frame": {"x":394,"y":136,"w":72,"h":57},
+	"frame": {"x":320,"y":136,"w":72,"h":57},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":72,"h":57},
@@ -815,8 +815,8 @@
 	"version": "1.0",
 	"image": "players2.png",
 	"format": "RGBA8888",
-	"size": {"w":569,"h":1016},
+	"size": {"w":569,"h":1010},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:341311a48c732deeb9db315783d9a02b:7378ed6e3af7c01f4e85d373459390be:ecd3091477a1c9dca0db8e2fde3ac0c5$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a4339067fe1acd4d6418e6bfbdfdf786:486694a2f4deb67678f901992ead42da:ecd3091477a1c9dca0db8e2fde3ac0c5$"
 }
 }

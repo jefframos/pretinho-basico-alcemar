@@ -309,7 +309,7 @@ var Application = AbstractApplication.extend({
         this.stage.removeChild(this.loadText), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
-        this.labelDebug.position.x = 20;
+        this.labelDebug.position.x = 20, this.mute = !1;
     },
     update: function() {
         this._super(), this.screenManager && !this.screenManager.currentScreen;
@@ -2091,16 +2091,20 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 80), this.maxPoints.clickCallback = function() {
             APP.getGameModel().maxPoints();
-        }, this.maxPoints.getContent().alpha = 0, this.more100button = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
-        this.more100button.build(), scaleConverter(this.more100button.height, windowHeight, .15, this.more100button), 
-        this.more100button.setPosition(windowWidth - this.more100button.getContent().width - 20, 20), 
-        this.addChild(this.more100button), this.more100button.addLabel(new PIXI.Text("STOP", {
-            align: "center",
-            fill: "#033E43",
-            font: "50x Luckiest Guy",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        }), 25, 25), this.more100button.clickCallback = function() {}, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        }, this.maxPoints.getContent().alpha = 0, this.audioOn = new DefaultButton("volumeButton_on.png", "volumeButton_on_over.png"), 
+        this.audioOn.build(), scaleConverter(this.audioOn.height, windowHeight, .15, this.audioOn), 
+        this.audioOn.setPosition(windowWidth - this.audioOn.getContent().width - 20, 20), 
+        this.audioOff = new DefaultButton("volumeButton_off.png", "volumeButton_off_over.png"), 
+        this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
+        this.audioOff.setPosition(windowWidth - this.audioOff.getContent().width - 20, 20), 
+        this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
+        this.audioOn.clickCallback = function() {
+            APP.mute = !1, self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
+            self.audioOff.getContent() && self.addChild(self.audioOff);
+        }, this.audioOff.clickCallback = function() {
+            APP.mute = !0, self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
+            self.audioOn.getContent() && self.addChild(self.audioOn);
+        }, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         this.loaderContainer && this.loaderContainer.parent && (this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1), 
         TweenLite.to(this.loaderContainer, .8, {
             delay: 1,
@@ -2563,8 +2567,18 @@ var Application = AbstractApplication.extend({
             self.hide(function() {
                 self.screen.updateable = !0, self.screen.reset();
             });
-        }, this.boxContainer.addChild(this.restartButton.getContent()), this.boxContainer.alpha = 0, 
-        this.boxContainer.visible = !1, scaleConverter(this.boxContainer.width, windowWidth, .5, this.boxContainer), 
+        }, this.boxContainer.addChild(this.restartButton.getContent()), this.audioOn = new DefaultButton("volumeButton_on.png", "volumeButton_on_over.png"), 
+        this.audioOn.build(), scaleConverter(this.audioOn.height, windowHeight, .15, this.audioOn), 
+        this.audioOn.setPosition(20, 20), this.audioOff = new DefaultButton("volumeButton_off.png", "volumeButton_off_over.png"), 
+        this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
+        this.audioOff.setPosition(20, 20), console.log(APP.mute), this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
+        this.audioOn.clickCallback = function() {
+            APP.mute = !0, self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
+            self.audioOff.getContent() && self.container.addChild(self.audioOff.getContent());
+        }, this.audioOff.clickCallback = function() {
+            APP.mute = !1, self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
+            self.audioOn.getContent() && self.container.addChild(self.audioOn.getContent());
+        }, this.boxContainer.alpha = 0, this.boxContainer.visible = !1, scaleConverter(this.boxContainer.width, windowWidth, .5, this.boxContainer), 
         this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
     },
     show: function() {

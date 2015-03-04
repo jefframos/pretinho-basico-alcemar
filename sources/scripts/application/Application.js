@@ -20,6 +20,8 @@ var Application = AbstractApplication.extend({
         this.stage.addChild(this.labelDebug);
         this.labelDebug.position.y = windowHeight - 20;
         this.labelDebug.position.x = 20;
+
+        this.mute = false;
 	},
     update:function(){
         this._super();

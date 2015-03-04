@@ -26,14 +26,14 @@ var PauseModal = Class.extend({
 		this.boxContainer.addChild(this.backButton.getContent());
 
 		this.continueButton = new DefaultButton('continueButtonBig.png', 'continueButtonBigOver.png');
-        this.continueButton.build();
-        this.continueButton.setPosition(this.backButton.getContent().width + 20, -this.continueButton.getContent().height / 2 + this.backButton.getContent().height / 2);//this.backBars.getContent().height / 2 - this.continueButton.height / 2 - 10);
-        this.continueButton.clickCallback = function(){
-            self.hide(function(){self.screen.updateable = true;});
-        };
-        this.boxContainer.addChild(this.continueButton.getContent());
+		this.continueButton.build();
+		this.continueButton.setPosition(this.backButton.getContent().width + 20, -this.continueButton.getContent().height / 2 + this.backButton.getContent().height / 2);//this.backBars.getContent().height / 2 - this.continueButton.height / 2 - 10);
+		this.continueButton.clickCallback = function(){
+			self.hide(function(){self.screen.updateable = true;});
+		};
+		this.boxContainer.addChild(this.continueButton.getContent());
 
-        this.restartButton = new DefaultButton('replayButton.png', 'replayButtonOver.png');
+		this.restartButton = new DefaultButton('replayButton.png', 'replayButtonOver.png');
 		this.restartButton.build();
 		// this.restartButton.getContent().scale.x = this.restartButton.getContent().scale.y = 0.8;
 		this.restartButton.setPosition(this.continueButton.getContent().width + this.continueButton.getContent().position.x + 20, 0);
@@ -45,12 +45,54 @@ var PauseModal = Class.extend({
 		};
 		this.boxContainer.addChild(this.restartButton.getContent());
 
-        this.boxContainer.alpha = 0;
-        this.boxContainer.visible = false;
 
-        scaleConverter(this.boxContainer.width, windowWidth, 0.5, this.boxContainer);
-        this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
-        // this.boxContainer.position.y = windowHeight / 2;
+		this.audioOn = new DefaultButton('volumeButton_on.png', 'volumeButton_on_over.png');
+		this.audioOn.build();
+		scaleConverter(this.audioOn.height, windowHeight, 0.15, this.audioOn);
+		this.audioOn.setPosition(20, 20);
+
+		this.audioOff = new DefaultButton('volumeButton_off.png', 'volumeButton_off_over.png');
+		this.audioOff.build();
+		scaleConverter(this.audioOff.height, windowHeight, 0.15, this.audioOff);
+		this.audioOff.setPosition(20, 20);
+
+		console.log(APP.mute);
+
+		if(!APP.mute){
+            this.container.addChild(this.audioOn.getContent());
+        }else{
+            this.container.addChild(this.audioOff.getContent());
+        }
+		
+		this.audioOn.clickCallback = function(){
+			APP.mute = true;
+			if(self.audioOn.getContent().parent)
+			{
+				self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
+			}
+			if(self.audioOff.getContent())
+			{
+				self.container.addChild(self.audioOff.getContent());
+			}
+		};
+		this.audioOff.clickCallback = function(){
+			APP.mute = false;
+			if(self.audioOff.getContent().parent)
+			{
+				self.audioOff.getContent().parent.removeChild(self.audioOff.getContent());
+			}
+			if(self.audioOn.getContent())
+			{
+				self.container.addChild(self.audioOn.getContent());
+			}
+		};
+
+		this.boxContainer.alpha = 0;
+		this.boxContainer.visible = false;
+
+		scaleConverter(this.boxContainer.width, windowWidth, 0.5, this.boxContainer);
+		this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
+		// this.boxContainer.position.y = windowHeight / 2;
 	},
 	show:function(points){
 		this.screen.addChild(this);
