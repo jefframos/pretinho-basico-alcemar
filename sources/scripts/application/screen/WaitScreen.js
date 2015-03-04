@@ -113,7 +113,7 @@ var WaitScreen = AbstractScreen.extend({
             this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - windowHeight * 0.1;
             this.bulletBar.updateBar(0, 100);
             this.loaderContainer.alpha = 0;
-            TweenLite.to(this.loaderContainer, 2,{alpha:1});
+            TweenLite.to(this.loaderContainer, 1,{alpha:1});
 
             this.initLoad();
 
@@ -147,7 +147,7 @@ var WaitScreen = AbstractScreen.extend({
                     self.timeline.restart();
                 }});
                 this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 3,{y:centerY + this.alcemar.getContent().height * 0.1}));
             }
             
         }

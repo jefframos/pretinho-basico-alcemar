@@ -361,6 +361,18 @@ var GameScreen = AbstractScreen.extend({
         this.addChild(this.sky);
         this.sky.container.width = windowWidth;
         this.sky.container.height = windowHeight * 0.95;
+
+        var mountain = new Paralax(windowWidth);
+        mountain.build('montanha2.png', 200);
+        this.addChild(mountain);
+        mountain.getContent().y = windowHeight - 105 - mountain.getContent().height;
+        mountain.velocity.x = -0.1;
+
+        var city = new Paralax(windowWidth);
+        city.build('cidade.png', 400);
+        this.addChild(city);
+        city.getContent().y = windowHeight - 105 - city.getContent().height;
+        city.velocity.x = -0.2;
         // var clouds = new Environment(windowWidth, windowHeight);
         // clouds.build(['1b.png','2b.png','3b.png','4b.png']);
         // clouds.velocity.x = -0.2;
@@ -376,7 +388,7 @@ var GameScreen = AbstractScreen.extend({
 
 
         var environment = new Environment(windowWidth, windowHeight);
-        environment.build(['env1.png','env2.png','env3.png','env4.png']);
+        environment.build(['env1.png','env2.png','env3.png','env4.png','env5.png','env6.png']);
         environment.velocity.x = -0.35;
         this.addChild(environment);
 

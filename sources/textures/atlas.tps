@@ -250,10 +250,34 @@
             <filename>birds/belgaAnima0001.png</filename>
             <filename>birds/belgaAnima0002.png</filename>
             <filename>birds/belgaAnima0003.png</filename>
-            <filename>birds/belgaAnima0004.png</filename>
             <filename>birds/calopsudaAnima0001.png</filename>
             <filename>birds/calopsudaAnima0002.png</filename>
             <filename>birds/calopsudaAnima0003.png</filename>
+            <filename>birds/lambecuAnima0001.png</filename>
+            <filename>birds/lambecuAnima0002.png</filename>
+            <filename>birds/lambecuAnima0003.png</filename>
+            <filename>birds/lambecuAnima0004.png</filename>
+            <filename>birds/nocututinhaAnima0001.png</filename>
+            <filename>birds/nocututinhaAnima0002.png</filename>
+            <filename>birds/nocututinhaAnima0003.png</filename>
+            <filename>birds/nocututinhaAnima0004.png</filename>
+            <filename>birds/papodebagoAnima0001.png</filename>
+            <filename>birds/papodebagoAnima0002.png</filename>
+            <filename>birds/papodebagoAnima0003.png</filename>
+            <filename>birds/papodebagoAnima0004.png</filename>
+            <filename>birds/roxoAnima0001.png</filename>
+            <filename>birds/roxoAnima0002.png</filename>
+            <filename>birds/roxoAnima0003.png</filename>
+            <filename>birds/roxoAnima0004.png</filename>
+            <filename>birds/belgaAnima0004.png</filename>
+            <filename>birds/caralinho.png</filename>
+            <filename>birds/nigerianoAnima0001.png</filename>
+            <filename>birds/nigerianoAnima0002.png</filename>
+            <filename>birds/nigerianoAnima0003.png</filename>
+            <filename>birds/nigerianoAnima0004.png</filename>
+            <filename>particles/fogo.png</filename>
+            <filename>particles/fumaca1.png</filename>
+            <filename>particles/fumaca2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

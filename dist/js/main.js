@@ -1,4 +1,4 @@
-/*! jefframos 03-03-2015 */
+/*! jefframos 04-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -305,8 +305,8 @@ SmartSocket.SOCKET_ERROR = "socketError";
 
 var Application = AbstractApplication.extend({
     init: function() {
-        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(4095), this.stage.removeChild(this.loadText), 
-        this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
+        this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(268435455), 
+        this.stage.removeChild(this.loadText), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
         this.labelDebug.position.x = 20;
@@ -1340,7 +1340,7 @@ var Application = AbstractApplication.extend({
             egg: "ovo_galo.png",
             cover: "papodebago.png",
             sizePercent: .15,
-            label: "GALO PAPO DE BAGO"
+            label: "GALINHO PAPO DE BAGO"
         }, {
             target: null,
             hp: 4,
@@ -1868,17 +1868,24 @@ var Application = AbstractApplication.extend({
         this.spawner = 150, this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, 
         APP.getGameModel().currentPoints = 0, APP.getGameModel().currentHorde = 0, this.initApp = !0, 
         this.blockPause = !1, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
-        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .95 * windowHeight, 
-        this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], this.layerManagerBack = new LayerManager(), 
-        this.layerManagerBack.build("MainBack"), this.addChild(this.layerManagerBack);
+        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .95 * windowHeight;
+        var mountain = new Paralax(windowWidth);
+        mountain.build("montanha2.png", 200), this.addChild(mountain), mountain.getContent().y = windowHeight - 105 - mountain.getContent().height, 
+        mountain.velocity.x = -.1;
+        var city = new Paralax(windowWidth);
+        city.build("cidade.png", 400), this.addChild(city), city.getContent().y = windowHeight - 105 - city.getContent().height, 
+        city.velocity.x = -.2, this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], 
+        this.layerManagerBack = new LayerManager(), this.layerManagerBack.build("MainBack"), 
+        this.addChild(this.layerManagerBack);
         var environment = new Environment(windowWidth, windowHeight);
-        environment.build([ "env1.png", "env2.png", "env3.png", "env4.png" ]), environment.velocity.x = -.35, 
-        this.addChild(environment), this.layerManager = new LayerManager(), this.layerManager.build("Main"), 
-        this.addChild(this.layerManager), this.backLayer = new Layer(), this.backLayer.build("BackLayer"), 
-        this.layerManagerBack.addLayer(this.backLayer), this.layer = new Layer(), this.layer.build("EntityLayer"), 
-        this.layerManager.addLayer(this.layer), this.playerModel = APP.getGameModel().currentPlayerModel, 
-        this.playerModel.reset(), this.red = new Red(this.playerModel), this.red.build(this), 
-        this.layer.addChild(this.red), this.red.rotation = -1, this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight), 
+        environment.build([ "env1.png", "env2.png", "env3.png", "env4.png", "env5.png", "env6.png" ]), 
+        environment.velocity.x = -.35, this.addChild(environment), this.layerManager = new LayerManager(), 
+        this.layerManager.build("Main"), this.addChild(this.layerManager), this.backLayer = new Layer(), 
+        this.backLayer.build("BackLayer"), this.layerManagerBack.addLayer(this.backLayer), 
+        this.layer = new Layer(), this.layer.build("EntityLayer"), this.layerManager.addLayer(this.layer), 
+        this.playerModel = APP.getGameModel().currentPlayerModel, this.playerModel.reset(), 
+        this.red = new Red(this.playerModel), this.red.build(this), this.layer.addChild(this.red), 
+        this.red.rotation = -1, this.red.setPosition(.1 * windowWidth - this.red.getContent().width, 1.2 * windowHeight), 
         this.ableSpecial = this.playerModel.toSpec, this.gameOver = !1;
         var scale = scaleConverter(this.red.getContent().height, windowHeight, .25);
         TweenLite.to(this.red.spritesheet.position, 2, {
@@ -1998,7 +2005,7 @@ var Application = AbstractApplication.extend({
             this.bulletBar = new LifeBarHUD(.4 * windowWidth, barHeight, barHeight, 43775, 1921177), 
             this.loaderContainer.addChild(this.bulletBar.getContent()), this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2, 
             this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - .1 * windowHeight, 
-            this.bulletBar.updateBar(0, 100), this.loaderContainer.alpha = 0, TweenLite.to(this.loaderContainer, 2, {
+            this.bulletBar.updateBar(0, 100), this.loaderContainer.alpha = 0, TweenLite.to(this.loaderContainer, 1, {
                 alpha: 1
             }), this.initLoad();
         } else this.onAssetsLoaded();
@@ -2018,7 +2025,7 @@ var Application = AbstractApplication.extend({
                 }
             }), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
                 y: centerY - .1 * this.alcemar.getContent().height
-            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 3, {
                 y: centerY + .1 * this.alcemar.getContent().height
             }));
         }

@@ -387,7 +387,7 @@ var AppModel = Class.extend({
 				egg:'ovo_galo.png',
 				cover:'papodebago.png',
 				sizePercent:0.15,
-				label:'GALO PAPO DE BAGO'
+				label:'GALINHO PAPO DE BAGO'
 				// label:'Galo Papo de Bago'
 			},
 			{

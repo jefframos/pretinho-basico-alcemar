@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>../../../dist/img/UI/HUD.png</filename>
+        <filename>../../../dist/img/UI/HUD2.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../../dist/img/UI/HUD.json</filename>
+                <filename>../../../dist/img/UI/HUD2.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -275,6 +275,7 @@
             <filename>specs/power_rodaika.png</filename>
             <filename>specs/especial_neto.png</filename>
             <filename>specs/especial_rodaika.png</filename>
+            <filename>novoRecrutaSelo.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
