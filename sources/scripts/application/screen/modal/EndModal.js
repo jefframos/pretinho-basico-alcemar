@@ -264,6 +264,8 @@ var EndModal = Class.extend({
 			TweenLite.to(this.novoRecruta.getContent(), 0.2, {delay:0.8, alpha:1});
 
 		}
+
+		console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints,  APP.getGameModel().currentID);
 		// this.container.interactive = true;
 		// this.container.buttonMode = true;
 		this.boxContainer.visible = true;

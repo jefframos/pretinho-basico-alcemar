@@ -352,6 +352,7 @@ var GameScreen = AbstractScreen.extend({
         this.labelAcum = 0;
         APP.getGameModel().currentPoints = 0;
         APP.getGameModel().currentHorde = 0;
+        APP.getGameModel().killedBirds  = [];
         this.initApp = true;
         this.blockPause = false;
 

@@ -631,7 +631,7 @@ var Application = AbstractApplication.extend({
         this.birdModel = birdModel, this.vel = birdModel.vel, this.velocity.x = -this.vel, 
         this.velocity.y = 0, this.screen = screen, this.demage = this.birdModel.demage, 
         this.hp = this.birdModel.hp, this.defaultVelocity = this.birdModel.vel, this.imgSource = this.birdModel.imgSource, 
-        this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1;
+        this.behaviour = this.birdModel.behaviour.clone(), this.acceleration = .1, this.id = 0;
     },
     hurt: function(demage) {
         if (this.hp -= demage, this.velocity.x = -Math.abs(.4 * this.vel), this.hp <= 0) {
@@ -672,7 +672,7 @@ var Application = AbstractApplication.extend({
             particle.setPosition(this.getPosition().x - (Math.random() + .1 * this.getContent().width) / 2, this.getPosition().y), 
             this.layer.addChild(particle);
         }
-        this.collidable = !1, this.kill = !0;
+        this.collidable = !1, this.kill = !0, APP.getGameModel().killedBirds.push(this.id);
     }
 }), BirdBehaviourDefault = Class.extend({
     init: function(props) {
@@ -1410,7 +1410,7 @@ var Application = AbstractApplication.extend({
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && (this.playerModels[i].able = !0, 
         this.totalPlayers++);
         this.birdProbs = [ 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 2, 3, 0, 0, 2, 0, 3, 4, 4, 4, 4, 4, 0, 5, 5, 5, 5, 5, 0, 6, 6, 6, 6, 0, 7, 7, 7, 7, 4, 5, 6, 7 ], 
-        this.currentHorde = 0;
+        this.currentHorde = 0, this.killedBirds = [];
     },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
@@ -1436,7 +1436,7 @@ var Application = AbstractApplication.extend({
         for (var id = 99999; id > this.totalBirds - 1; ) id = this.birdProbs[Math.floor(max * Math.random())];
         this.birdModels[id].target = player;
         var bird = new Bird(this.birdModels[id], screen);
-        return this.lastID = id, bird;
+        return bird.id = id, console.log(bird.id), this.lastID = id, bird;
     },
     ableNewBird: function(birdModel) {
         if (birdModel && !(this.totalBirds >= this.birdModels.length)) {
@@ -1867,8 +1867,8 @@ var Application = AbstractApplication.extend({
     initApplication: function() {
         this.obsAccum = 500, this.particleAccum = 500, this.itemAccum = 1e3, this.acumCloud = 500, 
         this.spawner = 150, this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, 
-        APP.getGameModel().currentPoints = 0, APP.getGameModel().currentHorde = 0, this.initApp = !0, 
-        this.blockPause = !1, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
+        APP.getGameModel().currentPoints = 0, APP.getGameModel().currentHorde = 0, APP.getGameModel().killedBirds = [], 
+        this.initApp = !0, this.blockPause = !1, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
         this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .95 * windowHeight;
         var mountain = new Paralax(windowWidth);
         mountain.build("montanha2.png", 200), this.addChild(mountain), mountain.getContent().y = windowHeight - 105 - mountain.getContent().height, 
@@ -2417,7 +2417,8 @@ var Application = AbstractApplication.extend({
         }), TweenLite.to(this.novoRecruta.getContent(), .2, {
             delay: .8,
             alpha: 1
-        })), this.boxContainer.visible = !0, this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
+        })), console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints, APP.getGameModel().currentID), 
+        this.boxContainer.visible = !0, this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {

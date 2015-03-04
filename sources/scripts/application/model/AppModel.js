@@ -472,6 +472,7 @@ var AppModel = Class.extend({
 		this.birdProbs = [0,1,0,0,0,2,0,0,0,1,2,3,0,0,2,0,3,4,4,4,4,4,0,5,5,5,5,5,0,6,6,6,6,0,7,7,7,7,4,5,6,7];
 
 		this.currentHorde = 0;
+		this.killedBirds = [];
 
 
 	},
@@ -530,6 +531,8 @@ var AppModel = Class.extend({
 		}
 		this.birdModels[id].target = player;
 		var bird = new Bird(this.birdModels[id], screen);
+		bird.id = id;
+		console.log(bird.id);
 		this.lastID = id;
 		return bird;
 	},
