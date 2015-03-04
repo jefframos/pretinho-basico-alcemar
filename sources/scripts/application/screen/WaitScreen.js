@@ -81,12 +81,17 @@ var WaitScreen = AbstractScreen.extend({
             // this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
             // scaleConverter(this.labelLoader.height, windowHeight, 0.2, this.labelLoader);
             // this.addChild(this.labelLoader);
+            // alert('load');
+
             this.loader = new PIXI.AssetLoader(assetsToLoader);
 
             this.loaderContainer = new PIXI.DisplayObjectContainer();
 
             this.addChild(this.loaderContainer);
 
+            if(this.frontShape){
+                this.frontShape.parent.removeChild(this.frontShape);
+            }
             frontShape = new PIXI.Graphics();
             frontShape.beginFill(0xFFFFFF);
             frontShape.drawRect(0,0,windowWidth, windowHeight);
@@ -112,8 +117,8 @@ var WaitScreen = AbstractScreen.extend({
             this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2;
             this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - windowHeight * 0.1;
             this.bulletBar.updateBar(0, 100);
-            this.loaderContainer.alpha = 0;
-            TweenLite.to(this.loaderContainer, 1,{alpha:1});
+            // this.loaderContainer.alpha = 0;
+            // TweenLite.to(this.loaderContainer, 1,{alpha:1});
 
             this.initLoad();
 
@@ -146,8 +151,8 @@ var WaitScreen = AbstractScreen.extend({
                 this.timeline = new TimelineLite({onComplete:function(){
                     self.timeline.restart();
                 }});
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2,{y:centerY - this.alcemar.getContent().height * 0.1}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 3,{y:centerY + this.alcemar.getContent().height * 0.1}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4,{y:centerY - this.alcemar.getContent().height * 0.2, ease:'easeInOutLinear'}));
+                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4,{y:centerY, ease:'easeInOutLinear'}));
             }
             
         }
@@ -192,6 +197,7 @@ var WaitScreen = AbstractScreen.extend({
         APP.labelDebug.visible = false;
     },
     initApplication:function(){
+        // alert('initApp');
         this.isLoaded = true;
         if(this.fullscreenButton && this.fullscreenButton.getContent().parent){
             this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent());
@@ -203,6 +209,52 @@ var WaitScreen = AbstractScreen.extend({
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
 
         var self = this;
+
+
+        this.audioOn = new DefaultButton('volumeButton_on.png', 'volumeButton_on_over.png');
+        this.audioOn.build();
+        scaleConverter(this.audioOn.height, windowHeight, 0.15, this.audioOn);
+        this.audioOn.setPosition(20, 20);
+        // this.audioOn.setPosition( windowWidth - this.audioOn.getContent().width  - 20, 20);
+
+        this.audioOff = new DefaultButton('volumeButton_off.png', 'volumeButton_off_over.png');
+        this.audioOff.build();
+        scaleConverter(this.audioOff.height, windowHeight, 0.15, this.audioOff);
+        this.audioOff.setPosition(20, 20);
+
+
+        if(!APP.mute){
+            this.container.addChild(this.audioOn.getContent());
+        }else{
+            this.container.addChild(this.audioOff.getContent());
+        }
+
+        this.audioOn.clickCallback = function(){
+            APP.mute = false;
+            // console.log(APP.mute);
+            if(self.audioOn.getContent().parent)
+            {
+                self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
+            }
+            if(self.audioOff.getContent())
+            {
+                self.addChild(self.audioOff);
+            }
+        };
+        this.audioOff.clickCallback = function(){
+            APP.mute = true;
+            // console.log(APP.mute);
+            if(self.audioOff.getContent().parent)
+            {
+                self.audioOff.getContent().parent.removeChild(self.audioOff.getContent());
+            }
+            if(self.audioOn.getContent())
+            {
+                self.addChild(self.audioOn);
+            }
+
+        };
+
 
         this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBigOver.png');
         // console.log(this.playButton.build);
@@ -257,52 +309,9 @@ var WaitScreen = AbstractScreen.extend({
             APP.getGameModel().maxPoints();
         };
         this.maxPoints.getContent().alpha = 0;
-
-
-        this.audioOn = new DefaultButton('volumeButton_on.png', 'volumeButton_on_over.png');
-        this.audioOn.build();
-        scaleConverter(this.audioOn.height, windowHeight, 0.15, this.audioOn);
-        this.audioOn.setPosition(20, 20);
-        // this.audioOn.setPosition( windowWidth - this.audioOn.getContent().width  - 20, 20);
-
-        this.audioOff = new DefaultButton('volumeButton_off.png', 'volumeButton_off_over.png');
-        this.audioOff.build();
-        scaleConverter(this.audioOff.height, windowHeight, 0.15, this.audioOff);
-        this.audioOff.setPosition(20, 20);
-        
-        if(!APP.mute){
-            this.container.addChild(this.audioOn.getContent());
-        }else{
-            this.container.addChild(this.audioOff.getContent());
+        if(this.frontShape && this.frontShape.parent){
+            this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         }
-
-        this.audioOn.clickCallback = function(){
-            APP.mute = false;
-            // console.log(APP.mute);
-            if(self.audioOn.getContent().parent)
-            {
-                self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
-            }
-            if(self.audioOff.getContent())
-            {
-                self.addChild(self.audioOff);
-            }
-        };
-        this.audioOff.clickCallback = function(){
-            APP.mute = true;
-            // console.log(APP.mute);
-            if(self.audioOff.getContent().parent)
-            {
-                self.audioOff.getContent().parent.removeChild(self.audioOff.getContent());
-            }
-            if(self.audioOn.getContent())
-            {
-                self.addChild(self.audioOn);
-            }
-
-        };
-
-        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         if(this.loaderContainer && this.loaderContainer.parent){
             this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1);
             TweenLite.to(this.loaderContainer, 0.8, {delay:1, alpha:0});
@@ -310,8 +319,9 @@ var WaitScreen = AbstractScreen.extend({
             if(this.timeline){
                 this.timeline.kill();
             }
+        }else if(this.frontShape){
+            TweenLite.to(this.frontShape, 0.8, {alpha:0});
         }
-        TweenLite.to(this.frontShape, 0.8, {alpha:0});
         // setTimeout(function(){
 
         // self.screenManager.change('Game');
@@ -323,6 +333,11 @@ var WaitScreen = AbstractScreen.extend({
     },
     transitionIn:function()
     {
+        if(!this.isLoaded){
+            this.build();
+            return;
+        }
+        // alert('transitionIn', this.screenLabel);
         // if(AbstractScreen.debug)console.log('transitionIn', this.screenLabel);
         this.frontShape = new PIXI.Graphics();
         this.frontShape.beginFill(0x000000);
@@ -334,13 +349,20 @@ var WaitScreen = AbstractScreen.extend({
     transitionOut:function(nextScreen, container)
     {
         // this._super();
-        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
-
         var self = this;
-        TweenLite.to(this.frontShape, 0.3, {alpha:1, onComplete:function(){
+        if(this.frontShape){
+            this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
+            TweenLite.to(this.frontShape, 0.3, {alpha:1, onComplete:function(){
+                self.destroy();
+                container.removeChild(self.getContent());
+                nextScreen.transitionIn();
+            }});
+        }else{
             self.destroy();
             container.removeChild(self.getContent());
             nextScreen.transitionIn();
-        }});
+        }
+
+        
     },
 });

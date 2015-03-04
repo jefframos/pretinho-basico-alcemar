@@ -1995,20 +1995,19 @@ var Application = AbstractApplication.extend({
         var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/introScreen.jpg" ];
         if (assetsToLoader.length > 0 && !this.isLoaded) {
             this.loader = new PIXI.AssetLoader(assetsToLoader), this.loaderContainer = new PIXI.DisplayObjectContainer(), 
-            this.addChild(this.loaderContainer), frontShape = new PIXI.Graphics(), frontShape.beginFill(16777215), 
-            frontShape.drawRect(0, 0, windowWidth, windowHeight), this.loaderContainer.addChild(frontShape), 
-            this.logoAtl = new SimpleSprite("dist/img/logo_atlantida.png"), this.logoChilli = new SimpleSprite("dist/img/logo_chilli.png"), 
-            this.loaderContainer.addChild(this.logoAtl.getContent()), this.loaderContainer.addChild(this.logoChilli.getContent()), 
-            this.alcemar = new SimpleSprite("dist/img/alcemarLoader.png"), this.loaderContainer.addChild(this.alcemar.getContent()), 
-            this.logoAtl.getContent().position.x = windowWidth, this.logoChilli.getContent().position.x = windowWidth, 
-            this.alcemar.getContent().position.x = windowWidth, this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height;
+            this.addChild(this.loaderContainer), this.frontShape && this.frontShape.parent.removeChild(this.frontShape), 
+            frontShape = new PIXI.Graphics(), frontShape.beginFill(16777215), frontShape.drawRect(0, 0, windowWidth, windowHeight), 
+            this.loaderContainer.addChild(frontShape), this.logoAtl = new SimpleSprite("dist/img/logo_atlantida.png"), 
+            this.logoChilli = new SimpleSprite("dist/img/logo_chilli.png"), this.loaderContainer.addChild(this.logoAtl.getContent()), 
+            this.loaderContainer.addChild(this.logoChilli.getContent()), this.alcemar = new SimpleSprite("dist/img/alcemarLoader.png"), 
+            this.loaderContainer.addChild(this.alcemar.getContent()), this.logoAtl.getContent().position.x = windowWidth, 
+            this.logoChilli.getContent().position.x = windowWidth, this.alcemar.getContent().position.x = windowWidth, 
+            this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height;
             var barHeight = 20;
             this.bulletBar = new LifeBarHUD(.4 * windowWidth, barHeight, barHeight, 43775, 1921177), 
             this.loaderContainer.addChild(this.bulletBar.getContent()), this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2, 
             this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - .1 * windowHeight, 
-            this.bulletBar.updateBar(0, 100), this.loaderContainer.alpha = 0, TweenLite.to(this.loaderContainer, 1, {
-                alpha: 1
-            }), this.initLoad();
+            this.bulletBar.updateBar(0, 100), this.initLoad();
         } else this.onAssetsLoaded();
     },
     update: function() {
@@ -2024,10 +2023,12 @@ var Application = AbstractApplication.extend({
                 onComplete: function() {
                     self.timeline.restart();
                 }
-            }), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 2, {
-                y: centerY - .1 * this.alcemar.getContent().height
-            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 3, {
-                y: centerY + .1 * this.alcemar.getContent().height
+            }), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4, {
+                y: centerY - .2 * this.alcemar.getContent().height,
+                ease: "easeInOutLinear"
+            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4, {
+                y: centerY,
+                ease: "easeInOutLinear"
             }));
         }
     },
@@ -2061,7 +2062,18 @@ var Application = AbstractApplication.extend({
         this.addChild(this.background.getContent()), scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
         var self = this;
-        this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBigOver.png"), 
+        this.audioOn = new DefaultButton("volumeButton_on.png", "volumeButton_on_over.png"), 
+        this.audioOn.build(), scaleConverter(this.audioOn.height, windowHeight, .15, this.audioOn), 
+        this.audioOn.setPosition(20, 20), this.audioOff = new DefaultButton("volumeButton_off.png", "volumeButton_off_over.png"), 
+        this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
+        this.audioOff.setPosition(20, 20), this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
+        this.audioOn.clickCallback = function() {
+            APP.mute = !1, self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
+            self.audioOff.getContent() && self.addChild(self.audioOff);
+        }, this.audioOff.clickCallback = function() {
+            APP.mute = !0, self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
+            self.audioOn.getContent() && self.addChild(self.audioOn);
+        }, this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBigOver.png"), 
         this.playButton.build(), scaleConverter(this.playButton.height, windowHeight, .25, this.playButton), 
         this.playButton.setPosition(windowWidth - this.playButton.getContent().width - 20, windowHeight - this.playButton.getContent().height - 20), 
         this.addChild(this.playButton), this.playButton.clickCallback = function() {
@@ -2092,39 +2104,29 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 300
         }), 28, 80), this.maxPoints.clickCallback = function() {
             APP.getGameModel().maxPoints();
-        }, this.maxPoints.getContent().alpha = 0, this.audioOn = new DefaultButton("volumeButton_on.png", "volumeButton_on_over.png"), 
-        this.audioOn.build(), scaleConverter(this.audioOn.height, windowHeight, .15, this.audioOn), 
-        this.audioOn.setPosition(20, 20), this.audioOff = new DefaultButton("volumeButton_off.png", "volumeButton_off_over.png"), 
-        this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
-        this.audioOff.setPosition(20, 20), this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
-        this.audioOn.clickCallback = function() {
-            APP.mute = !1, self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
-            self.audioOff.getContent() && self.addChild(self.audioOff);
-        }, this.audioOff.clickCallback = function() {
-            APP.mute = !0, self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
-            self.audioOn.getContent() && self.addChild(self.audioOn);
-        }, this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
-        this.loaderContainer && this.loaderContainer.parent && (this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1), 
+        }, this.maxPoints.getContent().alpha = 0, this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        this.loaderContainer && this.loaderContainer.parent ? (this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1), 
         TweenLite.to(this.loaderContainer, .8, {
             delay: 1,
             alpha: 0
-        }), this.timeline && this.timeline.kill()), TweenLite.to(this.frontShape, .8, {
+        }), this.timeline && this.timeline.kill()) : this.frontShape && TweenLite.to(this.frontShape, .8, {
             alpha: 0
         });
     },
     transitionIn: function() {
-        this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
-        this.addChild(this.frontShape), this.build();
+        return this.isLoaded ? (this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), 
+        this.frontShape.drawRect(0, 0, windowWidth, windowHeight), this.addChild(this.frontShape), 
+        void this.build()) : void this.build();
     },
     transitionOut: function(nextScreen, container) {
-        this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         var self = this;
+        this.frontShape ? (this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         TweenLite.to(this.frontShape, .3, {
             alpha: 1,
             onComplete: function() {
                 self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn();
             }
-        });
+        })) : (self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn());
     }
 }), CreditsModal = Class.extend({
     init: function(screen) {
