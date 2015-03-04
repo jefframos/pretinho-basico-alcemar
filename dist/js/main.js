@@ -581,7 +581,8 @@ var Application = AbstractApplication.extend({
             rotation: 5 * this.velocity.y * Math.PI / 180
         }) : TweenLite.to(this, .3, {
             rotation: 0
-        }), this.range = .8 * this.getContent().height, this.layer.collideChilds(this), 
+        }), this.range = .5 * this.getContent().height, this.centerPosition.x = .5 * -this.getContent().width, 
+        this.centerPosition.y = .5 * -this.getContent().height, this.layer.collideChilds(this), 
         this.getPosition().x > windowWidth + 50 && this.preKill();
     },
     collide: function(arrayCollide) {
@@ -2093,11 +2094,9 @@ var Application = AbstractApplication.extend({
             APP.getGameModel().maxPoints();
         }, this.maxPoints.getContent().alpha = 0, this.audioOn = new DefaultButton("volumeButton_on.png", "volumeButton_on_over.png"), 
         this.audioOn.build(), scaleConverter(this.audioOn.height, windowHeight, .15, this.audioOn), 
-        this.audioOn.setPosition(windowWidth - this.audioOn.getContent().width - 20, 20), 
-        this.audioOff = new DefaultButton("volumeButton_off.png", "volumeButton_off_over.png"), 
+        this.audioOn.setPosition(20, 20), this.audioOff = new DefaultButton("volumeButton_off.png", "volumeButton_off_over.png"), 
         this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
-        this.audioOff.setPosition(windowWidth - this.audioOff.getContent().width - 20, 20), 
-        this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
+        this.audioOff.setPosition(20, 20), this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
         this.audioOn.clickCallback = function() {
             APP.mute = !1, self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
             self.audioOff.getContent() && self.addChild(self.audioOff);
@@ -2178,27 +2177,9 @@ var Application = AbstractApplication.extend({
             wordWrap: !0,
             wordWrapWidth: 600
         }), this.labelsContainer.addChild(tempText), tempText.position.x = -tempText.width / 2, 
-        tempText.position.y = this.labelsContainer.height, tempText = new PIXI.Text("DIRETOR DO PROJETO", {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainer.height + .01 * windowHeight, 
-        this.labelsContainer.addChild(tempText), cast = "Marcos Piangers", tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "25px Roboto",
-            fill: "#FFFFFF",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), this.labelsContainer.addChild(tempText), tempText.position.x = -tempText.width / 2, 
         tempText.position.y = this.labelsContainer.height, scaleConverter(this.labelsContainer.height, windowHeight, .65, this.labelsContainer), 
         this.labelsContainer.position.x = windowWidth / 2 - windowWidth / 5, this.labelsContainer.position.y = .15 * windowHeight, 
-        tempText = new PIXI.Text("MARKETING", {
+        tempText = new PIXI.Text("DIRETOR DO PROJETO", {
             align: "center",
             font: "30px Roboto",
             fill: "#EFD952",
@@ -2207,7 +2188,7 @@ var Application = AbstractApplication.extend({
             wordWrap: !0,
             wordWrapWidth: 600
         }), tempText.position.x = -tempText.width / 2, this.labelsContainerRight.addChild(tempText), 
-        cast = "Fulano A da RBS\nFulano B da RBS", tempText = new PIXI.Text(cast, {
+        cast = "Marcos Piangers", tempText = new PIXI.Text(cast, {
             align: "center",
             font: "25px Roboto",
             fill: "#FFFFFF",
@@ -2215,8 +2196,8 @@ var Application = AbstractApplication.extend({
             stroke: "#000000",
             wordWrap: !0,
             wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height, 
-        this.labelsContainerRight.addChild(tempText), tempText = new PIXI.Text("PRODUÇÃO", {
+        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
+        tempText.position.y = this.labelsContainerRight.height, tempText = new PIXI.Text("PRODUÇÃO", {
             align: "center",
             font: "30px Roboto",
             fill: "#EFD952",
@@ -2263,8 +2244,7 @@ var Application = AbstractApplication.extend({
             wordWrap: !0,
             wordWrapWidth: 600
         }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height + .01 * windowHeight, 
-        this.labelsContainerRight.addChild(tempText), cast = "Magnus Wichmann\nAutor da trilha do pretinho", 
-        tempText = new PIXI.Text(cast, {
+        this.labelsContainerRight.addChild(tempText), cast = "Magnus Wichmann", tempText = new PIXI.Text(cast, {
             align: "center",
             font: "25px Roboto",
             fill: "#FFFFFF",
@@ -2583,12 +2563,14 @@ var Application = AbstractApplication.extend({
     },
     show: function() {
         this.screen.addChild(this), this.boxContainer.visible = !0, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
-        this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
+        this.container.alpha = 0, this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
             alpha: .8
         }), TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight / 2 - this.boxContainer.height / 2 - this.continueButton.getContent().position.y,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 1
+        }), TweenLite.to(this.container, .5, {
             alpha: 1
         });
     },
@@ -2603,6 +2585,8 @@ var Application = AbstractApplication.extend({
             y: -this.boxContainer.height,
             ease: "easeInBack"
         }), TweenLite.to(this.boxContainer, .5, {
+            alpha: 0
+        }), TweenLite.to(this.container, .5, {
             alpha: 0
         });
     },

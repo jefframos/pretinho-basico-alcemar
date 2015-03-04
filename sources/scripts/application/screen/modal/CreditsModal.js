@@ -76,17 +76,6 @@ var CreditsModal = Class.extend({
 		tempText.position.x = - tempText.width / 2;
 		tempText.position.y = this.labelsContainer.height;
 
-		tempText = new PIXI.Text('DIRETOR DO PROJETO', { align:'center',font:'30px Roboto', fill:'#EFD952', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
-		tempText.position.x = - tempText.width / 2;
-		tempText.position.y = this.labelsContainer.height + windowHeight * 0.01;
-		this.labelsContainer.addChild(tempText);
-
-		cast = 'Marcos Piangers';
-		tempText = new PIXI.Text(cast, { align:'center',font:'25px Roboto', fill:'#FFFFFF', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
-		this.labelsContainer.addChild(tempText);
-		tempText.position.x = - tempText.width / 2;
-		tempText.position.y = this.labelsContainer.height;
-
 		scaleConverter(this.labelsContainer.height, windowHeight, 0.65, this.labelsContainer);
 		this.labelsContainer.position.x =  windowWidth/2 - windowWidth / 5;
 		this.labelsContainer.position.y = windowHeight * 0.15;
@@ -94,16 +83,27 @@ var CreditsModal = Class.extend({
 
 
 		//RIGHT
-		tempText = new PIXI.Text('MARKETING', { align:'center',font:'30px Roboto', fill:'#EFD952', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+		// tempText = new PIXI.Text('MARKETING', { align:'center',font:'30px Roboto', fill:'#EFD952', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+		// tempText.position.x = - tempText.width / 2;
+		// this.labelsContainerRight.addChild(tempText);
+
+		// cast = 'Fulano A da RBS\nFulano B da RBS';
+		// tempText = new PIXI.Text(cast, { align:'center',font:'25px Roboto', fill:'#FFFFFF', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+		// tempText.position.x = - tempText.width / 2;
+		// tempText.position.y = this.labelsContainerRight.height;
+		// this.labelsContainerRight.addChild(tempText);
+
+		tempText = new PIXI.Text('DIRETOR DO PROJETO', { align:'center',font:'30px Roboto', fill:'#EFD952', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
 		tempText.position.x = - tempText.width / 2;
+		// tempText.position.y = this.labelsContainer.height + windowHeight * 0.01;
 		this.labelsContainerRight.addChild(tempText);
 
-		cast = 'Fulano A da RBS\nFulano B da RBS';
+		cast = 'Marcos Piangers';
 		tempText = new PIXI.Text(cast, { align:'center',font:'25px Roboto', fill:'#FFFFFF', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
+		this.labelsContainerRight.addChild(tempText);
 		tempText.position.x = - tempText.width / 2;
 		tempText.position.y = this.labelsContainerRight.height;
-		this.labelsContainerRight.addChild(tempText);
-
+		
 		tempText = new PIXI.Text('PRODUÇÃO', { align:'center',font:'30px Roboto', fill:'#EFD952', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
 		tempText.position.x = - tempText.width / 2;
 		tempText.position.y = this.labelsContainerRight.height + windowHeight * 0.01;
@@ -131,7 +131,7 @@ var CreditsModal = Class.extend({
 		tempText.position.y = this.labelsContainerRight.height + windowHeight * 0.01;
 		this.labelsContainerRight.addChild(tempText);
 
-		cast = 'Magnus Wichmann\nAutor da trilha do pretinho';
+		cast = 'Magnus Wichmann';
 		tempText = new PIXI.Text(cast, { align:'center',font:'25px Roboto', fill:'#FFFFFF', strokeThickness:1, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
 		this.labelsContainerRight.addChild(tempText);
 		tempText.position.x = - tempText.width / 2;

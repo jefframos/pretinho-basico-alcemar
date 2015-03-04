@@ -262,12 +262,13 @@ var WaitScreen = AbstractScreen.extend({
         this.audioOn = new DefaultButton('volumeButton_on.png', 'volumeButton_on_over.png');
         this.audioOn.build();
         scaleConverter(this.audioOn.height, windowHeight, 0.15, this.audioOn);
-        this.audioOn.setPosition( windowWidth - this.audioOn.getContent().width  - 20, 20);
+        this.audioOn.setPosition(20, 20);
+        // this.audioOn.setPosition( windowWidth - this.audioOn.getContent().width  - 20, 20);
 
         this.audioOff = new DefaultButton('volumeButton_off.png', 'volumeButton_off_over.png');
         this.audioOff.build();
         scaleConverter(this.audioOff.height, windowHeight, 0.15, this.audioOff);
-        this.audioOff.setPosition( windowWidth - this.audioOff.getContent().width  - 20, 20);
+        this.audioOff.setPosition(20, 20);
         
         if(!APP.mute){
             this.container.addChild(this.audioOn.getContent());

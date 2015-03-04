@@ -98,11 +98,12 @@ var PauseModal = Class.extend({
 		this.screen.addChild(this);
 		this.boxContainer.visible = true;
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
-
+		this.container.alpha = 0;
 		this.screen.updateable = false;
 		TweenLite.to(this.bg, 0.5, {alpha:0.8});
 		TweenLite.to(this.boxContainer.position, 1, {y:windowHeight / 2 - this.boxContainer.height / 2 - this.continueButton.getContent().position.y, ease:'easeOutBack'});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:1});
+		TweenLite.to(this.container, 0.5, {alpha:1});
 	},
 	hide:function(callback){
 		var self = this;
@@ -116,6 +117,7 @@ var PauseModal = Class.extend({
 		}});
 		TweenLite.to(this.boxContainer.position, 1, {y:-this.boxContainer.height, ease:'easeInBack'});
 		TweenLite.to(this.boxContainer, 0.5, {alpha:0});
+		TweenLite.to(this.container, 0.5, {alpha:0});
 	},
 	getContent:function(){
 		return this.container;

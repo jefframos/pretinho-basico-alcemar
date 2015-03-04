@@ -192,6 +192,11 @@
             <filename>environment/env2.png</filename>
             <filename>environment/env3.png</filename>
             <filename>environment/env4.png</filename>
+            <filename>environment/env5.png</filename>
+            <filename>environment/env6.png</filename>
+            <filename>environment/cidade.png</filename>
+            <filename>environment/montanha1.png</filename>
+            <filename>environment/montanha2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
