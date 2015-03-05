@@ -66,6 +66,7 @@ var PauseModal = Class.extend({
 		
 		this.audioOn.clickCallback = function(){
 			APP.mute = true;
+			Howler.mute();
 			if(self.audioOn.getContent().parent)
 			{
 				self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
@@ -77,6 +78,7 @@ var PauseModal = Class.extend({
 		};
 		this.audioOff.clickCallback = function(){
 			APP.mute = false;
+			Howler.unmute();
 			if(self.audioOff.getContent().parent)
 			{
 				self.audioOff.getContent().parent.removeChild(self.audioOff.getContent());

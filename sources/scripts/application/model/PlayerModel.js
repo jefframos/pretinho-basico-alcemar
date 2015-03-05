@@ -44,7 +44,7 @@ var PlayerModel = Class.extend({
 		
 	},
 	reset:function(id){
-		this.currentEnergy = this.maxEnergy;// * 0.1;
+		this.currentEnergy = 1000;//this.maxEnergy;// * 0.1;
 		this.currentBulletEnergy = this.maxBulletEnergy;
 	},
 	build:function(){

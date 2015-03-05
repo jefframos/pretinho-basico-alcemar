@@ -12,8 +12,6 @@ var WaitScreen = AbstractScreen.extend({
     build: function () {
         this._super();
 
-        
-
         var assetsToLoader = ['dist/img/atlas/atlas.json',
         'dist/img/UI/HUD2.json',
         'dist/img/atlas/players2.json',
@@ -33,48 +31,6 @@ var WaitScreen = AbstractScreen.extend({
         'dist/img/UI/introScreen.jpg'];
         // 'dist/img/UI/introScreen.jpg',
         // 'dist/img/UI/HUD.json'];
-
-
-        // soundManager.onready(function() {
-        //     soundManager.createSound({
-        //         id: 'trilha',
-        //         url: 'dist/audio/trilha.mp3',
-        //         autoLoad: true,
-        //         autoPlay: true,
-        //         useHTML5Audio: true,
-        //         preferFlash: true,
-        //         loops: 9999999,
-        //         volume: 5,
-        //         onready: function() {
-        //             // alert('load trilha');
-        //             // soundManager.play('trilha');
-        //             // soundManager.play('trilha');
-        //         },
-        //     });
-        //     // alert('load onready');
-        //     soundManager.createSound({
-        //         id: 'aves_raras',
-        //         url: 'dist/audio/aves_raras.mp3',
-        //         autoLoad: true,
-        //         autoPlay: true,
-        //         useHTML5Audio: true,
-        //         preferFlash: true,
-        //         loops: 1,
-        //         volume: 35,
-        //         ondataerror: function() {
-        //             alert('The sound '+this.id+' finished playing.');
-        //         },
-        //         onload: function() {
-        //             // alert('load onload');
-        //             // soundManager.play('aves_raras');
-        //         },
-        //         onready: function() {
-        //             // alert('load aves_raras');
-        //             // soundManager.play('aves_raras');
-
-        //         },
-        //     });
-        // });
 
         // soundManager.play('aves_raras');
         if(assetsToLoader.length > 0 && !this.isLoaded){
@@ -165,7 +121,8 @@ var WaitScreen = AbstractScreen.extend({
     onAssetsLoaded:function()
     {
         //testMobile() && 
-        if(testMobile() && possibleFullscreen() && !isfull){
+        // if(testMobile() && possibleFullscreen() && !isfull){
+        if(testMobile() && !isfull){
             this.labelLoader = new PIXI.Text('', { align:'center',font:'20px Roboto', fill:'#000', wordWrap:true, wordWrapWidth:600});
             this.loaderContainer.addChild(this.labelLoader);
             this.labelLoader.setText('Toque para continuar');
@@ -222,7 +179,6 @@ var WaitScreen = AbstractScreen.extend({
         scaleConverter(this.audioOff.height, windowHeight, 0.15, this.audioOff);
         this.audioOff.setPosition(20, 20);
 
-
         if(!APP.mute){
             this.container.addChild(this.audioOn.getContent());
         }else{
@@ -231,7 +187,7 @@ var WaitScreen = AbstractScreen.extend({
 
         this.audioOn.clickCallback = function(){
             APP.mute = false;
-            // console.log(APP.mute);
+            Howler.mute();
             if(self.audioOn.getContent().parent)
             {
                 self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
@@ -243,7 +199,7 @@ var WaitScreen = AbstractScreen.extend({
         };
         this.audioOff.clickCallback = function(){
             APP.mute = true;
-            // console.log(APP.mute);
+            Howler.unmute();
             if(self.audioOff.getContent().parent)
             {
                 self.audioOff.getContent().parent.removeChild(self.audioOff.getContent());
@@ -255,6 +211,11 @@ var WaitScreen = AbstractScreen.extend({
 
         };
 
+        APP.audioController.ambientSound1.play();
+        APP.audioController.alcemar.play();
+
+
+        console.log(this.audioOff, this.audioOn);
 
         this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBigOver.png');
         // console.log(this.playButton.build);
@@ -286,29 +247,29 @@ var WaitScreen = AbstractScreen.extend({
         };
 
 
-        this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
-        this.zerarCookie.build(200, 200);
-        scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
+        // this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
+        // this.zerarCookie.build(200, 200);
+        // scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
 
-        this.zerarCookie.setPosition( 20, 20);
-        this.addChild(this.zerarCookie);
-        this.zerarCookie.addLabel(new PIXI.Text('Zerar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
-        this.zerarCookie.clickCallback = function(){
-            APP.getGameModel().zerarTudo();
-        };
-        this.zerarCookie.getContent().alpha = 0;
+        // this.zerarCookie.setPosition( 20, 20);
+        // this.addChild(this.zerarCookie);
+        // this.zerarCookie.addLabel(new PIXI.Text('Zerar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
+        // this.zerarCookie.clickCallback = function(){
+        //     APP.getGameModel().zerarTudo();
+        // };
+        // this.zerarCookie.getContent().alpha = 0;
 
-        this.maxPoints = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
-        this.maxPoints.build(200, 200);
-        scaleConverter(this.maxPoints.height, windowHeight, 0.2, this.maxPoints);
+        // this.maxPoints = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
+        // this.maxPoints.build(200, 200);
+        // scaleConverter(this.maxPoints.height, windowHeight, 0.2, this.maxPoints);
 
-        this.maxPoints.setPosition( 20 , 20+ this.zerarCookie.getContent().height + 10);
-        this.addChild(this.maxPoints);
-        this.maxPoints.addLabel(new PIXI.Text(' MAX ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
-        this.maxPoints.clickCallback = function(){
-            APP.getGameModel().maxPoints();
-        };
-        this.maxPoints.getContent().alpha = 0;
+        // this.maxPoints.setPosition( 20 , 20+ this.zerarCookie.getContent().height + 10);
+        // this.addChild(this.maxPoints);
+        // this.maxPoints.addLabel(new PIXI.Text(' MAX ', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
+        // this.maxPoints.clickCallback = function(){
+            // APP.getGameModel().maxPoints();
+        // };
+        // this.maxPoints.getContent().alpha = 0;
         if(this.frontShape && this.frontShape.parent){
             this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         }

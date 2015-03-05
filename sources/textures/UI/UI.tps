@@ -276,6 +276,10 @@
             <filename>specs/especial_neto.png</filename>
             <filename>specs/especial_rodaika.png</filename>
             <filename>novoRecrutaSelo.png</filename>
+            <filename>volumeButton_on.png</filename>
+            <filename>volumeButton_on_over.png</filename>
+            <filename>volumeButton_off_over.png</filename>
+            <filename>volumeButton_off.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

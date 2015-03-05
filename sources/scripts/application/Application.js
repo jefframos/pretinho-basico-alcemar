@@ -22,6 +22,8 @@ var Application = AbstractApplication.extend({
         this.labelDebug.position.x = 20;
 
         this.mute = false;
+
+        this.audioController = new AudioController();
 	},
     update:function(){
         this._super();

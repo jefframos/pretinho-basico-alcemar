@@ -1,4 +1,4 @@
-/*! jefframos 04-03-2015 */
+/*! jefframos 05-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -309,7 +309,7 @@ var Application = AbstractApplication.extend({
         this.stage.removeChild(this.loadText), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
-        this.labelDebug.position.x = 20, this.mute = !1;
+        this.labelDebug.position.x = 20, this.mute = !1, this.audioController = new AudioController();
     },
     update: function() {
         this._super(), this.screenManager && !this.screenManager.currentScreen;
@@ -505,6 +505,17 @@ var Application = AbstractApplication.extend({
     },
     setPosition: function(x, y) {
         this.container.position.x = x, this.container.position.y = y;
+    }
+}), AudioController = Class.extend({
+    init: function() {
+        this.ambientSound1 = new Howl({
+            urls: [ "dist/audio/trilha.mp3", "dist/audio/trilha.ogg" ],
+            volume: .1,
+            loop: !0
+        }), this.alcemar = new Howl({
+            urls: [ "dist/audio/aves_raras.mp3", "dist/audio/aves_raras.ogg" ],
+            volume: .5
+        });
     }
 }), Egg = Entity.extend({
     init: function(birdModel, screen) {
@@ -1037,7 +1048,7 @@ var Application = AbstractApplication.extend({
                 sinAcc: .2
             })
         }) ], this.playerModels = [ new PlayerModel({
-            label: "ALCEMAR",
+            label: "alcemar",
             inGame: "alcemarGame.png",
             bullet: "alcemarFire.png",
             bulletRotation: !0,
@@ -1063,7 +1074,7 @@ var Application = AbstractApplication.extend({
                 size: .8
             })
         }), new PlayerModel({
-            label: "PIANGERS",
+            label: "piangers",
             inGame: "piangersNGame.png",
             bullet: "piangersFire.png",
             bulletRotation: !0,
@@ -1087,7 +1098,7 @@ var Application = AbstractApplication.extend({
                 totalFires: 40
             })
         }), new PlayerModel({
-            label: "POTTER",
+            label: "potter",
             inGame: "poterGame.png",
             bullet: "potterFire.png",
             bulletRotation: !0,
@@ -1113,7 +1124,7 @@ var Application = AbstractApplication.extend({
                 angleOpen: .25
             })
         }), new PlayerModel({
-            label: "ARTHUR",
+            label: "arthur",
             inGame: "arthurGame.png",
             bullet: "arthurFire.png",
             bulletParticle: "partarthur.png",
@@ -1132,7 +1143,7 @@ var Application = AbstractApplication.extend({
             toSpec: 900,
             bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
-            label: "PORÃ",
+            label: "pora",
             inGame: "poraGame.png",
             bullet: "poraFire.png",
             bulletRotation: !0,
@@ -1159,7 +1170,7 @@ var Application = AbstractApplication.extend({
                 size: .5
             })
         }), new PlayerModel({
-            label: "JEISO",
+            label: "jeiso",
             inGame: "jesoGame.png",
             bullet: "jeisoFire.png",
             bulletParticle: "partjeiso.png",
@@ -1183,7 +1194,7 @@ var Application = AbstractApplication.extend({
                 vel: 4
             })
         }), new PlayerModel({
-            label: "Mr. PI",
+            label: "pi",
             inGame: "piGame.png",
             bullet: "piFire.png",
             bulletRotation: !0,
@@ -1204,7 +1215,7 @@ var Application = AbstractApplication.extend({
             toSpec: 1600,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
-            label: "FETTER",
+            label: "fetter",
             inGame: "feterGame.png",
             bullet: "feterFire.png",
             bulletParticle: "partexplosao.png",
@@ -1223,7 +1234,7 @@ var Application = AbstractApplication.extend({
             toSpec: 1200,
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
-            label: "NETO",
+            label: "neto",
             inGame: "netoGame.png",
             bullet: "netoFire.png",
             bulletParticle: "partneto.png",
@@ -1248,7 +1259,7 @@ var Application = AbstractApplication.extend({
                 vel: 2
             })
         }), new PlayerModel({
-            label: "RODAIKA",
+            label: "rodaika",
             inGame: "rodaikaGame.png",
             bullet: "rodaikaFire.png",
             bulletParticle: "partrodaika2.png",
@@ -1412,6 +1423,18 @@ var Application = AbstractApplication.extend({
         this.birdProbs = [ 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 2, 3, 0, 0, 2, 0, 3, 4, 4, 4, 4, 4, 0, 5, 5, 5, 5, 5, 0, 6, 6, 6, 6, 0, 7, 7, 7, 7, 4, 5, 6, 7 ], 
         this.currentHorde = 0, this.killedBirds = [];
     },
+    sendStats: function() {
+        var i = 0, tempBirds = [ [ "caralinhoDaTerra", 0 ], [ "caralhoBelga", 0 ], [ "lambecuFrances", 0 ], [ "papacuDeCabecaRoxa", 0 ], [ "galinhoPapoDeBago", 0 ], [ "nocututinha", 0 ], [ "calopsuda", 0 ], [ "picudaoAzulNigeriano", 0 ] ];
+        for (i = this.killedBirds.length - 1; i >= 0; i--) tempBirds[this.killedBirds[i]][1]++;
+        var sendObject = '{\n"character":"' + this.playerModels[this.currentID].label + '",\n"points":"' + this.currentPoints + '",\n"birds":{\n';
+        for (i = 0; i < tempBirds.length; i++) sendObject += i >= tempBirds.length - 1 ? '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '"\n' : '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '",\n';
+        sendObject += "}\n}", console.log(sendObject), console.log(JSON.parse(sendObject));
+        ({
+            character: this.playerModels[APP.getGameModel().currentID].label,
+            points: APP.getGameModel().currentPoints
+        });
+        console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints, this.playerModels[APP.getGameModel().currentID].label);
+    },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
     },
@@ -1501,7 +1524,7 @@ var Application = AbstractApplication.extend({
         this.able = !1;
     },
     reset: function() {
-        this.currentEnergy = this.maxEnergy, this.currentBulletEnergy = this.maxBulletEnergy;
+        this.currentEnergy = 1e3, this.currentBulletEnergy = this.maxBulletEnergy;
     },
     build: function() {},
     destroy: function() {},
@@ -1614,7 +1637,7 @@ var Application = AbstractApplication.extend({
         this.updatePlayers(!0), this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         TweenLite.to(this.frontShape, .8, {
             alpha: 0
-        });
+        }), APP.getGameModel().sendStats();
     },
     transitionIn: function() {
         this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
@@ -2036,7 +2059,7 @@ var Application = AbstractApplication.extend({
         this._super(), this.bulletBar.updateBar(Math.floor(100 * this.loadPercent), 100);
     },
     onAssetsLoaded: function() {
-        if (testMobile() && possibleFullscreen() && !isfull) {
+        if (testMobile() && !isfull) {
             this.labelLoader = new PIXI.Text("", {
                 align: "center",
                 font: "20px Roboto",
@@ -2068,12 +2091,13 @@ var Application = AbstractApplication.extend({
         this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
         this.audioOff.setPosition(20, 20), this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
         this.audioOn.clickCallback = function() {
-            APP.mute = !1, self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
+            APP.mute = !1, Howler.mute(), self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
             self.audioOff.getContent() && self.addChild(self.audioOff);
         }, this.audioOff.clickCallback = function() {
-            APP.mute = !0, self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
+            APP.mute = !0, Howler.unmute(), self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
             self.audioOn.getContent() && self.addChild(self.audioOn);
-        }, this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBigOver.png"), 
+        }, APP.audioController.ambientSound1.play(), APP.audioController.alcemar.play(), 
+        console.log(this.audioOff, this.audioOn), this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBigOver.png"), 
         this.playButton.build(), scaleConverter(this.playButton.height, windowHeight, .25, this.playButton), 
         this.playButton.setPosition(windowWidth - this.playButton.getContent().width - 20, windowHeight - this.playButton.getContent().height - 20), 
         this.addChild(this.playButton), this.playButton.clickCallback = function() {
@@ -2083,28 +2107,7 @@ var Application = AbstractApplication.extend({
         this.creditsButton.setPosition(this.playButton.getContent().position.x - this.creditsButton.getContent().width - 20, windowHeight - this.creditsButton.getContent().height - 20), 
         this.addChild(this.creditsButton), this.creditsButton.clickCallback = function() {
             self.creditsModal.show();
-        }, this.zerarCookie = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
-        this.zerarCookie.build(200, 200), scaleConverter(this.zerarCookie.height, windowHeight, .2, this.zerarCookie), 
-        this.zerarCookie.setPosition(20, 20), this.addChild(this.zerarCookie), this.zerarCookie.addLabel(new PIXI.Text("Zerar", {
-            align: "center",
-            fill: "#033E43",
-            font: "50px Luckiest Guy",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        }), 28, 80), this.zerarCookie.clickCallback = function() {
-            APP.getGameModel().zerarTudo();
-        }, this.zerarCookie.getContent().alpha = 0, this.maxPoints = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
-        this.maxPoints.build(200, 200), scaleConverter(this.maxPoints.height, windowHeight, .2, this.maxPoints), 
-        this.maxPoints.setPosition(20, 20 + this.zerarCookie.getContent().height + 10), 
-        this.addChild(this.maxPoints), this.maxPoints.addLabel(new PIXI.Text(" MAX ", {
-            align: "center",
-            fill: "#033E43",
-            font: "50px Luckiest Guy",
-            wordWrap: !0,
-            wordWrapWidth: 300
-        }), 28, 80), this.maxPoints.clickCallback = function() {
-            APP.getGameModel().maxPoints();
-        }, this.maxPoints.getContent().alpha = 0, this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        }, this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         this.loaderContainer && this.loaderContainer.parent ? (this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1), 
         TweenLite.to(this.loaderContainer, .8, {
             delay: 1,
@@ -2417,8 +2420,8 @@ var Application = AbstractApplication.extend({
         }), TweenLite.to(this.novoRecruta.getContent(), .2, {
             delay: .8,
             alpha: 1
-        })), console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints, APP.getGameModel().currentID), 
-        this.boxContainer.visible = !0, this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
+        })), APP.getGameModel().sendStats(), this.boxContainer.visible = !0, this.contents.visible = !0, 
+        TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
@@ -2556,10 +2559,10 @@ var Application = AbstractApplication.extend({
         this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
         this.audioOff.setPosition(20, 20), console.log(APP.mute), this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
         this.audioOn.clickCallback = function() {
-            APP.mute = !0, self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
+            APP.mute = !0, Howler.mute(), self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
             self.audioOff.getContent() && self.container.addChild(self.audioOff.getContent());
         }, this.audioOff.clickCallback = function() {
-            APP.mute = !1, self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
+            APP.mute = !1, Howler.unmute(), self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
             self.audioOn.getContent() && self.container.addChild(self.audioOn.getContent());
         }, this.boxContainer.alpha = 0, this.boxContainer.visible = !1, scaleConverter(this.boxContainer.width, windowWidth, .5, this.boxContainer), 
         this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;

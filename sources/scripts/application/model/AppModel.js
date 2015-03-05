@@ -54,7 +54,7 @@ var AppModel = Class.extend({
 		this.playerModels = [
 
 			new PlayerModel({
-				label:'ALCEMAR',
+				label:'alcemar',
 				// outGame:'alcemar.png',
 				inGame:'alcemarGame.png',
 				bullet:'alcemarFire.png',
@@ -81,7 +81,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'PIANGERS',
+				label:'piangers',
 				// outGame:'piangersN.png',
 				inGame:'piangersNGame.png',
 				bullet:'piangersFire.png',
@@ -106,7 +106,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'POTTER',
+				label:'potter',
 				// outGame:'poter.png',
 				inGame:'poterGame.png',
 				bullet:'potterFire.png',
@@ -130,7 +130,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'ARTHUR',
+				label:'arthur',
 				// outGame:'arthur.png',
 				inGame:'arthurGame.png',
 				bullet:'arthurFire.png',
@@ -153,7 +153,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'PORÃ',
+				label:'pora',
 				// outGame:'pora.png',
 				inGame:'poraGame.png',
 				bullet:'poraFire.png',
@@ -178,7 +178,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'JEISO',
+				label:'jeiso',
 				// outGame:'jeso.png',
 				inGame:'jesoGame.png',
 				bullet:'jeisoFire.png',
@@ -202,7 +202,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'Mr. PI',
+				label:'pi',
 				// outGame:'pi.png',
 				inGame:'piGame.png',
 				bullet:'piFire.png',
@@ -227,7 +227,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'FETTER',
+				label:'fetter',
 				// outGame:'feter.png',
 				inGame:'feterGame.png',
 				bullet:'feterFire.png',
@@ -250,7 +250,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'NETO',
+				label:'neto',
 				// outGame:'neto.png',
 				inGame:'netoGame.png',
 				bullet:'netoFire.png',
@@ -274,7 +274,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'RODAIKA',
+				label:'rodaika',
 				// outGame:'rodaika.png',
 				inGame:'rodaikaGame.png',
 				bullet:'rodaikaFire.png',
@@ -475,6 +475,43 @@ var AppModel = Class.extend({
 		this.killedBirds = [];
 
 
+	},
+	sendStats:function(id){
+		var i = 0;
+		var tempBirds = [
+			['caralinhoDaTerra',0],
+			['caralhoBelga',0],
+			['lambecuFrances',0],
+			['papacuDeCabecaRoxa',0],
+			['galinhoPapoDeBago',0],
+			['nocututinha',0],
+			['calopsuda',0],
+			['picudaoAzulNigeriano',0],
+		];
+		for (i = this.killedBirds.length - 1; i >= 0; i--) {
+			tempBirds[this.killedBirds[i]][1] ++;
+		}
+
+		var sendObject = '{\n"character":"'+this.playerModels[this.currentID].label+'",'+
+		'\n"points":"'+this.currentPoints+'",'+
+		'\n"birds":{\n';
+
+		for (i = 0; i < tempBirds.length; i++) {
+			if(i >= tempBirds.length - 1){
+				sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '"\n';
+			}else{
+				sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '",\n';
+			}
+		}
+		sendObject += '}\n}';
+		console.log(sendObject);
+		console.log(JSON.parse(sendObject));
+		var send = {
+			character: this.playerModels[APP.getGameModel().currentID].label,
+			points: APP.getGameModel().currentPoints,
+			
+		};
+		console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints,  this.playerModels[APP.getGameModel().currentID].label);
 	},
 	setModel:function(id){
 		this.currentID = id;

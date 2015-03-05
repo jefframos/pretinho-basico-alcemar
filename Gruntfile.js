@@ -44,6 +44,7 @@ module.exports = function(grunt) {
             plugins: {
                 dest: '<%= globalConfig.dest %>js/lib/plugins.js',
                 src: [
+                    '<%= globalConfig.src %>scripts/plugins/howler.js',
                     '<%= globalConfig.src %>scripts/plugins/fpsmeter.js',
                     '<%= globalConfig.src %>scripts/plugins/pixi.js',
                     '<%= globalConfig.src %>scripts/plugins/modernizr-2.7.1.min.js',
@@ -95,7 +96,7 @@ module.exports = function(grunt) {
         //     }
         // },
         plugins: {
-            js2: {
+            pl: {
                 tasks: ['uglify:plugins']
             }
         }, // watch
@@ -119,6 +120,6 @@ module.exports = function(grunt) {
 
     // tasks
     grunt.registerTask('js', [ 'jshint', 'uglify' ]);
-    grunt.registerTask('js2', ['uglify' ]);
+    grunt.registerTask('pl', ['uglify' ]);
     grunt.registerTask('w', ['watch']);
 };

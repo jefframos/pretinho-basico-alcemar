@@ -265,7 +265,8 @@ var EndModal = Class.extend({
 
 		}
 
-		console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints,  APP.getGameModel().currentID);
+		APP.getGameModel().sendStats();
+		
 		// this.container.interactive = true;
 		// this.container.buttonMode = true;
 		this.boxContainer.visible = true;

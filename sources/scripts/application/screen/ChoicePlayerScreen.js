@@ -300,6 +300,8 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         // self.screenManager.change('Game');
         // }, 1000);
+
+        APP.getGameModel().sendStats();
     },
     transitionIn:function()
     {
