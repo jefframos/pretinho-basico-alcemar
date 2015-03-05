@@ -1524,7 +1524,7 @@ var Application = AbstractApplication.extend({
         this.able = !1;
     },
     reset: function() {
-        this.currentEnergy = 1e3, this.currentBulletEnergy = this.maxBulletEnergy;
+        this.currentEnergy = this.maxEnergy, this.currentBulletEnergy = this.maxBulletEnergy;
     },
     build: function() {},
     destroy: function() {},
