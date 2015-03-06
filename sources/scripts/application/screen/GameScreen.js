@@ -209,6 +209,7 @@ var GameScreen = AbstractScreen.extend({
             if(this.red.getPosition().y > windowHeight+ this.red.getContent().height){
                 //console.log('GAME OVER');
                 var newPlayers = APP.getGameModel().addPoints();
+                this.hideBars();
                 this.endModal.show(newPlayers);
             }
         }
@@ -360,20 +361,9 @@ var GameScreen = AbstractScreen.extend({
 
         this.sky = new SimpleSprite('sky.png');
         this.addChild(this.sky);
-        this.sky.container.width = windowWidth;
+        this.sky.container.width = windowWidth * 1.2;
+        this.sky.container.position.x = - windowWidth * 0.1;
         this.sky.container.height = windowHeight * 0.95;
-
-        var mountain = new Paralax(windowWidth);
-        mountain.build('montanha2.png', 200);
-        this.addChild(mountain);
-        mountain.getContent().y = windowHeight - 105 - mountain.getContent().height;
-        mountain.velocity.x = -0.1;
-
-        var city = new Paralax(windowWidth);
-        city.build('cidade.png', 400);
-        this.addChild(city);
-        city.getContent().y = windowHeight - 105 - city.getContent().height;
-        city.velocity.x = -0.2;
         // var clouds = new Environment(windowWidth, windowHeight);
         // clouds.build(['1b.png','2b.png','3b.png','4b.png']);
         // clouds.velocity.x = -0.2;
@@ -386,6 +376,18 @@ var GameScreen = AbstractScreen.extend({
         this.layerManagerBack = new LayerManager();
         this.layerManagerBack.build('MainBack');
         this.addChild(this.layerManagerBack);
+
+        var mountain = new Paralax(windowWidth);
+        mountain.build('montanha2.png', 200);
+        this.addChild(mountain);
+        mountain.getContent().y = windowHeight - 105 - mountain.getContent().height;
+        mountain.velocity.x = -0.1;
+
+        var city = new Paralax(windowWidth);
+        city.build('cidade.png', 400);
+        this.addChild(city);
+        city.getContent().y = windowHeight - 105 - city.getContent().height;
+        city.velocity.x = -0.2;
 
 
         var environment = new Environment(windowWidth, windowHeight);
@@ -443,14 +445,14 @@ var GameScreen = AbstractScreen.extend({
         // this.pointsLabel.position.y = this.mascadasContainer.height / 2 - this.pointsLabel.height / 2;
         // var posHelper =  windowHeight * 0.05;
 
-        var barHeight = this.mascadasContainer.height;// * this.mascadasContainer.scale.x;
-        var barsContainer = new PIXI.DisplayObjectContainer();
+        var barHeight = this.mascadasContainer.height - this.mascadasContainer.height * 0.1;// * this.mascadasContainer.scale.x;
+        this.barsContainer = new PIXI.DisplayObjectContainer();
 
         this.energyBar = new LifeBarHUD(windowWidth * 0.2,barHeight, barHeight,0xf9003c, 0x9b0436);
-        // barsContainer.addChild(this.bulletBar2.getContent());
+        // this.barsContainer.addChild(this.bulletBar2.getContent());
 
         // this.energyBar = new GasBarView('gasBarBack.png', 'gasBar.png', 51,2);
-        barsContainer.addChild(this.energyBar.getContent());
+        this.barsContainer.addChild(this.energyBar.getContent());
         this.energyBar.setPosition(0, 0);
         // scaleConverter(this.energyBar.getContent().width, windowWidth, 0.2, this.energyBar);
 
@@ -470,7 +472,7 @@ var GameScreen = AbstractScreen.extend({
         // this.bulletBar = new GasBarView('gasBarBack2.png', 'gasBar2.png', 51,2);
         this.bulletBar = new LifeBarHUD(windowWidth * 0.2, barHeight, barHeight, 0x00aaff, 0x1d5099);
 
-        barsContainer.addChild(this.bulletBar.getContent());
+        this.barsContainer.addChild(this.bulletBar.getContent());
         // scaleConverter(this.bulletBar.getContent().width, windowWidth, 0.2, this.bulletBar);
         this.bulletBar.setPosition(this.energyBar.getContent().position.x + this.energyBar.getContent().width + 10, 0);
         // this.bulletBar.setPosition(0, windowHeight - this.bulletBar.getContent().height - 40);
@@ -489,16 +491,16 @@ var GameScreen = AbstractScreen.extend({
         this.bulletIco.getContent().position.y = this.bulletBar.getContent().height / 2;
         this.bulletBar.getContent().addChild(this.bulletIco.getContent());
 
-        barsContainer.addChild(this.mascadasContainer);
+        this.barsContainer.addChild(this.mascadasContainer);
 
-        this.addChild(barsContainer);
+        this.addChild(this.barsContainer);
 
-        barsContainer.position.x = 20 + barHeight;
-        barsContainer.position.y = 20;
+        this.barsContainer.position.x = 20 + barHeight;
+        this.barsContainer.position.y = 20;
 
         this.mascadasContainer.position.x = this.bulletBar.getContent().position.x + this.bulletBar.getContent().width;
 
-        // barsContainer.scale.x = barsContainer.scale.y = scaleConverter(barsContainer.width, windowWidth, 0.3);
+        // this.barsContainer.scale.x = this.barsContainer.scale.y = scaleConverter(this.barsContainer.width, windowWidth, 0.3);
 
 
         this.pauseButton = new DefaultButton('pauseButton.png', 'pauseButtonOver.png');
@@ -510,10 +512,11 @@ var GameScreen = AbstractScreen.extend({
             }
             self.pauseModal.show();
         };
-        scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.10, this.pauseButton);
-        this.pauseButton.setPosition( windowWidth - this.pauseButton.getContent().width - 10, 10);
+        scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.15, this.pauseButton);
+        this.pauseButton.setPosition( windowWidth - this.pauseButton.getContent().width - 20, 20);
         this.initBench = false;
-        TweenLite.from(this.pauseButton.getContent(), 0.5, {delay:1, x: windowWidth});
+
+        this.showBars();
 
         this.gameHUD = new PIXI.DisplayObjectContainer();
         this.addChild(this.gameHUD);
@@ -576,6 +579,18 @@ var GameScreen = AbstractScreen.extend({
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         TweenLite.to(this.frontShape, 0.8, {alpha:0});
         
+    },
+    showBars:function(){
+        TweenLite.from(this.pauseButton.getContent(), 0.5, {delay:1, x: windowWidth});
+        TweenLite.from(this.energyBar.getContent(), 0.5, {delay:1.2, y: -this.barsContainer.position.y -this.energyBar.getContent().height});
+        TweenLite.from(this.bulletBar.getContent(), 0.5, {delay:1.5, y: -this.barsContainer.position.y -this.bulletBar.getContent().height});
+        TweenLite.from(this.mascadasContainer, 0.5, {delay:1.8, y: -this.barsContainer.position.y -this.mascadasContainer.height});
+    },
+    hideBars:function(){
+        TweenLite.to(this.pauseButton.getContent(), 0.5, {delay:0, x: windowWidth});
+        TweenLite.to(this.energyBar.getContent(), 0.5, {delay:0.2, y: -this.barsContainer.position.y -this.energyBar.getContent().height});
+        TweenLite.to(this.bulletBar.getContent(), 0.5, {delay:0.5, y: -this.barsContainer.position.y -this.bulletBar.getContent().height});
+        TweenLite.to(this.mascadasContainer, 0.5, {delay:0.8, y: -this.barsContainer.position.y -this.mascadasContainer.height});
     },
     transitionIn:function()
     {

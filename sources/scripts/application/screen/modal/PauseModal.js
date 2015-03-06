@@ -20,6 +20,7 @@ var PauseModal = Class.extend({
 		this.backButton.setPosition(0, 0);
 		this.backButton.clickCallback = function(){
 			self.hide(function(){
+				// self.screen.hideBars();
 				self.screen.screenManager.prevScreen();
 			});
 		};

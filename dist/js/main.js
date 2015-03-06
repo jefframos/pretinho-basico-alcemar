@@ -1,4 +1,4 @@
-/*! jefframos 05-03-2015 */
+/*! jefframos 06-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -343,9 +343,10 @@ var Application = AbstractApplication.extend({
     },
     initApplication: function() {
         this.waitScreen = new WaitScreen("Wait"), this.gameScreen = new GameScreen("Game"), 
-        this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), this.screenManager.addScreen(this.waitScreen), 
-        this.screenManager.addScreen(this.gameScreen), this.screenManager.addScreen(this.choicePlayerScreen), 
-        this.screenManager.change("Wait");
+        this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), this.loadScreen = new LoadScreen("Loader"), 
+        this.screenManager.addScreen(this.waitScreen), this.screenManager.addScreen(this.gameScreen), 
+        this.screenManager.addScreen(this.choicePlayerScreen), this.screenManager.addScreen(this.loadScreen), 
+        this.screenManager.change("Loader");
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -514,8 +515,14 @@ var Application = AbstractApplication.extend({
             loop: !0
         }), this.alcemar = new Howl({
             urls: [ "dist/audio/aves_raras.mp3", "dist/audio/aves_raras.ogg" ],
-            volume: .5
+            volume: .8,
+            sprite: {
+                audio1: [ 0, 7e3 ]
+            }
         });
+    },
+    playAmbientSound: function() {
+        this.ambientPlaying || (this.ambientPlaying = !0, this.ambientSound1.play());
     }
 }), Egg = Entity.extend({
     init: function(birdModel, screen) {
@@ -1362,7 +1369,7 @@ var Application = AbstractApplication.extend({
                 accX: -.01
             }),
             toNext: 80,
-            money: 12
+            money: 8
         }), new BirdModel({
             source: [ "nocututinhaAnima0001.png", "nocututinhaAnima0002.png", "nocututinhaAnima0003.png", "nocututinhaAnima0004.png" ],
             particles: [ "cabeca3.png", "penas3.png" ],
@@ -1380,7 +1387,7 @@ var Application = AbstractApplication.extend({
                 velY: -8
             }),
             toNext: 250,
-            money: 20
+            money: 15
         }), new BirdModel({
             source: [ "calopsudaAnima0001.png", "calopsudaAnima0002.png", "calopsudaAnima0003.png", "calopsudaAnima0004.png" ],
             particles: [ "cabeca8.png", "penas8.png" ],
@@ -1637,6 +1644,14 @@ var Application = AbstractApplication.extend({
         this.updatePlayers(!0), this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         TweenLite.to(this.frontShape, .8, {
             alpha: 0
+        }), TweenLite.from(this.returnButton.getContent(), .5, {
+            delay: .5,
+            x: -this.returnButton.getContent().width,
+            ease: "easeOutBack"
+        }), TweenLite.from(this.play.getContent(), .5, {
+            delay: .8,
+            x: windowWidth,
+            ease: "easeOutBack"
         }), APP.getGameModel().sendStats();
     },
     transitionIn: function() {
@@ -1820,7 +1835,7 @@ var Application = AbstractApplication.extend({
             this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
             this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height)) {
                 var newPlayers = APP.getGameModel().addPoints();
-                this.endModal.show(newPlayers);
+                this.hideBars(), this.endModal.show(newPlayers);
             }
             this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
             this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
@@ -1892,15 +1907,16 @@ var Application = AbstractApplication.extend({
         this.spawner = 150, this.alertAcum = 0, this.bulletAcum = 0, this.labelAcum = 0, 
         APP.getGameModel().currentPoints = 0, APP.getGameModel().currentHorde = 0, APP.getGameModel().killedBirds = [], 
         this.initApp = !0, this.blockPause = !1, this.vecClouds = [], this.sky = new SimpleSprite("sky.png"), 
-        this.addChild(this.sky), this.sky.container.width = windowWidth, this.sky.container.height = .95 * windowHeight;
+        this.addChild(this.sky), this.sky.container.width = 1.2 * windowWidth, this.sky.container.position.x = .1 * -windowWidth, 
+        this.sky.container.height = .95 * windowHeight, this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], 
+        this.layerManagerBack = new LayerManager(), this.layerManagerBack.build("MainBack"), 
+        this.addChild(this.layerManagerBack);
         var mountain = new Paralax(windowWidth);
         mountain.build("montanha2.png", 200), this.addChild(mountain), mountain.getContent().y = windowHeight - 105 - mountain.getContent().height, 
         mountain.velocity.x = -.1;
         var city = new Paralax(windowWidth);
         city.build("cidade.png", 400), this.addChild(city), city.getContent().y = windowHeight - 105 - city.getContent().height, 
-        city.velocity.x = -.2, this.cloudsSources = [ "1b.png", "2b.png", "3b.png", "4b.png" ], 
-        this.layerManagerBack = new LayerManager(), this.layerManagerBack.build("MainBack"), 
-        this.addChild(this.layerManagerBack);
+        city.velocity.x = -.2;
         var environment = new Environment(windowWidth, windowHeight);
         environment.build([ "env1.png", "env2.png", "env3.png", "env4.png", "env5.png", "env6.png" ]), 
         environment.velocity.x = -.35, this.addChild(environment), this.layerManager = new LayerManager(), 
@@ -1927,32 +1943,30 @@ var Application = AbstractApplication.extend({
             stroke: "#033E43",
             strokeThickness: 5
         }), this.mascadasContainer.addChild(this.pointsLabel), this.pointsLabel.position.x = this.mascadasContainer.width;
-        var barHeight = this.mascadasContainer.height, barsContainer = new PIXI.DisplayObjectContainer();
-        this.energyBar = new LifeBarHUD(.2 * windowWidth, barHeight, barHeight, 16318524, 10159158), 
-        barsContainer.addChild(this.energyBar.getContent()), this.energyBar.setPosition(0, 0), 
+        var barHeight = this.mascadasContainer.height - .1 * this.mascadasContainer.height;
+        this.barsContainer = new PIXI.DisplayObjectContainer(), this.energyBar = new LifeBarHUD(.2 * windowWidth, barHeight, barHeight, 16318524, 10159158), 
+        this.barsContainer.addChild(this.energyBar.getContent()), this.energyBar.setPosition(0, 0), 
         this.gasolineIco = new SimpleSprite("gasoline.png"), scaleConverter(this.gasolineIco.getContent().height, barHeight, 1.3, this.gasolineIco.getContent()), 
         this.gasolineIco.getContent().anchor.x = .5, this.gasolineIco.getContent().anchor.y = .5, 
         this.gasolineIco.getContent().position.x = this.energyBar.getContent().height / 2, 
         this.gasolineIco.getContent().position.y = this.energyBar.getContent().height / 2, 
         this.energyBar.getContent().addChild(this.gasolineIco.getContent()), this.bulletBar = new LifeBarHUD(.2 * windowWidth, barHeight, barHeight, 43775, 1921177), 
-        barsContainer.addChild(this.bulletBar.getContent()), this.bulletBar.setPosition(this.energyBar.getContent().position.x + this.energyBar.getContent().width + 10, 0), 
+        this.barsContainer.addChild(this.bulletBar.getContent()), this.bulletBar.setPosition(this.energyBar.getContent().position.x + this.energyBar.getContent().width + 10, 0), 
         this.bulletIco = new SimpleSprite("bulletIco.png"), scaleConverter(this.bulletIco.getContent().height, barHeight, 1.3, this.bulletIco.getContent()), 
         this.bulletIco.getContent().anchor.x = .5, this.bulletIco.getContent().anchor.y = .5, 
         this.bulletIco.getContent().position.x = this.bulletBar.getContent().height / 2, 
         this.bulletIco.getContent().position.y = this.bulletBar.getContent().height / 2, 
-        this.bulletBar.getContent().addChild(this.bulletIco.getContent()), barsContainer.addChild(this.mascadasContainer), 
-        this.addChild(barsContainer), barsContainer.position.x = 20 + barHeight, barsContainer.position.y = 20, 
-        this.mascadasContainer.position.x = this.bulletBar.getContent().position.x + this.bulletBar.getContent().width, 
+        this.bulletBar.getContent().addChild(this.bulletIco.getContent()), this.barsContainer.addChild(this.mascadasContainer), 
+        this.addChild(this.barsContainer), this.barsContainer.position.x = 20 + barHeight, 
+        this.barsContainer.position.y = 20, this.mascadasContainer.position.x = this.bulletBar.getContent().position.x + this.bulletBar.getContent().width, 
         this.pauseButton = new DefaultButton("pauseButton.png", "pauseButtonOver.png"), 
         this.pauseButton.build(), this.addChild(this.pauseButton), this.pauseButton.clickCallback = function() {
             self.blockPause || self.pauseModal.show();
-        }, scaleConverter(this.pauseButton.getContent().height, windowHeight, .1, this.pauseButton), 
-        this.pauseButton.setPosition(windowWidth - this.pauseButton.getContent().width - 10, 10), 
-        this.initBench = !1, TweenLite.from(this.pauseButton.getContent(), .5, {
-            delay: 1,
-            x: windowWidth
-        }), this.gameHUD = new PIXI.DisplayObjectContainer(), this.addChild(this.gameHUD), 
-        this.specialContainer = new PIXI.DisplayObjectContainer(), this.specialButton = new DefaultButton(this.playerModel.icoSpecSource, this.playerModel.icoSpecSource), 
+        }, scaleConverter(this.pauseButton.getContent().height, windowHeight, .15, this.pauseButton), 
+        this.pauseButton.setPosition(windowWidth - this.pauseButton.getContent().width - 20, 20), 
+        this.initBench = !1, this.showBars(), this.gameHUD = new PIXI.DisplayObjectContainer(), 
+        this.addChild(this.gameHUD), this.specialContainer = new PIXI.DisplayObjectContainer(), 
+        this.specialButton = new DefaultButton(this.playerModel.icoSpecSource, this.playerModel.icoSpecSource), 
         this.specialButton.build(), this.specialContainer.addChild(this.specialButton.getContent()), 
         this.specialButton.clickCallback = function() {
             self.ableSpecial > 0 && !self.blockPause || self.special();
@@ -1970,6 +1984,36 @@ var Application = AbstractApplication.extend({
         this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         TweenLite.to(this.frontShape, .8, {
             alpha: 0
+        });
+    },
+    showBars: function() {
+        TweenLite.from(this.pauseButton.getContent(), .5, {
+            delay: 1,
+            x: windowWidth
+        }), TweenLite.from(this.energyBar.getContent(), .5, {
+            delay: 1.2,
+            y: -this.barsContainer.position.y - this.energyBar.getContent().height
+        }), TweenLite.from(this.bulletBar.getContent(), .5, {
+            delay: 1.5,
+            y: -this.barsContainer.position.y - this.bulletBar.getContent().height
+        }), TweenLite.from(this.mascadasContainer, .5, {
+            delay: 1.8,
+            y: -this.barsContainer.position.y - this.mascadasContainer.height
+        });
+    },
+    hideBars: function() {
+        TweenLite.to(this.pauseButton.getContent(), .5, {
+            delay: 0,
+            x: windowWidth
+        }), TweenLite.to(this.energyBar.getContent(), .5, {
+            delay: .2,
+            y: -this.barsContainer.position.y - this.energyBar.getContent().height
+        }), TweenLite.to(this.bulletBar.getContent(), .5, {
+            delay: .5,
+            y: -this.barsContainer.position.y - this.bulletBar.getContent().height
+        }), TweenLite.to(this.mascadasContainer, .5, {
+            delay: .8,
+            y: -this.barsContainer.position.y - this.mascadasContainer.height
         });
     },
     transitionIn: function() {
@@ -2006,7 +2050,7 @@ var Application = AbstractApplication.extend({
             this.initBench = !0, this.accBench = 0, this.benchInterval = setInterval(addEntity, 50);
         }
     }
-}), WaitScreen = AbstractScreen.extend({
+}), LoadScreen = AbstractScreen.extend({
     init: function(label) {
         this._super(label), this.isLoaded = !1, APP.labelDebug.visible = !1;
     },
@@ -2015,89 +2059,168 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/introScreen.jpg" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/intro.json" ];
         if (assetsToLoader.length > 0 && !this.isLoaded) {
             this.loader = new PIXI.AssetLoader(assetsToLoader), this.loaderContainer = new PIXI.DisplayObjectContainer(), 
             this.addChild(this.loaderContainer), this.frontShape && this.frontShape.parent.removeChild(this.frontShape), 
             frontShape = new PIXI.Graphics(), frontShape.beginFill(16777215), frontShape.drawRect(0, 0, windowWidth, windowHeight), 
-            this.loaderContainer.addChild(frontShape), this.logoAtl = new SimpleSprite("dist/img/logo_atlantida.png"), 
-            this.logoChilli = new SimpleSprite("dist/img/logo_chilli.png"), this.loaderContainer.addChild(this.logoAtl.getContent()), 
-            this.loaderContainer.addChild(this.logoChilli.getContent()), this.alcemar = new SimpleSprite("dist/img/alcemarLoader.png"), 
-            this.loaderContainer.addChild(this.alcemar.getContent()), this.logoAtl.getContent().position.x = windowWidth, 
-            this.logoChilli.getContent().position.x = windowWidth, this.alcemar.getContent().position.x = windowWidth, 
+            this.loaderContainer.addChild(frontShape), this.alcemar = new SimpleSprite("dist/img/logoLoader.png"), 
+            this.loaderContainer.addChild(this.alcemar.getContent()), this.alcemar.getContent().position.x = windowWidth, 
             this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height;
             var barHeight = 20;
-            this.bulletBar = new LifeBarHUD(.4 * windowWidth, barHeight, barHeight, 43775, 1921177), 
+            this.bulletBar = new LifeBarHUD(.6 * windowWidth, barHeight, 0, 43775, 1921177), 
             this.loaderContainer.addChild(this.bulletBar.getContent()), this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2, 
             this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - .1 * windowHeight, 
             this.bulletBar.updateBar(0, 100), this.initLoad();
         } else this.onAssetsLoaded();
+        this.updateable = !0;
     },
     update: function() {
-        if (this.alcemar && (this.logoAtl.getContent().width > 1 && this.logoChilli.getContent().width > 1 && (this.logoAtl.getContent().position.x = windowWidth - this.logoAtl.getContent().width - 20, 
-        this.logoAtl.getContent().position.y = windowHeight - this.logoAtl.getContent().height - 20, 
-        this.logoChilli.getContent().position.x = 20, this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height / 2 - this.logoChilli.getContent().height / 2), 
-        this.alcemar.getContent().width > 1 && 1 === this.alcemar.getContent().scale.y)) {
-            scaleConverter(this.alcemar.getContent().height, windowHeight, .3, this.alcemar.getContent()), 
-            this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2, 
-            this.alcemar.getContent().position.y = windowHeight / 2 - this.alcemar.getContent().height / 2;
-            var centerY = windowHeight / 2 - this.alcemar.getContent().width / 2, self = this;
-            this.timeline = new TimelineLite({
-                onComplete: function() {
-                    self.timeline.restart();
-                }
-            }), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4, {
-                y: centerY - .2 * this.alcemar.getContent().height,
-                ease: "easeInOutLinear"
-            })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4, {
-                y: centerY,
-                ease: "easeInOutLinear"
-            }));
+        if (this.updateable) {
+            if (this.alcemar && (this.logoAtl && this.logoAtl.getContent().width > 1 && this.logoChilli.getContent().width > 1 && (this.logoAtl.getContent().position.x = windowWidth - this.logoAtl.getContent().width - 20, 
+            this.logoAtl.getContent().position.y = windowHeight - this.logoAtl.getContent().height - 20, 
+            this.logoChilli.getContent().position.x = 20, this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height / 2 - this.logoChilli.getContent().height / 2), 
+            this.alcemar.getContent().width > 1 && 1 === this.alcemar.getContent().scale.y)) {
+                scaleConverter(this.alcemar.getContent().height, windowHeight, .4, this.alcemar.getContent()), 
+                this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2;
+                var centerY = windowHeight / 2 - this.alcemar.getContent().width / 2;
+                this.alcemar.getContent().position.y = centerY, TweenLite.from(this.alcemar.getContent(), 1, {
+                    alpha: 0
+                });
+                var self = this;
+                this.timeline = new TimelineLite({
+                    onComplete: function() {
+                        self.timeline.restart();
+                    }
+                }), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4, {
+                    y: centerY - .2 * this.alcemar.getContent().height,
+                    ease: "easeInOutLinear"
+                })), this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4, {
+                    y: centerY,
+                    ease: "easeInOutLinear"
+                }));
+            }
+            this.labelLoader && (this.blinkAccum--, this.blinkAccum <= 0 && (this.labelLoader.alpha = this.labelLoader.alpha ? 0 : 1, 
+            this.blinkAccum = 20 + 10 * this.labelLoader.alpha));
         }
     },
     onProgress: function() {
         this._super(), this.bulletBar.updateBar(Math.floor(100 * this.loadPercent), 100);
     },
     onAssetsLoaded: function() {
-        if (testMobile() && !isfull) {
-            this.labelLoader = new PIXI.Text("", {
-                align: "center",
-                font: "20px Roboto",
-                fill: "#000",
-                wordWrap: !0,
-                wordWrapWidth: 600
-            }), this.loaderContainer.addChild(this.labelLoader), this.labelLoader.setText("Toque para continuar"), 
-            scaleConverter(this.labelLoader.width, windowWidth, .3, this.labelLoader), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
-            this.labelLoader.position.y = this.bulletBar.getContent().position.y - this.labelLoader.height - 10;
-            var self = this;
-            this.fullscreenButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
-            this.fullscreenButton.build(windowWidth, windowHeight), this.fullscreenButton.setPosition(windowWidth - this.fullscreenButton.getContent().width - 20, windowHeight - this.fullscreenButton.getContent().height - 20), 
-            this.addChild(this.fullscreenButton), this.fullscreenButton.getContent().alpha = 0, 
-            this.fullscreenButton.clickCallback = function() {
-                fullscreen(), self.initApplication();
-            };
-        } else this.initApplication();
-        APP.labelDebug.visible = !1;
+        this.initApplication(), APP.labelDebug.visible = !1;
+    },
+    initApplication: function() {
+        this.isLoaded = !0, this.blinkAccum = 40, this.labelLoader = new PIXI.Text("", {
+            align: "center",
+            font: "20px roboto",
+            fill: "#000",
+            wordWrap: !0,
+            wordWrapWidth: 600
+        }), this.loaderContainer.addChild(this.labelLoader), this.labelLoader.setText("Toque para continuar"), 
+        scaleConverter(this.labelLoader.width, windowWidth, .3, this.labelLoader), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
+        this.labelLoader.position.y = this.bulletBar.getContent().position.y - this.labelLoader.height - 10;
+        var self = this;
+        this.fullscreenButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
+        this.fullscreenButton.build(windowWidth, windowHeight), this.fullscreenButton.setPosition(windowWidth - this.fullscreenButton.getContent().width - 20, windowHeight - this.fullscreenButton.getContent().height - 20), 
+        this.addChild(this.fullscreenButton), this.fullscreenButton.getContent().alpha = 0, 
+        this.fullscreenButton.clickCallback = function() {
+            testMobile() && fullscreen(), self.updateable = !1;
+            var endTimeline = new TimelineLite({
+                onComplete: function() {
+                    self.screenManager.change("Wait");
+                }
+            });
+            endTimeline.append(TweenLite.to(self.labelLoader, .2, {
+                alpha: 0
+            })), endTimeline.append(TweenLite.to(self.bulletBar.getContent(), .2, {
+                alpha: 0
+            })), endTimeline.append(TweenLite.to(self.alcemar.getContent(), .2, {
+                alpha: 0
+            }));
+        };
+    },
+    transitionIn: function() {
+        return this.isLoaded ? (this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), 
+        this.frontShape.drawRect(0, 0, windowWidth, windowHeight), this.addChild(this.frontShape), 
+        void this.build()) : void this.build();
+    },
+    transitionOut: function(nextScreen, container) {
+        var self = this;
+        this.frontShape ? (this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        TweenLite.to(this.frontShape, .3, {
+            alpha: 1,
+            onComplete: function() {
+                self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn();
+            }
+        })) : (self.destroy(), container.removeChild(self.getContent()), nextScreen.transitionIn());
+    }
+}), WaitScreen = AbstractScreen.extend({
+    init: function(label) {
+        this._super(label), this.isLoaded = !1, APP.labelDebug.visible = !1;
+    },
+    destroy: function() {
+        this._super();
+    },
+    build: function() {
+        this._super(), this.initApplication();
+    },
+    onProgress: function() {
+        this._super(), this.bulletBar.updateBar(Math.floor(100 * this.loadPercent), 100);
     },
     initApplication: function() {
         this.isLoaded = !0, this.fullscreenButton && this.fullscreenButton.getContent().parent && (this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent()), 
-        this.fullscreenButton = null), this.background = new SimpleSprite("dist/img/UI/introScreen.jpg"), 
+        this.fullscreenButton = null), this.background = new SimpleSprite("fundo.jpg"), 
         this.addChild(this.background.getContent()), scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
-        this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
+        this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2, 
+        this.fumaca = new SimpleSprite("fumacaIntro.png"), this.addChild(this.fumaca.getContent()), 
+        scaleConverter(this.fumaca.getContent().height, windowHeight, .4, this.fumaca), 
+        this.fumaca.getContent().position.x = .03 * -windowWidth, this.fumaca.getContent().position.y = .03 * windowHeight, 
+        this.alcemar = new SimpleSprite("alcemar1.png"), this.addChild(this.alcemar.getContent()), 
+        scaleConverter(this.alcemar.getContent().height, windowHeight, .8, this.alcemar), 
+        this.alcemar.getContent().position.x = .1 * windowWidth, this.alcemar.getContent().position.y = .03 * windowHeight, 
+        this.bird2 = new SimpleSprite("ave2.png"), this.addChild(this.bird2.getContent()), 
+        scaleConverter(this.bird2.getContent().height, windowHeight, .45, this.bird2), this.bird2.getContent().position.x = windowWidth / 2 - this.bird2.getContent().width / 2, 
+        this.bird2.getContent().position.y = windowHeight - this.bird2.getContent().height + .02 * windowHeight, 
+        this.bird1 = new SimpleSprite("ave1.png"), this.addChild(this.bird1.getContent()), 
+        scaleConverter(this.bird1.getContent().height, windowHeight, .6, this.bird1), this.bird1.getContent().position.x = windowWidth - this.bird1.getContent().width - .05 * windowWidth, 
+        this.bird1.getContent().position.y = .1 * windowHeight, this.logo = new SimpleSprite("logo.png"), 
+        this.addChild(this.logo.getContent()), scaleConverter(this.logo.getContent().height, windowHeight, .5, this.logo), 
+        this.logo.getContent().position.x = .02 * windowWidth, this.logo.getContent().position.y = windowHeight - this.logo.getContent().height, 
+        TweenLite.from(this.alcemar.getContent(), 2, {
+            delay: .5,
+            y: this.alcemar.getContent().position.y - 20,
+            x: this.alcemar.getContent().position.y - 40
+        }), TweenLite.from(this.fumaca.getContent(), 2.5, {
+            delay: .5,
+            y: this.fumaca.getContent().position.y - 20,
+            x: this.fumaca.getContent().position.y - 30
+        }), TweenLite.from(this.bird2.getContent(), 1.5, {
+            delay: 1.7,
+            y: windowHeight,
+            x: this.bird2.getContent().position.y + 80
+        }), TweenLite.from(this.bird1.getContent(), 2, {
+            delay: 1.7,
+            y: windowHeight,
+            x: .1 * windowWidth
+        }), TweenLite.from(this.logo.getContent(), 1.5, {
+            delay: 2.2,
+            x: -this.logo.getContent().width,
+            ease: "easeOutBack"
+        });
         var self = this;
         this.audioOn = new DefaultButton("volumeButton_on.png", "volumeButton_on_over.png"), 
         this.audioOn.build(), scaleConverter(this.audioOn.height, windowHeight, .15, this.audioOn), 
         this.audioOn.setPosition(20, 20), this.audioOff = new DefaultButton("volumeButton_off.png", "volumeButton_off_over.png"), 
         this.audioOff.build(), scaleConverter(this.audioOff.height, windowHeight, .15, this.audioOff), 
-        this.audioOff.setPosition(20, 20), this.container.addChild(APP.mute ? this.audioOff.getContent() : this.audioOn.getContent()), 
+        this.audioOff.setPosition(20, 20), this.addChild(APP.mute ? this.audioOff : this.audioOn), 
         this.audioOn.clickCallback = function() {
             APP.mute = !1, Howler.mute(), self.audioOn.getContent().parent && self.audioOn.getContent().parent.removeChild(self.audioOn.getContent()), 
             self.audioOff.getContent() && self.addChild(self.audioOff);
         }, this.audioOff.clickCallback = function() {
             APP.mute = !0, Howler.unmute(), self.audioOff.getContent().parent && self.audioOff.getContent().parent.removeChild(self.audioOff.getContent()), 
             self.audioOn.getContent() && self.addChild(self.audioOn);
-        }, APP.audioController.ambientSound1.play(), APP.audioController.alcemar.play(), 
-        console.log(this.audioOff, this.audioOn), this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBigOver.png"), 
+        }, this.playButton = new DefaultButton("continueButtonBig.png", "continueButtonBigOver.png"), 
         this.playButton.build(), scaleConverter(this.playButton.height, windowHeight, .25, this.playButton), 
         this.playButton.setPosition(windowWidth - this.playButton.getContent().width - 20, windowHeight - this.playButton.getContent().height - 20), 
         this.addChild(this.playButton), this.playButton.clickCallback = function() {
@@ -2107,14 +2230,26 @@ var Application = AbstractApplication.extend({
         this.creditsButton.setPosition(this.playButton.getContent().position.x - this.creditsButton.getContent().width - 20, windowHeight - this.creditsButton.getContent().height - 20), 
         this.addChild(this.creditsButton), this.creditsButton.clickCallback = function() {
             self.creditsModal.show();
-        }, this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
-        this.loaderContainer && this.loaderContainer.parent ? (this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1), 
-        TweenLite.to(this.loaderContainer, .8, {
-            delay: 1,
+        }, this.timeline = new TimelineLite({
+            delay: .5,
+            onComplete: function() {}
+        }), this.timeline.append(APP.mute ? TweenLite.from(this.audioOn.getContent(), .5, {
+            x: -this.audioOff.getContent().width,
+            ease: "easeOutBack"
+        }) : TweenLite.from(this.audioOn.getContent(), .5, {
+            x: -this.audioOn.getContent().width,
+            ease: "easeOutBack"
+        })), this.timeline.append(TweenLite.from(this.creditsButton.getContent(), .5, {
+            y: windowHeight + this.creditsButton.height,
+            ease: "easeOutBack"
+        })), this.timeline.append(TweenLite.from(this.playButton.getContent(), .5, {
+            y: windowHeight + this.playButton.height,
+            ease: "easeOutBack"
+        })), this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        this.frontShape && TweenLite.to(this.frontShape, .8, {
             alpha: 0
-        }), this.timeline && this.timeline.kill()) : this.frontShape && TweenLite.to(this.frontShape, .8, {
-            alpha: 0
-        });
+        }), APP.audioController.playAmbientSound(), APP.audioController.alcemar.stop(), 
+        APP.audioController.alcemar.play("audio1");
     },
     transitionIn: function() {
         return this.isLoaded ? (this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), 
@@ -2483,7 +2618,7 @@ var Application = AbstractApplication.extend({
                 strokeThickness: 5,
                 font: "30px Luckiest Guy",
                 wordWrap: !0,
-                wordWrapWidth: 300
+                wordWrapWidth: 500
             });
             this.newCharContainer.addChild(charLabel), this.container.addChild(this.newCharContainer), 
             charLabel.position.x = pista.getContent().width / 2 - charLabel.width / 2, charLabel.position.y = pista.getContent().position.y + pista.getContent().height - charLabel.height - 20, 

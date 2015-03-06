@@ -77,7 +77,7 @@ var NewBirdModal = Class.extend({
 			holofote.setPosition(pista.getContent().width / 2 - holofote.getContent().width / 2, 0);
 
 
-			var charLabel = new PIXI.Text(bird[0].label, { align:'center', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5, font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300});
+			var charLabel = new PIXI.Text(bird[0].label, { align:'center', fill:'#FFFFFF', stroke:'#033E43', strokeThickness:5, font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:500});
 			this.newCharContainer.addChild(charLabel);
 			this.container.addChild(this.newCharContainer);
 			// this.container.buttonMode = true;

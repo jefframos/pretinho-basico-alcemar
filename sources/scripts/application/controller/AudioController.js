@@ -9,8 +9,17 @@ var AudioController = Class.extend({
 
 		this.alcemar = new Howl({
 			urls: ['dist/audio/aves_raras.mp3', 'dist/audio/aves_raras.ogg'],
-			volume: 0.5,
+			volume: 0.8,
+			sprite: {
+			    audio1: [0, 7000]
+			}
 		});
-
+	},
+	playAmbientSound:function(){
+		if(this.ambientPlaying){
+			return;
+		}
+		this.ambientPlaying = true;
+		this.ambientSound1.play();
 	}
 });

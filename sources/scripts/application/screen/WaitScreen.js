@@ -11,147 +11,11 @@ var WaitScreen = AbstractScreen.extend({
     },
     build: function () {
         this._super();
-
-        var assetsToLoader = ['dist/img/atlas/atlas.json',
-        'dist/img/UI/HUD2.json',
-        'dist/img/atlas/players2.json',
-        'dist/img/atlas/nuvens.json',
-        'dist/img/UI/bgChoice.png',
-        'dist/img/UI/covers/jeisoGrande.png',
-        'dist/img/UI/covers/arthurGrande.png',
-        'dist/img/UI/covers/piGrande.png',
-        'dist/img/UI/covers/rodaikaGrande.png',
-        'dist/img/UI/covers/poterGrande.png',
-        'dist/img/UI/covers/poraGrande.png',
-        'dist/img/UI/covers/feterGrande.png',
-        'dist/img/UI/covers/alcemarGrande.png',
-        'dist/img/UI/covers/netoGrande.png',
-        'dist/img/UI/covers/piangersGrande.png',
-        'dist/img/UI/fundo_degrade.png',
-        'dist/img/UI/introScreen.jpg'];
-        // 'dist/img/UI/introScreen.jpg',
-        // 'dist/img/UI/HUD.json'];
-
-        // soundManager.play('aves_raras');
-        if(assetsToLoader.length > 0 && !this.isLoaded){
-            // this.labelLoader = new PIXI.Text('', { align:'center',font:'60px Luckiest Guy', fill:'#FFFFFF', strokeThickness:5, stroke:'#000000', wordWrap:true, wordWrapWidth:600});
-            // scaleConverter(this.labelLoader.height, windowHeight, 0.2, this.labelLoader);
-            // this.addChild(this.labelLoader);
-            // alert('load');
-
-            this.loader = new PIXI.AssetLoader(assetsToLoader);
-
-            this.loaderContainer = new PIXI.DisplayObjectContainer();
-
-            this.addChild(this.loaderContainer);
-
-            if(this.frontShape){
-                this.frontShape.parent.removeChild(this.frontShape);
-            }
-            frontShape = new PIXI.Graphics();
-            frontShape.beginFill(0xFFFFFF);
-            frontShape.drawRect(0,0,windowWidth, windowHeight);
-            this.loaderContainer.addChild(frontShape);
-            // this.build();
-            this.logoAtl = new SimpleSprite('dist/img/logo_atlantida.png');
-            this.logoChilli = new SimpleSprite('dist/img/logo_chilli.png');
-            this.loaderContainer.addChild(this.logoAtl.getContent());
-            this.loaderContainer.addChild(this.logoChilli.getContent());
-
-            
-
-            this.alcemar = new SimpleSprite('dist/img/alcemarLoader.png');
-            this.loaderContainer.addChild(this.alcemar.getContent());
-            this.logoAtl.getContent().position.x = windowWidth;
-            this.logoChilli.getContent().position.x = windowWidth;
-            this.alcemar.getContent().position.x = windowWidth;
-            this.alcemar.getContent().position.y = windowHeight / 2  - this.alcemar.getContent().height;
-
-            var barHeight = 20;
-            this.bulletBar = new LifeBarHUD(windowWidth * 0.4, barHeight, barHeight, 0x00aaff, 0x1d5099);
-            this.loaderContainer.addChild(this.bulletBar.getContent());
-            this.bulletBar.getContent().position.x = windowWidth / 2 - this.bulletBar.getContent().width / 2;
-            this.bulletBar.getContent().position.y = windowHeight - this.bulletBar.getContent().height - windowHeight * 0.1;
-            this.bulletBar.updateBar(0, 100);
-            // this.loaderContainer.alpha = 0;
-            // TweenLite.to(this.loaderContainer, 1,{alpha:1});
-
-            this.initLoad();
-
-
-        }else{
-            this.onAssetsLoaded();
-        }
-        
-    },
-    update:function(){
-
-        if(this.alcemar){
-            if(this.logoAtl.getContent().width > 1 && this.logoChilli.getContent().width > 1)
-            {
-                this.logoAtl.getContent().position.x = windowWidth  - this.logoAtl.getContent().width - 20;
-                this.logoAtl.getContent().position.y = windowHeight  - this.logoAtl.getContent().height - 20;
-
-                this.logoChilli.getContent().position.x = 20;
-                this.logoChilli.getContent().position.y = this.logoAtl.getContent().position.y + this.logoAtl.getContent().height /2 - this.logoChilli.getContent().height /2;
-            }
-            if(this.alcemar.getContent().width > 1 && this.alcemar.getContent().scale.y === 1){
-                
-
-                scaleConverter(this.alcemar.getContent().height, windowHeight, 0.3, this.alcemar.getContent());
-                this.alcemar.getContent().position.x = windowWidth / 2 - this.alcemar.getContent().width / 2;
-                this.alcemar.getContent().position.y = windowHeight / 2  - this.alcemar.getContent().height / 2;
-                var centerY = windowHeight /2 - this.alcemar.getContent().width / 2;
-
-                var self = this;
-                this.timeline = new TimelineLite({onComplete:function(){
-                    self.timeline.restart();
-                }});
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4,{y:centerY - this.alcemar.getContent().height * 0.2, ease:'easeInOutLinear'}));
-                this.timeline.append(TweenLite.to(this.alcemar.getContent().position, 4,{y:centerY, ease:'easeInOutLinear'}));
-            }
-            
-        }
-        
+        this.initApplication();
     },
     onProgress:function(){
         this._super();
         this.bulletBar.updateBar(Math.floor(this.loadPercent * 100), 100);
-    },
-    onAssetsLoaded:function()
-    {
-        //testMobile() && 
-        // if(testMobile() && possibleFullscreen() && !isfull){
-        if(testMobile() && !isfull){
-            this.labelLoader = new PIXI.Text('', { align:'center',font:'20px Roboto', fill:'#000', wordWrap:true, wordWrapWidth:600});
-            this.loaderContainer.addChild(this.labelLoader);
-            this.labelLoader.setText('Toque para continuar');
-            scaleConverter(this.labelLoader.width, windowWidth, 0.3, this.labelLoader);
-            this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
-            this.labelLoader.position.y = this.bulletBar.getContent().position.y - this.labelLoader.height - 10;
-
-            var self = this;
-
-            this.fullscreenButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');
-            // console.log(this.fullscreenButton.build);
-            this.fullscreenButton.build(windowWidth, windowHeight);
-            // scaleConverter(this.fullscreenButton.height, windowHeight, 0.25, this.fullscreenButton);
-            this.fullscreenButton.setPosition( windowWidth - this.fullscreenButton.getContent().width  - 20, windowHeight - this.fullscreenButton.getContent().height - 20);
-            this.addChild(this.fullscreenButton);
-            this.fullscreenButton.getContent().alpha = 0;
-            // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
-
-            // this.fullscreenButton.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
-            this.fullscreenButton.clickCallback = function(){
-                fullscreen();
-                self.initApplication();
-            };
-
-        }else{
-            this.initApplication();
-        }
-        // fullscreen();
-        APP.labelDebug.visible = false;
     },
     initApplication:function(){
         // alert('initApp');
@@ -160,11 +24,46 @@ var WaitScreen = AbstractScreen.extend({
             this.fullscreenButton.getContent().parent.removeChild(this.fullscreenButton.getContent());
             this.fullscreenButton = null;
         }
-        this.background = new SimpleSprite('dist/img/UI/introScreen.jpg');
+        this.background = new SimpleSprite('fundo.jpg');
         this.addChild(this.background.getContent());
         scaleConverter(this.background.getContent().height, windowHeight, 1, this.background);
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
 
+        this.fumaca = new SimpleSprite('fumacaIntro.png');
+        this.addChild(this.fumaca.getContent());
+        scaleConverter(this.fumaca.getContent().height, windowHeight, 0.4, this.fumaca);
+        this.fumaca.getContent().position.x = - windowWidth * 0.03;
+        this.fumaca.getContent().position.y = windowHeight * 0.03;
+
+        this.alcemar = new SimpleSprite('alcemar1.png');
+        this.addChild(this.alcemar.getContent());
+        scaleConverter(this.alcemar.getContent().height, windowHeight, 0.8, this.alcemar);
+        this.alcemar.getContent().position.x = windowWidth * 0.10;
+        this.alcemar.getContent().position.y = windowHeight * 0.03;
+
+        this.bird2 = new SimpleSprite('ave2.png');
+        this.addChild(this.bird2.getContent());
+        scaleConverter(this.bird2.getContent().height, windowHeight, 0.45, this.bird2);
+        this.bird2.getContent().position.x = windowWidth / 2 - this.bird2.getContent().width / 2;
+        this.bird2.getContent().position.y = windowHeight - this.bird2.getContent().height + windowHeight * 0.02;
+
+        this.bird1 = new SimpleSprite('ave1.png');
+        this.addChild(this.bird1.getContent());
+        scaleConverter(this.bird1.getContent().height, windowHeight, 0.6, this.bird1);
+        this.bird1.getContent().position.x = windowWidth - this.bird1.getContent().width - windowWidth * 0.05;
+        this.bird1.getContent().position.y = windowHeight * 0.1;
+
+        this.logo = new SimpleSprite('logo.png');
+        this.addChild(this.logo.getContent());
+        scaleConverter(this.logo.getContent().height, windowHeight, 0.5, this.logo);
+        this.logo.getContent().position.x = windowWidth * 0.02;
+        this.logo.getContent().position.y = windowHeight - this.logo.getContent().height;
+
+        TweenLite.from(this.alcemar.getContent(), 2, {delay: 0.5, y: this.alcemar.getContent().position.y - 20, x: this.alcemar.getContent().position.y - 40});
+        TweenLite.from(this.fumaca.getContent(), 2.5, {delay: 0.5,y: this.fumaca.getContent().position.y - 20, x: this.fumaca.getContent().position.y - 30});
+        TweenLite.from(this.bird2.getContent(), 1.5, {delay: 1.7, y: windowHeight, x: this.bird2.getContent().position.y + 80});
+        TweenLite.from(this.bird1.getContent(), 2, {delay: 1.7, y: windowHeight, x: windowWidth * 0.1});
+        TweenLite.from(this.logo.getContent(), 1.5, {delay: 2.2, x:-this.logo.getContent().width , ease:'easeOutBack'});
         var self = this;
 
 
@@ -180,9 +79,9 @@ var WaitScreen = AbstractScreen.extend({
         this.audioOff.setPosition(20, 20);
 
         if(!APP.mute){
-            this.container.addChild(this.audioOn.getContent());
+            this.addChild(this.audioOn);
         }else{
-            this.container.addChild(this.audioOff.getContent());
+            this.addChild(this.audioOff);
         }
 
         this.audioOn.clickCallback = function(){
@@ -210,12 +109,6 @@ var WaitScreen = AbstractScreen.extend({
             }
 
         };
-
-        APP.audioController.ambientSound1.play();
-        APP.audioController.alcemar.play();
-
-
-        console.log(this.audioOff, this.audioOn);
 
         this.playButton = new DefaultButton('continueButtonBig.png', 'continueButtonBigOver.png');
         // console.log(this.playButton.build);
@@ -247,6 +140,24 @@ var WaitScreen = AbstractScreen.extend({
         };
 
 
+        this.timeline = new TimelineLite({delay:0.5, onComplete:function(){}});
+        if(!APP.mute){
+            this.timeline.append(TweenLite.from(this.audioOn.getContent(), 0.5, {x: - this.audioOn.getContent().width, ease:'easeOutBack'}));
+        }else{
+            this.timeline.append(TweenLite.from(this.audioOn.getContent(), 0.5, {x: - this.audioOff.getContent().width, ease:'easeOutBack'}));
+        }
+        this.timeline.append(TweenLite.from(this.creditsButton.getContent(), 0.5, {y: windowHeight + this.creditsButton.height, ease:'easeOutBack'}));
+        this.timeline.append(TweenLite.from(this.playButton.getContent(), 0.5, {y: windowHeight + this.playButton.height, ease:'easeOutBack'}));
+
+
+        // this.timeLine = new TimelineLite();
+        // console.log(this.timeLine, this.timeline.add);
+        // // if(!APP.mute){
+        // //     this.timeline.append(TweenLite.from(this.audioOn.getContent(), 0.5, {x: - this.audioOn.getContent().width, ease:'easeOutBack'}));
+        // // }else{
+        // //     this.timeline.append(TweenLite.from(this.audioOn.getContent(), 0.5, {x: - this.audioOff.getContent().width, ease:'easeOutBack'}));
+        // // }
+
         // this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
         // this.zerarCookie.build(200, 200);
         // scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
@@ -273,24 +184,14 @@ var WaitScreen = AbstractScreen.extend({
         if(this.frontShape && this.frontShape.parent){
             this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1);
         }
-        if(this.loaderContainer && this.loaderContainer.parent){
-            this.loaderContainer.parent.setChildIndex(this.loaderContainer, this.loaderContainer.parent.children.length - 1);
-            TweenLite.to(this.loaderContainer, 0.8, {delay:1, alpha:0});
-
-            if(this.timeline){
-                this.timeline.kill();
-            }
-        }else if(this.frontShape){
+        if(this.frontShape){
             TweenLite.to(this.frontShape, 0.8, {alpha:0});
         }
-        // setTimeout(function(){
 
-        // self.screenManager.change('Game');
-        // }, 1000);
 
-        // soundManager.play('trilha');
-        // soundManager.play('aves_raras');
-
+        APP.audioController.playAmbientSound();
+        APP.audioController.alcemar.stop();
+        APP.audioController.alcemar.play('audio1');
     },
     transitionIn:function()
     {

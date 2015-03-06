@@ -397,7 +397,7 @@ var AppModel = Class.extend({
 				vel:-3,
 				behaviour:new BirdBehaviourDiag({accX:-0.01}),
 				toNext:80,
-				money:12
+				money:8
 			}),
 
 			new BirdModel({
@@ -417,7 +417,7 @@ var AppModel = Class.extend({
 				vel:-2,
 				behaviour: new BirdBehaviourSinoid2({sinAcc:0.08, velY:-8}),
 				toNext:250,
-				money:20
+				money:15
 			}),
 
 			new BirdModel({
