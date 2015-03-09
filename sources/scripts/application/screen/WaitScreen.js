@@ -29,17 +29,17 @@ var WaitScreen = AbstractScreen.extend({
         scaleConverter(this.background.getContent().height, windowHeight, 1, this.background);
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2;
 
-        this.fumaca = new SimpleSprite('fumacaIntro.png');
-        this.addChild(this.fumaca.getContent());
-        scaleConverter(this.fumaca.getContent().height, windowHeight, 0.4, this.fumaca);
-        this.fumaca.getContent().position.x = - windowWidth * 0.03;
-        this.fumaca.getContent().position.y = windowHeight * 0.03;
+        // this.fumaca = new SimpleSprite('fumacaIntro.png');
+        // this.addChild(this.fumaca.getContent());
+        // scaleConverter(this.fumaca.getContent().height, windowHeight, 0.4, this.fumaca);
+        // this.fumaca.getContent().position.x = - windowWidth * 0.03;
+        // this.fumaca.getContent().position.y = windowHeight * 0.03;
 
         this.alcemar = new SimpleSprite('alcemar1.png');
         this.addChild(this.alcemar.getContent());
         scaleConverter(this.alcemar.getContent().height, windowHeight, 0.8, this.alcemar);
-        this.alcemar.getContent().position.x = windowWidth * 0.10;
-        this.alcemar.getContent().position.y = windowHeight * 0.03;
+        // this.alcemar.getContent().position.x = windowWidth * 0.10;
+        this.alcemar.getContent().position.y = windowHeight * 0.01;
 
         this.bird2 = new SimpleSprite('ave2.png');
         this.addChild(this.bird2.getContent());
@@ -60,11 +60,11 @@ var WaitScreen = AbstractScreen.extend({
         this.logo.getContent().position.y = windowHeight - this.logo.getContent().height;
 
 
-        TweenLite.from(this.alcemar.getContent(), 0.5, {delay: 0.1, alpha:0});
-        TweenLite.from(this.fumaca.getContent(), 0.5, {delay: 0.2, alpha:0});
+        TweenLite.from(this.alcemar.getContent(), 0.8, {delay: 0.1, alpha:0});
+        // TweenLite.from(this.fumaca.getContent(), 0.5, {delay: 0.2, alpha:0});
 
-        TweenLite.from(this.alcemar.getContent().scale, 2, {delay: 0.2, x:this.alcemar.getContent().scale.x - 0.1, y:this.alcemar.getContent().scale.y - 0.1});
-        TweenLite.from(this.fumaca.getContent().scale, 2.5, {delay: 0.2,x:this.fumaca.getContent().scale.x - 0.1, y:this.fumaca.getContent().scale.y - 0.1});
+        TweenLite.from(this.alcemar.getContent().scale, 2, {delay: 0.2, x:this.alcemar.getContent().scale.x - 0.05, y:this.alcemar.getContent().scale.y - 0.05});
+        // TweenLite.from(this.fumaca.getContent().scale, 2.5, {delay: 0.2,x:this.fumaca.getContent().scale.x - 0.1, y:this.fumaca.getContent().scale.y - 0.1});
         
         // TweenLite.from(this.alcemar.getContent(), 2, {delay: 0.5, y: this.alcemar.getContent().position.y - 20, x: this.alcemar.getContent().position.y - 40});
         // TweenLite.from(this.fumaca.getContent(), 2.5, {delay: 0.5,y: this.fumaca.getContent().position.y - 20, x: this.fumaca.getContent().position.y - 30});

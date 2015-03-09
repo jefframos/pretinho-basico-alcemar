@@ -1164,8 +1164,8 @@ var Application = AbstractApplication.extend({
             maxEnergy: 6300,
             energyCoast: 2.6,
             vel: 1.5,
-            bulletForce: 1.1,
-            bulletCoast: .14,
+            bulletForce: 1.3,
+            bulletCoast: .12,
             bulletVel: 5,
             toAble: 1200,
             toSpec: 1e3,
@@ -1193,7 +1193,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1,
             bulletCoast: .05,
             bulletVel: 8,
-            toAble: 1800,
+            toAble: 2500,
             toSpec: 300,
             bulletBehaviour: new HomingBehaviour({
                 invencible: !0,
@@ -1215,11 +1215,11 @@ var Application = AbstractApplication.extend({
             maxEnergy: 6500,
             energyCoast: 3,
             vel: .8,
-            bulletForce: 1,
-            bulletCoast: .145,
+            bulletForce: 1.2,
+            bulletCoast: .11,
             bulletVel: 4,
-            toAble: 2500,
-            toSpec: 1600,
+            toAble: 4e3,
+            toSpec: 3e3,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "fetter",
@@ -1237,7 +1237,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 3,
             bulletVel: 6,
             bulletCoast: .15,
-            toAble: 3500,
+            toAble: 5e3,
             toSpec: 1200,
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
@@ -2173,34 +2173,24 @@ var Application = AbstractApplication.extend({
         this.fullscreenButton = null), this.background = new SimpleSprite("fundo.jpg"), 
         this.addChild(this.background.getContent()), scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2, 
-        this.fumaca = new SimpleSprite("fumacaIntro.png"), this.addChild(this.fumaca.getContent()), 
-        scaleConverter(this.fumaca.getContent().height, windowHeight, .4, this.fumaca), 
-        this.fumaca.getContent().position.x = .03 * -windowWidth, this.fumaca.getContent().position.y = .03 * windowHeight, 
         this.alcemar = new SimpleSprite("alcemar1.png"), this.addChild(this.alcemar.getContent()), 
         scaleConverter(this.alcemar.getContent().height, windowHeight, .8, this.alcemar), 
-        this.alcemar.getContent().position.x = .1 * windowWidth, this.alcemar.getContent().position.y = .03 * windowHeight, 
-        this.bird2 = new SimpleSprite("ave2.png"), this.addChild(this.bird2.getContent()), 
-        scaleConverter(this.bird2.getContent().height, windowHeight, .45, this.bird2), this.bird2.getContent().position.x = windowWidth / 2 - this.bird2.getContent().width / 2, 
+        this.alcemar.getContent().position.y = .01 * windowHeight, this.bird2 = new SimpleSprite("ave2.png"), 
+        this.addChild(this.bird2.getContent()), scaleConverter(this.bird2.getContent().height, windowHeight, .45, this.bird2), 
+        this.bird2.getContent().position.x = windowWidth / 2 - this.bird2.getContent().width / 2, 
         this.bird2.getContent().position.y = windowHeight - this.bird2.getContent().height + .02 * windowHeight, 
         this.bird1 = new SimpleSprite("ave1.png"), this.addChild(this.bird1.getContent()), 
         scaleConverter(this.bird1.getContent().height, windowHeight, .6, this.bird1), this.bird1.getContent().position.x = windowWidth - this.bird1.getContent().width - .05 * windowWidth, 
         this.bird1.getContent().position.y = .1 * windowHeight, this.logo = new SimpleSprite("logo.png"), 
         this.addChild(this.logo.getContent()), scaleConverter(this.logo.getContent().height, windowHeight, .5, this.logo), 
         this.logo.getContent().position.x = .02 * windowWidth, this.logo.getContent().position.y = windowHeight - this.logo.getContent().height, 
-        TweenLite.from(this.alcemar.getContent(), .5, {
+        TweenLite.from(this.alcemar.getContent(), .8, {
             delay: .1,
-            alpha: 0
-        }), TweenLite.from(this.fumaca.getContent(), .5, {
-            delay: .2,
             alpha: 0
         }), TweenLite.from(this.alcemar.getContent().scale, 2, {
             delay: .2,
-            x: this.alcemar.getContent().scale.x - .1,
-            y: this.alcemar.getContent().scale.y - .1
-        }), TweenLite.from(this.fumaca.getContent().scale, 2.5, {
-            delay: .2,
-            x: this.fumaca.getContent().scale.x - .1,
-            y: this.fumaca.getContent().scale.y - .1
+            x: this.alcemar.getContent().scale.x - .05,
+            y: this.alcemar.getContent().scale.y - .05
         }), TweenLite.from(this.bird2.getContent(), 1.5, {
             delay: 1.7,
             y: windowHeight,

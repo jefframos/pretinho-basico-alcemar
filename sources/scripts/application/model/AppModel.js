@@ -169,8 +169,8 @@ var AppModel = Class.extend({
 				maxEnergy: 6300,
 				energyCoast:2.6,
 				vel:1.5,
-				bulletForce:1.1,
-				bulletCoast:0.14,
+				bulletForce:1.3,
+				bulletCoast:0.12,
 				bulletVel:5,
 				toAble: 1200,
 				toSpec: 1000,
@@ -196,7 +196,7 @@ var AppModel = Class.extend({
 				bulletForce:1,
 				bulletCoast:0.05,
 				bulletVel:8,
-				toAble: 1800,
+				toAble: 2500,
 				toSpec: 300,
 				bulletBehaviour: new HomingBehaviour({invencible:true, bulletForce:99, vel:4})
 			}
@@ -218,11 +218,11 @@ var AppModel = Class.extend({
 				maxEnergy: 6500,
 				energyCoast:3,
 				vel:0.8,
-				bulletForce:1.0,
-				bulletCoast:0.145,
+				bulletForce:1.2,
+				bulletCoast:0.11,
 				bulletVel:4,
-				toAble: 2500,
-				toSpec: 1600,
+				toAble: 4000,
+				toSpec: 3000,
 				bulletBehaviour: new AkumaBehaviour()
 			}
 			),
@@ -244,7 +244,7 @@ var AppModel = Class.extend({
 				bulletForce:3,
 				bulletVel:6,
 				bulletCoast:0.15,
-				toAble: 3500,
+				toAble: 5000,
 				toSpec: 1200,
 				bulletBehaviour: new RainBehaviour()
 			}

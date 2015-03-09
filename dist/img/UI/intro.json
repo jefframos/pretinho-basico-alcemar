@@ -2,16 +2,16 @@
 
 "alcemar1.png":
 {
-	"frame": {"x":2,"y":375,"w":435,"h":407},
+	"frame": {"x":2,"y":2,"w":563,"h":416},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":435,"h":407},
-	"sourceSize": {"w":435,"h":407},
+	"spriteSourceSize": {"x":0,"y":0,"w":563,"h":416},
+	"sourceSize": {"w":563,"h":416},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "ave1.png":
 {
-	"frame": {"x":996,"y":2,"w":524,"h":371},
+	"frame": {"x":567,"y":2,"w":524,"h":371},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":524,"h":371},
@@ -20,25 +20,16 @@
 },
 "ave2.png":
 {
-	"frame": {"x":415,"y":2,"w":265,"h":265},
+	"frame": {"x":1093,"y":2,"w":265,"h":265},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":265,"h":265},
 	"sourceSize": {"w":265,"h":265},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"fumacaIntro.png":
-{
-	"frame": {"x":2,"y":2,"w":411,"h":259},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":411,"h":259},
-	"sourceSize": {"w":411,"h":259},
-	"pivot": {"x":0.5,"y":0.5}
-},
 "fundo.jpg":
 {
-	"frame": {"x":439,"y":375,"w":1020,"h":574},
+	"frame": {"x":2,"y":420,"w":1020,"h":574},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":1020,"h":574},
@@ -47,7 +38,7 @@
 },
 "logo.png":
 {
-	"frame": {"x":682,"y":2,"w":312,"h":308},
+	"frame": {"x":1024,"y":420,"w":312,"h":308},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":312,"h":308},
@@ -59,8 +50,8 @@
 	"version": "1.0",
 	"image": "intro.png",
 	"format": "RGBA8888",
-	"size": {"w":1522,"h":951},
+	"size": {"w":1360,"h":996},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:49c484eac2a5fe3ea33501cf02cc015e:d34000b2891d230e969c56dbf9164ff4:1c3925316af8212576a1ec3cf99896c2$"
+	"smartupdate": "$TexturePacker:SmartUpdate:37b20971fc8ff91ceca47a9539b7a527:b5a1c743b3012d24d4b1b1bcb159d1c1:1c3925316af8212576a1ec3cf99896c2$"
 }
 }
