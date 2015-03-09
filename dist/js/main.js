@@ -1,4 +1,4 @@
-/*! jefframos 06-03-2015 */
+/*! jefframos 09-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -2187,14 +2187,20 @@ var Application = AbstractApplication.extend({
         this.bird1.getContent().position.y = .1 * windowHeight, this.logo = new SimpleSprite("logo.png"), 
         this.addChild(this.logo.getContent()), scaleConverter(this.logo.getContent().height, windowHeight, .5, this.logo), 
         this.logo.getContent().position.x = .02 * windowWidth, this.logo.getContent().position.y = windowHeight - this.logo.getContent().height, 
-        TweenLite.from(this.alcemar.getContent(), 2, {
-            delay: .5,
-            y: this.alcemar.getContent().position.y - 20,
-            x: this.alcemar.getContent().position.y - 40
-        }), TweenLite.from(this.fumaca.getContent(), 2.5, {
-            delay: .5,
-            y: this.fumaca.getContent().position.y - 20,
-            x: this.fumaca.getContent().position.y - 30
+        TweenLite.from(this.alcemar.getContent(), .5, {
+            delay: .1,
+            alpha: 0
+        }), TweenLite.from(this.fumaca.getContent(), .5, {
+            delay: .2,
+            alpha: 0
+        }), TweenLite.from(this.alcemar.getContent().scale, 2, {
+            delay: .2,
+            x: this.alcemar.getContent().scale.x - .1,
+            y: this.alcemar.getContent().scale.y - .1
+        }), TweenLite.from(this.fumaca.getContent().scale, 2.5, {
+            delay: .2,
+            x: this.fumaca.getContent().scale.x - .1,
+            y: this.fumaca.getContent().scale.y - .1
         }), TweenLite.from(this.bird2.getContent(), 1.5, {
             delay: 1.7,
             y: windowHeight,

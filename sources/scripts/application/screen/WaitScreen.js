@@ -59,8 +59,16 @@ var WaitScreen = AbstractScreen.extend({
         this.logo.getContent().position.x = windowWidth * 0.02;
         this.logo.getContent().position.y = windowHeight - this.logo.getContent().height;
 
-        TweenLite.from(this.alcemar.getContent(), 2, {delay: 0.5, y: this.alcemar.getContent().position.y - 20, x: this.alcemar.getContent().position.y - 40});
-        TweenLite.from(this.fumaca.getContent(), 2.5, {delay: 0.5,y: this.fumaca.getContent().position.y - 20, x: this.fumaca.getContent().position.y - 30});
+
+        TweenLite.from(this.alcemar.getContent(), 0.5, {delay: 0.1, alpha:0});
+        TweenLite.from(this.fumaca.getContent(), 0.5, {delay: 0.2, alpha:0});
+
+        TweenLite.from(this.alcemar.getContent().scale, 2, {delay: 0.2, x:this.alcemar.getContent().scale.x - 0.1, y:this.alcemar.getContent().scale.y - 0.1});
+        TweenLite.from(this.fumaca.getContent().scale, 2.5, {delay: 0.2,x:this.fumaca.getContent().scale.x - 0.1, y:this.fumaca.getContent().scale.y - 0.1});
+        
+        // TweenLite.from(this.alcemar.getContent(), 2, {delay: 0.5, y: this.alcemar.getContent().position.y - 20, x: this.alcemar.getContent().position.y - 40});
+        // TweenLite.from(this.fumaca.getContent(), 2.5, {delay: 0.5,y: this.fumaca.getContent().position.y - 20, x: this.fumaca.getContent().position.y - 30});
+        
         TweenLite.from(this.bird2.getContent(), 1.5, {delay: 1.7, y: windowHeight, x: this.bird2.getContent().position.y + 80});
         TweenLite.from(this.bird1.getContent(), 2, {delay: 1.7, y: windowHeight, x: windowWidth * 0.1});
         TweenLite.from(this.logo.getContent(), 1.5, {delay: 2.2, x:-this.logo.getContent().width , ease:'easeOutBack'});
