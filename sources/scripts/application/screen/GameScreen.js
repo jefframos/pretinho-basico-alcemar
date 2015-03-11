@@ -285,7 +285,7 @@ var GameScreen = AbstractScreen.extend({
             item.build();
             item.setPosition(windowWidth, windowHeight * 0.1 + (windowHeight * 0.8 * Math.random()));
             this.layer.addChild(item);
-            scaleConverter(item.getContent().height, windowHeight, 0.1, item);
+            scaleConverter(item.getContent().height, windowHeight, 0.18, item);
         }else{
             this.itemAccum --;
         }
@@ -457,7 +457,7 @@ var GameScreen = AbstractScreen.extend({
         // scaleConverter(this.energyBar.getContent().width, windowWidth, 0.2, this.energyBar);
 
 
-        this.gasolineIco = new SimpleSprite('gasoline.png');
+        this.gasolineIco = new SimpleSprite('gasoline_barra.png');
         // alert(scaleConverter(this.gasolineIco.getContent().height, barHeight, 1.2));
         scaleConverter(this.gasolineIco.getContent().height, barHeight, 1.3, this.gasolineIco.getContent());
         this.gasolineIco.getContent().anchor.x = 0.5;
@@ -529,7 +529,8 @@ var GameScreen = AbstractScreen.extend({
         this.specialButton.build();
         this.specialContainer.addChild(this.specialButton.getContent());
         this.specialButton.clickCallback = function(){
-            if(self.ableSpecial > 0 && !self.blockPause){
+            // alert(self.ableSpecial, self.blockPause);
+            if(self.ableSpecial > 0 || self.blockPause){
                 return;
             }
             self.special();

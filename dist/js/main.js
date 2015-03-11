@@ -1873,7 +1873,7 @@ var Application = AbstractApplication.extend({
             console.log(this.playerModel.energyCoast, "coast"), this.itemAccum = 1400 + 2e3 * Math.random() + 3e3 / this.playerModel.energyCoast + 999999;
             var item = new Item();
             item.build(), item.setPosition(windowWidth, .1 * windowHeight + .8 * windowHeight * Math.random()), 
-            this.layer.addChild(item), scaleConverter(item.getContent().height, windowHeight, .1, item);
+            this.layer.addChild(item), scaleConverter(item.getContent().height, windowHeight, .18, item);
         } else this.itemAccum--;
     },
     updateClouds: function() {
@@ -1952,7 +1952,7 @@ var Application = AbstractApplication.extend({
         var barHeight = this.mascadasContainer.height - .1 * this.mascadasContainer.height;
         this.barsContainer = new PIXI.DisplayObjectContainer(), this.energyBar = new LifeBarHUD(.2 * windowWidth, barHeight, barHeight, 16318524, 10159158), 
         this.barsContainer.addChild(this.energyBar.getContent()), this.energyBar.setPosition(0, 0), 
-        this.gasolineIco = new SimpleSprite("gasoline.png"), scaleConverter(this.gasolineIco.getContent().height, barHeight, 1.3, this.gasolineIco.getContent()), 
+        this.gasolineIco = new SimpleSprite("gasoline_barra.png"), scaleConverter(this.gasolineIco.getContent().height, barHeight, 1.3, this.gasolineIco.getContent()), 
         this.gasolineIco.getContent().anchor.x = .5, this.gasolineIco.getContent().anchor.y = .5, 
         this.gasolineIco.getContent().position.x = this.energyBar.getContent().height / 2, 
         this.gasolineIco.getContent().position.y = this.energyBar.getContent().height / 2, 
@@ -1975,7 +1975,7 @@ var Application = AbstractApplication.extend({
         this.specialButton = new DefaultButton(this.playerModel.icoSpecSource, this.playerModel.icoSpecSource), 
         this.specialButton.build(), this.specialContainer.addChild(this.specialButton.getContent()), 
         this.specialButton.clickCallback = function() {
-            self.ableSpecial > 0 && !self.blockPause || self.special();
+            self.ableSpecial > 0 || self.blockPause || self.special();
         }, scaleConverter(this.specialButton.getContent().height, windowHeight, .2, this.specialButton), 
         this.specialButton.setPosition(-this.specialButton.getContent().width / 2, -this.specialButton.getContent().height), 
         this.specialContainer.position.x = windowWidth / 2, this.specialContainer.position.y = windowHeight, 
@@ -2569,7 +2569,8 @@ var Application = AbstractApplication.extend({
         this.boxContainer.position.x = windowWidth / 2 - this.boxContainer.width / 2;
     },
     show: function() {
-        this.screen.addChild(this), this.boxContainer.visible = !0, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
+        this.screen.addChild(this), this.screen.blockPause = !0, this.boxContainer.visible = !0, 
+        this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1), 
         this.container.alpha = 0, this.screen.updateable = !1, TweenLite.to(this.bg, .5, {
             alpha: .8
         }), TweenLite.to(this.boxContainer.position, 1, {
@@ -2583,7 +2584,7 @@ var Application = AbstractApplication.extend({
     },
     hide: function(callback) {
         var self = this;
-        TweenLite.to(this.bg, .5, {
+        this.screen.blockPause = !1, TweenLite.to(this.bg, .5, {
             alpha: 0,
             onComplete: function() {
                 callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));

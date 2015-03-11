@@ -99,6 +99,7 @@ var PauseModal = Class.extend({
 	},
 	show:function(points){
 		this.screen.addChild(this);
+		this.screen.blockPause = true;
 		this.boxContainer.visible = true;
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 		this.container.alpha = 0;
@@ -110,6 +111,8 @@ var PauseModal = Class.extend({
 	},
 	hide:function(callback){
 		var self = this;
+		this.screen.blockPause = false;
+
 		TweenLite.to(this.bg, 0.5, {alpha:0, onComplete:function(){
 			if(callback){
 				callback();
