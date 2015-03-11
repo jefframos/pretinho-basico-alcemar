@@ -1,4 +1,4 @@
-/*! jefframos 09-03-2015 */
+/*! jefframos 11-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -62,6 +62,12 @@ function hexToRgb(hex) {
 function addSaturation(color, value) {
     var rgb = hexToRgb(color), hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
     return hsl.s *= value, hsl.s > 1 && (hsl.s = 1), hsl.s < 0 && (hsl.s = 0), rgb = hslToRgb(hsl.h, hsl.s, hsl.l), 
+    rgbToHex(rgb.r, rgb.g, rgb.b);
+}
+
+function addBright(color, value) {
+    var rgb = hexToRgb(color), hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    return hsl.l *= value, hsl.l > 1 && (hsl.l = 1), hsl.l < 0 && (hsl.l = 0), rgb = hslToRgb(hsl.h, hsl.s, hsl.l), 
     rgbToHex(rgb.r, rgb.g, rgb.b);
 }
 
@@ -2059,7 +2065,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/intro.json" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/creditos.jpg", "dist/img/UI/intro.json" ];
         if (assetsToLoader.length > 0 && !this.isLoaded) {
             this.loader = new PIXI.AssetLoader(assetsToLoader), this.loaderContainer = new PIXI.DisplayObjectContainer(), 
             this.addChild(this.loaderContainer), this.frontShape && this.frontShape.parent.removeChild(this.frontShape), 
@@ -2119,7 +2125,10 @@ var Application = AbstractApplication.extend({
             wordWrapWidth: 600
         }), this.loaderContainer.addChild(this.labelLoader), this.labelLoader.setText("Toque para continuar"), 
         scaleConverter(this.labelLoader.width, windowWidth, .3, this.labelLoader), this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2, 
-        this.labelLoader.position.y = this.bulletBar.getContent().position.y - this.labelLoader.height - 10;
+        this.labelLoader.position.y = this.bulletBar.getContent().position.y + this.bulletBar.getContent().height / 2 - this.labelLoader.height / 2, 
+        TweenLite.to(this.bulletBar.getContent(), .5, {
+            alpha: 0
+        });
         var self = this;
         this.fullscreenButton = new DefaultButton("continueButtonBig.png", "continueButtonBig.png"), 
         this.fullscreenButton.build(windowWidth, windowHeight), this.fullscreenButton.setPosition(windowWidth - this.fullscreenButton.getContent().width - 20, windowHeight - this.fullscreenButton.getContent().height - 20), 
@@ -2174,13 +2183,13 @@ var Application = AbstractApplication.extend({
         this.addChild(this.background.getContent()), scaleConverter(this.background.getContent().height, windowHeight, 1, this.background), 
         this.background.getContent().position.x = windowWidth / 2 - this.background.getContent().width / 2, 
         this.alcemar = new SimpleSprite("alcemar1.png"), this.addChild(this.alcemar.getContent()), 
-        scaleConverter(this.alcemar.getContent().height, windowHeight, .8, this.alcemar), 
+        scaleConverter(this.alcemar.getContent().height, windowHeight, .75, this.alcemar), 
         this.alcemar.getContent().position.y = .01 * windowHeight, this.bird2 = new SimpleSprite("ave2.png"), 
         this.addChild(this.bird2.getContent()), scaleConverter(this.bird2.getContent().height, windowHeight, .45, this.bird2), 
         this.bird2.getContent().position.x = windowWidth / 2 - this.bird2.getContent().width / 2, 
         this.bird2.getContent().position.y = windowHeight - this.bird2.getContent().height + .02 * windowHeight, 
         this.bird1 = new SimpleSprite("ave1.png"), this.addChild(this.bird1.getContent()), 
-        scaleConverter(this.bird1.getContent().height, windowHeight, .6, this.bird1), this.bird1.getContent().position.x = windowWidth - this.bird1.getContent().width - .05 * windowWidth, 
+        scaleConverter(this.bird1.getContent().height, windowHeight, .6, this.bird1), this.bird1.getContent().position.x = windowWidth - this.bird1.getContent().width - .01 * windowWidth, 
         this.bird1.getContent().position.y = .1 * windowHeight, this.logo = new SimpleSprite("logo.png"), 
         this.addChild(this.logo.getContent()), scaleConverter(this.logo.getContent().height, windowHeight, .5, this.logo), 
         this.logo.getContent().position.x = .02 * windowWidth, this.logo.getContent().position.y = windowHeight - this.logo.getContent().height, 
@@ -2264,154 +2273,15 @@ var Application = AbstractApplication.extend({
     }
 }), CreditsModal = Class.extend({
     init: function(screen) {
-        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.labelsContainer = new PIXI.DisplayObjectContainer(), 
-        this.labelsContainerRight = new PIXI.DisplayObjectContainer(), this.footer = new PIXI.DisplayObjectContainer(), 
-        this.header = new PIXI.DisplayObjectContainer(), this.bg = new PIXI.Graphics(), 
-        this.bg.beginFill(74275), this.bg.drawRect(0, 0, windowWidth, windowHeight), this.bg.alpha = .8, 
-        this.container.addChild(this.bg), this.container.addChild(this.labelsContainer), 
-        this.container.addChild(this.labelsContainerRight), this.container.addChild(this.footer), 
-        this.container.addChild(this.header);
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer();
         var self = this;
         this.container.buttonMode = !0, this.container.interactive = !0, this.container.mousedown = this.container.touchstart = function() {
             self.hide();
-        }, this.boxLabels = [];
-        var tempText, cast = "";
-        tempText = new PIXI.Text("ELENCO", {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, this.labelsContainer.addChild(tempText), 
-        cast = "Alexandre Fetter\nEverton Cunha (Mr. Pi)\nPorã (Iglenho Burtet Bernardes)\nLuciano Potter\nMarcos Piangers\nPedro Smaniotto (Alcemar)\nDuda Garbi (Jeiso)\nArthur Gubert\nNeto Fagundes\nRodaika Dienstbach", 
-        tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "25px Roboto",
-            fill: "#FFFFFF",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainer.height, 
-        this.labelsContainer.addChild(tempText), tempText = new PIXI.Text("VOZES E ENREDO", {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainer.height + .01 * windowHeight, 
-        this.labelsContainer.addChild(tempText), cast = "Pedro Smaniotto", tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "25px Roboto",
-            fill: "#FFFFFF",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), this.labelsContainer.addChild(tempText), tempText.position.x = -tempText.width / 2, 
-        tempText.position.y = this.labelsContainer.height, scaleConverter(this.labelsContainer.height, windowHeight, .65, this.labelsContainer), 
-        this.labelsContainer.position.x = windowWidth / 2 - windowWidth / 5, this.labelsContainer.position.y = .15 * windowHeight, 
-        tempText = new PIXI.Text("DIRETOR DO PROJETO", {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, this.labelsContainerRight.addChild(tempText), 
-        cast = "Marcos Piangers", tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "25px Roboto",
-            fill: "#FFFFFF",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
-        tempText.position.y = this.labelsContainerRight.height, tempText = new PIXI.Text("PRODUÇÃO", {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height + .01 * windowHeight, 
-        this.labelsContainerRight.addChild(tempText), cast = "Chilimonk Tecnologia\nwww.chilimonk.com", 
-        tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "25px Roboto",
-            fill: "#FFFFFF",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
-        tempText.position.y = this.labelsContainerRight.height, tempText = new PIXI.Text("EQUIPE DE PRODUÇÃO", {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height + .01 * windowHeight, 
-        this.labelsContainerRight.addChild(tempText), cast = "Franer Rodrigues (diretor executivo)\nRaviel Carvalho (diretor de produção)\nJefferson Ramos (game developer)\nDaniel Romanenco (designer)\nTiago Cunha (backend developer)", 
-        tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "25px Roboto",
-            fill: "#FFFFFF",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
-        tempText.position.y = this.labelsContainerRight.height, tempText = new PIXI.Text("SONOPLASTIA", {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), tempText.position.x = -tempText.width / 2, tempText.position.y = this.labelsContainerRight.height + .01 * windowHeight, 
-        this.labelsContainerRight.addChild(tempText), cast = "Magnus Wichmann", tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "25px Roboto",
-            fill: "#FFFFFF",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 600
-        }), this.labelsContainerRight.addChild(tempText), tempText.position.x = -tempText.width / 2, 
-        tempText.position.y = this.labelsContainerRight.height, scaleConverter(this.labelsContainerRight.height, windowHeight, .65, this.labelsContainerRight), 
-        this.labelsContainerRight.position.x = windowWidth / 2 + windowWidth / 5, this.labelsContainerRight.position.y = .15 * windowHeight, 
-        cast = "ESTE GAME É UM OFERECIMENTO DE:\nGRUPO RBS / RÁDIO ATLÂNTIDA / PRETINHO BÁSICO", 
-        tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "30px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 1e3
-        }), this.footer.addChild(tempText), scaleConverter(this.footer.height, windowHeight, .1, this.footer), 
-        this.footer.position.x = windowWidth / 2 - this.footer.width / 2, this.footer.position.y = windowHeight - this.footer.height - .03 * windowHeight, 
-        cast = "CRÉDITOS", tempText = new PIXI.Text(cast, {
-            align: "center",
-            font: "50px Roboto",
-            fill: "#EFD952",
-            strokeThickness: 1,
-            stroke: "#000000",
-            wordWrap: !0,
-            wordWrapWidth: 1e3
-        }), this.header.addChild(tempText), scaleConverter(this.header.height, windowHeight, .1, this.header), 
-        this.header.position.x = windowWidth / 2 - this.header.width / 2, this.header.position.y = .03 * windowHeight;
+        };
+        var credits = new SimpleSprite("dist/img/UI/creditos.jpg");
+        this.container.addChild(credits.getContent()), scaleConverter(credits.getContent().height, windowHeight, 1, credits), 
+        credits.getContent().position.x = windowWidth / 2 - credits.getContent().width / 2, 
+        credits.getContent().position.y = windowHeight / 2 - credits.getContent().height / 2;
     },
     show: function() {
         this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);

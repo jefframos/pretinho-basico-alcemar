@@ -193,7 +193,6 @@
             <filename>intro/ave1.png</filename>
             <filename>intro/ave2.png</filename>
             <filename>intro/fundo.jpg</filename>
-            <filename>intro/fumacaIntro.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

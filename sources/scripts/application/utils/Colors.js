@@ -120,3 +120,17 @@ function addSaturation(color, value){
 	rgb = hslToRgb(hsl.h,hsl.s,hsl.l);
 	return rgbToHex(rgb.r,rgb.g,rgb.b);
 }
+
+function addBright(color, value){
+	var rgb = hexToRgb(color);
+	var hsl = rgbToHsl(rgb.r,rgb.g,rgb.b);
+	hsl.l *= value;
+	if(hsl.l > 1){
+		hsl.l = 1;
+	}
+	if(hsl.l < 0){
+		hsl.l = 0;
+	}
+	rgb = hslToRgb(hsl.h,hsl.s,hsl.l);
+	return rgbToHex(rgb.r,rgb.g,rgb.b);
+}

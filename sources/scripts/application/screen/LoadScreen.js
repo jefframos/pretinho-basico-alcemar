@@ -28,6 +28,7 @@ var LoadScreen = AbstractScreen.extend({
         'dist/img/UI/covers/netoGrande.png',
         'dist/img/UI/covers/piangersGrande.png',
         'dist/img/UI/fundo_degrade.png',
+        'dist/img/UI/creditos.jpg',
         'dist/img/UI/intro.json'];
         // 'dist/img/UI/introScreen.jpg',
         // 'dist/img/UI/HUD.json'];
@@ -142,8 +143,8 @@ var LoadScreen = AbstractScreen.extend({
         this.labelLoader.setText('Toque para continuar');
         scaleConverter(this.labelLoader.width, windowWidth, 0.3, this.labelLoader);
         this.labelLoader.position.x = windowWidth / 2 - this.labelLoader.width / 2;
-        this.labelLoader.position.y = this.bulletBar.getContent().position.y - this.labelLoader.height - 10;
-
+        this.labelLoader.position.y = this.bulletBar.getContent().position.y + this.bulletBar.getContent().height / 2 - this.labelLoader.height / 2;
+        TweenLite.to(this.bulletBar.getContent(), 0.5, {alpha:0});
         var self = this;
 
         this.fullscreenButton = new DefaultButton('continueButtonBig.png', 'continueButtonBig.png');

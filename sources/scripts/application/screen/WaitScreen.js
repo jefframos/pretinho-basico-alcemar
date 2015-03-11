@@ -37,7 +37,7 @@ var WaitScreen = AbstractScreen.extend({
 
         this.alcemar = new SimpleSprite('alcemar1.png');
         this.addChild(this.alcemar.getContent());
-        scaleConverter(this.alcemar.getContent().height, windowHeight, 0.8, this.alcemar);
+        scaleConverter(this.alcemar.getContent().height, windowHeight, 0.75, this.alcemar);
         // this.alcemar.getContent().position.x = windowWidth * 0.10;
         this.alcemar.getContent().position.y = windowHeight * 0.01;
 
@@ -50,7 +50,7 @@ var WaitScreen = AbstractScreen.extend({
         this.bird1 = new SimpleSprite('ave1.png');
         this.addChild(this.bird1.getContent());
         scaleConverter(this.bird1.getContent().height, windowHeight, 0.6, this.bird1);
-        this.bird1.getContent().position.x = windowWidth - this.bird1.getContent().width - windowWidth * 0.05;
+        this.bird1.getContent().position.x = windowWidth - this.bird1.getContent().width - windowWidth * 0.01;
         this.bird1.getContent().position.y = windowHeight * 0.1;
 
         this.logo = new SimpleSprite('logo.png');
