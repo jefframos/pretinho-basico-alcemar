@@ -9,11 +9,17 @@ var AppModel = Class.extend({
 		// vel, 1 / 3
 		// bullet vel,
 		// bullet force 1 / 3
-		this.cookieManager = new CookieManager();
+		// APP.cookieManager = new CookieManager();
 		// console.log(cookieManager.getCookie('totalPoints'));
-		// this.cookieManager.setCookie('totalPoints', 0, 500);
-		var points = parseInt(this.cookieManager.getCookie('totalPoints'));
-		var tempBirds = parseInt(this.cookieManager.getCookie('totalBirds'));
+		// APP.cookieManager.setCookie('totalPoints', 0, 500);
+		console.log(APP);
+		var points = parseInt(APP.cookieManager.getCookie('totalPoints'));
+		var tempBirds = parseInt(APP.cookieManager.getCookie('totalBirds'));
+		var high = parseInt(APP.cookieManager.getCookie('highScore'));
+
+		// APP.cookieManager.setCookie('highScore', this.highScore, 500);
+
+		this.highScore = high?high:0;
 		this.totalPoints = points?points:0;
 		this.totalBirds = tempBirds?tempBirds:1;
 		this.currentPoints = 0;
@@ -476,43 +482,43 @@ var AppModel = Class.extend({
 
 
 	},
-	sendStats:function(id){
-		var i = 0;
-		var tempBirds = [
-			['caralinhoDaTerra',0],
-			['caralhoBelga',0],
-			['lambecuFrances',0],
-			['papacuDeCabecaRoxa',0],
-			['galinhoPapoDeBago',0],
-			['nocututinha',0],
-			['calopsuda',0],
-			['picudaoAzulNigeriano',0],
-		];
-		for (i = this.killedBirds.length - 1; i >= 0; i--) {
-			tempBirds[this.killedBirds[i]][1] ++;
-		}
+	// sendStats:function(id){
+	// 	var i = 0;
+	// 	var tempBirds = [
+	// 		['caralinhoDaTerra',0],
+	// 		['caralhoBelga',0],
+	// 		['lambecuFrances',0],
+	// 		['papacuDeCabecaRoxa',0],
+	// 		['galinhoPapoDeBago',0],
+	// 		['nocututinha',0],
+	// 		['calopsuda',0],
+	// 		['picudaoAzulNigeriano',0],
+	// 	];
+	// 	for (i = this.killedBirds.length - 1; i >= 0; i--) {
+	// 		tempBirds[this.killedBirds[i]][1] ++;
+	// 	}
 
-		var sendObject = '{\n"character":"'+this.playerModels[this.currentID].label+'",'+
-		'\n"points":"'+this.currentPoints+'",'+
-		'\n"birds":{\n';
+	// 	var sendObject = '{\n"character":"'+this.playerModels[this.currentID].label+'",'+
+	// 	'\n"points":"'+this.currentPoints+'",'+
+	// 	'\n"birds":{\n';
 
-		for (i = 0; i < tempBirds.length; i++) {
-			if(i >= tempBirds.length - 1){
-				sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '"\n';
-			}else{
-				sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '",\n';
-			}
-		}
-		sendObject += '}\n}';
-		console.log(sendObject);
-		console.log(JSON.parse(sendObject));
-		var send = {
-			character: this.playerModels[APP.getGameModel().currentID].label,
-			points: APP.getGameModel().currentPoints,
+	// 	for (i = 0; i < tempBirds.length; i++) {
+	// 		if(i >= tempBirds.length - 1){
+	// 			sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '"\n';
+	// 		}else{
+	// 			sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '",\n';
+	// 		}
+	// 	}
+	// 	sendObject += '}\n}';
+	// 	console.log(sendObject);
+	// 	console.log(JSON.parse(sendObject));
+	// 	var send = {
+	// 		character: this.playerModels[APP.getGameModel().currentID].label,
+	// 		points: APP.getGameModel().currentPoints,
 			
-		};
-		console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints,  this.playerModels[APP.getGameModel().currentID].label);
-	},
+	// 	};
+	// 	console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints,  this.playerModels[APP.getGameModel().currentID].label);
+	// },
 	setModel:function(id){
 		this.currentID = id;
 		this.currentPlayerModel = this.playerModels[id];
@@ -522,8 +528,8 @@ var AppModel = Class.extend({
 		this.totalPoints = 0;
 		this.totalBirds = 1;
 		this.totalPlayers = 1;
-		this.cookieManager.setCookie('totalPoints', 0, 500);
-		this.cookieManager.setCookie('totalBirds', 1, 500);
+		APP.cookieManager.setCookie('totalPoints', 0, 500);
+		APP.cookieManager.setCookie('totalBirds', 1, 500);
 
 		for (var i = this.playerModels.length - 1; i >= 0; i--) {
 			if(this.playerModels[i].toAble <= this.totalPoints){
@@ -537,8 +543,8 @@ var AppModel = Class.extend({
 		this.currentHorde = 0;
 		this.totalPoints = 999999;
 		this.totalBirds = 8;
-		this.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
-		this.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
+		APP.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
+		APP.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
 
 
 		for (var i = this.playerModels.length - 1; i >= 0; i--) {
@@ -587,11 +593,11 @@ var AppModel = Class.extend({
 			}
 		}
 		console.log(this.totalBirds);
-		this.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
+		APP.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
 	},
 	add100Points:function(){
 		this.totalPoints += 100;
-		this.cookieManager.setCookie('totalPoints', 100, 500);
+		APP.cookieManager.setCookie('totalPoints', 100, 500);
 		this.totalPlayers = 0;
 		for (var i = this.playerModels.length - 1; i >= 0; i--) {
 			if(this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able){
@@ -605,7 +611,13 @@ var AppModel = Class.extend({
 	addPoints:function(){
 		this.currentHorde = 0;
 		this.totalPoints += this.currentPoints;
-		this.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
+		if(this.highScore < this.currentPoints)
+		{
+			this.highScore = this.currentPoints;
+			APP.cookieManager.setCookie('highScore', this.highScore, 500);
+			APP.dataManager.saveScore();
+		}
+		APP.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
 		if(this.maxPoints < this.currentPoints){
 			this.maxPoints = this.currentPoints;
 		}

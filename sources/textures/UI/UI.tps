@@ -280,6 +280,7 @@
             <filename>volumeButton_on_over.png</filename>
             <filename>volumeButton_off_over.png</filename>
             <filename>volumeButton_off.png</filename>
+            <filename>gasoline_barra.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

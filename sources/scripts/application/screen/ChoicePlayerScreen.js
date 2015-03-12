@@ -304,7 +304,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         TweenLite.from(this.returnButton.getContent(), 0.5, {delay:0.5, x: - this.returnButton.getContent().width, ease:'easeOutBack'});
         TweenLite.from(this.play.getContent(), 0.5, {delay:0.8, x: windowWidth, ease:'easeOutBack'});
 
-        APP.getGameModel().sendStats();
+        APP.dataManager.saveScore();
     },
     transitionIn:function()
     {

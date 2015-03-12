@@ -9,7 +9,7 @@ var Application = AbstractApplication.extend({
         // this.isMobile = testMobile();
         // this.appContainer = document.getElementById('rect');
         // this.id = parseInt(Math.random() * 100000000000);
-        this.gameModel = new AppModel();
+
 
         // this.objCounter = new PIXI.Text('', {font:'15px Arial'});
         // this.stage.addChild(this.objCounter);
@@ -56,6 +56,13 @@ var Application = AbstractApplication.extend({
     },
     build:function(){
         this._super();
+
+        this.cookieManager = new CookieManager();
+
+        console.log(this.cookieManager);
+        this.gameModel = new AppModel();
+        this.dataManager = new DataManager();
+
         var assetsToLoader = [];
 
         if(assetsToLoader.length > 0){

@@ -1,4 +1,4 @@
-/*! jefframos 11-03-2015 */
+/*! jefframos 12-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -312,7 +312,7 @@ SmartSocket.SOCKET_ERROR = "socketError";
 var Application = AbstractApplication.extend({
     init: function() {
         this._super(windowWidth, windowHeight), this.stage.setBackgroundColor(268435455), 
-        this.stage.removeChild(this.loadText), this.gameModel = new AppModel(), this.labelDebug = new PIXI.Text("Debug", {
+        this.stage.removeChild(this.loadText), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
         this.labelDebug.position.x = 20, this.mute = !1, this.audioController = new AudioController();
@@ -329,7 +329,8 @@ var Application = AbstractApplication.extend({
         }
     },
     build: function() {
-        this._super();
+        this._super(), this.cookieManager = new CookieManager(), console.log(this.cookieManager), 
+        this.gameModel = new AppModel(), this.dataManager = new DataManager();
         var assetsToLoader = [];
         if (assetsToLoader.length > 0) {
             this.assetsLoader = new PIXI.AssetLoader(assetsToLoader);
@@ -1046,9 +1047,9 @@ var Application = AbstractApplication.extend({
     }
 }), AppModel = Class.extend({
     init: function() {
-        this.currentPlayerModel = {}, this.cookieManager = new CookieManager();
-        var points = parseInt(this.cookieManager.getCookie("totalPoints")), tempBirds = parseInt(this.cookieManager.getCookie("totalBirds"));
-        this.totalPoints = points ? points : 0, this.totalBirds = tempBirds ? tempBirds : 1, 
+        this.currentPlayerModel = {}, console.log(APP);
+        var points = parseInt(APP.cookieManager.getCookie("totalPoints")), tempBirds = parseInt(APP.cookieManager.getCookie("totalBirds")), high = parseInt(APP.cookieManager.getCookie("highScore"));
+        this.highScore = high ? high : 0, this.totalPoints = points ? points : 0, this.totalBirds = tempBirds ? tempBirds : 1, 
         this.currentPoints = 0, this.obstacleModels = [ new BirdModel({
             source: "obstaculo1.png",
             particles: [ "smoke.png", "smoke.png" ],
@@ -1436,29 +1437,17 @@ var Application = AbstractApplication.extend({
         this.birdProbs = [ 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 2, 3, 0, 0, 2, 0, 3, 4, 4, 4, 4, 4, 0, 5, 5, 5, 5, 5, 0, 6, 6, 6, 6, 0, 7, 7, 7, 7, 4, 5, 6, 7 ], 
         this.currentHorde = 0, this.killedBirds = [];
     },
-    sendStats: function() {
-        var i = 0, tempBirds = [ [ "caralinhoDaTerra", 0 ], [ "caralhoBelga", 0 ], [ "lambecuFrances", 0 ], [ "papacuDeCabecaRoxa", 0 ], [ "galinhoPapoDeBago", 0 ], [ "nocututinha", 0 ], [ "calopsuda", 0 ], [ "picudaoAzulNigeriano", 0 ] ];
-        for (i = this.killedBirds.length - 1; i >= 0; i--) tempBirds[this.killedBirds[i]][1]++;
-        var sendObject = '{\n"character":"' + this.playerModels[this.currentID].label + '",\n"points":"' + this.currentPoints + '",\n"birds":{\n';
-        for (i = 0; i < tempBirds.length; i++) sendObject += i >= tempBirds.length - 1 ? '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '"\n' : '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '",\n';
-        sendObject += "}\n}", console.log(sendObject), console.log(JSON.parse(sendObject));
-        ({
-            character: this.playerModels[APP.getGameModel().currentID].label,
-            points: APP.getGameModel().currentPoints
-        });
-        console.log(APP.getGameModel().killedBirds, APP.getGameModel().currentPoints, this.playerModels[APP.getGameModel().currentID].label);
-    },
     setModel: function(id) {
         this.currentID = id, this.currentPlayerModel = this.playerModels[id];
     },
     zerarTudo: function() {
         this.currentHorde = 0, this.totalPoints = 0, this.totalBirds = 1, this.totalPlayers = 1, 
-        this.cookieManager.setCookie("totalPoints", 0, 500), this.cookieManager.setCookie("totalBirds", 1, 500);
+        APP.cookieManager.setCookie("totalPoints", 0, 500), APP.cookieManager.setCookie("totalBirds", 1, 500);
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
     maxPoints: function() {
-        this.currentHorde = 0, this.totalPoints = 999999, this.totalBirds = 8, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
-        this.cookieManager.setCookie("totalBirds", this.totalBirds, 500);
+        this.currentHorde = 0, this.totalPoints = 999999, this.totalBirds = 8, APP.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
+        APP.cookieManager.setCookie("totalBirds", this.totalBirds, 500);
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
     getNewObstacle: function(screen) {
@@ -1481,18 +1470,18 @@ var Application = AbstractApplication.extend({
                 console.log(this.birdModels[i].label, birdModel.label);
                 break;
             }
-            console.log(this.totalBirds), this.cookieManager.setCookie("totalBirds", this.totalBirds, 500);
+            console.log(this.totalBirds), APP.cookieManager.setCookie("totalBirds", this.totalBirds, 500);
         }
     },
     add100Points: function() {
-        this.totalPoints += 100, this.cookieManager.setCookie("totalPoints", 100, 500), 
-        this.totalPlayers = 0;
+        this.totalPoints += 100, APP.cookieManager.setCookie("totalPoints", 100, 500), this.totalPlayers = 0;
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able && (this.playerModels[i].able = !0), 
         this.playerModels[i].able && this.totalPlayers++;
     },
     addPoints: function() {
-        this.currentHorde = 0, this.totalPoints += this.currentPoints, this.cookieManager.setCookie("totalPoints", this.totalPoints, 500), 
-        this.maxPoints < this.currentPoints && (this.maxPoints = this.currentPoints);
+        this.currentHorde = 0, this.totalPoints += this.currentPoints, this.highScore < this.currentPoints && (this.highScore = this.currentPoints, 
+        APP.cookieManager.setCookie("highScore", this.highScore, 500), APP.dataManager.saveScore()), 
+        APP.cookieManager.setCookie("totalPoints", this.totalPoints, 500), this.maxPoints < this.currentPoints && (this.maxPoints = this.currentPoints);
         var tempReturn = [];
         this.totalPlayers = 0;
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able && (this.playerModels[i].able = !0, 
@@ -1513,6 +1502,22 @@ var Application = AbstractApplication.extend({
         this.behaviour = statsObjec.behaviour, this.money = statsObjec.money;
     },
     serialize: function() {}
+}), DataManager = Class.extend({
+    init: function() {
+        this.highscore = APP.cookieManager.getCookie("highScore"), console.log("highscore", this.highscore.points);
+    },
+    saveScore: function() {
+        var i = 0, tempBirds = [ [ "caralinhoDaTerra", 0 ], [ "caralhoBelga", 0 ], [ "lambecuFrances", 0 ], [ "papacuDeCabecaRoxa", 0 ], [ "galinhoPapoDeBago", 0 ], [ "nocututinha", 0 ], [ "calopsuda", 0 ], [ "picudaoAzulNigeriano", 0 ] ];
+        for (i = APP.getGameModel().killedBirds.length - 1; i >= 0; i--) tempBirds[APP.getGameModel().killedBirds[i]][1]++;
+        var sendObject = '{\n"character":"' + APP.getGameModel().playerModels[APP.getGameModel().currentID].label + '",\n"points":"' + APP.getGameModel().currentPoints + '",\n"birds":{\n';
+        for (i = 0; i < tempBirds.length; i++) sendObject += i >= tempBirds.length - 1 ? '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '"\n' : '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '",\n';
+        sendObject += "}\n}", console.log(sendObject);
+        ({
+            character: APP.getGameModel().playerModels[APP.getGameModel().currentID].label,
+            points: APP.getGameModel().currentPoints
+        });
+        this.highscore = JSON.parse(sendObject), APP.cookieManager.setCookie("highScore", this.highscore, 500);
+    }
 }), PlayerModel = Class.extend({
     init: function(graphicsObject, statsObject) {
         this.range = 40, this.maxEnergy = 7e3, this.currentEnergy = 8e3, this.maxBulletEnergy = 100, 
@@ -1658,7 +1663,7 @@ var Application = AbstractApplication.extend({
             delay: .8,
             x: windowWidth,
             ease: "easeOutBack"
-        }), APP.getGameModel().sendStats();
+        }), APP.dataManager.saveScore();
     },
     transitionIn: function() {
         this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
@@ -2596,6 +2601,40 @@ var Application = AbstractApplication.extend({
             alpha: 0
         }), TweenLite.to(this.container, .5, {
             alpha: 0
+        });
+    },
+    getContent: function() {
+        return this.container;
+    }
+}), RankinkgModal = Class.extend({
+    init: function(screen) {
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer();
+        var self = this;
+        this.container.buttonMode = !0, this.container.interactive = !0, this.container.mousedown = this.container.touchstart = function() {
+            self.hide();
+        };
+        var credits = new SimpleSprite("dist/img/UI/creditos.jpg");
+        this.container.addChild(credits.getContent()), scaleConverter(credits.getContent().height, windowHeight, 1, credits), 
+        credits.getContent().position.x = windowWidth / 2 - credits.getContent().width / 2, 
+        credits.getContent().position.y = windowHeight / 2 - credits.getContent().height / 2;
+    },
+    show: function() {
+        this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
+        var self = this;
+        this.screen.updateable = !1, this.container.alpha = 0, TweenLite.to(this.container, .5, {
+            alpha: 1,
+            onComplete: function() {
+                self.container.buttonMode = !0, self.container.interactive = !0;
+            }
+        }), this.container.buttonMode = !1, this.container.interactive = !1;
+    },
+    hide: function(callback) {
+        var self = this;
+        this.container.buttonMode = !1, this.container.interactive = !1, TweenLite.to(this.container, .5, {
+            alpha: 0,
+            onComplete: function() {
+                callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));
+            }
         });
     },
     getContent: function() {
