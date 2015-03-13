@@ -56,7 +56,7 @@ var EndModal = Class.extend({
 		this.boxContainer.addChild(this.trofeuButton.getContent());
 		this.trofeuButton.clickCallback = function(){
 			// self.hide(function(){
-			// 	// self.screen.screenManager.prevScreen();
+			self.screen.rankingModal.show();
 			// });
 		};
 

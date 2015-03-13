@@ -201,7 +201,22 @@ var WaitScreen = AbstractScreen.extend({
         APP.audioController.alcemar.stop();
         APP.audioController.alcemar.play('audio1');
 
-        // var rankingModal = new RankingModal(this);
+        this.ranking = new DefaultButton('trofeuButton.png', 'trofeuButton.png');
+        // console.log(this.ranking.build);
+        this.ranking.build();
+        scaleConverter(this.ranking.height, windowHeight, 0.15, this.ranking);
+        this.ranking.setPosition( windowWidth - this.ranking.getContent().width  - 20, 20);
+        this.addChild(this.ranking);
+
+        // {fill:'white', align:'center', font:'12px Arial', wordWrap:true, wordWrapWidth:60}
+
+        // this.ranking.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
+        this.ranking.clickCallback = function(){
+            // fullscreen();
+            self.rankingModal.show();
+        };
+
+        this.rankingModal = new RankingModal(this);
         // rankingModal.show();
     },
     transitionIn:function()

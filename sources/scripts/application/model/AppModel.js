@@ -60,7 +60,7 @@ var AppModel = Class.extend({
 		this.playerModels = [
 
 			new PlayerModel({
-				label:'alcemar',
+				label:'Alcemar',
 				// outGame:'alcemar.png',
 				inGame:'alcemarGame.png',
 				bullet:'alcemarFire.png',
@@ -87,7 +87,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'piangers',
+				label:'Piangers',
 				// outGame:'piangersN.png',
 				inGame:'piangersNGame.png',
 				bullet:'piangersFire.png',
@@ -112,7 +112,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'potter',
+				label:'Potter',
 				// outGame:'poter.png',
 				inGame:'poterGame.png',
 				bullet:'potterFire.png',
@@ -136,7 +136,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'arthur',
+				label:'Arthur',
 				// outGame:'arthur.png',
 				inGame:'arthurGame.png',
 				bullet:'arthurFire.png',
@@ -159,7 +159,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'pora',
+				label:'Porã',
 				// outGame:'pora.png',
 				inGame:'poraGame.png',
 				bullet:'poraFire.png',
@@ -184,7 +184,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'jeiso',
+				label:'Jeiso',
 				// outGame:'jeso.png',
 				inGame:'jesoGame.png',
 				bullet:'jeisoFire.png',
@@ -208,7 +208,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'pi',
+				label:'Pi',
 				// outGame:'pi.png',
 				inGame:'piGame.png',
 				bullet:'piFire.png',
@@ -233,7 +233,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'fetter',
+				label:'Fetter',
 				// outGame:'feter.png',
 				inGame:'feterGame.png',
 				bullet:'feterFire.png',
@@ -256,7 +256,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'neto',
+				label:'Neto',
 				// outGame:'neto.png',
 				inGame:'netoGame.png',
 				bullet:'netoFire.png',
@@ -280,7 +280,7 @@ var AppModel = Class.extend({
 			}
 			),
 			new PlayerModel({
-				label:'rodaika',
+				label:'Rodaika',
 				// outGame:'rodaika.png',
 				inGame:'rodaikaGame.png',
 				bullet:'rodaikaFire.png',
@@ -611,10 +611,15 @@ var AppModel = Class.extend({
 	addPoints:function(){
 		this.currentHorde = 0;
 		this.totalPoints += this.currentPoints;
-		if(this.highScore < this.currentPoints)
+		console.log(APP.dataManager.highscore);
+		if(!APP.dataManager.highscore){
+			APP.dataManager.saveScore();
+
+		}
+		else if(APP.dataManager.highscore < this.currentPoints)
 		{
-			this.highScore = this.currentPoints;
-			APP.cookieManager.setCookie('highScore', this.highScore, 500);
+			// this.highScore = this.currentPoints;
+			// APP.cookieManager.setCookie('highScore', this.highScore, 500);
 			APP.dataManager.saveScore();
 		}
 		APP.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
