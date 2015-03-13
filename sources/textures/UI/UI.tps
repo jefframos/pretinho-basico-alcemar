@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>C:/xampp/htdocs/pretinho-basico-alcemar/sources/textures/UI/UI.tps</string>
+        <string>C:/wamp/www/pretinho-basico-alcemar/sources/textures/UI/UI.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -281,6 +281,18 @@
             <filename>volumeButton_off_over.png</filename>
             <filename>volumeButton_off.png</filename>
             <filename>gasoline_barra.png</filename>
+            <filename>botao_30dias.png</filename>
+            <filename>botao_30dias_over.png</filename>
+            <filename>botao_geral.png</filename>
+            <filename>botao_geral_over.png</filename>
+            <filename>botao_hoje.png</filename>
+            <filename>botao_hoje_over.png</filename>
+            <filename>rankingeral.png</filename>
+            <filename>rankingeral_over.png</filename>
+            <filename>salva.png</filename>
+            <filename>salva_over.png</filename>
+            <filename>Hall-da-fama.png</filename>
+            <filename>../ranking/pontuacao.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
