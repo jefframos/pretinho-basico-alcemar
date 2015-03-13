@@ -3,7 +3,7 @@ var DataManager = Class.extend({
 	init:function(){
 		this.highscore = APP.cookieManager.getCookie('highScore');
 		// APP.cookieManager.setCookie('highScore', null, 500);
-		console.log('highscore', this.highscore.points);
+		// console.log('highscore', this.highscore.points);
 	},
 	saveScore:function(id){
 

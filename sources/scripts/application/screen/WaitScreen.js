@@ -200,6 +200,9 @@ var WaitScreen = AbstractScreen.extend({
         APP.audioController.playAmbientSound();
         APP.audioController.alcemar.stop();
         APP.audioController.alcemar.play('audio1');
+
+        // var rankingModal = new RankingModal(this);
+        // rankingModal.show();
     },
     transitionIn:function()
     {

@@ -1,4 +1,4 @@
-/*! jefframos 12-03-2015 */
+/*! jefframos 13-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1504,7 +1504,7 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), DataManager = Class.extend({
     init: function() {
-        this.highscore = APP.cookieManager.getCookie("highScore"), console.log("highscore", this.highscore.points);
+        this.highscore = APP.cookieManager.getCookie("highScore");
     },
     saveScore: function() {
         var i = 0, tempBirds = [ [ "caralinhoDaTerra", 0 ], [ "caralhoBelga", 0 ], [ "lambecuFrances", 0 ], [ "papacuDeCabecaRoxa", 0 ], [ "galinhoPapoDeBago", 0 ], [ "nocututinha", 0 ], [ "calopsuda", 0 ], [ "picudaoAzulNigeriano", 0 ] ];
@@ -2070,7 +2070,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/creditos.jpg", "dist/img/UI/intro.json" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/fundoRanking.png", "dist/img/UI/creditos.jpg", "dist/img/UI/tabela.png", "dist/img/UI/intro.json" ];
         if (assetsToLoader.length > 0 && !this.isLoaded) {
             this.loader = new PIXI.AssetLoader(assetsToLoader), this.loaderContainer = new PIXI.DisplayObjectContainer(), 
             this.addChild(this.loaderContainer), this.frontShape && this.frontShape.parent.removeChild(this.frontShape), 
@@ -2426,8 +2426,7 @@ var Application = AbstractApplication.extend({
         }), TweenLite.to(this.novoRecruta.getContent(), .2, {
             delay: .8,
             alpha: 1
-        })), APP.getGameModel().sendStats(), this.boxContainer.visible = !0, this.contents.visible = !0, 
-        TweenLite.to(this.boxContainer.position, 1, {
+        })), this.boxContainer.visible = !0, this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
@@ -2606,20 +2605,72 @@ var Application = AbstractApplication.extend({
     getContent: function() {
         return this.container;
     }
-}), RankinkgModal = Class.extend({
+}), RankingModal = Class.extend({
     init: function(screen) {
-        this.screen = screen, this.container = new PIXI.DisplayObjectContainer();
-        var self = this;
-        this.container.buttonMode = !0, this.container.interactive = !0, this.container.mousedown = this.container.touchstart = function() {
-            self.hide();
-        };
-        var credits = new SimpleSprite("dist/img/UI/creditos.jpg");
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.containerGeral = new PIXI.DisplayObjectContainer(), 
+        this.containerSave = new PIXI.DisplayObjectContainer();
+        var credits = new SimpleSprite("dist/img/UI/fundoRanking.png");
         this.container.addChild(credits.getContent()), scaleConverter(credits.getContent().height, windowHeight, 1, credits), 
         credits.getContent().position.x = windowWidth / 2 - credits.getContent().width / 2, 
-        credits.getContent().position.y = windowHeight / 2 - credits.getContent().height / 2;
+        credits.getContent().position.y = windowHeight / 2 - credits.getContent().height / 2, 
+        this.container.addChild(this.containerSave), this.container.addChild(this.containerGeral);
+        var self = this, hall = new SimpleSprite("Hall-da-fama.png");
+        this.containerSave.addChild(hall.getContent()), scaleConverter(hall.getContent().height, windowHeight, .5, hall), 
+        hall.getContent().position.x = windowWidth / 2 - hall.getContent().width / 2, hall.getContent().position.y = .05 * windowHeight, 
+        this.returnButton = new DefaultButton("voltarButton.png", "voltarButtonOver.png"), 
+        this.returnButton.build(), scaleConverter(this.returnButton.getContent().height, windowHeight, .15, this.returnButton), 
+        this.returnButton.setPosition(20, windowHeight - this.returnButton.getContent().height - 20), 
+        this.containerSave.addChild(this.returnButton.getContent()), this.returnButton.clickCallback = function() {
+            self.hide();
+        }, this.rankingGeral = new DefaultButton("rankingeral.png", "rankingeral_over.png"), 
+        this.rankingGeral.build(), scaleConverter(this.rankingGeral.getContent().height, windowHeight, .15, this.rankingGeral), 
+        this.rankingGeral.setPosition(windowWidth / 2 - this.rankingGeral.getContent().width / 2, windowHeight - this.rankingGeral.getContent().height - 20), 
+        this.containerSave.addChild(this.rankingGeral.getContent()), this.rankingGeral.clickCallback = function() {
+            self.geralState();
+        }, this.save = new DefaultButton("salva.png", "salva_over.png"), this.save.build(), 
+        scaleConverter(this.save.getContent().height, windowHeight, .15, this.save), this.save.setPosition(windowWidth - this.save.getContent().width - 20, windowHeight - this.save.getContent().height - 20), 
+        this.containerSave.addChild(this.save.getContent()), this.save.clickCallback = function() {
+            self.save();
+        };
+        var pontuação = new SimpleSprite("pontuacao.png");
+        this.containerSave.addChild(pontuação.getContent()), scaleConverter(pontuação.getContent().height, windowHeight, .15, pontuação), 
+        pontuação.getContent().position.x = windowWidth / 2 - pontuação.getContent().width / 2, 
+        pontuação.getContent().position.y = this.returnButton.getContent().position.y - pontuação.getContent().height - 20, 
+        this.tabela = new SimpleSprite("dist/img/UI/tabela.png"), this.containerGeral.addChild(this.tabela.getContent()), 
+        scaleConverter(this.tabela.getContent().height, windowHeight, .85, this.tabela), 
+        this.tabela.getContent().position.x = windowWidth - this.tabela.getContent().width - .05 * windowWidth, 
+        this.tabela.getContent().position.y = windowHeight / 2 - this.tabela.getContent().height / 2, 
+        this.returnButtonGeral = new DefaultButton("voltarButton.png", "voltarButtonOver.png"), 
+        this.returnButtonGeral.build(), scaleConverter(this.returnButtonGeral.getContent().height, windowHeight, .15, this.returnButtonGeral), 
+        this.returnButtonGeral.setPosition(20, windowHeight - this.returnButtonGeral.getContent().height - 20), 
+        this.containerGeral.addChild(this.returnButtonGeral.getContent()), this.returnButtonGeral.clickCallback = function() {
+            self.saveState();
+        }, this.btnHoje = new DefaultButton("botao_hoje.png", "botao_hoje_over.png"), this.btnHoje.build(), 
+        scaleConverter(this.btnHoje.getContent().width, windowHeight, .25, this.btnHoje), 
+        this.btnHoje.setPosition(20, .2 * windowHeight), this.containerGeral.addChild(this.btnHoje.getContent()), 
+        this.btnHoje.clickCallback = function() {
+            self.hide();
+        }, this.btn30 = new DefaultButton("botao_30dias.png", "botao_30dias_over.png"), 
+        this.btn30.build(), scaleConverter(this.btn30.getContent().width, windowHeight, .25, this.btn30), 
+        this.btn30.setPosition(20, this.btnHoje.getContent().position.y + this.btnHoje.getContent().height + 10), 
+        this.containerGeral.addChild(this.btn30.getContent()), this.btn30.clickCallback = function() {
+            self.hide();
+        }, this.btnGeral = new DefaultButton("botao_geral.png", "botao_geral_over.png"), 
+        this.btnGeral.build(), scaleConverter(this.btnGeral.getContent().width, windowHeight, .25, this.btnGeral), 
+        this.btnGeral.setPosition(20, this.btn30.getContent().position.y + this.btn30.getContent().height + 10), 
+        this.containerGeral.addChild(this.btnGeral.getContent()), this.btnGeral.clickCallback = function() {
+            self.hide();
+        };
+    },
+    saveState: function() {
+        console.log("geral"), this.containerSave.visible = !0, this.containerGeral.visible = !1;
+    },
+    geralState: function() {
+        console.log("geral"), this.containerSave.visible = !1, this.containerGeral.visible = !0;
     },
     show: function() {
-        this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
+        this.screen.addChild(this), this.containerSave.visible = !0, this.containerGeral.visible = !1, 
+        this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
         var self = this;
         this.screen.updateable = !1, this.container.alpha = 0, TweenLite.to(this.container, .5, {
             alpha: 1,

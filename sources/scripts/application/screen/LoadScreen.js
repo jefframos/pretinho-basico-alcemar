@@ -28,7 +28,9 @@ var LoadScreen = AbstractScreen.extend({
         'dist/img/UI/covers/netoGrande.png',
         'dist/img/UI/covers/piangersGrande.png',
         'dist/img/UI/fundo_degrade.png',
+        'dist/img/UI/fundoRanking.png',
         'dist/img/UI/creditos.jpg',
+        'dist/img/UI/tabela.png',
         'dist/img/UI/intro.json'];
         // 'dist/img/UI/introScreen.jpg',
         // 'dist/img/UI/HUD.json'];

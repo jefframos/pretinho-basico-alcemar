@@ -265,7 +265,7 @@ var EndModal = Class.extend({
 
 		}
 
-		APP.getGameModel().sendStats();
+		// APP.getGameModel().sendStats();
 		
 		// this.container.interactive = true;
 		// this.container.buttonMode = true;
