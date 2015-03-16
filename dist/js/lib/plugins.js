@@ -1,4 +1,4 @@
-/*! jefframos 12-03-2015 */
+/*! jefframos 16-03-2015 */
 !function() {
     var cache = {}, ctx = null, usingWebAudio = !0, noAudio = !1;
     try {
@@ -6235,7 +6235,7 @@
                 c !== d && (d = c, f = !0), (f || b) && a._whileplaying(c, l, l, l, l)), f) : void 0;
             }, this._get_html5_duration = function() {
                 var b = a._iO;
-                return (b = a._a && a._a.duration ? 1e3 * a._a.duration : b && b.duration ? b.duration : null) && !isNaN(b) && 1/0 !== b ? b : null;
+                return (b = a._a && a._a.duration ? 1e3 * a._a.duration : b && b.duration ? b.duration : null) && !isNaN(b) && 1 / 0 !== b ? b : null;
             }, this._apply_loop = function(a, b) {
                 a.loop = b > 1 ? "loop" : "";
             }, this._setup_html5 = function(b) {
@@ -6762,7 +6762,119 @@
         return Class.prototype = prototype, Class.prototype.constructor = Class, Class.extend = arguments.callee, 
         Class;
     };
-}(), (window._gsQueue || (window._gsQueue = [])).push(function() {
+}();
+
+var openFB = function() {
+    function init(params) {
+        if (!params.appId) throw "appId parameter not set in init()";
+        fbAppId = params.appId, params.tokenStore && (tokenStore = params.tokenStore), params.runningInCordova && (runningInCordova = params.runningInCordova);
+    }
+    function getLoginStatus(callback) {
+        var token = tokenStore.fbtoken, loginStatus = {};
+        token ? (loginStatus.status = "connected", loginStatus.authResponse = {
+            token: token
+        }) : loginStatus.status = "unknown", callback && callback(loginStatus);
+    }
+    function login(callback, options) {
+        function loginWindow_loadStartHandler(event) {
+            var url = event.url;
+            if (url.indexOf("access_token=") > 0 || url.indexOf("error=") > 0) {
+                var timeout = 600 - (new Date().getTime() - startTime);
+                setTimeout(function() {
+                    loginWindow.close();
+                }, timeout > 0 ? timeout : 0), oauthCallback(url);
+            }
+        }
+        function loginWindow_exitHandler() {
+            console.log("exit and remove listeners"), deferredLogin.reject({
+                error: "user_cancelled",
+                error_description: "User cancelled login process",
+                error_reason: "user_cancelled"
+            }), loginWindow.removeEventListener("loadstop", loginWindow_loadStartHandler), loginWindow.removeEventListener("exit", loginWindow_exitHandler), 
+            loginWindow = null, console.log("done removing listeners");
+        }
+        var loginWindow, startTime, scope = "";
+        return fbAppId ? (options && options.scope && (scope = options.scope), loginCallback = callback, 
+        loginProcessed = !1, runningInCordova && (oauthRedirectURL = "https://www.facebook.com/connect/login_success.html"), 
+        console.log(oauthRedirectURL), startTime = new Date().getTime(), loginWindow = window.open(FB_LOGIN_URL + "?client_id=" + fbAppId + "&redirect_uri=" + oauthRedirectURL + "&response_type=token&scope=" + scope, "_blank", "location=no"), 
+        void (runningInCordova && (loginWindow.addEventListener("loadstart", loginWindow_loadStartHandler), 
+        loginWindow.addEventListener("exit", loginWindow_exitHandler)))) : callback({
+            status: "unknown",
+            error: "Facebook App Id not set."
+        });
+    }
+    function oauthCallback(url) {
+        var queryString, obj;
+        loginProcessed = !0, url.indexOf("access_token=") > 0 ? (queryString = url.substr(url.indexOf("#") + 1), 
+        obj = parseQueryString(queryString), tokenStore.fbtoken = obj.access_token, loginCallback && loginCallback({
+            status: "connected",
+            authResponse: {
+                token: obj.access_token
+            }
+        })) : url.indexOf("error=") > 0 ? (queryString = url.substring(url.indexOf("?") + 1, url.indexOf("#")), 
+        obj = parseQueryString(queryString), loginCallback && loginCallback({
+            status: "not_authorized",
+            error: obj.error
+        })) : loginCallback && loginCallback({
+            status: "not_authorized"
+        });
+    }
+    function logout(callback) {
+        var logoutWindow, token = tokenStore.fbtoken;
+        tokenStore.removeItem("fbtoken"), token && (logoutWindow = window.open(FB_LOGOUT_URL + "?access_token=" + token + "&next=" + logoutRedirectURL, "_blank", "location=no"), 
+        runningInCordova && setTimeout(function() {
+            logoutWindow.close();
+        }, 700)), callback && callback();
+    }
+    function api(obj) {
+        var url, method = obj.method || "GET", params = obj.params || {}, xhr = new XMLHttpRequest();
+        params.access_token = tokenStore.fbtoken, url = "https://graph.facebook.com" + obj.path + "?" + toQueryString(params), 
+        xhr.onreadystatechange = function() {
+            if (4 === xhr.readyState) if (200 === xhr.status) obj.success && obj.success(JSON.parse(xhr.responseText)); else {
+                var error = xhr.responseText ? JSON.parse(xhr.responseText).error : {
+                    message: "An error has occurred"
+                };
+                obj.error && obj.error(error);
+            }
+        }, xhr.open(method, url, !0), xhr.send();
+    }
+    function revokePermissions(success, error) {
+        return api({
+            method: "DELETE",
+            path: "/me/permissions",
+            success: function() {
+                tokenStore.fbtoken = void 0, success();
+            },
+            error: error
+        });
+    }
+    function parseQueryString(queryString) {
+        var qs = decodeURIComponent(queryString), obj = {}, params = qs.split("&");
+        return params.forEach(function(param) {
+            var splitter = param.split("=");
+            obj[splitter[0]] = splitter[1];
+        }), obj;
+    }
+    function toQueryString(obj) {
+        var parts = [];
+        for (var i in obj) obj.hasOwnProperty(i) && parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+        return parts.join("&");
+    }
+    var fbAppId, loginCallback, runningInCordova, loginProcessed, FB_LOGIN_URL = "https://www.facebook.com/dialog/oauth", FB_LOGOUT_URL = "https://www.facebook.com/logout.php", tokenStore = window.sessionStorage, context = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2)), baseURL = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "") + context, oauthRedirectURL = baseURL + "/oauthcallback.html", logoutRedirectURL = baseURL + "/logoutcallback.html";
+    return console.log(oauthRedirectURL), console.log(logoutRedirectURL), document.addEventListener("deviceready", function() {
+        runningInCordova = !0;
+    }, !1), {
+        init: init,
+        login: login,
+        logout: logout,
+        revokePermissions: revokePermissions,
+        api: api,
+        oauthCallback: oauthCallback,
+        getLoginStatus: getLoginStatus
+    };
+}();
+
+(window._gsQueue || (window._gsQueue = [])).push(function() {
     "use strict";
     window._gsDefine("easing.Back", [ "easing.Ease" ], function(t) {
         var e, i, s, r = window.GreenSockGlobals || window, n = r.com.greensock, a = 2 * Math.PI, o = Math.PI / 2, h = n._class, l = function(e, i) {

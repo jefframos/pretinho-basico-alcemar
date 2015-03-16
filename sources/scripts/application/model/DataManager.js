@@ -8,13 +8,19 @@ var DataManager = Class.extend({
 		// APP.cookieManager.setCookie('highscore', '', 500);
 		// console.log('highscore', this.highscore.points);
 		// console.log(this.highscore);
+
+		this.serverApi = new ServerApi();
 	},
 	getToday:function(){
-		var ret = [];
-		for (var i = 0; i < 10; i++) {
-			ret.push({name:'Jeff', piloto:'Alcemar', points:'200'});
-		}
-		return ret;
+		this.serverApi.getToday(function(message) {
+			if (message === 'error') {
+				// some error
+				return [];
+			}
+
+			// the character in the message is the string identifier
+			return message;
+		});
 	},
 	getAll:function(){
 		var ret = [];
@@ -30,17 +36,28 @@ var DataManager = Class.extend({
 		}
 		return ret;
 	},
+	sendScore:function(){
+		// check token, fb login & etc
+		if(this.highscore){
+			console.log(this.highscore);
+			// server api openFacebook
+			if (!this.serverApi.token) {
+				this.serverApi.openFacebook(function(status) {
+					if (status === 'connected') {
+						this.serverApi.sendScore(this.highscore, function() {});
+					}
+				});
+			} else {
+				this.serverApi.sendScore(this.highscore, function() {});
+			}
+		}
+	},
 	getHigh:function(){
 		if(this.highscore){
 			// console.log(this.highscore);
 			// var spl = this.highscore.split(',');
 			// console.log(spl);
 			return this.highscore;
-		}
-	},
-	sendScore:function(){
-		if(this.highscore){
-			console.log(this.highscore);
 		}
 	},
 	saveScore:function(id){
@@ -91,7 +108,7 @@ var DataManager = Class.extend({
 		var send = {
 			character: APP.getGameModel().playerModels[APP.getGameModel().currentID].label,
 			points: APP.getGameModel().currentPoints,
-			
+
 		};
 		this.highscore = send.points;//JSON.parse(sendObject);
 		APP.cookieManager.setCookie('highscore', this.highscore, 500);

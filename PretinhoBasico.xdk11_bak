@@ -1,12 +1,12 @@
 {
   "project": {
-    "projectSettingsVersion": "1.2",
+    "projectSettingsVersion": "1.1",
     "creationData": {
       "type": "Import",
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "",
       "projectGuid": "73e787f9-3c13-429d-b5f7-b57c8827f336",
-      "lastModifiedDate": 1426452754529,
+      "lastModifiedDate": 1421969677650,
       "creationDate": 1421969677548
     },
     "sourceDirectory": "",
@@ -14,7 +14,22 @@
     "startFile": "index.html",
     "projectFiles": {},
     "projectDirectories": {},
-    "libraries": [],
+    "libraries": [
+      {
+        "name": "Cordova",
+        "version": "2.9.0",
+        "data": {
+          "default": true
+        }
+      },
+      {
+        "name": "intelXDK",
+        "version": "4.0.0",
+        "data": {
+          "default": true
+        }
+      }
+    ],
     "cordovaPlugins": [
       {
         "id": "org.apache.cordova.device",
@@ -29,19 +44,6 @@
         "selectedState": "Auto",
         "data": {},
         "paramvals": {}
-      },
-      {
-        "id": "com.intel.security",
-        "selectedState": "Included",
-        "data": {},
-        "paramvals": {}
-      },
-      {
-        "id": "org.apache.cordova.inappbrowser",
-        "version": "0.5.4",
-        "selectedState": "Included",
-        "data": {},
-        "paramvals": {}
       }
     ],
     "serviceMethods": [],
@@ -52,29 +54,22 @@
         "name_": "Android",
         "preferences_": {
           "android-minSdkVersion": "10",
-          "android-targetSdkVersion": "22",
-          "android-installLocation": "auto",
-          "Fullscreen": true,
-          "Orientation": "landscape"
+          "android-targetSdkVersion": "19",
+          "android-installLocation": "auto"
         },
         "isActive_": true,
-        "appName_": "A Fuga das Aves Raras",
-        "appID_": "com.chilimonk.fugadasavesraras",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appName_": "PretinhoBasico",
+        "appID_": "not.yet.specified",
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
-        "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
         "appVersion_": "0.0.1",
         "appVersionCode_": "1",
-        "crosswalkVersion_": "stable",
-        "appAuthor_": "Chilimonk"
+        "crosswalkVersion_": "stable"
       },
       "Android-Crosswalk": {
         "platform_": "android",
@@ -82,29 +77,22 @@
         "name_": "Android-Crosswalk",
         "preferences_": {
           "android-minSdkVersion": "14",
-          "android-targetSdkVersion": "22",
-          "android-installLocation": "auto",
-          "Fullscreen": true,
-          "Orientation": "landscape"
+          "android-targetSdkVersion": "19",
+          "android-installLocation": "auto"
         },
         "isActive_": true,
-        "appName_": "A Fuga das Aves Raras",
-        "appID_": "com.chilimonk.fugadasavesraras",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appName_": "PretinhoBasico",
+        "appID_": "not.yet.specified",
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
-        "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
         "appVersion_": "0.0.1",
         "appVersionCode_": "1",
-        "crosswalkVersion_": "10",
-        "appAuthor_": "Chilimonk"
+        "crosswalkVersion_": "stable"
       },
       "iOS": {
         "platform_": "ios",
@@ -112,55 +100,54 @@
         "name_": "iOS",
         "preferences_": {
           "ios-target": "5",
-          "ios-configuration": "adhoc",
-          "Fullscreen": true,
-          "Orientation": "landscape"
+          "ios-configuration": "adhoc"
         },
         "isActive_": true,
-        "appName_": "A Fuga das Aves Raras",
-        "appID_": "com.chilimonk.fugadasavesraras",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appName_": "PretinhoBasico",
+        "appID_": "not.yet.specified",
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
-        "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
-        "appVersion_": "0.0.1",
-        "appAuthor_": "Chilimonk"
+        "appVersion_": "0.0.1"
       },
       "Windows8": {
         "platform_": "windows8",
         "runtime_": "Cordova 3.x",
         "name_": "Windows8",
-        "preferences_": {
-          "Fullscreen": true,
-          "Orientation": "landscape"
-        },
+        "preferences_": {},
         "isActive_": true,
-        "appName_": "A Fuga das Aves Raras",
-        "appID_": "com.chilimonk.fugadasavesraras",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appName_": "PretinhoBasico",
+        "appID_": "not.yet.specified",
+        "appAccess_": "*",
         "icons_": [],
         "splashes_": [],
+        "iosProvs_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
-        "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
-        "appVersion_": "0.0.0.1",
-        "appAuthor_": "Chilimonk"
+        "appVersion_": "0.0.0.1"
+      },
+      "WindowsPhone8": {
+        "platform_": "wp8",
+        "runtime_": "Cordova 3.x",
+        "name_": "WindowsPhone8",
+        "preferences_": {},
+        "isActive_": true,
+        "appName_": "PretinhoBasico",
+        "appID_": "not.yet.specified",
+        "appAccess_": "*",
+        "icons_": [],
+        "splashes_": [],
+        "iosProvs_": [],
+        "addlPermissions_": "",
+        "excludedLibraries_": "",
+        "cordovaCLIVersion_": "3.5",
+        "appVersion_": "0.0.0.1"
       }
-    },
-    "gameAssetDirectory": "asset",
-    "gameMetadata": {},
-    "projectTags": []
+    }
   }
 }

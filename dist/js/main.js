@@ -1,4 +1,4 @@
-/*! jefframos 13-03-2015 */
+/*! jefframos 16-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1505,15 +1505,12 @@ var Application = AbstractApplication.extend({
 }), DataManager = Class.extend({
     init: function() {
         this.highscore = APP.cookieManager.getCookie("highscore") ? APP.cookieManager.getCookie("highscore") : null, 
-        this.highscore && console.log("high", this.highscore[1]);
+        this.highscore && console.log("high", this.highscore[1]), this.serverApi = new ServerApi();
     },
     getToday: function() {
-        for (var ret = [], i = 0; 10 > i; i++) ret.push({
-            name: "Jeff",
-            piloto: "Alcemar",
-            points: "200"
+        this.serverApi.getToday(function(message) {
+            return "error" === message ? [] : message;
         });
-        return ret;
     },
     getAll: function() {
         for (var ret = [], i = 0; 10 > i; i++) ret.push({
@@ -1531,11 +1528,13 @@ var Application = AbstractApplication.extend({
         });
         return ret;
     },
+    sendScore: function() {
+        this.highscore && (console.log(this.highscore), this.serverApi.token ? this.serverApi.sendScore(this.highscore, function() {}) : this.serverApi.openFacebook(function(status) {
+            "connected" === status && this.serverApi.sendScore(this.highscore, function() {});
+        }));
+    },
     getHigh: function() {
         return this.highscore ? this.highscore : void 0;
-    },
-    sendScore: function() {
-        this.highscore && console.log(this.highscore);
     },
     saveScore: function() {
         var i = 0, tempBirds = [ [ "caralinhoDaTerra", 0 ], [ "caralhoBelga", 0 ], [ "lambecuFrances", 0 ], [ "papacuDeCabecaRoxa", 0 ], [ "galinhoPapoDeBago", 0 ], [ "nocututinha", 0 ], [ "calopsuda", 0 ], [ "picudaoAzulNigeriano", 0 ] ];
@@ -2932,6 +2931,99 @@ var Application = AbstractApplication.extend({
     },
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
+    }
+}), ServerApi = Class.extend({
+    init: function() {
+        this.endpoint = "http://pretinho-server-dev.elasticbeanstalk.com/", this.token = null, 
+        document.addEventListener("deviceready", function() {
+            this.fetchToken();
+        });
+    },
+    fetchToken: function() {
+        var self = this;
+        intel.security.secureStorage.read(function(instanceID) {
+            intel.security.secureData.getData(function(data) {
+                self.token = data;
+            }, function(errorObj) {
+                console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message);
+            }, instanceID);
+        }, function(errorObj) {
+            console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message);
+        }, {
+            id: "token"
+        });
+    },
+    setToken: function(token) {
+        this.token = token, intel.security.secureStorage.write(function() {
+            console.log("success");
+        }, function(errorObj) {
+            console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message);
+        }, {
+            id: "token",
+            data: token
+        });
+    },
+    openFacebook: function(callback) {
+        openFB.init({
+            appId: "262874990468179",
+            runningInCordova: !0
+        }), openFB.login(function(response) {
+            "connected" === response.status ? (this.authWithServer(response.authResponse, callback), 
+            alert("Facebook login succeeded, got access token: " + response.authResponse.token)) : (callback(response.error), 
+            alert("Facebook login failed: " + response.error));
+        }, {
+            scope: "email,public_profile,publish_stream"
+        });
+    },
+    authWithServer: function(authResponse, callback) {
+        var self = this;
+        $.ajax({
+            method: "POST",
+            url: self.endpoint + "/auth",
+            data: {
+                fbToken: authResponse.token
+            }
+        }).done(function(message) {
+            self.setToken(message.token), callback("connected");
+        }).fail(function() {
+            callback("error");
+        });
+    },
+    sendScore: function(score, callback) {
+        var self = this;
+        this.token || callback("no_token_available"), $.ajax({
+            method: "POST",
+            url: self.endpoint + "/ranking",
+            headers: {
+                Authorization: "Bearer " + self.token
+            },
+            data: score
+        }).done(function(message) {
+            self.setToken(message.token), callback("connected");
+        }).fail(function(jqXHR) {
+            return 401 !== jqXHR.statusCode() ? void callback(message.error) : void self.openFacebook(function(status) {
+                "connected" === status && $.ajax({
+                    method: "POST",
+                    url: self.endpoint + "/ranking",
+                    headers: {
+                        Authorization: "Bearer " + self.token
+                    },
+                    data: score
+                }).done(function(message) {
+                    self.setToken(message.token), callback("connected");
+                }).fail(function() {});
+            });
+        });
+    },
+    getToday: function(callback) {
+        var self = this;
+        $.ajax({
+            url: self.endpoint + "/ranking"
+        }).done(function(message) {
+            callback(message);
+        }).fail(function() {
+            callback("error");
+        });
     }
 }), resizeProportional = !0, windowWidth = 667, windowHeight = 375, realWindowWidth = 667, realWindowHeight = 375, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
