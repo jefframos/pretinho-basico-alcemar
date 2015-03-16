@@ -52,6 +52,7 @@ module.exports = function(grunt) {
                     '<%= globalConfig.src %>scripts/plugins/soundmanager2-nodebug-jsmin.js',
                     '<%= globalConfig.src %>scripts/plugins/jquery-1.11.2.min',
                     '<%= globalConfig.src %>scripts/plugins/class.js',
+                    '<%= globalConfig.src %>scripts/plugins/openfb.js',
                     '<%= globalConfig.src %>scripts/plugins/easegame/**/*.js'
                 ]
             }

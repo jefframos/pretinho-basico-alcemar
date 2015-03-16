@@ -554,6 +554,9 @@ var GameScreen = AbstractScreen.extend({
 
         this.pauseModal = new PauseModal(this);
 
+        this.rankingModal = new RankingModal(this);
+        // rankingModal.show();
+
         // console.log( APP.getGameModel().totalBirds , APP.getGameModel().totalPlayers);
 
         if(APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (APP.getGameModel().totalPlayers === 2 || Math.random() < 0.5)){
