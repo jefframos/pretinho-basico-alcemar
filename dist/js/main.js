@@ -521,13 +521,33 @@ var Application = AbstractApplication.extend({
         }
         var audioList = [ {
             label: "ambient1",
-            urls: [ "dist/audio/trilha.mp3", "dist/audio/trilha.ogg" ],
+            urls: [ "dist/audio/background/trilha.mp3" ],
+            volume: .1,
+            loop: !0
+        }, {
+            label: "ambient2",
+            urls: [ "dist/audio/background/game.mp3" ],
             volume: .1,
             loop: !0
         }, {
             label: "alcemarIntro",
-            urls: [ "dist/audio/aves_raras.mp3", "dist/audio/aves_raras.ogg" ],
+            urls: [ "dist/audio/efeitos/intro.mp3" ],
             volume: .8,
+            loop: !1
+        }, {
+            label: "tiro",
+            urls: [ "dist/audio/efeitos/gun.mp3" ],
+            volume: .1,
+            loop: !1
+        }, {
+            label: "risada",
+            urls: [ "dist/audio/efeitos/risada.mp3" ],
+            volume: .5,
+            loop: !1
+        }, {
+            label: "magic",
+            urls: [ "dist/audio/efeitos/magic.mp3" ],
+            volume: .5,
             loop: !1
         } ];
         this.audios = [];
@@ -540,7 +560,7 @@ var Application = AbstractApplication.extend({
                 onend: end
             })
         });
-        this.playingAudios = [];
+        this.playingAudios = [], this.ambientLabel = "";
     },
     updateAudioList: function(target) {
         if (this.ambientPlaying !== target) {
@@ -561,7 +581,8 @@ var Application = AbstractApplication.extend({
         return audioP;
     },
     playAmbientSound: function(id) {
-        this.ambientPlaying || (this.ambientPlaying = this.playSound(id));
+        this.ambientLabel !== id && (this.ambientPlaying && this.stopSound(this.ambientLabel), 
+        this.ambientLabel = id, this.ambientPlaying = this.playSound(id));
     }
 }), Egg = Entity.extend({
     init: function(birdModel, screen) {
@@ -827,7 +848,7 @@ var Application = AbstractApplication.extend({
         this.sprite.anchor.y = .5, this.updateable = !0, this.collidable = !0, this.getContent().alpha = .5, 
         TweenLite.to(this.getContent(), .3, {
             alpha: 1
-        }), this.birdsCollided = [];
+        }), this.birdsCollided = [], APP.audioController.playSound("tiro");
     },
     update: function() {
         if (this._super(), this.layer.collideChilds(this), (!this.targetEntity || this.targetEntity && this.targetEntity.kill) && this.timeLive--, 
@@ -1629,6 +1650,7 @@ var Application = AbstractApplication.extend({
         this.initApplication();
     },
     initApplication: function() {
+        APP.audioController.playAmbientSound("ambient1");
         var self = this, scale = scaleConverter(70, windowHeight, .1);
         console.log(scale);
         var sizeScale = 135 / 640 * windowHeight, spacing = 5 / 640 * windowHeight;
@@ -2006,6 +2028,7 @@ var Application = AbstractApplication.extend({
             y: windowHeight / 2
         }), this.red.setScale(scale, scale);
         var self = this;
+        APP.audioController.playSound("risada"), APP.audioController.playAmbientSound("ambient2"), 
         this.mascadasContainer = new PIXI.DisplayObjectContainer();
         var moneyBg = new SimpleSprite("moneyContainer.png");
         this.mascadasContainer.addChild(moneyBg.getContent()), scaleConverter(this.mascadasContainer.width, windowWidth, .15, this.mascadasContainer), 
@@ -2455,7 +2478,8 @@ var Application = AbstractApplication.extend({
             this.container.addChild(this.degrade.getContent()), this.degrade.getContent().width = windowWidth / 1.5;
             var sH = scaleConverter(this.degrade.getContent().height, windowHeight, 1);
             this.degrade.getContent().scale.y = sH, this.degrade.getContent().height = windowHeight, 
-            this.degrade.setPosition(windowWidth / 2 - this.degrade.getContent().width / 2, windowHeight / 2 - this.degrade.getContent().height / 2);
+            this.degrade.setPosition(windowWidth / 2 - this.degrade.getContent().width / 2, windowHeight / 2 - this.degrade.getContent().height / 2), 
+            APP.audioController.playAmbientSound("magic");
             var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("novorecruta.png"), playerImage = null;
             playerImage = new SimpleSprite(windowHeight > 450 ? newPlayers[0].imgSource : newPlayers[0].imgSourceGame), 
             this.newCharContainer.addChild(pista.getContent()), pista.setPosition(0, holofote.getContent().height - 35), 
@@ -2537,7 +2561,7 @@ var Application = AbstractApplication.extend({
         if (bird || (bird = [ APP.getGameModel().birdModels[Math.floor(Math.random() * APP.getGameModel().birdModels.length)] ]), 
         bird && bird.length > 0) {
             var self = this;
-            this.newCharContainer = new PIXI.DisplayObjectContainer();
+            this.newCharContainer = new PIXI.DisplayObjectContainer(), APP.audioController.playAmbientSound("magic");
             var pista = new SimpleSprite("pista.png"), holofote = new SimpleSprite("holofote.png"), novo = new SimpleSprite("nova_ave.png"), ovoquebrado = new SimpleSprite("ovoquebrado.png"), penas1 = new SimpleSprite("penasfundo1.png"), penas2 = new SimpleSprite("penasfundo2.png");
             this.playerImage = null, this.playerImage = new SimpleSprite(bird[0].cover);
             var degrade = new SimpleSprite("dist/img/UI/fundo_degrade.png");

@@ -38,7 +38,7 @@ var NewBirdModal = Class.extend({
 			var self = this;
 			this.newCharContainer = new PIXI.DisplayObjectContainer();
 			// APP.getGameModel().ableNewBird();
-
+			APP.audioController.playAmbientSound('magic');
 
 			var pista = new SimpleSprite('pista.png');
 			var holofote = new SimpleSprite('holofote.png');

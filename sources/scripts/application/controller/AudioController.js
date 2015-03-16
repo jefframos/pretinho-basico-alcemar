@@ -5,14 +5,38 @@ var AudioController = Class.extend({
 		var audioList = [
 			{
 				label:'ambient1',
-				urls: ['dist/audio/trilha.mp3', 'dist/audio/trilha.ogg'],
+				urls: ['dist/audio/background/trilha.mp3'],
+				volume: 0.1,
+				loop: true
+			},
+			{
+				label:'ambient2',
+				urls: ['dist/audio/background/game.mp3'],
 				volume: 0.1,
 				loop: true
 			},
 			{
 				label:'alcemarIntro',
-				urls: ['dist/audio/aves_raras.mp3', 'dist/audio/aves_raras.ogg'],
+				urls: ['dist/audio/efeitos/intro.mp3'],
 				volume: 0.8,
+				loop: false
+			},
+			{
+				label:'tiro',
+				urls: ['dist/audio/efeitos/gun.mp3'],
+				volume: 0.1,
+				loop: false
+			},
+			{
+				label:'risada',
+				urls: ['dist/audio/efeitos/risada.mp3'],
+				volume: 0.5,
+				loop: false
+			},
+			{
+				label:'magic',
+				urls: ['dist/audio/efeitos/magic.mp3'],
+				volume: 0.5,
 				loop: false
 			}
 		];
@@ -47,6 +71,7 @@ var AudioController = Class.extend({
 		// });
 
 		this.playingAudios = [];
+		this.ambientLabel = '';
 	},
 	updateAudioList:function(target){
 		if(this.ambientPlaying === target){
@@ -87,9 +112,15 @@ var AudioController = Class.extend({
 		return audioP;
 	},
 	playAmbientSound:function(id){
-		if(this.ambientPlaying){
+		if(this.ambientLabel === id){
 			return;
 		}
+
+		if(this.ambientPlaying){
+			// this.ambientPlaying.stop();
+			this.stopSound(this.ambientLabel);
+		}
+		this.ambientLabel = id;
 		this.ambientPlaying = this.playSound(id);
 	}
 });

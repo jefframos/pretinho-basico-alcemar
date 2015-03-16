@@ -430,6 +430,8 @@ var GameScreen = AbstractScreen.extend({
         this.red.setScale( scale,scale);
         var self = this;
 
+        APP.audioController.playSound('risada');
+        APP.audioController.playAmbientSound('ambient2');
 
         this.mascadasContainer = new PIXI.DisplayObjectContainer();
 

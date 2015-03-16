@@ -33,6 +33,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         // this.easeImg = new SimpleSprite('dist/img/ease.png');
         // this.addChild(this.easeImg);
         // this.easeImg.setPosition(windowWidth / 2 - this.easeImg.getContent().width / 2, 50);
+        APP.audioController.playAmbientSound('ambient1');
         var self = this;
         var scale = scaleConverter(70, windowHeight, 0.1);
         console.log(scale);

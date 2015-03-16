@@ -180,6 +180,7 @@ var EndModal = Class.extend({
 			this.degrade.getContent().height = windowHeight;
 			this.degrade.setPosition(windowWidth / 2 - this.degrade.getContent().width / 2, windowHeight / 2 - this.degrade.getContent().height / 2);
 
+			APP.audioController.playAmbientSound('magic');
 
 			var pista = new SimpleSprite('pista.png');
 			var holofote = new SimpleSprite('holofote.png');

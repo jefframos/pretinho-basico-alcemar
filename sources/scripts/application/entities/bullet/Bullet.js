@@ -40,6 +40,8 @@ var Bullet = Entity.extend({
         TweenLite.to(this.getContent(), 0.3, {alpha:1});
 
         this.birdsCollided = [];
+
+        APP.audioController.playSound('tiro');
     },
     update: function(){
         this._super();
