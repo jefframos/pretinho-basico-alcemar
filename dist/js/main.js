@@ -1094,7 +1094,7 @@ var Application = AbstractApplication.extend({
                 sinAcc: .2
             })
         }) ], this.playerModels = [ new PlayerModel({
-            label: "alcemar",
+            label: "Alcemar",
             inGame: "alcemarGame.png",
             bullet: "alcemarFire.png",
             bulletRotation: !0,
@@ -1120,7 +1120,7 @@ var Application = AbstractApplication.extend({
                 size: .8
             })
         }), new PlayerModel({
-            label: "piangers",
+            label: "Piangers",
             inGame: "piangersNGame.png",
             bullet: "piangersFire.png",
             bulletRotation: !0,
@@ -1144,7 +1144,7 @@ var Application = AbstractApplication.extend({
                 totalFires: 40
             })
         }), new PlayerModel({
-            label: "potter",
+            label: "Potter",
             inGame: "poterGame.png",
             bullet: "potterFire.png",
             bulletRotation: !0,
@@ -1170,7 +1170,7 @@ var Application = AbstractApplication.extend({
                 angleOpen: .25
             })
         }), new PlayerModel({
-            label: "arthur",
+            label: "Arthur",
             inGame: "arthurGame.png",
             bullet: "arthurFire.png",
             bulletParticle: "partarthur.png",
@@ -1189,7 +1189,7 @@ var Application = AbstractApplication.extend({
             toSpec: 900,
             bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
-            label: "pora",
+            label: "Porã",
             inGame: "poraGame.png",
             bullet: "poraFire.png",
             bulletRotation: !0,
@@ -1216,7 +1216,7 @@ var Application = AbstractApplication.extend({
                 size: .5
             })
         }), new PlayerModel({
-            label: "jeiso",
+            label: "Jeiso",
             inGame: "jesoGame.png",
             bullet: "jeisoFire.png",
             bulletParticle: "partjeiso.png",
@@ -1240,7 +1240,7 @@ var Application = AbstractApplication.extend({
                 vel: 4
             })
         }), new PlayerModel({
-            label: "pi",
+            label: "Pi",
             inGame: "piGame.png",
             bullet: "piFire.png",
             bulletRotation: !0,
@@ -1261,7 +1261,7 @@ var Application = AbstractApplication.extend({
             toSpec: 3e3,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
-            label: "fetter",
+            label: "Fetter",
             inGame: "feterGame.png",
             bullet: "feterFire.png",
             bulletParticle: "partexplosao.png",
@@ -1280,7 +1280,7 @@ var Application = AbstractApplication.extend({
             toSpec: 1200,
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
-            label: "neto",
+            label: "Neto",
             inGame: "netoGame.png",
             bullet: "netoFire.png",
             bulletParticle: "partneto.png",
@@ -1305,7 +1305,7 @@ var Application = AbstractApplication.extend({
                 vel: 2
             })
         }), new PlayerModel({
-            label: "rodaika",
+            label: "Rodaika",
             inGame: "rodaikaGame.png",
             bullet: "rodaikaFire.png",
             bulletParticle: "partrodaika2.png",
@@ -1511,8 +1511,8 @@ var Application = AbstractApplication.extend({
         this.playerModels[i].able && this.totalPlayers++;
     },
     addPoints: function() {
-        this.currentHorde = 0, this.totalPoints += this.currentPoints, this.highScore < this.currentPoints && (this.highScore = this.currentPoints, 
-        APP.cookieManager.setCookie("highScore", this.highScore, 500), APP.dataManager.saveScore()), 
+        this.currentHorde = 0, this.totalPoints += this.currentPoints, console.log(APP.dataManager.highscore), 
+        APP.dataManager.highscore ? APP.dataManager.highscore < this.currentPoints && APP.dataManager.saveScore() : APP.dataManager.saveScore(), 
         APP.cookieManager.setCookie("totalPoints", this.totalPoints, 500), this.maxPoints < this.currentPoints && (this.maxPoints = this.currentPoints);
         var tempReturn = [];
         this.totalPlayers = 0;
@@ -1536,19 +1536,49 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), DataManager = Class.extend({
     init: function() {
-        this.highscore = APP.cookieManager.getCookie("highScore"), console.log("highscore", this.highscore.points);
+        this.highscore = APP.cookieManager.getCookie("highscore") ? APP.cookieManager.getCookie("highscore") : null, 
+        this.highscore && console.log("high", this.highscore[1]), this.serverApi = new ServerApi();
+    },
+    getToday: function() {
+        this.serverApi.getToday(function(message) {
+            return "error" === message ? [] : message;
+        });
+    },
+    getAll: function() {
+        for (var ret = [], i = 0; 10 > i; i++) ret.push({
+            name: "Jeff 2",
+            piloto: "Alcemar",
+            points: "200"
+        });
+        return ret;
+    },
+    get30: function() {
+        for (var ret = [], i = 0; 10 > i; i++) ret.push({
+            name: "Jeff 3",
+            piloto: "Alcemar",
+            points: "200"
+        });
+        return ret;
+    },
+    sendScore: function() {
+        this.highscore && (console.log(this.highscore), this.serverApi.token ? this.serverApi.sendScore(this.highscore, function() {}) : this.serverApi.openFacebook(function(status) {
+            "connected" === status && this.serverApi.sendScore(this.highscore, function() {});
+        }));
+    },
+    getHigh: function() {
+        return this.highscore ? this.highscore : void 0;
     },
     saveScore: function() {
         var i = 0, tempBirds = [ [ "caralinhoDaTerra", 0 ], [ "caralhoBelga", 0 ], [ "lambecuFrances", 0 ], [ "papacuDeCabecaRoxa", 0 ], [ "galinhoPapoDeBago", 0 ], [ "nocututinha", 0 ], [ "calopsuda", 0 ], [ "picudaoAzulNigeriano", 0 ] ];
         for (i = APP.getGameModel().killedBirds.length - 1; i >= 0; i--) tempBirds[APP.getGameModel().killedBirds[i]][1]++;
-        var sendObject = '{\n"character":"' + APP.getGameModel().playerModels[APP.getGameModel().currentID].label + '",\n"points":"' + APP.getGameModel().currentPoints + '",\n"birds":{\n';
-        for (i = 0; i < tempBirds.length; i++) sendObject += i >= tempBirds.length - 1 ? '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '"\n' : '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '",\n';
-        sendObject += "}\n}", console.log(sendObject);
-        ({
+        var sendObject = '{"character":"' + APP.getGameModel().playerModels[APP.getGameModel().currentID].label + '","points":"' + APP.getGameModel().currentPoints + '","birds":{';
+        for (i = 0; i < tempBirds.length; i++) sendObject += i >= tempBirds.length - 1 ? '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '"' : '"' + tempBirds[i][0] + '":"' + tempBirds[i][1] + '",';
+        sendObject += "}}";
+        var send = {
             character: APP.getGameModel().playerModels[APP.getGameModel().currentID].label,
             points: APP.getGameModel().currentPoints
-        });
-        this.highscore = JSON.parse(sendObject), APP.cookieManager.setCookie("highScore", this.highscore, 500);
+        };
+        this.highscore = send.points, APP.cookieManager.setCookie("highscore", this.highscore, 500);
     }
 }), PlayerModel = Class.extend({
     init: function(graphicsObject, statsObject) {
@@ -1695,7 +1725,7 @@ var Application = AbstractApplication.extend({
             delay: .8,
             x: windowWidth,
             ease: "easeOutBack"
-        }), APP.dataManager.saveScore();
+        });
     },
     transitionIn: function() {
         this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), this.frontShape.drawRect(0, 0, windowWidth, windowHeight), 
@@ -2018,7 +2048,7 @@ var Application = AbstractApplication.extend({
         this.specialContainer.position.x = windowWidth / 2, this.specialContainer.position.y = windowHeight, 
         this.addChild(this.specialContainer), this.updateable = !0, this.endModal = new EndModal(this), 
         this.newBirdModal = new NewBirdModal(this), this.pauseModal = new PauseModal(this), 
-        this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
+        this.rankingModal = new RankingModal(this), this.createEggAccum = APP.getGameModel().totalPlayers > 1 && APP.getGameModel().totalBirds < APP.getGameModel().birdModels.length && APP.getGameModel().totalPlayers >= APP.getGameModel().totalBirds && (2 === APP.getGameModel().totalPlayers || Math.random() < .5) ? Math.floor(800 * Math.random() + 200) : -1;
         var simpleEntity = new SimpleEntity(this.cloudsSources[Math.floor(Math.random() * this.cloudsSources.length)]);
         simpleEntity.velocity.x = -.6, simpleEntity.setPosition(.1 * windowWidth, +Math.random() * windowHeight * .2), 
         this.backLayer.addChild(simpleEntity), scaleConverter(simpleEntity.getContent().height, windowHeight, .5, simpleEntity), 
@@ -2102,7 +2132,7 @@ var Application = AbstractApplication.extend({
     },
     build: function() {
         this._super();
-        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/creditos.jpg", "dist/img/UI/intro.json" ];
+        var assetsToLoader = [ "dist/img/atlas/atlas.json", "dist/img/UI/HUD2.json", "dist/img/atlas/players2.json", "dist/img/atlas/nuvens.json", "dist/img/UI/bgChoice.png", "dist/img/UI/covers/jeisoGrande.png", "dist/img/UI/covers/arthurGrande.png", "dist/img/UI/covers/piGrande.png", "dist/img/UI/covers/rodaikaGrande.png", "dist/img/UI/covers/poterGrande.png", "dist/img/UI/covers/poraGrande.png", "dist/img/UI/covers/feterGrande.png", "dist/img/UI/covers/alcemarGrande.png", "dist/img/UI/covers/netoGrande.png", "dist/img/UI/covers/piangersGrande.png", "dist/img/UI/fundo_degrade.png", "dist/img/UI/fundoRanking.png", "dist/img/UI/creditos.jpg", "dist/img/UI/tabela.png", "dist/img/UI/intro.json" ];
         if (assetsToLoader.length > 0 && !this.isLoaded) {
             this.loader = new PIXI.AssetLoader(assetsToLoader), this.loaderContainer = new PIXI.DisplayObjectContainer(), 
             this.addChild(this.loaderContainer), this.frontShape && this.frontShape.parent.removeChild(this.frontShape), 
@@ -2291,7 +2321,12 @@ var Application = AbstractApplication.extend({
         this.frontShape && TweenLite.to(this.frontShape, .8, {
             alpha: 0
         }), APP.audioController.playAmbientSound("ambient1"), APP.audioController.stopSound("alcemarIntro"), 
-        APP.audioController.playSound("alcemarIntro");
+        APP.audioController.playSound("alcemarIntro"), this.ranking = new DefaultButton("trofeuButton.png", "trofeuButton.png"), 
+        this.ranking.build(), scaleConverter(this.ranking.height, windowHeight, .15, this.ranking), 
+        this.ranking.setPosition(windowWidth - this.ranking.getContent().width - 20, 20), 
+        this.addChild(this.ranking), this.ranking.clickCallback = function() {
+            self.rankingModal.show();
+        }, this.rankingModal = new RankingModal(this);
     },
     transitionIn: function() {
         return this.isLoaded ? (this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), 
@@ -2361,8 +2396,9 @@ var Application = AbstractApplication.extend({
             });
         }, this.trofeuButton = new DefaultButton("trofeuButton.png", "trofeuButtonOver.png"), 
         this.trofeuButton.build(), this.trofeuButton.setPosition(this.backButton.getContent().position.x + this.backButton.getContent().width + 10, 0), 
-        this.boxContainer.addChild(this.trofeuButton.getContent()), this.trofeuButton.clickCallback = function() {}, 
-        this.exitButton = new DefaultButton("replayButton.png", "replayButtonOver.png"), 
+        this.boxContainer.addChild(this.trofeuButton.getContent()), this.trofeuButton.clickCallback = function() {
+            self.screen.rankingModal.show();
+        }, this.exitButton = new DefaultButton("replayButton.png", "replayButtonOver.png"), 
         this.exitButton.build(), this.exitButton.setPosition(this.trofeuButton.getContent().position.x + this.exitButton.getContent().width + 10, 0), 
         this.boxContainer.addChild(this.exitButton.getContent()), this.exitButton.clickCallback = function() {
             self.hide(function() {
@@ -2458,8 +2494,7 @@ var Application = AbstractApplication.extend({
         }), TweenLite.to(this.novoRecruta.getContent(), .2, {
             delay: .8,
             alpha: 1
-        })), APP.getGameModel().sendStats(), this.boxContainer.visible = !0, this.contents.visible = !0, 
-        TweenLite.to(this.boxContainer.position, 1, {
+        })), this.boxContainer.visible = !0, this.contents.visible = !0, TweenLite.to(this.boxContainer.position, 1, {
             y: windowHeight - this.boxContainer.height - 20,
             ease: "easeOutBack"
         }), TweenLite.to(this.boxContainer, .5, {
@@ -2638,20 +2673,127 @@ var Application = AbstractApplication.extend({
     getContent: function() {
         return this.container;
     }
-}), RankinkgModal = Class.extend({
+}), RankingModal = Class.extend({
     init: function(screen) {
-        this.screen = screen, this.container = new PIXI.DisplayObjectContainer();
-        var self = this;
-        this.container.buttonMode = !0, this.container.interactive = !0, this.container.mousedown = this.container.touchstart = function() {
-            self.hide();
-        };
-        var credits = new SimpleSprite("dist/img/UI/creditos.jpg");
+        this.screen = screen, this.container = new PIXI.DisplayObjectContainer(), this.containerGeral = new PIXI.DisplayObjectContainer(), 
+        this.containerSave = new PIXI.DisplayObjectContainer();
+        var credits = new SimpleSprite("dist/img/UI/fundoRanking.png");
         this.container.addChild(credits.getContent()), scaleConverter(credits.getContent().height, windowHeight, 1, credits), 
         credits.getContent().position.x = windowWidth / 2 - credits.getContent().width / 2, 
-        credits.getContent().position.y = windowHeight / 2 - credits.getContent().height / 2;
+        credits.getContent().position.y = windowHeight / 2 - credits.getContent().height / 2, 
+        this.container.addChild(this.containerSave), this.container.addChild(this.containerGeral);
+        var self = this, hall = new SimpleSprite("Hall-da-fama.png");
+        this.containerSave.addChild(hall.getContent()), scaleConverter(hall.getContent().height, windowHeight, .5, hall), 
+        hall.getContent().position.x = windowWidth / 2 - hall.getContent().width / 2, hall.getContent().position.y = .05 * windowHeight, 
+        this.returnButton = new DefaultButton("voltarButton.png", "voltarButtonOver.png"), 
+        this.returnButton.build(), scaleConverter(this.returnButton.getContent().height, windowHeight, .15, this.returnButton), 
+        this.returnButton.setPosition(20, windowHeight - this.returnButton.getContent().height - 20), 
+        this.containerSave.addChild(this.returnButton.getContent()), this.returnButton.clickCallback = function() {
+            self.hide();
+        }, this.rankingGeral = new DefaultButton("rankingeral.png", "rankingeral_over.png"), 
+        this.rankingGeral.build(), scaleConverter(this.rankingGeral.getContent().height, windowHeight, .15, this.rankingGeral), 
+        this.rankingGeral.setPosition(windowWidth / 2 - this.rankingGeral.getContent().width / 2, windowHeight - this.rankingGeral.getContent().height - 20), 
+        this.containerSave.addChild(this.rankingGeral.getContent()), this.rankingGeral.clickCallback = function() {
+            self.geralState();
+        }, this.save = new DefaultButton("salva.png", "salva_over.png"), this.save.build(), 
+        scaleConverter(this.save.getContent().height, windowHeight, .15, this.save), this.save.setPosition(windowWidth - this.save.getContent().width - 20, windowHeight - this.save.getContent().height - 20), 
+        this.containerSave.addChild(this.save.getContent()), this.save.clickCallback = function() {
+            APP.dataManager.sendScore();
+        }, this.pontuação = new SimpleSprite("pontuacao.png"), this.containerSave.addChild(this.pontuação.getContent()), 
+        scaleConverter(this.pontuação.getContent().height, windowHeight, .15, this.pontuação), 
+        this.pontuação.getContent().position.x = windowWidth / 2 - this.pontuação.getContent().width / 2, 
+        this.pontuação.getContent().position.y = this.returnButton.getContent().position.y - this.pontuação.getContent().height - 20, 
+        this.tabela = new SimpleSprite("dist/img/UI/tabela.png"), this.containerGeral.addChild(this.tabela.getContent()), 
+        scaleConverter(this.tabela.getContent().height, windowHeight, .85, this.tabela), 
+        this.tabela.getContent().position.x = windowWidth - this.tabela.getContent().width - .05 * windowWidth, 
+        this.tabela.getContent().position.y = windowHeight / 2 - this.tabela.getContent().height / 2, 
+        this.returnButtonGeral = new DefaultButton("voltarButton.png", "voltarButtonOver.png"), 
+        this.returnButtonGeral.build(), scaleConverter(this.returnButtonGeral.getContent().height, windowHeight, .15, this.returnButtonGeral), 
+        this.returnButtonGeral.setPosition(20, windowHeight - this.returnButtonGeral.getContent().height - 20), 
+        this.containerGeral.addChild(this.returnButtonGeral.getContent()), this.returnButtonGeral.clickCallback = function() {
+            self.saveState();
+        }, this.btnHoje = new DefaultButton("botao_hoje.png", "botao_hoje_over.png"), this.btnHoje.build(), 
+        scaleConverter(this.btnHoje.getContent().width, windowHeight, .25, this.btnHoje), 
+        this.btnHoje.setPosition(20, .2 * windowHeight), this.containerGeral.addChild(this.btnHoje.getContent()), 
+        this.btnHoje.clickCallback = function() {
+            self.updateToday();
+        }, this.btn30 = new DefaultButton("botao_30dias.png", "botao_30dias_over.png"), 
+        this.btn30.build(), scaleConverter(this.btn30.getContent().width, windowHeight, .25, this.btn30), 
+        this.btn30.setPosition(20, this.btnHoje.getContent().position.y + this.btnHoje.getContent().height + 10), 
+        this.containerGeral.addChild(this.btn30.getContent()), this.btn30.clickCallback = function() {
+            self.update30();
+        }, this.btnGeral = new DefaultButton("botao_geral.png", "botao_geral_over.png"), 
+        this.btnGeral.build(), scaleConverter(this.btnGeral.getContent().width, windowHeight, .25, this.btnGeral), 
+        this.btnGeral.setPosition(20, this.btn30.getContent().position.y + this.btn30.getContent().height + 10), 
+        this.containerGeral.addChild(this.btnGeral.getContent()), this.btnGeral.clickCallback = function() {
+            self.updateAll();
+        }, this.namesContainer = new PIXI.DisplayObjectContainer(), this.containerGeral.addChild(this.namesContainer);
+    },
+    update30: function() {
+        this.renderNames(APP.dataManager.get30());
+    },
+    updateAll: function() {
+        this.renderNames(APP.dataManager.getAll());
+    },
+    updateToday: function() {
+        this.renderNames(APP.dataManager.getToday());
+    },
+    renderNames: function(ret) {
+        this.namesContainer && this.namesContainer.parent && this.namesContainer.parent.removeChild(this.namesContainer), 
+        this.namesContainer = new PIXI.DisplayObjectContainer(), this.containerGeral.addChild(this.namesContainer);
+        for (var i = 0; i < ret.length; i++) {
+            var name = new PIXI.Text(ret[i].name, {
+                align: "center",
+                fill: "#FFFFFF",
+                font: "40px Roboto",
+                wordWrap: !0,
+                wordWrapWidth: 300
+            });
+            this.namesContainer.addChild(name), scaleConverter(name.height, this.tabela.getContent().height, .08, name), 
+            name.position.y = this.tabela.getContent().position.y + .08 * this.tabela.getContent().height + i * this.tabela.getContent().height * .091, 
+            name.position.x = this.tabela.getContent().position.x + .1 * this.tabela.getContent().width;
+            var piloto = new PIXI.Text(ret[i].piloto, {
+                align: "center",
+                fill: "#FFFFFF",
+                font: "40px Roboto",
+                wordWrap: !0,
+                wordWrapWidth: 300
+            });
+            this.namesContainer.addChild(piloto), scaleConverter(piloto.height, this.tabela.getContent().height, .08, piloto), 
+            piloto.position.y = this.tabela.getContent().position.y + .08 * this.tabela.getContent().height + i * this.tabela.getContent().height * .091, 
+            piloto.position.x = this.tabela.getContent().position.x + .59 * this.tabela.getContent().width;
+            var points = new PIXI.Text(ret[i].points, {
+                align: "center",
+                fill: "#FFFFFF",
+                font: "40px Roboto",
+                wordWrap: !0,
+                wordWrapWidth: 300
+            });
+            this.namesContainer.addChild(points), scaleConverter(points.height, this.tabela.getContent().height, .08, points), 
+            points.position.y = this.tabela.getContent().position.y + .08 * this.tabela.getContent().height + i * this.tabela.getContent().height * .091, 
+            points.position.x = this.tabela.getContent().position.x + .85 * this.tabela.getContent().width;
+        }
+    },
+    saveState: function() {
+        console.log("geral"), this.containerSave.visible = !0, this.containerGeral.visible = !1;
+    },
+    geralState: function() {
+        console.log("geral"), this.containerSave.visible = !1, this.containerGeral.visible = !0, 
+        this.updateToday();
     },
     show: function() {
-        this.screen.addChild(this), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
+        this.screen.addChild(this);
+        var highsc = APP.dataManager.getHigh();
+        this.high && this.high.parent.removeChild(this.high), this.high = new PIXI.Text(highsc ? highsc : "Sem pontuação ainda.", {
+            align: "center",
+            fill: "#FFFFFF",
+            font: "40px Roboto",
+            wordWrap: !0,
+            wordWrapWidth: 800
+        }), this.containerSave.addChild(this.high), scaleConverter(this.high.height, this.pontuação.getContent().height, .5, this.high), 
+        this.high.position.y = this.pontuação.getContent().position.y + this.pontuação.getContent().height - this.high.height - .05 * this.pontuação.getContent().height, 
+        this.high.position.x = this.pontuação.getContent().position.x + this.pontuação.getContent().width / 2 - this.high.width / 2, 
+        this.containerSave.visible = !0, this.containerGeral.visible = !1, this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
         var self = this;
         this.screen.updateable = !1, this.container.alpha = 0, TweenLite.to(this.container, .5, {
             alpha: 1,
@@ -2821,6 +2963,99 @@ var Application = AbstractApplication.extend({
     },
     preKill: function() {
         this.sprite.alpha = 0, this.updateable = !0, this.kill = !0;
+    }
+}), ServerApi = Class.extend({
+    init: function() {
+        this.endpoint = "http://pretinho-server-dev.elasticbeanstalk.com/", this.token = null, 
+        document.addEventListener("deviceready", function() {
+            this.fetchToken();
+        });
+    },
+    fetchToken: function() {
+        var self = this;
+        intel.security.secureStorage.read(function(instanceID) {
+            intel.security.secureData.getData(function(data) {
+                self.token = data;
+            }, function(errorObj) {
+                console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message);
+            }, instanceID);
+        }, function(errorObj) {
+            console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message);
+        }, {
+            id: "token"
+        });
+    },
+    setToken: function(token) {
+        this.token = token, intel.security.secureStorage.write(function() {
+            console.log("success");
+        }, function(errorObj) {
+            console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message);
+        }, {
+            id: "token",
+            data: token
+        });
+    },
+    openFacebook: function(callback) {
+        openFB.init({
+            appId: "262874990468179",
+            runningInCordova: !0
+        }), openFB.login(function(response) {
+            "connected" === response.status ? (this.authWithServer(response.authResponse, callback), 
+            alert("Facebook login succeeded, got access token: " + response.authResponse.token)) : (callback(response.error), 
+            alert("Facebook login failed: " + response.error));
+        }, {
+            scope: "email,public_profile,publish_stream"
+        });
+    },
+    authWithServer: function(authResponse, callback) {
+        var self = this;
+        $.ajax({
+            method: "POST",
+            url: self.endpoint + "/auth",
+            data: {
+                fbToken: authResponse.token
+            }
+        }).done(function(message) {
+            self.setToken(message.token), callback("connected");
+        }).fail(function() {
+            callback("error");
+        });
+    },
+    sendScore: function(score, callback) {
+        var self = this;
+        this.token || callback("no_token_available"), $.ajax({
+            method: "POST",
+            url: self.endpoint + "/ranking",
+            headers: {
+                Authorization: "Bearer " + self.token
+            },
+            data: score
+        }).done(function(message) {
+            self.setToken(message.token), callback("connected");
+        }).fail(function(jqXHR) {
+            return 401 !== jqXHR.statusCode() ? void callback(message.error) : void self.openFacebook(function(status) {
+                "connected" === status && $.ajax({
+                    method: "POST",
+                    url: self.endpoint + "/ranking",
+                    headers: {
+                        Authorization: "Bearer " + self.token
+                    },
+                    data: score
+                }).done(function(message) {
+                    self.setToken(message.token), callback("connected");
+                }).fail(function() {});
+            });
+        });
+    },
+    getToday: function(callback) {
+        var self = this;
+        $.ajax({
+            url: self.endpoint + "/ranking"
+        }).done(function(message) {
+            callback(message);
+        }).fail(function() {
+            callback("error");
+        });
     }
 }), resizeProportional = !0, windowWidth = 667, windowHeight = 375, realWindowWidth = 667, realWindowHeight = 375, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
