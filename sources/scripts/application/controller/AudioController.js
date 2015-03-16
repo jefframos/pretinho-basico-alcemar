@@ -2,7 +2,7 @@
 var AudioController = Class.extend({
 	init:function(){
 
-		var audioList = [
+		this.audioList = [
 			{
 				label:'ambient1',
 				urls: ['dist/audio/background/trilha.mp3'],
@@ -45,17 +45,27 @@ var AudioController = Class.extend({
 		function end(){
 			self.updateAudioList(this);
 		}
-		for (var i = audioList.length - 1; i >= 0; i--) {
-			this.audios.push({label:audioList[i].label, audio:new Howl({
-				urls:audioList[i].urls,
-				volume: audioList[i].volume,
-				// sprite: audioList[i].sprite?audioList[i].sprite:null,
-				loop: audioList[i].loop,
-				onend: end
+		function load(){
+			self.currentLoaded ++;
+			// console.log(self.currentLoaded);
+			if(self.currentLoaded >= self.audioList.length){
+				this.loadedAudioComplete = true;
+				console.log('all loaded');
+			}
+		}
+		for (var i = this.audioList.length - 1; i >= 0; i--) {
+			this.audios.push({label:this.audioList[i].label, audio:new Howl({
+				urls:this.audioList[i].urls,
+				volume: this.audioList[i].volume,
+				// sprite: this.audioList[i].sprite?this.audioList[i].sprite:null,
+				loop: this.audioList[i].loop,
+				onend: end,
+				onload: load
 			})
 			});
 		}
 		
+		this.currentLoaded = 0;
 		// this.ambientSound1 = new Howl({
 		// 	urls: ['dist/audio/trilha.mp3', 'dist/audio/trilha.ogg'],
 		// 	volume: 0.1,

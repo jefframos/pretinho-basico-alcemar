@@ -519,7 +519,11 @@ var Application = AbstractApplication.extend({
         function end() {
             self.updateAudioList(this);
         }
-        var audioList = [ {
+        function load() {
+            self.currentLoaded++, self.currentLoaded >= self.audioList.length && (this.loadedAudioComplete = !0, 
+            console.log("all loaded"));
+        }
+        this.audioList = [ {
             label: "ambient1",
             urls: [ "dist/audio/background/trilha.mp3" ],
             volume: .1,
@@ -549,18 +553,18 @@ var Application = AbstractApplication.extend({
             urls: [ "dist/audio/efeitos/magic.mp3" ],
             volume: .5,
             loop: !1
-        } ];
-        this.audios = [];
-        for (var self = this, i = audioList.length - 1; i >= 0; i--) this.audios.push({
-            label: audioList[i].label,
+        } ], this.audios = [];
+        for (var self = this, i = this.audioList.length - 1; i >= 0; i--) this.audios.push({
+            label: this.audioList[i].label,
             audio: new Howl({
-                urls: audioList[i].urls,
-                volume: audioList[i].volume,
-                loop: audioList[i].loop,
-                onend: end
+                urls: this.audioList[i].urls,
+                volume: this.audioList[i].volume,
+                loop: this.audioList[i].loop,
+                onend: end,
+                onload: load
             })
         });
-        this.playingAudios = [], this.ambientLabel = "";
+        this.currentLoaded = 0, this.playingAudios = [], this.ambientLabel = "";
     },
     updateAudioList: function(target) {
         if (this.ambientPlaying !== target) {
