@@ -197,9 +197,9 @@ var WaitScreen = AbstractScreen.extend({
         }
 
 
-        APP.audioController.playAmbientSound();
-        APP.audioController.alcemar.stop();
-        APP.audioController.alcemar.play('audio1');
+        APP.audioController.playAmbientSound('ambient1');
+        APP.audioController.stopSound('alcemarIntro');
+        APP.audioController.playSound('alcemarIntro');
     },
     transitionIn:function()
     {

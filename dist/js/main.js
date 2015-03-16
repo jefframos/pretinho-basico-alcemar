@@ -1,4 +1,4 @@
-/*! jefframos 12-03-2015 */
+/*! jefframos 16-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -516,20 +516,52 @@ var Application = AbstractApplication.extend({
     }
 }), AudioController = Class.extend({
     init: function() {
-        this.ambientSound1 = new Howl({
+        function end() {
+            self.updateAudioList(this);
+        }
+        var audioList = [ {
+            label: "ambient1",
             urls: [ "dist/audio/trilha.mp3", "dist/audio/trilha.ogg" ],
             volume: .1,
             loop: !0
-        }), this.alcemar = new Howl({
+        }, {
+            label: "alcemarIntro",
             urls: [ "dist/audio/aves_raras.mp3", "dist/audio/aves_raras.ogg" ],
             volume: .8,
-            sprite: {
-                audio1: [ 0, 7e3 ]
-            }
+            loop: !1
+        } ];
+        this.audios = [];
+        for (var self = this, i = audioList.length - 1; i >= 0; i--) this.audios.push({
+            label: audioList[i].label,
+            audio: new Howl({
+                urls: audioList[i].urls,
+                volume: audioList[i].volume,
+                loop: audioList[i].loop,
+                onend: end
+            })
         });
+        this.playingAudios = [];
     },
-    playAmbientSound: function() {
-        this.ambientPlaying || (this.ambientPlaying = !0, this.ambientSound1.play());
+    updateAudioList: function(target) {
+        if (this.ambientPlaying !== target) {
+            for (var j = this.playingAudios.length - 1; j >= 0; j--) this.playingAudios[j] === target && this.playingAudios.splice(j, 1);
+            console.log(this.playingAudios);
+        }
+    },
+    playSound: function(id) {
+        for (var audioP = null, i = this.audios.length - 1; i >= 0; i--) this.audios[i].label === id && (audioP = this.audios[i].audio, 
+        audioP.play(), this.playingAudios.push(audioP));
+        return console.log(audioP), audioP;
+    },
+    stopSound: function(id) {
+        for (var audioP = null, i = this.audios.length - 1; i >= 0; i--) if (this.audios[i].label === id) {
+            audioP = this.audios[i].audio, audioP.stop();
+            for (var j = this.playingAudios.length - 1; j >= 0; j--) this.playingAudios[j] === audioP && this.playingAudios.splice(j, 1);
+        }
+        return audioP;
+    },
+    playAmbientSound: function(id) {
+        this.ambientPlaying || (this.ambientPlaying = this.playSound(id));
     }
 }), Egg = Entity.extend({
     init: function(birdModel, screen) {
@@ -2258,8 +2290,8 @@ var Application = AbstractApplication.extend({
         })), this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         this.frontShape && TweenLite.to(this.frontShape, .8, {
             alpha: 0
-        }), APP.audioController.playAmbientSound(), APP.audioController.alcemar.stop(), 
-        APP.audioController.alcemar.play("audio1");
+        }), APP.audioController.playAmbientSound("ambient1"), APP.audioController.stopSound("alcemarIntro"), 
+        APP.audioController.playSound("alcemarIntro");
     },
     transitionIn: function() {
         return this.isLoaded ? (this.frontShape = new PIXI.Graphics(), this.frontShape.beginFill(0), 
