@@ -30,6 +30,7 @@ var Bird = Entity.extend({
         this.velocity.x = -Math.abs(this.vel * 0.4);
         if(this.hp <= 0){
             APP.updatePoints(this.birdModel.money);
+            APP.audioController.playSound('kill');
 
             var mascadasLabel = new Particles({x:-0.5, y:-(Math.random() * 0.2 + 0.3)}, 120,
                 new PIXI.Text('+'+this.birdModel.money, {font:'40px Luckiest Guy', fill:'#79DB20', stroke:'#033E43', strokeThickness:3}),

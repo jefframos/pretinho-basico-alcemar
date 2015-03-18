@@ -45,6 +45,7 @@ var RankingModal = Class.extend({
 		// TweenLite.from(this.returnButton.getContent().position, 0.8, {delay:0.6, x:- this.returnButton.getContent().width, ease:'easeOutBack'});
 		this.containerSave.addChild(this.returnButton.getContent());
 		this.returnButton.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.hide();
 		};
 
@@ -56,6 +57,7 @@ var RankingModal = Class.extend({
 		// TweenLite.from(this.rankingGeral.getContent().position, 0.8, {delay:0.6, x:- this.rankingGeral.getContent().width, ease:'easeOutBack'});
 		this.containerSave.addChild(this.rankingGeral.getContent());
 		this.rankingGeral.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.geralState();
 		};
 
@@ -67,6 +69,7 @@ var RankingModal = Class.extend({
 		// TweenLite.from(this.save.getContent().position, 0.8, {delay:0.6, x:- this.save.getContent().width, ease:'easeOutBack'});
 		this.containerSave.addChild(this.save.getContent());
 		this.save.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			APP.dataManager.sendScore();
 		};
 
@@ -94,6 +97,7 @@ var RankingModal = Class.extend({
 		// TweenLite.from(this.returnButtonGeral.getContent().position, 0.8, {delay:0.6, x:- this.returnButtonGeral.getContent().width, ease:'easeOutBack'});
 		this.containerGeral.addChild(this.returnButtonGeral.getContent());
 		this.returnButtonGeral.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.saveState();
 		};
 
@@ -105,6 +109,7 @@ var RankingModal = Class.extend({
 		// TweenLite.from(this.btnHoje.getContent().position, 0.8, {delay:0.6, x:- this.btnHoje.getContent().width, ease:'easeOutBack'});
 		this.containerGeral.addChild(this.btnHoje.getContent());
 		this.btnHoje.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.updateToday();
 		};
 
@@ -116,6 +121,7 @@ var RankingModal = Class.extend({
 		// TweenLite.from(this.btn30.getContent().position, 0.8, {delay:0.6, x:- this.btn30.getContent().width, ease:'easeOutBack'});
 		this.containerGeral.addChild(this.btn30.getContent());
 		this.btn30.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.update30();
 		};
 
@@ -126,6 +132,7 @@ var RankingModal = Class.extend({
 		// TweenLite.from(this.btnGeral.getContent().position, 0.8, {delay:0.6, x:- this.btnGeral.getContent().width, ease:'easeOutBack'});
 		this.containerGeral.addChild(this.btnGeral.getContent());
 		this.btnGeral.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.updateAll();
 		};
 

@@ -119,7 +119,7 @@ var Red = SpritesheetEntity.extend({
 				if(entity.type !== 'bullet'){
 					if(entity.type === 'item'){
 						this.playerModel.currentEnergy += this.playerModel.maxEnergy * 0.3;
-
+						APP.audioController.playSound('item');
 						var moreComb = new Particles({x:-0.5, y:-(Math.random() * 0.2 + 0.3)}, 120,
 			                new PIXI.Text('+ Combustível', {font:'20px Luckiest Guy', fill:'#79DB20', stroke:'#033E43', strokeThickness:3}),
 			                0);
@@ -139,7 +139,7 @@ var Red = SpritesheetEntity.extend({
 						if(!isNaN(demage)){
 							this.playerModel.currentEnergy -= demage;
 							entity.preKill();
-
+							APP.audioController.playSound('bomb');
 							var lowComb = new Particles({x:0, y:(Math.random() * 0.2 - 0.5)}, 120,
 				                new PIXI.Text('- Combustível', {font:'35px Luckiest Guy', fill:'#F9003C', stroke:'#FFFFFF', strokeThickness:3}),
 				                0);

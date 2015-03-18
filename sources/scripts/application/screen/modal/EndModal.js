@@ -43,6 +43,7 @@ var EndModal = Class.extend({
 		// this.backButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
 		this.boxContainer.addChild(this.backButton.getContent());
 		this.backButton.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.hide(function(){
 				self.screen.screenManager.prevScreen();
 			});
@@ -55,6 +56,7 @@ var EndModal = Class.extend({
 		// this.trofeuButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
 		this.boxContainer.addChild(this.trofeuButton.getContent());
 		this.trofeuButton.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			// self.hide(function(){
 			self.screen.rankingModal.show();
 			// });
@@ -68,6 +70,7 @@ var EndModal = Class.extend({
 		// this.exitButton.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'80px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
 		this.boxContainer.addChild(this.exitButton.getContent());
 		this.exitButton.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.hide(function(){
 				self.screen.updateable = true;
 				self.screen.reset();

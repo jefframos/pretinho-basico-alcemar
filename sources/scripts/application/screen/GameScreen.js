@@ -512,6 +512,7 @@ var GameScreen = AbstractScreen.extend({
             if(self.blockPause){
                 return;
             }
+            APP.audioController.playSound('pop');
             self.pauseModal.show();
         };
         scaleConverter(this.pauseButton.getContent().height, windowHeight, 0.15, this.pauseButton);
@@ -535,6 +536,7 @@ var GameScreen = AbstractScreen.extend({
             if(self.ableSpecial > 0 || self.blockPause){
                 return;
             }
+            APP.audioController.playSound('pop');
             self.special();
         };
         scaleConverter(this.specialButton.getContent().height, windowHeight, 0.20, this.specialButton);

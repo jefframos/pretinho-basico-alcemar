@@ -19,6 +19,7 @@ var PauseModal = Class.extend({
 		// this.backButton.getContent().scale.x = this.backButton.getContent().scale.y = 0.8;
 		this.backButton.setPosition(0, 0);
 		this.backButton.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.hide(function(){
 				// self.screen.hideBars();
 				self.screen.screenManager.prevScreen();
@@ -30,6 +31,7 @@ var PauseModal = Class.extend({
 		this.continueButton.build();
 		this.continueButton.setPosition(this.backButton.getContent().width + 20, -this.continueButton.getContent().height / 2 + this.backButton.getContent().height / 2);//this.backBars.getContent().height / 2 - this.continueButton.height / 2 - 10);
 		this.continueButton.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.hide(function(){self.screen.updateable = true;});
 		};
 		this.boxContainer.addChild(this.continueButton.getContent());
@@ -39,6 +41,7 @@ var PauseModal = Class.extend({
 		// this.restartButton.getContent().scale.x = this.restartButton.getContent().scale.y = 0.8;
 		this.restartButton.setPosition(this.continueButton.getContent().width + this.continueButton.getContent().position.x + 20, 0);
 		this.restartButton.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			self.hide(function(){
 				self.screen.updateable = true;
 				self.screen.reset();
@@ -68,6 +71,7 @@ var PauseModal = Class.extend({
 		this.audioOn.clickCallback = function(){
 			APP.mute = true;
 			Howler.mute();
+			APP.audioController.playSound('pop');
 			if(self.audioOn.getContent().parent)
 			{
 				self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
@@ -78,6 +82,7 @@ var PauseModal = Class.extend({
 			}
 		};
 		this.audioOff.clickCallback = function(){
+			APP.audioController.playSound('pop');
 			APP.mute = false;
 			Howler.unmute();
 			if(self.audioOff.getContent().parent)

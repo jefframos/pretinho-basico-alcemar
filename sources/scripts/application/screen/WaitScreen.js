@@ -95,6 +95,7 @@ var WaitScreen = AbstractScreen.extend({
         this.audioOn.clickCallback = function(){
             APP.mute = false;
             Howler.mute();
+            APP.audioController.playSound('pop');
             if(self.audioOn.getContent().parent)
             {
                 self.audioOn.getContent().parent.removeChild(self.audioOn.getContent());
@@ -107,6 +108,7 @@ var WaitScreen = AbstractScreen.extend({
         this.audioOff.clickCallback = function(){
             APP.mute = true;
             Howler.unmute();
+            APP.audioController.playSound('pop');
             if(self.audioOff.getContent().parent)
             {
                 self.audioOff.getContent().parent.removeChild(self.audioOff.getContent());
@@ -130,6 +132,7 @@ var WaitScreen = AbstractScreen.extend({
         // this.playButton.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
         this.playButton.clickCallback = function(){
             // fullscreen();
+            APP.audioController.playSound('pop');
             self.screenManager.change('Choice');
         };
 
@@ -144,6 +147,7 @@ var WaitScreen = AbstractScreen.extend({
         // this.creditsButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
         
         this.creditsButton.clickCallback = function(){
+            APP.audioController.playSound('pop');
             self.creditsModal.show();
         };
 
@@ -213,6 +217,7 @@ var WaitScreen = AbstractScreen.extend({
         // this.ranking.addLabel(new PIXI.Text('Jogar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),25,18);
         this.ranking.clickCallback = function(){
             // fullscreen();
+            APP.audioController.playSound('pop');
             self.rankingModal.show();
         };
 

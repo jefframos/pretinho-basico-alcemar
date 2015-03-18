@@ -11,7 +11,7 @@ var AudioController = Class.extend({
 			},
 			{
 				label:'ambient2',
-				urls: ['dist/audio/background/game.mp3'],
+				urls: ['dist/audio/background/game2.mp3'],
 				volume: 0.1,
 				loop: true
 			},
@@ -23,7 +23,31 @@ var AudioController = Class.extend({
 			},
 			{
 				label:'tiro',
-				urls: ['dist/audio/efeitos/gun.mp3'],
+				urls: ['dist/audio/efeitos/pop2.mp3'],
+				volume: 0.1,
+				loop: false
+			},
+			{
+				label:'kill',
+				urls: ['dist/audio/efeitos/kill.mp3'],
+				volume: 0.1,
+				loop: false
+			},
+			{
+				label:'item',
+				urls: ['dist/audio/efeitos/item.mp3'],
+				volume: 0.1,
+				loop: false
+			},
+			{
+				label:'bomb',
+				urls: ['dist/audio/efeitos/bomb1.mp3', 'dist/audio/efeitos/bomb1_1.mp3'],
+				volume: 0.5,
+				loop: false
+			},
+			{
+				label:'pop',
+				urls: ['dist/audio/efeitos/pop.mp3'],
 				volume: 0.1,
 				loop: false
 			},

@@ -272,6 +272,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
 
         // this.play.addLabel(new PIXI.Text('JOGAR', { align:'center',fill:'#033E43', font:'30px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),15,12);
         this.play.clickCallback = function(){
+            APP.audioController.playSound('pop');
             self.screenManager.change('Game');
         };
 
@@ -285,6 +286,7 @@ var ChoicePlayerScreen = AbstractScreen.extend({
         // this.returnButton.addLabel(new PIXI.Text('VOLTAR', { align:'center',fill:'#033E43', font:'28px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),12,12);
         
         this.returnButton.clickCallback = function(){
+            APP.audioController.playSound('pop');
             self.screenManager.change('Wait');
         };
 
@@ -426,7 +428,9 @@ var ChoicePlayerScreen = AbstractScreen.extend({
     },
     updatePlayers:function(instant)
     {
-        
+        if(!instant){
+            APP.audioController.playSound('pop');
+        }
         // console.log(this.currentID, APP.getGameModel().currentID);
 
         //this.faceContainer
