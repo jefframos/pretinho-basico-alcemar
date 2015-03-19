@@ -170,16 +170,16 @@ var WaitScreen = AbstractScreen.extend({
         // //     this.timeline.append(TweenLite.from(this.audioOn.getContent(), 0.5, {x: - this.audioOff.getContent().width, ease:'easeOutBack'}));
         // // }
 
-        // this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
-        // this.zerarCookie.build(200, 200);
-        // scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
+        this.zerarCookie = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');
+        this.zerarCookie.build(200, 200);
+        scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
 
-        // this.zerarCookie.setPosition( 20, 20);
-        // this.addChild(this.zerarCookie);
-        // this.zerarCookie.addLabel(new PIXI.Text('Zerar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
-        // this.zerarCookie.clickCallback = function(){
-        //     APP.getGameModel().zerarTudo();
-        // };
+        this.zerarCookie.setPosition( 20, 100);
+        this.addChild(this.zerarCookie);
+        this.zerarCookie.addLabel(new PIXI.Text('Zerar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
+        this.zerarCookie.clickCallback = function(){
+            APP.getGameModel().zerarTudo();
+        };
         // this.zerarCookie.getContent().alpha = 0;
 
         // this.maxPoints = new DefaultButton('creditoButton.png', 'creditoButtonOver.png');

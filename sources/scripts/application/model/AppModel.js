@@ -531,6 +531,9 @@ var AppModel = Class.extend({
 		APP.cookieManager.setCookie('totalPoints', 0, 500);
 		APP.cookieManager.setCookie('totalBirds', 1, 500);
 
+		APP.cookieManager.setCookie('highscore', 0, 500);
+		APP.cookieManager.setCookie('highscoreChar', '', 500);
+
 		for (var i = this.playerModels.length - 1; i >= 0; i--) {
 			if(this.playerModels[i].toAble <= this.totalPoints){
 				this.playerModels[i].able = true;
