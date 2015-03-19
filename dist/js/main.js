@@ -1519,7 +1519,8 @@ var Application = AbstractApplication.extend({
     },
     zerarTudo: function() {
         this.currentHorde = 0, this.totalPoints = 0, this.totalBirds = 1, this.totalPlayers = 1, 
-        APP.cookieManager.setCookie("totalPoints", 0, 500), APP.cookieManager.setCookie("totalBirds", 1, 500);
+        APP.cookieManager.setCookie("totalPoints", 0, 500), APP.cookieManager.setCookie("totalBirds", 1, 500), 
+        APP.cookieManager.setCookie("highscore", 0, 500), APP.cookieManager.setCookie("highscoreChar", "", 500);
         for (var i = this.playerModels.length - 1; i >= 0; i--) this.playerModels[i].able = this.playerModels[i].toAble <= this.totalPoints ? !0 : !1;
     },
     maxPoints: function() {
@@ -2377,7 +2378,17 @@ var Application = AbstractApplication.extend({
         })), this.timeline.append(TweenLite.from(this.playButton.getContent(), .5, {
             y: windowHeight + this.playButton.height,
             ease: "easeOutBack"
-        })), this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
+        })), this.zerarCookie = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
+        this.zerarCookie.build(200, 200), scaleConverter(this.zerarCookie.height, windowHeight, .2, this.zerarCookie), 
+        this.zerarCookie.setPosition(20, 100), this.addChild(this.zerarCookie), this.zerarCookie.addLabel(new PIXI.Text("Zerar", {
+            align: "center",
+            fill: "#033E43",
+            font: "50px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 300
+        }), 28, 80), this.zerarCookie.clickCallback = function() {
+            APP.getGameModel().zerarTudo();
+        }, this.frontShape && this.frontShape.parent && this.frontShape.parent.setChildIndex(this.frontShape, this.frontShape.parent.children.length - 1), 
         this.frontShape && TweenLite.to(this.frontShape, .8, {
             alpha: 0
         }), APP.audioController.playAmbientSound("ambient1"), APP.audioController.stopSound("alcemarIntro"), 
