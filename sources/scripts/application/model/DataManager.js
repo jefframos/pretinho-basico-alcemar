@@ -41,18 +41,25 @@ var DataManager = Class.extend({
 		return ret;
 	},
 	sendScore:function(){
+		var self = this;
 		// check token, fb login & etc
 		if(this.highscore){
 			console.log(this.highscore);
+			console.log(this.highscoreChar);
+
+			var message = {
+					character: this.highscore,
+					points: this.highscoreChar
+				};
 			// server api openFacebook
 			if (!this.serverApi.token) {
 				this.serverApi.openFacebook(function(status) {
 					if (status === 'connected') {
-						this.serverApi.sendScore(this.highscore, function() {});
+						self.serverApi.sendScore(message, function() {});
 					}
 				});
 			} else {
-				this.serverApi.sendScore(this.highscore, function() {});
+				this.serverApi.sendScore(message, function() {});
 			}
 		}
 	},

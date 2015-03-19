@@ -1,7 +1,8 @@
 /*jshint undef:false */
 var ServerApi = Class.extend({
     init: function() {
-        this.endpoint = 'http://pretinho-server-dev.elasticbeanstalk.com';
+        this.endpoint = 'http://192.168.10.10';
+        //this.endpoint = 'http://pretinho-server-dev.elasticbeanstalk.com';
 
         this.token = null;
 

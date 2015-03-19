@@ -1608,9 +1608,17 @@ var Application = AbstractApplication.extend({
         return ret;
     },
     sendScore: function() {
-        this.highscore && (console.log(this.highscore), this.serverApi.token ? this.serverApi.sendScore(this.highscore, function() {}) : this.serverApi.openFacebook(function(status) {
-            "connected" === status && this.serverApi.sendScore(this.highscore, function() {});
-        }));
+        var self = this;
+        if (this.highscore) {
+            console.log(this.highscore), console.log(this.highscoreChar);
+            var message = {
+                character: this.highscore,
+                points: this.highscoreChar
+            };
+            this.serverApi.token ? this.serverApi.sendScore(message, function() {}) : this.serverApi.openFacebook(function(status) {
+                "connected" === status && self.serverApi.sendScore(message, function() {});
+            });
+        }
     },
     getHigh: function() {
         return this.highscore ? this.highscore : void 0;
@@ -3019,7 +3027,7 @@ var Application = AbstractApplication.extend({
     }
 }), ServerApi = Class.extend({
     init: function() {
-        this.endpoint = "http://pretinho-server-dev.elasticbeanstalk.com", this.token = null;
+        this.endpoint = "http://192.168.10.10", this.token = null;
         var self = this;
         document.addEventListener("deviceready", function() {
             self.fetchToken();
