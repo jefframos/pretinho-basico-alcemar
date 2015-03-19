@@ -123,7 +123,7 @@ var DataManager = Class.extend({
 		};
 		this.highscore = send.points;//JSON.parse(sendObject);
 		APP.cookieManager.setCookie('highscore', this.highscore, 500);
-		APP.cookieManager.setCookie('highscoreChar', APP.getGameModel().playerModels[APP.getGameModel().currentID].label, 500);
+		APP.cookieManager.setCookie('highscoreChar', APP.getGameModel().playerModels[APP.getGameModel().currentID].id, 500);
 		// this.highscore = this.highscore.split(',');
 		// APP.cookieManager.setCookie('highscore', this.highscore, 500);
 		// APP.cookieManager.setCookie('highScore', sendObject, 500);
