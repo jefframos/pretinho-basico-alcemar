@@ -1140,6 +1140,7 @@ var Application = AbstractApplication.extend({
             })
         }) ], this.playerModels = [ new PlayerModel({
             label: "Alcemar",
+            id: "alcemar",
             inGame: "alcemarGame.png",
             bullet: "alcemarFire.png",
             bulletRotation: !0,
@@ -1166,6 +1167,7 @@ var Application = AbstractApplication.extend({
             })
         }), new PlayerModel({
             label: "Piangers",
+            id: "piangers",
             inGame: "piangersNGame.png",
             bullet: "piangersFire.png",
             bulletRotation: !0,
@@ -1190,6 +1192,7 @@ var Application = AbstractApplication.extend({
             })
         }), new PlayerModel({
             label: "Potter",
+            id: "potter",
             inGame: "poterGame.png",
             bullet: "potterFire.png",
             bulletRotation: !0,
@@ -1216,6 +1219,7 @@ var Application = AbstractApplication.extend({
             })
         }), new PlayerModel({
             label: "Arthur",
+            id: "arthur",
             inGame: "arthurGame.png",
             bullet: "arthurFire.png",
             bulletParticle: "partarthur.png",
@@ -1235,6 +1239,7 @@ var Application = AbstractApplication.extend({
             bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
             label: "Porã",
+            id: "pora",
             inGame: "poraGame.png",
             bullet: "poraFire.png",
             bulletRotation: !0,
@@ -1262,6 +1267,7 @@ var Application = AbstractApplication.extend({
             })
         }), new PlayerModel({
             label: "Jeiso",
+            id: "jeiso",
             inGame: "jesoGame.png",
             bullet: "jeisoFire.png",
             bulletParticle: "partjeiso.png",
@@ -1286,6 +1292,7 @@ var Application = AbstractApplication.extend({
             })
         }), new PlayerModel({
             label: "Pi",
+            id: "pi",
             inGame: "piGame.png",
             bullet: "piFire.png",
             bulletRotation: !0,
@@ -1307,6 +1314,7 @@ var Application = AbstractApplication.extend({
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
             label: "Fetter",
+            id: "fetter",
             inGame: "feterGame.png",
             bullet: "feterFire.png",
             bulletParticle: "partexplosao.png",
@@ -1326,6 +1334,7 @@ var Application = AbstractApplication.extend({
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
             label: "Neto",
+            id: "neto",
             inGame: "netoGame.png",
             bullet: "netoFire.png",
             bulletParticle: "partneto.png",
@@ -1351,6 +1360,7 @@ var Application = AbstractApplication.extend({
             })
         }), new PlayerModel({
             label: "Rodaika",
+            id: "rodaika",
             inGame: "rodaikaGame.png",
             bullet: "rodaikaFire.png",
             bulletParticle: "partrodaika2.png",
@@ -1634,14 +1644,14 @@ var Application = AbstractApplication.extend({
             points: APP.getGameModel().currentPoints
         };
         this.highscore = send.points, APP.cookieManager.setCookie("highscore", this.highscore, 500), 
-        APP.cookieManager.setCookie("highscoreChar", APP.getGameModel().playerModels[APP.getGameModel().currentID].label, 500);
+        APP.cookieManager.setCookie("highscoreChar", APP.getGameModel().playerModels[APP.getGameModel().currentID].id, 500);
     }
 }), PlayerModel = Class.extend({
     init: function(graphicsObject, statsObject) {
         this.range = 40, this.maxEnergy = 7e3, this.currentEnergy = 8e3, this.maxBulletEnergy = 100, 
         this.currentBulletEnergy = 100, this.recoverBulletEnergy = .5, this.chargeBullet = 2, 
         this.currentBulletForce = 100, this.recoverEnergy = .5, this.label = graphicsObject.label ? graphicsObject.label : "NOME", 
-        this.labelSource = graphicsObject.labelSource ? graphicsObject.labelSource : "", 
+        this.id = graphicsObject.id ? graphicsObject.id : "ID", this.labelSource = graphicsObject.labelSource ? graphicsObject.labelSource : "", 
         this.thumb = graphicsObject.thumb ? graphicsObject.thumb : "thumb_jeiso", this.thumbColor = this.thumb + "_color.png", 
         this.thumbGray = this.thumb + "_gray.png", this.color = graphicsObject.color ? graphicsObject.color : 8755, 
         this.imgSourceGame = graphicsObject.inGame ? graphicsObject.inGame : "piangersNGame.png", 

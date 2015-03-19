@@ -13,6 +13,7 @@ var PlayerModel = Class.extend({
 					
 
 		this.label = graphicsObject.label?graphicsObject.label:'NOME';
+		this.id = graphicsObject.id?graphicsObject.id:'ID';
 		this.labelSource = graphicsObject.labelSource?graphicsObject.labelSource:'';
 		this.thumb = graphicsObject.thumb?graphicsObject.thumb:'thumb_jeiso';
 		this.thumbColor = this.thumb + '_color.png';

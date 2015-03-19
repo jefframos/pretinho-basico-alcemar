@@ -61,6 +61,7 @@ var AppModel = Class.extend({
 
 			new PlayerModel({
 				label:'Alcemar',
+				id:'alcemar',
 				// outGame:'alcemar.png',
 				inGame:'alcemarGame.png',
 				bullet:'alcemarFire.png',
@@ -88,6 +89,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Piangers',
+				id:'piangers',
 				// outGame:'piangersN.png',
 				inGame:'piangersNGame.png',
 				bullet:'piangersFire.png',
@@ -113,6 +115,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Potter',
+				id:'potter',
 				// outGame:'poter.png',
 				inGame:'poterGame.png',
 				bullet:'potterFire.png',
@@ -137,6 +140,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Arthur',
+				id:'arthur',
 				// outGame:'arthur.png',
 				inGame:'arthurGame.png',
 				bullet:'arthurFire.png',
@@ -160,6 +164,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Porã',
+				id:'pora',
 				// outGame:'pora.png',
 				inGame:'poraGame.png',
 				bullet:'poraFire.png',
@@ -185,6 +190,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Jeiso',
+				id:'jeiso',
 				// outGame:'jeso.png',
 				inGame:'jesoGame.png',
 				bullet:'jeisoFire.png',
@@ -209,6 +215,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Pi',
+				id:'pi',
 				// outGame:'pi.png',
 				inGame:'piGame.png',
 				bullet:'piFire.png',
@@ -234,6 +241,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Fetter',
+				id:'fetter',
 				// outGame:'feter.png',
 				inGame:'feterGame.png',
 				bullet:'feterFire.png',
@@ -257,6 +265,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Neto',
+				id:'neto',
 				// outGame:'neto.png',
 				inGame:'netoGame.png',
 				bullet:'netoFire.png',
@@ -281,6 +290,7 @@ var AppModel = Class.extend({
 			),
 			new PlayerModel({
 				label:'Rodaika',
+				id:'rodaika',
 				// outGame:'rodaika.png',
 				inGame:'rodaikaGame.png',
 				bullet:'rodaikaFire.png',
