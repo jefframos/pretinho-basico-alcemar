@@ -1586,15 +1586,15 @@ var Application = AbstractApplication.extend({
         this.highscore && console.log("high", this.highscore), this.highscoreChar && console.log("highscoreChar", this.highscoreChar), 
         this.serverApi = new ServerApi();
     },
-    getToday: function() {
+    getToday: function(callback) {
         this.serverApi.getToday(function(message) {
-            return "error" === message ? [] : message;
+            "error" === message && callback([]), callback(message);
         });
     },
     getAll: function() {
         for (var ret = [], i = 0; 10 > i; i++) ret.push({
             name: "Jeff 2",
-            piloto: "Alcemar",
+            character: "Alcemar",
             points: "200"
         });
         return ret;
@@ -1602,7 +1602,7 @@ var Application = AbstractApplication.extend({
     get30: function() {
         for (var ret = [], i = 0; 10 > i; i++) ret.push({
             name: "Jeff 3",
-            piloto: "Alcemar",
+            character: "Alcemar",
             points: "200"
         });
         return ret;
@@ -1610,10 +1610,9 @@ var Application = AbstractApplication.extend({
     sendScore: function() {
         var self = this;
         if (this.highscore) {
-            console.log(this.highscore), console.log(this.highscoreChar);
             var message = {
-                character: this.highscore,
-                points: this.highscoreChar
+                character: this.highscoreChar,
+                points: this.highscore
             };
             this.serverApi.token ? this.serverApi.sendScore(message, function() {}) : this.serverApi.openFacebook(function(status) {
                 "connected" === status && self.serverApi.sendScore(message, function() {});
@@ -2797,7 +2796,10 @@ var Application = AbstractApplication.extend({
         this.renderNames(APP.dataManager.getAll());
     },
     updateToday: function() {
-        this.renderNames(APP.dataManager.getToday());
+        var self = this;
+        APP.dataManager.getToday(function(message) {
+            self.renderNames(message);
+        });
     },
     renderNames: function(ret) {
         this.namesContainer && this.namesContainer.parent && this.namesContainer.parent.removeChild(this.namesContainer), 
@@ -2813,7 +2815,7 @@ var Application = AbstractApplication.extend({
             this.namesContainer.addChild(name), scaleConverter(name.height, this.tabela.getContent().height, .08, name), 
             name.position.y = this.tabela.getContent().position.y + .08 * this.tabela.getContent().height + i * this.tabela.getContent().height * .091, 
             name.position.x = this.tabela.getContent().position.x + .1 * this.tabela.getContent().width;
-            var piloto = new PIXI.Text(ret[i].piloto, {
+            var piloto = new PIXI.Text(ret[i].character, {
                 align: "center",
                 fill: "#FFFFFF",
                 font: "40px Roboto",
@@ -3096,7 +3098,7 @@ var Application = AbstractApplication.extend({
         }).done(function() {
             callback("connected");
         }).fail(function(jqXHR) {
-            return 401 !== jqXHR.statusCode().status ? void callback(message.error) : void self.openFacebook(function(status) {
+            return 401 !== jqXHR.statusCode().status && 404 !== jqXHR.statusCode().status ? void callback(message.error) : void self.openFacebook(function(status) {
                 "connected" === status && $.ajax({
                     method: "POST",
                     url: self.endpoint + "/ranking",

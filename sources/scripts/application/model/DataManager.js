@@ -15,28 +15,28 @@ var DataManager = Class.extend({
 
 		this.serverApi = new ServerApi();
 	},
-	getToday:function(){
+	getToday:function(callback){
 		this.serverApi.getToday(function(message) {
 			if (message === 'error') {
 				// some error
-				return [];
+				callback([]);
 			}
 
 			// the character in the message is the string identifier
-			return message;
+			callback(message);
 		});
 	},
 	getAll:function(){
 		var ret = [];
 		for (var i = 0; i < 10; i++) {
-			ret.push({name:'Jeff 2', piloto:'Alcemar', points:'200'});
+			ret.push({name:'Jeff 2', character:'Alcemar', points:'200'});
 		}
 		return ret;
 	},
 	get30:function(){
 		var ret = [];
 		for (var i = 0; i < 10; i++) {
-			ret.push({name:'Jeff 3', piloto:'Alcemar', points:'200'});
+			ret.push({name:'Jeff 3', character:'Alcemar', points:'200'});
 		}
 		return ret;
 	},
@@ -44,12 +44,9 @@ var DataManager = Class.extend({
 		var self = this;
 		// check token, fb login & etc
 		if(this.highscore){
-			console.log(this.highscore);
-			console.log(this.highscoreChar);
-
 			var message = {
-					character: this.highscore,
-					points: this.highscoreChar
+					character: this.highscoreChar,
+					points: this.highscore
 				};
 			// server api openFacebook
 			if (!this.serverApi.token) {

@@ -2,11 +2,11 @@
 var RankingModal = Class.extend({
 	init:function(screen){
 		this.screen = screen;
-		
+
 		this.container = new PIXI.DisplayObjectContainer();
 		this.containerGeral = new PIXI.DisplayObjectContainer();
 		this.containerSave = new PIXI.DisplayObjectContainer();
-		
+
 		var credits = new SimpleSprite('dist/img/UI/fundoRanking.png');
 		this.container.addChild(credits.getContent());
 		scaleConverter(credits.getContent().height, windowHeight, 1, credits);
@@ -26,9 +26,9 @@ var RankingModal = Class.extend({
 		// };
 
 		// this.img = new SimpleSprite('dist/img/UI/creditos.png');
-		
-		
-		
+
+
+
 
 		var hall = new SimpleSprite('Hall-da-fama.png');
 		this.containerSave.addChild(hall.getContent());
@@ -79,8 +79,8 @@ var RankingModal = Class.extend({
 		scaleConverter(this.pontuação.getContent().height, windowHeight, 0.15, this.pontuação);
 		this.pontuação.getContent().position.x = windowWidth / 2 - this.pontuação.getContent().width / 2;
 		this.pontuação.getContent().position.y = this.returnButton.getContent().position.y - this.pontuação.getContent().height - 20;
-		
-	   
+
+
 
 
 		this.tabela = new SimpleSprite('dist/img/UI/tabela.png');
@@ -141,16 +141,18 @@ var RankingModal = Class.extend({
 
 	},
 	update30:function(){
-		
+
 		this.renderNames(APP.dataManager.get30());
 	},
 	updateAll:function(){
-		
+
 		this.renderNames(APP.dataManager.getAll());
 	},
 	updateToday:function(){
-		
-		this.renderNames(APP.dataManager.getToday());
+		var self = this;
+		APP.dataManager.getToday(function(message) {
+			self.renderNames(message);
+		});
 	},
 	renderNames:function(ret){
 		if(this.namesContainer && this.namesContainer.parent){
@@ -165,7 +167,7 @@ var RankingModal = Class.extend({
 			name.position.y = this.tabela.getContent().position.y + this.tabela.getContent().height * 0.08 + i * this.tabela.getContent().height * 0.091;
 			name.position.x = this.tabela.getContent().position.x + this.tabela.getContent().width * 0.1;
 
-			var piloto = new PIXI.Text(ret[i].piloto, { align:'center', fill:'#FFFFFF', font:'40px Roboto', wordWrap:true, wordWrapWidth:300});
+			var piloto = new PIXI.Text(ret[i].character, { align:'center', fill:'#FFFFFF', font:'40px Roboto', wordWrap:true, wordWrapWidth:300});
 			this.namesContainer.addChild(piloto);
 			scaleConverter(piloto.height, this.tabela.getContent().height, 0.08, piloto);
 			piloto.position.y = this.tabela.getContent().position.y + this.tabela.getContent().height * 0.08 + i * this.tabela.getContent().height * 0.091;
@@ -208,7 +210,7 @@ var RankingModal = Class.extend({
 		this.container.parent.setChildIndex(this.container,this.container.parent.children.length -1);
 		var self = this;
 
-		
+
 		this.screen.updateable = false;
 		this.container.alpha = 0;
 		TweenLite.to(this.container, 0.5, {alpha:1, onComplete:function(){
@@ -216,10 +218,10 @@ var RankingModal = Class.extend({
 			self.container.interactive = true;
 			// self.geral();
 		}});
-		
+
 
 		// this.geral();
-		
+
 
 		this.container.buttonMode = false;
 		this.container.interactive = false;
@@ -242,8 +244,8 @@ var RankingModal = Class.extend({
 				}
 			}
 		}});
-		
-		
+
+
 		// TweenLite.to(this.labelsContainer, 0.2, {alpha:0});
 		// TweenLite.to(this.labelsContainerRight, 0.2, {alpha:0});
 		// TweenLite.to(this.footer, 0.2, {alpha:0});
