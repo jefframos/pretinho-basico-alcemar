@@ -12,12 +12,12 @@ var openFB = (function () {
     var FB_LOGIN_URL = 'https://www.facebook.com/dialog/oauth',
         FB_LOGOUT_URL = 'https://www.facebook.com/logout.php',
 
-        // By default we store fbtoken in sessionStorage. This can be overridden in init()
+        // By default we store fb.token in sessionStorage. This can be overridden in init()
         tokenStore = window.sessionStorage,
 
         fbAppId,
 
-        context = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)),
+        context = window.location.pathname.substring(0, window.location.pathname.indexOf('/',2)),
 
         baseURL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + context,
 
@@ -70,7 +70,7 @@ var openFB = (function () {
      * @param callback the function that receives the loginstatus
      */
     function getLoginStatus(callback) {
-        var token = tokenStore['fbtoken'],
+        var token = tokenStore['fb.token'],
             loginStatus = {};
         if (token) {
             loginStatus.status = 'connected';
@@ -78,7 +78,7 @@ var openFB = (function () {
         } else {
             loginStatus.status = 'unknown';
         }
-        if (callback) callback(loginStatus);
+        if (callback) { callback(loginStatus); }
     }
 
     /**
@@ -103,7 +103,9 @@ var openFB = (function () {
         // Inappbrowser load start handler: Used when running in Cordova only
         function loginWindow_loadStartHandler(event) {
             var url = event.url;
-            if (url.indexOf("access_token=") > 0 || url.indexOf("error=") > 0) {
+            console.log('load start handler');
+            if (url.indexOf('access_token=') > 0 || url.indexOf('error=') > 0) {
+              console.log('load start handler, token or error');
                 // When we get the access token fast, the login window (inappbrowser) is still opening with animation
                 // in the Cordova app, and trying to close it while it's animating generates an exception. Wait a little...
                 var timeout = 600 - (new Date().getTime() - startTime);
@@ -118,7 +120,7 @@ var openFB = (function () {
         function loginWindow_exitHandler() {
             console.log('exit and remove listeners');
             // Handle the situation where the user closes the login window manually before completing the login process
-            deferredLogin.reject({error: 'user_cancelled', error_description: 'User cancelled login process', error_reason: "user_cancelled"});
+            deferredLogin.reject({error: 'user_cancelled', error_description: 'User cancelled login process', error_reason: 'user_cancelled'});
             loginWindow.removeEventListener('loadstop', loginWindow_loadStartHandler);
             loginWindow.removeEventListener('exit', loginWindow_exitHandler);
             loginWindow = null;
@@ -135,7 +137,7 @@ var openFB = (function () {
 //        logout();
 
         if (runningInCordova) {
-            oauthRedirectURL = "https://www.facebook.com/connect/login_success.html";
+            oauthRedirectURL = 'https://www.facebook.com/connect/login_success.html';
         }
         console.log(oauthRedirectURL);
 
@@ -145,9 +147,11 @@ var openFB = (function () {
 
         // If the app is running in Cordova, listen to URL changes in the InAppBrowser until we get a URL with an access_token or an error
         if (runningInCordova) {
+            console.log('add listeners');
             loginWindow.addEventListener('loadstart', loginWindow_loadStartHandler);
             loginWindow.addEventListener('exit', loginWindow_exitHandler);
         }
+
         // Note: if the app is running in the browser the loginWindow dialog will call back by invoking the
         // oauthCallback() function. See oauthcallback.html for details.
 
@@ -165,17 +169,17 @@ var openFB = (function () {
             obj;
 
         loginProcessed = true;
-        if (url.indexOf("access_token=") > 0) {
+        if (url.indexOf('access_token=') > 0) {
             queryString = url.substr(url.indexOf('#') + 1);
             obj = parseQueryString(queryString);
-            tokenStore['fbtoken'] = obj['access_token'];
-            if (loginCallback) loginCallback({status: 'connected', authResponse: {token: obj['access_token']}});
-        } else if (url.indexOf("error=") > 0) {
+            tokenStore['fb.token'] = obj['access_token'];
+            if (loginCallback) { loginCallback({status: 'connected', authResponse: {token: obj['access_token']}}); }
+        } else if (url.indexOf('error=') > 0) {
             queryString = url.substring(url.indexOf('?') + 1, url.indexOf('#'));
             obj = parseQueryString(queryString);
-            if (loginCallback) loginCallback({status: 'not_authorized', error: obj.error});
+            if (loginCallback) { loginCallback({status: 'not_authorized', error: obj.error}); }
         } else {
-            if (loginCallback) loginCallback({status: 'not_authorized'});
+            if (loginCallback) { loginCallback({status: 'not_authorized'}); }
         }
     }
 
@@ -186,10 +190,10 @@ var openFB = (function () {
      */
     function logout(callback) {
         var logoutWindow,
-            token = tokenStore['fbtoken'];
+            token = tokenStore['fb.token'];
 
         /* Remove token. Will fail silently if does not exist */
-        tokenStore.removeItem('fbtoken');
+        tokenStore.removeItem('fb.token');
 
         if (token) {
             logoutWindow = window.open(FB_LOGOUT_URL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no');
@@ -222,17 +226,17 @@ var openFB = (function () {
             xhr = new XMLHttpRequest(),
             url;
 
-        params['access_token'] = tokenStore['fbtoken'];
+        params['access_token'] = tokenStore['fb.token'];
 
         url = 'https://graph.facebook.com' + obj.path + '?' + toQueryString(params);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    if (obj.success) obj.success(JSON.parse(xhr.responseText));
+                    if (obj.success) { obj.success(JSON.parse(xhr.responseText)); }
                 } else {
                     var error = xhr.responseText ? JSON.parse(xhr.responseText).error : {message: 'An error has occurred'};
-                    if (obj.error) obj.error(error);
+                    if (obj.error) { obj.error(error); }
                 }
             }
         };
@@ -251,7 +255,7 @@ var openFB = (function () {
         return api({method: 'DELETE',
             path: '/me/permissions',
             success: function () {
-                tokenStore['fbtoken'] = undefined;
+                tokenStore['fb.token'] = undefined;
                 success();
             },
             error: error});
@@ -272,10 +276,10 @@ var openFB = (function () {
         var parts = [];
         for (var i in obj) {
             if (obj.hasOwnProperty(i)) {
-                parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+                parts.push(encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]));
             }
         }
-        return parts.join("&");
+        return parts.join('&');
     }
 
     // The public API
@@ -287,6 +291,6 @@ var openFB = (function () {
         api: api,
         oauthCallback: oauthCallback,
         getLoginStatus: getLoginStatus
-    }
+    };
 
 }());

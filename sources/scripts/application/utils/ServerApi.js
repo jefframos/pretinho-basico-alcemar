@@ -1,12 +1,13 @@
 /*jshint undef:false */
 var ServerApi = Class.extend({
     init: function() {
-        this.endpoint = 'http://pretinho-server-dev.elasticbeanstalk.com/';
+        this.endpoint = 'http://pretinho-server-dev.elasticbeanstalk.com';
 
         this.token = null;
 
+        var self = this;
         document.addEventListener('deviceready', function() {
-            this.fetchToken();
+            self.fetchToken();
         });
     },
 
@@ -49,11 +50,11 @@ var ServerApi = Class.extend({
         openFB.login(
             function(response) {
                 if (response.status === 'connected') {
-                    this.authWithServer(response.authResponse, callback);
-                    alert('Facebook login succeeded, got access token: ' + response.authResponse.token);
+                    console.log('Facebook login succeeded, got access token: ' + response.authResponse.token);
+                    self.authWithServer(response.authResponse, callback);
                 } else {
+                    console.log('Facebook login failed: ' + response.error);
                     callback(response.error);
-                    alert('Facebook login failed: ' + response.error);
                 }
             },
             {scope: 'email,public_profile,publish_stream'}
@@ -88,10 +89,9 @@ var ServerApi = Class.extend({
             headers: {Authorization: 'Bearer ' + self.token},
             data: score
         }).done(function(message) {
-            self.setToken(message.token);
             callback('connected');
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            if (jqXHR.statusCode() !== 401) {
+            if (jqXHR.statusCode().status !== 401) {
                 // not a token error
                 callback(message.error);
                 return;
@@ -107,7 +107,6 @@ var ServerApi = Class.extend({
                         headers: {Authorization: 'Bearer ' + self.token},
                         data: score
                     }).done(function(message) {
-                        self.setToken(message.token);
                         callback('connected');
                     }).fail(function(jqXHR, textStatus, errorThrown) {
                         // give up

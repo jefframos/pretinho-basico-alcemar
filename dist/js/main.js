@@ -1,4 +1,4 @@
-/*! jefframos 18-03-2015 */
+/*! jefframos 19-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -3016,9 +3016,10 @@ var Application = AbstractApplication.extend({
     }
 }), ServerApi = Class.extend({
     init: function() {
-        this.endpoint = "http://pretinho-server-dev.elasticbeanstalk.com/", this.token = null, 
+        this.endpoint = "http://pretinho-server-dev.elasticbeanstalk.com", this.token = null;
+        var self = this;
         document.addEventListener("deviceready", function() {
-            this.fetchToken();
+            self.fetchToken();
         });
     },
     fetchToken: function() {
@@ -3046,13 +3047,14 @@ var Application = AbstractApplication.extend({
         });
     },
     openFacebook: function(callback) {
+        var self = this;
         openFB.init({
             appId: "262874990468179",
             runningInCordova: !0
         }), openFB.login(function(response) {
-            "connected" === response.status ? (this.authWithServer(response.authResponse, callback), 
-            alert("Facebook login succeeded, got access token: " + response.authResponse.token)) : (callback(response.error), 
-            alert("Facebook login failed: " + response.error));
+            "connected" === response.status ? (console.log("Facebook login succeeded, got access token: " + response.authResponse.token), 
+            self.authWithServer(response.authResponse, callback)) : (console.log("Facebook login failed: " + response.error), 
+            callback(response.error));
         }, {
             scope: "email,public_profile,publish_stream"
         });
@@ -3080,10 +3082,10 @@ var Application = AbstractApplication.extend({
                 Authorization: "Bearer " + self.token
             },
             data: score
-        }).done(function(message) {
-            self.setToken(message.token), callback("connected");
+        }).done(function() {
+            callback("connected");
         }).fail(function(jqXHR) {
-            return 401 !== jqXHR.statusCode() ? void callback(message.error) : void self.openFacebook(function(status) {
+            return 401 !== jqXHR.statusCode().status ? void callback(message.error) : void self.openFacebook(function(status) {
                 "connected" === status && $.ajax({
                     method: "POST",
                     url: self.endpoint + "/ranking",
@@ -3091,8 +3093,8 @@ var Application = AbstractApplication.extend({
                         Authorization: "Bearer " + self.token
                     },
                     data: score
-                }).done(function(message) {
-                    self.setToken(message.token), callback("connected");
+                }).done(function() {
+                    callback("connected");
                 }).fail(function() {});
             });
         });
