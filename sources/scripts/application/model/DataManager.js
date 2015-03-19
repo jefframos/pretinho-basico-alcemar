@@ -2,7 +2,7 @@
 var DataManager = Class.extend({
 	init:function(){
 		this.highscore = APP.cookieManager.getCookie('highscore')? APP.cookieManager.getCookie('highscore'): null;
-		this.highscoreChar = APP.cookieManager.getCookie('highscoreChar')? APP.cookieManager.getCookie('highscoreChar'): null;
+		this.highscoreChar = APP.cookieManager.getCookie('highscoreChar')? APP.cookieManager.getCookie('highscoreChar'): 'sem nome';
 		if(this.highscore){
 			console.log('high', this.highscore);
 		}
@@ -70,33 +70,33 @@ var DataManager = Class.extend({
 	},
 	saveScore:function(id){
 
-		var i = 0;
-		var tempBirds = [
-			['caralinhoDaTerra',0],
-			['caralhoBelga',0],
-			['lambecuFrances',0],
-			['papacuDeCabecaRoxa',0],
-			['galinhoPapoDeBago',0],
-			['nocututinha',0],
-			['calopsuda',0],
-			['picudaoAzulNigeriano',0],
-		];
-		for (i = APP.getGameModel().killedBirds.length - 1; i >= 0; i--) {
-			tempBirds[APP.getGameModel().killedBirds[i]][1] ++;
-		}
+		// var i = 0;
+		// var tempBirds = [
+		// 	['caralinhoDaTerra',0],
+		// 	['caralhoBelga',0],
+		// 	['lambecuFrances',0],
+		// 	['papacuDeCabecaRoxa',0],
+		// 	['galinhoPapoDeBago',0],
+		// 	['nocututinha',0],
+		// 	['calopsuda',0],
+		// 	['picudaoAzulNigeriano',0],
+		// ];
+		// for (i = APP.getGameModel().killedBirds.length - 1; i >= 0; i--) {
+		// 	tempBirds[APP.getGameModel().killedBirds[i]][1] ++;
+		// }
 
-		var sendObject = '{"character":"'+APP.getGameModel().playerModels[APP.getGameModel().currentID].label+'",'+
-		'"points":"'+APP.getGameModel().currentPoints+'",'+
-		'"birds":{';
+		// var sendObject = '{"character":"'+APP.getGameModel().playerModels[APP.getGameModel().currentID].label+'",'+
+		// '"points":"'+APP.getGameModel().currentPoints+'",'+
+		// '"birds":{';
 
-		for (i = 0; i < tempBirds.length; i++) {
-			if(i >= tempBirds.length - 1){
-				sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '"';
-			}else{
-				sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '",';
-			}
-		}
-		sendObject += '}}';
+		// for (i = 0; i < tempBirds.length; i++) {
+		// 	if(i >= tempBirds.length - 1){
+		// 		sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '"';
+		// 	}else{
+		// 		sendObject += '"' + tempBirds[i][0] + '"' + ':' + '"' + tempBirds[i][1] + '",';
+		// 	}
+		// }
+		// sendObject += '}}';
 
 		// var sendObject = '{\n"character":"'+APP.getGameModel().playerModels[APP.getGameModel().currentID].label+'",'+
 		// '\n"points":"'+APP.getGameModel().currentPoints+'",'+
@@ -114,11 +114,12 @@ var DataManager = Class.extend({
 
 		// console.log(sendObject);
 		var send = {
-			character: APP.getGameModel().playerModels[APP.getGameModel().currentID].label,
+			character: APP.getGameModel().playerModels[APP.getGameModel().currentID].id,
 			points: APP.getGameModel().currentPoints,
 
 		};
 		this.highscore = send.points;//JSON.parse(sendObject);
+		this.highscoreChar = send.character;//JSON.parse(sendObject);
 		APP.cookieManager.setCookie('highscore', this.highscore, 500);
 		APP.cookieManager.setCookie('highscoreChar', APP.getGameModel().playerModels[APP.getGameModel().currentID].id, 500);
 		// this.highscore = this.highscore.split(',');
