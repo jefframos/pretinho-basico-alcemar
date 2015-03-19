@@ -1602,21 +1602,15 @@ var Application = AbstractApplication.extend({
             "error" === message && callback([]), callback(message);
         });
     },
-    getAll: function() {
-        for (var ret = [], i = 0; 10 > i; i++) ret.push({
-            name: "Jeff 2",
-            character: "Alcemar",
-            points: "200"
+    getAll: function(callback) {
+        this.serverApi.getAll(function(message) {
+            "error" === message && callback([]), callback(message);
         });
-        return ret;
     },
-    get30: function() {
-        for (var ret = [], i = 0; 10 > i; i++) ret.push({
-            name: "Jeff 3",
-            character: "Alcemar",
-            points: "200"
+    get30: function(callback) {
+        this.serverApi.getMonth(function(message) {
+            "error" === message && callback([]), callback(message);
         });
-        return ret;
     },
     sendScore: function() {
         var self = this;
@@ -2806,10 +2800,16 @@ var Application = AbstractApplication.extend({
         }, this.namesContainer = new PIXI.DisplayObjectContainer(), this.containerGeral.addChild(this.namesContainer);
     },
     update30: function() {
-        this.renderNames(APP.dataManager.get30());
+        var self = this;
+        APP.dataManager.get30(function(message) {
+            self.renderNames(message);
+        });
     },
     updateAll: function() {
-        this.renderNames(APP.dataManager.getAll());
+        var self = this;
+        APP.dataManager.getAll(function(message) {
+            self.renderNames(message);
+        });
     },
     updateToday: function() {
         var self = this;
@@ -3045,7 +3045,7 @@ var Application = AbstractApplication.extend({
     }
 }), ServerApi = Class.extend({
     init: function() {
-        this.endpoint = "http://192.168.10.10", this.token = null;
+        this.endpoint = "http://pretinho-server-dev.elasticbeanstalk.com", this.token = null;
         var self = this;
         document.addEventListener("deviceready", function() {
             self.fetchToken();
@@ -3128,10 +3128,30 @@ var Application = AbstractApplication.extend({
             });
         });
     },
-    getToday: function(callback) {
+    getAll: function(callback) {
         var self = this;
         $.ajax({
             url: self.endpoint + "/ranking"
+        }).done(function(message) {
+            callback(message);
+        }).fail(function() {
+            callback("error");
+        });
+    },
+    getMonth: function(callback) {
+        var self = this;
+        $.ajax({
+            url: self.endpoint + "/ranking/month"
+        }).done(function(message) {
+            callback(message);
+        }).fail(function() {
+            callback("error");
+        });
+    },
+    getToday: function(callback) {
+        var self = this;
+        $.ajax({
+            url: self.endpoint + "/ranking/today"
         }).done(function(message) {
             callback(message);
         }).fail(function() {

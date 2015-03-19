@@ -26,19 +26,27 @@ var DataManager = Class.extend({
 			callback(message);
 		});
 	},
-	getAll:function(){
-		var ret = [];
-		for (var i = 0; i < 10; i++) {
-			ret.push({name:'Jeff 2', character:'Alcemar', points:'200'});
-		}
-		return ret;
+	getAll:function(callback){
+		this.serverApi.getAll(function(message) {
+			if (message === 'error') {
+				// some error
+				callback([]);
+			}
+
+			// the character in the message is the string identifier
+			callback(message);
+		});
 	},
-	get30:function(){
-		var ret = [];
-		for (var i = 0; i < 10; i++) {
-			ret.push({name:'Jeff 3', character:'Alcemar', points:'200'});
-		}
-		return ret;
+	get30:function(callback){
+		this.serverApi.getMonth(function(message) {
+			if (message === 'error') {
+				// some error
+				callback([]);
+			}
+
+			// the character in the message is the string identifier
+			callback(message);
+		});
 	},
 	sendScore:function(){
 		var self = this;

@@ -1,8 +1,8 @@
 /*jshint undef:false */
 var ServerApi = Class.extend({
     init: function() {
-        this.endpoint = 'http://192.168.10.10';
-        //this.endpoint = 'http://pretinho-server-dev.elasticbeanstalk.com';
+        //this.endpoint = 'http://192.168.10.10';
+        this.endpoint = 'http://pretinho-server-dev.elasticbeanstalk.com';
 
         this.token = null;
 
@@ -117,11 +117,35 @@ var ServerApi = Class.extend({
         });
     },
 
-    getToday: function(callback) {
+    getAll: function(callback) {
         var self = this;
 
         $.ajax({
             url: self.endpoint + '/ranking'
+        }).done(function(message) {
+            callback(message);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            callback('error');
+        });
+    },
+
+    getMonth: function(callback) {
+        var self = this;
+
+        $.ajax({
+            url: self.endpoint + '/ranking/month'
+        }).done(function(message) {
+            callback(message);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            callback('error');
+        });
+    },
+
+    getToday: function(callback) {
+        var self = this;
+
+        $.ajax({
+            url: self.endpoint + '/ranking/today'
         }).done(function(message) {
             callback(message);
         }).fail(function(jqXHR, textStatus, errorThrown) {

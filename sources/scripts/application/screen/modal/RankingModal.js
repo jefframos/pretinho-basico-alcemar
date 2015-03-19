@@ -141,12 +141,16 @@ var RankingModal = Class.extend({
 
 	},
 	update30:function(){
-
-		this.renderNames(APP.dataManager.get30());
+		var self = this;
+		APP.dataManager.get30(function(message) {
+			self.renderNames(message);
+		});
 	},
 	updateAll:function(){
-
-		this.renderNames(APP.dataManager.getAll());
+		var self = this;
+		APP.dataManager.getAll(function(message) {
+			self.renderNames(message);
+		});
 	},
 	updateToday:function(){
 		var self = this;
