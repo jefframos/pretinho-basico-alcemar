@@ -1582,7 +1582,9 @@ var Application = AbstractApplication.extend({
 }), DataManager = Class.extend({
     init: function() {
         this.highscore = APP.cookieManager.getCookie("highscore") ? APP.cookieManager.getCookie("highscore") : null, 
-        this.highscore && console.log("high", this.highscore[1]), this.serverApi = new ServerApi();
+        this.highscoreChar = APP.cookieManager.getCookie("highscoreChar") ? APP.cookieManager.getCookie("highscoreChar") : null, 
+        this.highscore && console.log("high", this.highscore), this.highscoreChar && console.log("highscoreChar", this.highscoreChar), 
+        this.serverApi = new ServerApi();
     },
     getToday: function() {
         this.serverApi.getToday(function(message) {
@@ -1623,7 +1625,8 @@ var Application = AbstractApplication.extend({
             character: APP.getGameModel().playerModels[APP.getGameModel().currentID].label,
             points: APP.getGameModel().currentPoints
         };
-        this.highscore = send.points, APP.cookieManager.setCookie("highscore", this.highscore, 500);
+        this.highscore = send.points, APP.cookieManager.setCookie("highscore", this.highscore, 500), 
+        APP.cookieManager.setCookie("highscoreChar", APP.getGameModel().playerModels[APP.getGameModel().currentID].label, 500);
     }
 }), PlayerModel = Class.extend({
     init: function(graphicsObject, statsObject) {

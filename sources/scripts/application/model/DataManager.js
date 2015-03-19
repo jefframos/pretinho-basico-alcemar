@@ -2,8 +2,12 @@
 var DataManager = Class.extend({
 	init:function(){
 		this.highscore = APP.cookieManager.getCookie('highscore')? APP.cookieManager.getCookie('highscore'): null;
+		this.highscoreChar = APP.cookieManager.getCookie('highscoreChar')? APP.cookieManager.getCookie('highscoreChar'): null;
 		if(this.highscore){
-			console.log('high', this.highscore[1]);
+			console.log('high', this.highscore);
+		}
+		if(this.highscoreChar){
+			console.log('highscoreChar', this.highscoreChar);
 		}
 		// APP.cookieManager.setCookie('highscore', '', 500);
 		// console.log('highscore', this.highscore.points);
@@ -112,6 +116,7 @@ var DataManager = Class.extend({
 		};
 		this.highscore = send.points;//JSON.parse(sendObject);
 		APP.cookieManager.setCookie('highscore', this.highscore, 500);
+		APP.cookieManager.setCookie('highscoreChar', APP.getGameModel().playerModels[APP.getGameModel().currentID].label, 500);
 		// this.highscore = this.highscore.split(',');
 		// APP.cookieManager.setCookie('highscore', this.highscore, 500);
 		// APP.cookieManager.setCookie('highScore', sendObject, 500);
