@@ -60,11 +60,25 @@ var DataManager = Class.extend({
 			if (!this.serverApi.token) {
 				this.serverApi.openFacebook(function(status) {
 					if (status === 'connected') {
-						self.serverApi.sendScore(message, function() {});
+						self.serverApi.sendScore(message, function(innerStatus) {
+							if (innerStatus === 'connected') {
+								// success
+							} else {
+								// error
+							}
+						});
+					} else {
+						// error
 					}
 				});
 			} else {
-				this.serverApi.sendScore(message, function() {});
+				this.serverApi.sendScore(message, function(status) {
+					if (status === 'connected') {
+						// success
+					} else {
+						// error
+					}
+				});
 			}
 		}
 	},

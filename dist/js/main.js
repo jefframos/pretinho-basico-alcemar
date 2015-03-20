@@ -1620,8 +1620,8 @@ var Application = AbstractApplication.extend({
                 character: this.highscoreChar,
                 points: this.highscore
             };
-            this.serverApi.token ? this.serverApi.sendScore(message, function() {}) : this.serverApi.openFacebook(function(status) {
-                "connected" === status && self.serverApi.sendScore(message, function() {});
+            this.serverApi.token ? this.serverApi.sendScore(message, function(status) {}) : this.serverApi.openFacebook(function(status) {
+                "connected" === status && self.serverApi.sendScore(message, function(innerStatus) {});
             });
         }
     },
@@ -3082,9 +3082,7 @@ var Application = AbstractApplication.extend({
             appId: "262874990468179",
             runningInCordova: !0
         }), openFB.login(function(response) {
-            "connected" === response.status ? (console.log("Facebook login succeeded, got access token: " + response.authResponse.token), 
-            self.authWithServer(response.authResponse, callback)) : (console.log("Facebook login failed: " + response.error), 
-            callback(response.error));
+            "connected" === response.status ? self.authWithServer(response.authResponse, callback) : callback(response.error);
         }, {
             scope: "email,public_profile,publish_stream"
         });

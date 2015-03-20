@@ -51,10 +51,8 @@ var ServerApi = Class.extend({
         openFB.login(
             function(response) {
                 if (response.status === 'connected') {
-                    console.log('Facebook login succeeded, got access token: ' + response.authResponse.token);
                     self.authWithServer(response.authResponse, callback);
                 } else {
-                    console.log('Facebook login failed: ' + response.error);
                     callback(response.error);
                 }
             },
