@@ -93,6 +93,10 @@ var Bird = Entity.extend({
         if(this.getContent().tint === 0xFF0000){
             this.getContent().tint = 0xFFFFFF;
         }
+
+        if(this.getPosition().x < -30){
+            this.kill = true;
+        }
         // this.collideArea = new PIXI.Graphics();
         // this.collideArea.lineStyle(1,0x665544);
         // this.collideArea.drawCircle(this.centerPosition.x,this.centerPosition.y,this.range);

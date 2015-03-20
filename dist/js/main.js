@@ -1,4 +1,4 @@
-/*! jefframos 19-03-2015 */
+/*! jefframos 20-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -762,7 +762,8 @@ var Application = AbstractApplication.extend({
     },
     update: function() {
         this._super(), this.behaviour.update(this), this.spritesheet.update(), Math.abs(this.velocity.x) < Math.abs(this.vel) ? this.velocity.x -= this.acceleration : this.velocity.x = -Math.abs(this.vel), 
-        this.collideArea || 16711680 === this.getContent().tint && (this.getContent().tint = 16777215);
+        this.collideArea || (16711680 === this.getContent().tint && (this.getContent().tint = 16777215), 
+        this.getPosition().x < -30 && (this.kill = !0));
     },
     preKill: function() {
         for (var i = this.birdModel.particles.length - 1; i >= 0; i--) {
