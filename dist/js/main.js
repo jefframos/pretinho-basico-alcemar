@@ -1,4 +1,4 @@
-/*! jefframos 20-03-2015 */
+/*! jefframos 21-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -315,7 +315,8 @@ var Application = AbstractApplication.extend({
         this.stage.removeChild(this.loadText), this.labelDebug = new PIXI.Text("Debug", {
             font: "15px Arial"
         }), this.stage.addChild(this.labelDebug), this.labelDebug.position.y = windowHeight - 20, 
-        this.labelDebug.position.x = 20, this.mute = !1, this.audioController = new AudioController();
+        this.labelDebug.position.x = 20, this.modalContainer = new PIXI.DisplayObjectContainer(), 
+        this.mute = !1, this.audioController = new AudioController();
     },
     update: function() {
         this._super(), this.screenManager && !this.screenManager.currentScreen;
@@ -345,6 +346,15 @@ var Application = AbstractApplication.extend({
     updatePoints: function(value) {
         this.gameScreen.updatePoints(value);
     },
+    showModal: function(label) {
+        this.feedbackModal.show(), this.feedbackModal.setText(label);
+    },
+    textModal: function(label) {
+        this.feedbackModal.setText(label);
+    },
+    hideModal: function(delay) {
+        this.feedbackModal.hide(null, delay ? delay : 3);
+    },
     getGameModel: function() {
         return this.gameModel;
     },
@@ -353,7 +363,7 @@ var Application = AbstractApplication.extend({
         this.choicePlayerScreen = new ChoicePlayerScreen("Choice"), this.loadScreen = new LoadScreen("Loader"), 
         this.screenManager.addScreen(this.waitScreen), this.screenManager.addScreen(this.gameScreen), 
         this.screenManager.addScreen(this.choicePlayerScreen), this.screenManager.addScreen(this.loadScreen), 
-        this.screenManager.change("Loader");
+        this.screenManager.change("Loader"), this.stage.addChild(this.modalContainer), this.feedbackModal = new FeedbackModal(this.modalContainer);
     },
     onAssetsLoaded: function() {
         this.initApplication();
@@ -1599,18 +1609,21 @@ var Application = AbstractApplication.extend({
         this.serverApi = new ServerApi();
     },
     getToday: function(callback) {
-        this.serverApi.getToday(function(message) {
-            "error" === message && callback([]), callback(message);
+        APP.showModal("Carregando"), this.serverApi.getToday(function(message) {
+            "error" === message && (callback([]), APP.textModal("Error")), APP.hideModal(1), 
+            callback(message);
         });
     },
     getAll: function(callback) {
-        this.serverApi.getAll(function(message) {
-            "error" === message && callback([]), callback(message);
+        APP.showModal("Carregando"), this.serverApi.getAll(function(message) {
+            "error" === message && (callback([]), APP.textModal("Error")), APP.hideModal(1), 
+            callback(message);
         });
     },
     get30: function(callback) {
-        this.serverApi.getMonth(function(message) {
-            "error" === message && callback([]), callback(message);
+        APP.showModal("Carregando"), this.serverApi.getMonth(function(message) {
+            "error" === message && (callback([]), APP.textModal("Error")), APP.hideModal(1), 
+            callback(message);
         });
     },
     sendScore: function() {
@@ -2589,6 +2602,49 @@ var Application = AbstractApplication.extend({
             alpha: 0
         }), TweenLite.to(this.container, .5, {
             alpha: 0
+        });
+    },
+    getContent: function() {
+        return this.container;
+    }
+}), FeedbackModal = Class.extend({
+    init: function(screen) {
+        this.screen = screen, console.log(this.screen), this.container = new PIXI.DisplayObjectContainer();
+        this.container.buttonMode = !0, this.container.interactive = !0, this.container.mousedown = this.container.touchstart = function() {}, 
+        this.backShape = new PIXI.Graphics(), this.backShape.beginFill(74275), this.backShape.drawRect(0, 0, windowWidth, windowHeight), 
+        this.backShape.alpha = .5, this.container.addChild(this.backShape), this.textModal = new PIXI.Text("", {
+            align: "center",
+            fill: "#FFFFFF",
+            stroke: "#033E43",
+            strokeThickness: 5,
+            font: "30px Luckiest Guy",
+            wordWrap: !0,
+            wordWrapWidth: 500
+        }), this.container.addChild(this.textModal), this.textModal.position.y = windowHeight / 2 - this.textModal.height / 2, 
+        this.textModal.position.x = windowWidth / 2 - this.textModal.width / 2;
+    },
+    setText: function(label) {
+        this.textModal.setText(label), this.textModal.position.y = windowHeight / 2 - this.textModal.height / 2, 
+        this.textModal.position.x = windowWidth / 2 - this.textModal.width / 2;
+    },
+    show: function() {
+        this.screen.addChild(this.getContent()), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
+        var self = this;
+        this.screen.updateable = !1, this.container.alpha = 0, TweenLite.to(this.container, .5, {
+            alpha: 1,
+            onComplete: function() {
+                self.container.buttonMode = !0, self.container.interactive = !0;
+            }
+        }), this.container.buttonMode = !1, this.container.interactive = !1;
+    },
+    hide: function(callback, delay) {
+        var self = this;
+        this.container.buttonMode = !1, this.container.interactive = !1, TweenLite.to(this.container, .5, {
+            delay: delay ? delay : 0,
+            alpha: 0,
+            onComplete: function() {
+                callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));
+            }
         });
     },
     getContent: function() {

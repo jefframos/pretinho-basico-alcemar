@@ -16,34 +16,42 @@ var DataManager = Class.extend({
 		this.serverApi = new ServerApi();
 	},
 	getToday:function(callback){
+		APP.showModal('Carregando');
 		this.serverApi.getToday(function(message) {
 			if (message === 'error') {
 				// some error
 				callback([]);
+				APP.textModal('Error');
 			}
-
+			APP.hideModal(1);
 			// the character in the message is the string identifier
 			callback(message);
 		});
 	},
 	getAll:function(callback){
+		APP.showModal('Carregando');
+
 		this.serverApi.getAll(function(message) {
 			if (message === 'error') {
 				// some error
 				callback([]);
+				APP.textModal('Error');
 			}
-
+			APP.hideModal(1);
 			// the character in the message is the string identifier
 			callback(message);
 		});
 	},
 	get30:function(callback){
+		APP.showModal('Carregando');
+
 		this.serverApi.getMonth(function(message) {
 			if (message === 'error') {
 				// some error
 				callback([]);
+				APP.textModal('Error');
 			}
-
+			APP.hideModal(1);
 			// the character in the message is the string identifier
 			callback(message);
 		});

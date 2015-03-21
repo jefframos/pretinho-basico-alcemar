@@ -21,6 +21,7 @@ var Application = AbstractApplication.extend({
         this.labelDebug.position.y = windowHeight - 20;
         this.labelDebug.position.x = 20;
 
+        this.modalContainer = new PIXI.DisplayObjectContainer();
         this.mute = false;
 
         this.audioController = new AudioController();
@@ -83,6 +84,17 @@ var Application = AbstractApplication.extend({
     updatePoints:function(value){
         this.gameScreen.updatePoints(value);
     },
+    showModal:function(label){
+
+        this.feedbackModal.show();
+        this.feedbackModal.setText(label);
+    },
+    textModal:function(label){
+        this.feedbackModal.setText(label);
+    },
+    hideModal:function(delay){
+        this.feedbackModal.hide(null, delay?delay:3);
+    },
     getGameModel:function(){
         return this.gameModel;
     },
@@ -96,6 +108,8 @@ var Application = AbstractApplication.extend({
         this.screenManager.addScreen(this.choicePlayerScreen);
         this.screenManager.addScreen(this.loadScreen);
         this.screenManager.change('Loader');
+        this.stage.addChild(this.modalContainer);
+        this.feedbackModal = new FeedbackModal(this.modalContainer);
     },
     onAssetsLoaded:function()
     {
