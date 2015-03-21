@@ -64,26 +64,37 @@ var DataManager = Class.extend({
 					character: this.highscoreChar,
 					points: this.highscore
 				};
+			APP.showModal('Salvando');
 			// server api openFacebook
 			if (!this.serverApi.token) {
 				this.serverApi.openFacebook(function(status) {
 					if (status === 'connected') {
 						self.serverApi.sendScore(message, function(innerStatus) {
 							if (innerStatus === 'connected') {
+								APP.textModal('Dados salvos com sucesso!');
+								APP.hideModal(2);
 								// success
 							} else {
+								APP.textModal('Error');
+								APP.hideModal(3);
 								// error
 							}
 						});
 					} else {
+						APP.textModal('Error');
+						APP.hideModal(3);
 						// error
 					}
 				});
 			} else {
 				this.serverApi.sendScore(message, function(status) {
 					if (status === 'connected') {
+						APP.textModal('Dados salvos com sucesso!');
+						APP.hideModal(2);
 						// success
 					} else {
+						APP.textModal('Error');
+						APP.hideModal(3);
 						// error
 					}
 				});

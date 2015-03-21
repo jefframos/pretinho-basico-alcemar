@@ -1633,8 +1633,14 @@ var Application = AbstractApplication.extend({
                 character: this.highscoreChar,
                 points: this.highscore
             };
-            this.serverApi.token ? this.serverApi.sendScore(message, function(status) {}) : this.serverApi.openFacebook(function(status) {
-                "connected" === status && self.serverApi.sendScore(message, function(innerStatus) {});
+            APP.showModal("Salvando"), this.serverApi.token ? this.serverApi.sendScore(message, function(status) {
+                "connected" === status ? (APP.textModal("Dados salvos com sucesso!"), APP.hideModal(2)) : (APP.textModal("Error"), 
+                APP.hideModal(3));
+            }) : this.serverApi.openFacebook(function(status) {
+                "connected" === status ? self.serverApi.sendScore(message, function(innerStatus) {
+                    "connected" === innerStatus ? (APP.textModal("Dados salvos com sucesso!"), APP.hideModal(2)) : (APP.textModal("Error"), 
+                    APP.hideModal(3));
+                }) : (APP.textModal("Error"), APP.hideModal(3));
             });
         }
     },
@@ -2630,7 +2636,11 @@ var Application = AbstractApplication.extend({
     show: function() {
         this.screen.addChild(this.getContent()), this.container.parent.setChildIndex(this.container, this.container.parent.children.length - 1);
         var self = this;
-        this.screen.updateable = !1, this.container.alpha = 0, TweenLite.to(this.container, .5, {
+        setTimeout(function() {
+            self.container.mousedown = this.container.touchstart = function() {
+                self.hide();
+            };
+        }, 5e3), this.screen.updateable = !1, this.container.alpha = 0, TweenLite.to(this.container, .5, {
             alpha: 1,
             onComplete: function() {
                 self.container.buttonMode = !0, self.container.interactive = !0;

@@ -41,7 +41,7 @@ var FeedbackModal = Class.extend({
 			self.container.mousedown = this.container.touchstart = function(data){
 				self.hide();
 			};
-		}, 5000)
+		}, 5000);
 		
 		this.screen.updateable = false;
 		this.container.alpha = 0;
