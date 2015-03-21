@@ -3169,7 +3169,7 @@ var Application = AbstractApplication.extend({
     },
     sendScore: function(score, callback) {
         var self = this;
-        this.token || callback("no_token_available"), $.ajax({
+        return this.token ? void $.ajax({
             method: "POST",
             url: self.endpoint + "/ranking",
             headers: {
@@ -3179,8 +3179,8 @@ var Application = AbstractApplication.extend({
         }).done(function() {
             callback("connected");
         }).fail(function(jqXHR) {
-            return 401 !== jqXHR.statusCode().status && 404 !== jqXHR.statusCode().status ? void callback(message.error) : void self.openFacebook(function(status) {
-                "connected" === status && $.ajax({
+            return 401 !== jqXHR.statusCode().status && 404 !== jqXHR.statusCode().status ? void callback("not_token_error") : void self.openFacebook(function(status) {
+                "connected" === status ? $.ajax({
                     method: "POST",
                     url: self.endpoint + "/ranking",
                     headers: {
@@ -3189,9 +3189,11 @@ var Application = AbstractApplication.extend({
                     data: score
                 }).done(function() {
                     callback("connected");
-                }).fail(function() {});
+                }).fail(function(jqXHR) {
+                    callback(jqXHR.statusCode().status);
+                }) : callback("fb_error");
             });
-        });
+        }) : void callback("no_token_available");
     },
     getAll: function(callback) {
         var self = this;

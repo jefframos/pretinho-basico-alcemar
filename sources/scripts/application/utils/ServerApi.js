@@ -80,6 +80,7 @@ var ServerApi = Class.extend({
 
         if (!this.token) {
             callback('no_token_available');
+            return;
         }
 
         $.ajax({
@@ -92,7 +93,7 @@ var ServerApi = Class.extend({
         }).fail(function(jqXHR, textStatus, errorThrown) {
             if (jqXHR.statusCode().status !== 401 && jqXHR.statusCode().status !== 404) {
                 // not a token error
-                callback(message.error);
+                callback('not_token_error');
                 return;
             }
 
@@ -108,8 +109,10 @@ var ServerApi = Class.extend({
                     }).done(function(message) {
                         callback('connected');
                     }).fail(function(jqXHR, textStatus, errorThrown) {
-                        // give up
+                        callback(jqXHR.statusCode().status);
                     });
+                } else {
+                    callback('fb_error');
                 }
             });
         });
