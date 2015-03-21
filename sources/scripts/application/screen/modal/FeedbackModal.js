@@ -64,9 +64,9 @@ var FeedbackModal = Class.extend({
 		TweenLite.to(this.container, 0.5, {delay:delay?delay:0, alpha:0, onComplete:function(){
 			if(callback){
 				callback();
-				if(self.container.parent){
-					self.container.parent.removeChild(self.container);
-				}
+			}
+			if(self.container.parent){
+				self.container.parent.removeChild(self.container);
 			}
 		}});
 	},

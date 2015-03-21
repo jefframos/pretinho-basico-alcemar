@@ -2653,7 +2653,7 @@ var Application = AbstractApplication.extend({
             delay: delay ? delay : 0,
             alpha: 0,
             onComplete: function() {
-                callback && (callback(), self.container.parent && self.container.parent.removeChild(self.container));
+                callback && callback(), self.container.parent && self.container.parent.removeChild(self.container);
             }
         });
     },
