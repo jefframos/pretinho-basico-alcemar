@@ -56,6 +56,11 @@ var DataManager = Class.extend({
 			callback(message);
 		});
 	},
+
+	isObject: function(obj) {
+			return obj === Object(obj);
+		},
+
 	sendScore:function(){
 		var self = this;
 		// check token, fb login & etc
@@ -69,8 +74,8 @@ var DataManager = Class.extend({
 			if (!this.serverApi.token) {
 				this.serverApi.openFacebook(function(status) {
 					if (status === 'connected') {
-						self.serverApi.sendScore(message, function(innerStatus) {
-							if (innerStatus === 'connected') {
+						self.serverApi.sendScore(message, function(response) {
+							if (self.isObject(response) && !!response.shareUrl) {
 								APP.textModal('Dados salvos com sucesso!');
 								APP.hideModal(2);
 								// success
@@ -87,8 +92,8 @@ var DataManager = Class.extend({
 					}
 				});
 			} else {
-				this.serverApi.sendScore(message, function(status) {
-					if (status === 'connected') {
+				this.serverApi.sendScore(message, function(response) {
+					if (self.isObject(response) && !!response.shareUrl) {
 						APP.textModal('Dados salvos com sucesso!');
 						APP.hideModal(2);
 						// success

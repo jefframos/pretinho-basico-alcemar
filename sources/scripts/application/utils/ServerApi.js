@@ -89,7 +89,7 @@ var ServerApi = Class.extend({
             headers: {Authorization: 'Bearer ' + self.token},
             data: score
         }).done(function(message) {
-            callback('connected');
+            callback(message);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             if (jqXHR.statusCode().status !== 401 && jqXHR.statusCode().status !== 404) {
                 // not a token error
@@ -107,7 +107,7 @@ var ServerApi = Class.extend({
                         headers: {Authorization: 'Bearer ' + self.token},
                         data: score
                     }).done(function(message) {
-                        callback('connected');
+                        callback(message);
                     }).fail(function(jqXHR, textStatus, errorThrown) {
                         callback(jqXHR.statusCode().status);
                     });

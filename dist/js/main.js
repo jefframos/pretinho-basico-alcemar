@@ -1,4 +1,4 @@
-/*! jefframos 21-03-2015 */
+/*! jefframos 23-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1626,6 +1626,9 @@ var Application = AbstractApplication.extend({
             callback(message);
         });
     },
+    isObject: function(obj) {
+        return obj === Object(obj);
+    },
     sendScore: function() {
         var self = this;
         if (this.highscore) {
@@ -1633,13 +1636,13 @@ var Application = AbstractApplication.extend({
                 character: this.highscoreChar,
                 points: this.highscore
             };
-            APP.showModal("Salvando"), this.serverApi.token ? this.serverApi.sendScore(message, function(status) {
-                "connected" === status ? (APP.textModal("Dados salvos com sucesso!"), APP.hideModal(2)) : (APP.textModal("Error"), 
-                APP.hideModal(3));
+            APP.showModal("Salvando"), this.serverApi.token ? this.serverApi.sendScore(message, function(response) {
+                self.isObject(response) && response.shareUrl ? (APP.textModal("Dados salvos com sucesso!"), 
+                APP.hideModal(2)) : (APP.textModal("Error"), APP.hideModal(3));
             }) : this.serverApi.openFacebook(function(status) {
-                "connected" === status ? self.serverApi.sendScore(message, function(innerStatus) {
-                    "connected" === innerStatus ? (APP.textModal("Dados salvos com sucesso!"), APP.hideModal(2)) : (APP.textModal("Error"), 
-                    APP.hideModal(3));
+                "connected" === status ? self.serverApi.sendScore(message, function(response) {
+                    self.isObject(response) && response.shareUrl ? (APP.textModal("Dados salvos com sucesso!"), 
+                    APP.hideModal(2)) : (APP.textModal("Error"), APP.hideModal(3));
                 }) : (APP.textModal("Error"), APP.hideModal(3));
             });
         }
@@ -3176,8 +3179,8 @@ var Application = AbstractApplication.extend({
                 Authorization: "Bearer " + self.token
             },
             data: score
-        }).done(function() {
-            callback("connected");
+        }).done(function(message) {
+            callback(message);
         }).fail(function(jqXHR) {
             return 401 !== jqXHR.statusCode().status && 404 !== jqXHR.statusCode().status ? void callback("not_token_error") : void self.openFacebook(function(status) {
                 "connected" === status ? $.ajax({
@@ -3187,8 +3190,8 @@ var Application = AbstractApplication.extend({
                         Authorization: "Bearer " + self.token
                     },
                     data: score
-                }).done(function() {
-                    callback("connected");
+                }).done(function(message) {
+                    callback(message);
                 }).fail(function(jqXHR) {
                     callback(jqXHR.statusCode().status);
                 }) : callback("fb_error");
