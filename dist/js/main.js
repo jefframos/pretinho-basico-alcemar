@@ -1,4 +1,4 @@
-/*! jefframos 23-03-2015 */
+/*! jefframos 24-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1219,7 +1219,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.5,
             bulletCoast: .125,
             bulletVel: 7,
-            toAble: 350,
+            toAble: 500,
             toSpec: 700,
             bulletBehaviour: new MultipleBehaviour({
                 vel: 3,
@@ -1245,7 +1245,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 2.1,
             bulletCoast: .15,
             bulletVel: 5,
-            toAble: 800,
+            toAble: 1e3,
             toSpec: 900,
             bulletBehaviour: new SequenceBehaviour()
         }), new PlayerModel({
@@ -1267,7 +1267,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.3,
             bulletCoast: .12,
             bulletVel: 5,
-            toAble: 1200,
+            toAble: 1800,
             toSpec: 1e3,
             bulletBehaviour: new MultipleBehaviour({
                 vel: 3.5,
@@ -1291,11 +1291,11 @@ var Application = AbstractApplication.extend({
             maxEnergy: 8200,
             energyCoast: 1.6,
             vel: 3,
-            bulletForce: 1,
+            bulletForce: 1.1,
             bulletCoast: .05,
             bulletVel: 8,
-            toAble: 2500,
-            toSpec: 300,
+            toAble: 2800,
+            toSpec: 450,
             bulletBehaviour: new HomingBehaviour({
                 invencible: !0,
                 bulletForce: 99,
@@ -1320,7 +1320,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 1.2,
             bulletCoast: .11,
             bulletVel: 4,
-            toAble: 4e3,
+            toAble: 4500,
             toSpec: 3e3,
             bulletBehaviour: new AkumaBehaviour()
         }), new PlayerModel({
@@ -1340,7 +1340,7 @@ var Application = AbstractApplication.extend({
             bulletForce: 3,
             bulletVel: 6,
             bulletCoast: .15,
-            toAble: 5e3,
+            toAble: 6e3,
             toSpec: 1200,
             bulletBehaviour: new RainBehaviour()
         }), new PlayerModel({
