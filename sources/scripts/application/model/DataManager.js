@@ -21,7 +21,7 @@ var DataManager = Class.extend({
 			if (message === 'error') {
 				// some error
 				callback([]);
-				APP.textModal('Error');
+				APP.textModal('Erro ao carregar o ranking, tente novamente mais tarde');
 			}
 			APP.hideModal(1);
 			// the character in the message is the string identifier
@@ -35,7 +35,7 @@ var DataManager = Class.extend({
 			if (message === 'error') {
 				// some error
 				callback([]);
-				APP.textModal('Error');
+				APP.textModal('Erro ao carregar o ranking, tente novamente mais tarde');
 			}
 			APP.hideModal(1);
 			// the character in the message is the string identifier
@@ -49,7 +49,7 @@ var DataManager = Class.extend({
 			if (message === 'error') {
 				// some error
 				callback([]);
-				APP.textModal('Error');
+				APP.textModal('Erro ao carregar o ranking, tente novamente mais tarde');
 			}
 			APP.hideModal(1);
 			// the character in the message is the string identifier
@@ -69,7 +69,7 @@ var DataManager = Class.extend({
 					character: this.highscoreChar,
 					points: this.highscore
 				};
-			APP.showModal('Salvando');
+			APP.showModal('Salvando sua pontuação no ranking');
 			// server api openFacebook
 			if (!this.serverApi.token) {
 				this.serverApi.openFacebook(function(status) {
@@ -80,14 +80,14 @@ var DataManager = Class.extend({
 								APP.hideModal(2);
 								// success
 							} else {
-								APP.textModal('Error');
-								APP.hideModal(3);
+								APP.textModal('Ocorreu um erro com a autenticação no seu Facebook, tente novamente.');
+								APP.hideModal(2);
 								// error
 							}
 						});
 					} else {
-						APP.textModal('Error');
-						APP.hideModal(3);
+						APP.textModal('Ocorreu um erro com a autenticação no seu Facebook, tente novamente.');
+						APP.hideModal(2);
 						// error
 					}
 				});
@@ -98,8 +98,8 @@ var DataManager = Class.extend({
 						APP.hideModal(2);
 						// success
 					} else {
-						APP.textModal('Error');
-						APP.hideModal(3);
+						APP.textModal('Ocorreu um erro com a autenticação no seu Facebook, tente novamente.');
+						APP.hideModal(2);
 						// error
 					}
 				});
