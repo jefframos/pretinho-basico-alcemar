@@ -1,4 +1,4 @@
-/*! jefframos 24-03-2015 */
+/*! jefframos 26-03-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -547,6 +547,11 @@ var Application = AbstractApplication.extend({
             label: "alcemarIntro",
             urls: [ "dist/audio/efeitos/intro.mp3" ],
             volume: .8,
+            loop: !1
+        }, {
+            label: "faleceu",
+            urls: [ "dist/audio/efeitos/faleceu.mp3" ],
+            volume: .2,
             loop: !1
         }, {
             label: "tiro",
@@ -1610,20 +1615,20 @@ var Application = AbstractApplication.extend({
     },
     getToday: function(callback) {
         APP.showModal("Carregando"), this.serverApi.getToday(function(message) {
-            "error" === message && (callback([]), APP.textModal("Error")), APP.hideModal(1), 
-            callback(message);
+            "error" === message && (callback([]), APP.textModal("Erro ao carregar o ranking, tente novamente mais tarde")), 
+            APP.hideModal(1), callback(message);
         });
     },
     getAll: function(callback) {
         APP.showModal("Carregando"), this.serverApi.getAll(function(message) {
-            "error" === message && (callback([]), APP.textModal("Error")), APP.hideModal(1), 
-            callback(message);
+            "error" === message && (callback([]), APP.textModal("Erro ao carregar o ranking, tente novamente mais tarde")), 
+            APP.hideModal(1), callback(message);
         });
     },
     get30: function(callback) {
         APP.showModal("Carregando"), this.serverApi.getMonth(function(message) {
-            "error" === message && (callback([]), APP.textModal("Error")), APP.hideModal(1), 
-            callback(message);
+            "error" === message && (callback([]), APP.textModal("Erro ao carregar o ranking, tente novamente mais tarde")), 
+            APP.hideModal(1), callback(message);
         });
     },
     isObject: function(obj) {
@@ -1636,14 +1641,17 @@ var Application = AbstractApplication.extend({
                 character: this.highscoreChar,
                 points: this.highscore
             };
-            APP.showModal("Salvando"), this.serverApi.token ? this.serverApi.sendScore(message, function(response) {
+            APP.showModal("Salvando sua pontuação no ranking"), this.serverApi.token ? this.serverApi.sendScore(message, function(response) {
                 self.isObject(response) && response.shareUrl ? (APP.textModal("Dados salvos com sucesso!"), 
-                APP.hideModal(2)) : (APP.textModal("Error"), APP.hideModal(3));
+                APP.hideModal(2)) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
+                APP.hideModal(2));
             }) : this.serverApi.openFacebook(function(status) {
                 "connected" === status ? self.serverApi.sendScore(message, function(response) {
                     self.isObject(response) && response.shareUrl ? (APP.textModal("Dados salvos com sucesso!"), 
-                    APP.hideModal(2)) : (APP.textModal("Error"), APP.hideModal(3));
-                }) : (APP.textModal("Error"), APP.hideModal(3));
+                    APP.hideModal(2)) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
+                    APP.hideModal(2));
+                }) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
+                APP.hideModal(2));
             });
         }
     },
@@ -1988,7 +1996,7 @@ var Application = AbstractApplication.extend({
             this.playerModel && this.playerModel.currentEnergy > 1.1 * this.playerModel.energyCoast ? this.playerModel.currentEnergy -= this.playerModel.energyCoast : this.gameOver = !0, 
             this.gameOver && (this.red.gameOver = !0, this.red.velocity.y += .05, this.red.getPosition().y > windowHeight + this.red.getContent().height)) {
                 var newPlayers = APP.getGameModel().addPoints();
-                this.hideBars(), this.endModal.show(newPlayers);
+                this.hideBars(), this.endModal.show(newPlayers), APP.audioController.playSound("faleceu");
             }
             this.bulletBar && this.bulletBar.updateBar(this.playerModel.currentBulletEnergy, this.playerModel.maxBulletEnergy), 
             this.energyBar && this.energyBar.updateBar(this.playerModel.currentEnergy, this.playerModel.maxEnergy), 
@@ -2401,7 +2409,7 @@ var Application = AbstractApplication.extend({
             ease: "easeOutBack"
         })), this.zerarCookie = new DefaultButton("creditoButton.png", "creditoButtonOver.png"), 
         this.zerarCookie.build(200, 200), scaleConverter(this.zerarCookie.height, windowHeight, .2, this.zerarCookie), 
-        this.zerarCookie.setPosition(20, 100), this.addChild(this.zerarCookie), this.zerarCookie.addLabel(new PIXI.Text("Zerar", {
+        this.zerarCookie.setPosition(20, 100), this.zerarCookie.addLabel(new PIXI.Text("Zerar", {
             align: "center",
             fill: "#033E43",
             font: "50px Luckiest Guy",

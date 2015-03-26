@@ -22,6 +22,12 @@ var AudioController = Class.extend({
 				loop: false
 			},
 			{
+				label:'faleceu',
+				urls: ['dist/audio/efeitos/faleceu.mp3'],
+				volume: 0.2,
+				loop: false
+			},
+			{
 				label:'tiro',
 				urls: ['dist/audio/efeitos/pop2.mp3'],
 				volume: 0.1,

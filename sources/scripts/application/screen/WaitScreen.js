@@ -175,7 +175,7 @@ var WaitScreen = AbstractScreen.extend({
         scaleConverter(this.zerarCookie.height, windowHeight, 0.2, this.zerarCookie);
 
         this.zerarCookie.setPosition( 20, 100);
-        this.addChild(this.zerarCookie);
+        // this.addChild(this.zerarCookie);
         this.zerarCookie.addLabel(new PIXI.Text('Zerar', { align:'center', fill:'#033E43', font:'50px Luckiest Guy', wordWrap:true, wordWrapWidth:300}),28,80);
         this.zerarCookie.clickCallback = function(){
             APP.getGameModel().zerarTudo();

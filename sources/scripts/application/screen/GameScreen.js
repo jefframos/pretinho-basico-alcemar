@@ -211,6 +211,7 @@ var GameScreen = AbstractScreen.extend({
                 var newPlayers = APP.getGameModel().addPoints();
                 this.hideBars();
                 this.endModal.show(newPlayers);
+                APP.audioController.playSound('faleceu');
             }
         }
         if(this.bulletBar){
