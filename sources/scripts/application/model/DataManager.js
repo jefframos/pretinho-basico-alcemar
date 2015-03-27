@@ -76,8 +76,9 @@ var DataManager = Class.extend({
 					if (status === 'connected') {
 						self.serverApi.sendScore(message, function(response) {
 							if (self.isObject(response) && !!response.shareUrl) {
-								APP.textModal('Dados salvos com sucesso!');
+								//APP.textModal('Dados salvos com sucesso!');
 								APP.hideModal(2);
+								share(response.shareUrl);
 								// success
 							} else {
 								APP.textModal('Ocorreu um erro com a autenticação no seu Facebook, tente novamente.');
@@ -94,8 +95,9 @@ var DataManager = Class.extend({
 			} else {
 				this.serverApi.sendScore(message, function(response) {
 					if (self.isObject(response) && !!response.shareUrl) {
-						APP.textModal('Dados salvos com sucesso!');
+						//APP.textModal('Dados salvos com sucesso!');
 						APP.hideModal(2);
+						share(response.shareUrl);
 						// success
 					} else {
 						APP.textModal('Ocorreu um erro com a autenticação no seu Facebook, tente novamente.');

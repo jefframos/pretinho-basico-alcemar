@@ -1642,13 +1642,11 @@ var Application = AbstractApplication.extend({
                 points: this.highscore
             };
             APP.showModal("Salvando sua pontuação no ranking"), this.serverApi.token ? this.serverApi.sendScore(message, function(response) {
-                self.isObject(response) && response.shareUrl ? (APP.textModal("Dados salvos com sucesso!"), 
-                APP.hideModal(2)) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
+                self.isObject(response) && response.shareUrl ? (APP.hideModal(2), share(response.shareUrl)) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
                 APP.hideModal(2));
             }) : this.serverApi.openFacebook(function(status) {
                 "connected" === status ? self.serverApi.sendScore(message, function(response) {
-                    self.isObject(response) && response.shareUrl ? (APP.textModal("Dados salvos com sucesso!"), 
-                    APP.hideModal(2)) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
+                    self.isObject(response) && response.shareUrl ? (APP.hideModal(2), share(response.shareUrl)) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
                     APP.hideModal(2));
                 }) : (APP.textModal("Ocorreu um erro com a autenticação no seu Facebook, tente novamente."), 
                 APP.hideModal(2));

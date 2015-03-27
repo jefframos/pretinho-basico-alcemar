@@ -8,6 +8,10 @@
 <author>Chilimonk</author>
 <content src="index.html"/>
 <access origin="*"/>
+<icon platform="android" src="sources/icones/android/Icon_36.png" density="ldpi" width="36" height="36"/>
+<icon platform="android" src="sources/icones/android/Icon_48.png" density="mdpi" width="48" height="48"/>
+<icon platform="android" src="sources/icones/android/Icon_72.png" density="hdpi" width="72" height="72"/>
+<icon platform="android" src="sources/icones/android/Icon_96.png" density="xhdpi" width="96" height="96"/>
 <intelxdk:plugin intelxdk:name="Device" intelxdk:value="org.apache.cordova.device" intelxdk:version="0.2.9"/>
 <intelxdk:plugin intelxdk:name="SplashScreen" intelxdk:value="org.apache.cordova.splashscreen" intelxdk:version="0.3.0"/>
 <intelxdk:plugin intelxdk:name="App Security API" intelxdk:value="com.intel.security"/>
