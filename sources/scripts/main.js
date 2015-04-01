@@ -33,43 +33,48 @@ function possibleFullscreen(){
     return  elem.requestFullscreen || elem.msRequestFullscreen || elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
 }
 function updateResolution(orientation, scale){
-    if(orientation === 'portait'){
-        if(screen.height > screen.width){
-            windowWidth = screen.width * scale;
-            windowWidthVar = screen.width;
+    // if(orientation === 'portait'){
+    //     if(screen.height > screen.width){
+    //         windowWidth = screen.width * scale;
+    //         windowWidthVar = screen.width;
             
-            if(possibleFullscreen()){
-                windowHeight =  screen.height * scale;
-                windowHeightVar =  screen.height;
+    //         if(possibleFullscreen()){
+    //             windowHeight =  screen.height * scale;
+    //             windowHeightVar =  screen.height;
                 
-            }else{
-                windowHeight =  window.devicePixelRatio >= 2 ? window.innerHeight * scale : window.outerHeight * scale;//window.outerHeight * scale;
-                windowHeightVar =  window.outerHeight;
-            }
+    //         }else{
+    //             windowHeight =  window.devicePixelRatio >= 2 ? window.innerHeight * scale : window.outerHeight * scale;//window.outerHeight * scale;
+    //             windowHeightVar =  window.outerHeight;
+    //         }
             
 
-        }else{
-            windowWidth = screen.height * scale;
-            windowHeight = screen.width * scale;
+    //     }else{
+    //         windowWidth = screen.height * scale;
+    //         windowHeight = screen.width * scale;
 
-            windowWidthVar = screen.height;
-            windowHeightVar = screen.width;
-        }
-    }else{
-        if(screen.height < screen.width){
-            windowWidth = screen.width * scale;
-            windowHeight = screen.height * scale;
+    //         windowWidthVar = screen.height;
+    //         windowHeightVar = screen.width;
+    //     }
+    // }else{
+    //     if(screen.height < screen.width){
+    //         windowWidth = screen.width * scale;
+    //         windowHeight = screen.height * scale;
 
-            windowWidthVar = screen.width;
-            windowHeightVar = screen.height;
-        }else{
-            windowWidth = screen.height * scale;
-            windowHeight = screen.width * scale;
+    //         windowWidthVar = screen.width;
+    //         windowHeightVar = screen.height;
+    //     }else{
+    //         windowWidth = screen.height * scale;
+    //         windowHeight = screen.width * scale;
 
-            windowWidthVar = screen.height;
-            windowHeightVar = screen.width;
-        }
-    }
+    //         windowWidthVar = screen.height;
+    //         windowHeightVar = screen.width;
+    //     }
+    // }
+    windowWidth = 414;
+    windowHeight = 736;
+
+    windowWidthVar = 414;
+    windowHeightVar = 736;
     // windowWidth = screen.height * scale;
     // windowHeight = screen.width * scale;
     realWindowWidth = windowWidth;

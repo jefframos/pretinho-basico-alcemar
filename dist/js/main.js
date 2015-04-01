@@ -103,14 +103,8 @@ function possibleFullscreen() {
     return elem.requestFullscreen || elem.msRequestFullscreen || elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
 }
 
-function updateResolution(orientation, scale) {
-    "portait" === orientation ? screen.height > screen.width ? (windowWidth = screen.width * scale, 
-    windowWidthVar = screen.width, possibleFullscreen() ? (windowHeight = screen.height * scale, 
-    windowHeightVar = screen.height) : (windowHeight = window.devicePixelRatio >= 2 ? window.innerHeight * scale : window.outerHeight * scale, 
-    windowHeightVar = window.outerHeight)) : (windowWidth = screen.height * scale, windowHeight = screen.width * scale, 
-    windowWidthVar = screen.height, windowHeightVar = screen.width) : screen.height < screen.width ? (windowWidth = screen.width * scale, 
-    windowHeight = screen.height * scale, windowWidthVar = screen.width, windowHeightVar = screen.height) : (windowWidth = screen.height * scale, 
-    windowHeight = screen.width * scale, windowWidthVar = screen.height, windowHeightVar = screen.width), 
+function updateResolution() {
+    windowWidth = 414, windowHeight = 736, windowWidthVar = 414, windowHeightVar = 736, 
     realWindowWidth = windowWidth, realWindowHeight = windowHeight;
 }
 
