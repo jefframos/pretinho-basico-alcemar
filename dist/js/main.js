@@ -1,4 +1,4 @@
-/*! jefframos 27-03-2015 */
+/*! jefframos 01-04-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -98,19 +98,26 @@ function testMobile() {
     return Modernizr.touch;
 }
 
+function possibleFullscreen() {
+    var elem = gameView;
+    return elem.requestFullscreen || elem.msRequestFullscreen || elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
+}
+
 function updateResolution(orientation, scale) {
     "portait" === orientation ? screen.height > screen.width ? (windowWidth = screen.width * scale, 
-    windowHeight = screen.height * scale, windowWidthVar = screen.width, windowHeightVar = screen.height) : (windowWidth = screen.height * scale, 
-    windowHeight = screen.width * scale, windowWidthVar = screen.height, windowHeightVar = screen.width) : screen.height < screen.width ? (windowWidth = screen.width * scale, 
+    windowWidthVar = screen.width, possibleFullscreen() ? (windowHeight = screen.height * scale, 
+    windowHeightVar = screen.height) : (windowHeight = window.devicePixelRatio >= 2 ? window.innerHeight * scale : window.outerHeight * scale, 
+    windowHeightVar = window.outerHeight)) : (windowWidth = screen.height * scale, windowHeight = screen.width * scale, 
+    windowWidthVar = screen.height, windowHeightVar = screen.width) : screen.height < screen.width ? (windowWidth = screen.width * scale, 
     windowHeight = screen.height * scale, windowWidthVar = screen.width, windowHeightVar = screen.height) : (windowWidth = screen.height * scale, 
     windowHeight = screen.width * scale, windowWidthVar = screen.height, windowHeightVar = screen.width), 
     realWindowWidth = windowWidth, realWindowHeight = windowHeight;
 }
 
 function update() {
-    requestAnimFrame(update), !init && window.innerWidth > window.innerHeight && (resizeProportional = !0, 
-    windowWidth = 667, windowHeight = 375, realWindowWidth = 667, realWindowHeight = 375, 
-    gameScale = 1.3, testMobile() ? (updateResolution("landscape", gameScale), renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {
+    requestAnimFrame(update), init || (resizeProportional = !0, windowWidth = 667, windowHeight = 375, 
+    realWindowWidth = 667, realWindowHeight = 375, gameScale = 1.3, testMobile() ? (updateResolution("landscape", gameScale), 
+    renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {
         antialias: !0,
         resolution: retina,
         view: gameView
@@ -118,18 +125,13 @@ function update() {
         antialias: !0,
         resolution: retina,
         view: gameView
-    }), renderer.view.style.width = windowWidth + "px", renderer.view.style.height = windowHeight + "px", 
-    APP = new Application(), APP.build(), APP.show(), init = !0);
+    }), renderer && (renderer.view.style.width = windowWidth + "px", renderer.view.style.height = windowHeight + "px", 
+    APP = new Application(), APP.build(), APP.show(), init = !0));
     var tempRation = window.innerHeight / windowHeight, ratioRez = resizeProportional ? tempRation < window.innerWidth / realWindowWidth ? tempRation : window.innerWidth / realWindowWidth : 1;
     windowWidthVar = realWindowWidth * ratioRez * ratio, windowHeightVar = realWindowHeight * ratioRez * ratio, 
     windowWidthVar > realWindowWidth && (windowWidthVar = realWindowWidth), windowHeightVar > realWindowHeight && (windowHeightVar = realWindowHeight), 
     renderer.view.style.width = windowWidthVar + "px", renderer.view.style.height = windowHeightVar + "px", 
     APP.update(), renderer.render(APP.stage);
-}
-
-function possibleFullscreen() {
-    var elem = gameView;
-    return elem.requestFullscreen || elem.msRequestFullscreen || elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
 }
 
 function fullscreen() {
