@@ -1,0 +1,16 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "org.apache.cordova.device": {},
+        "org.apache.cordova.splashscreen": {},
+        "com.intel.security": {},
+        "org.apache.cordova.inappbrowser": {}
+    },
+    "dependent_plugins": {}
+}

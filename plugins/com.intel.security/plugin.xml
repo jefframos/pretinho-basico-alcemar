@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"    
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.intel.security"
+    version="1.1.0">
+    <name>Intel Security Services plugin</name>
+    <description>Intel Security Services Plugin</description>
+    <license></license>
+    <keywords>Intel,intel.security,intel.security.Services,Security Services</keywords>
+
+    <js-module src="www/services.js" name="Services">
+        <clobbers target="intel.security" />
+    </js-module>
+	
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="IntelSecurity" >
+                <param name="android-package" value="com.intel.security.Services"/>
+            </feature>
+        </config-file>
+    </platform>
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/widget/plugins" >
+            <feature name="IntelSecurity">
+                <param name="ios-package" value="sService" />
+            </feature>
+        </config-file>
+    </platform>
+	
+	<!-- windows8 -->
+    <platform name="windows8">
+        <config-file target="config.xml" parent="/*">
+            <feature name="IntelSecurity" >
+                <param name="wp-package" value="com.intel.security"/>
+            </feature>
+        </config-file>		
+	</platform>
+	
+	<!-- windows -->
+    <platform name="windows">
+        <config-file target="config.xml" parent="/widget">
+            <feature name="IntelSecurity" >
+                <param name="windows-package" value="com.intel.security"/>
+            </feature>
+        </config-file>		
+    </platform>
+	
+</plugin>
