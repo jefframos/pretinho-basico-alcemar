@@ -109,8 +109,8 @@ function updateResolution() {
 }
 
 function update() {
-    requestAnimFrame(update), init || (resizeProportional = !0, windowWidth = 667, windowHeight = 375, 
-    realWindowWidth = 667, realWindowHeight = 375, gameScale = 1.3, testMobile() ? (updateResolution("landscape", gameScale), 
+    requestAnimFrame(update), init || (resizeProportional = !0, windowWidth = 414, windowHeight = 736, 
+    realWindowWidth = 414, realWindowHeight = 736, gameScale = 1.3, testMobile() ? (updateResolution("landscape", gameScale), 
     renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {
         antialias: !0,
         resolution: retina,
@@ -3234,7 +3234,7 @@ var Application = AbstractApplication.extend({
             callback("error");
         });
     }
-}), resizeProportional = !0, windowWidth = 667, windowHeight = 375, realWindowWidth = 667, realWindowHeight = 375, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
+}), resizeProportional = !0, windowWidth = 414, windowHeight = 736, realWindowWidth = 414, realWindowHeight = 736, gameScale = 1.3, windowWidthVar = window.innerHeight, windowHeightVar = window.innerWidth, gameView = document.getElementById("game"), ratio = 1, init = !1, renderer, APP, retina = 1, initialize = function() {
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 }, isfull = !1;
 
