@@ -125,8 +125,12 @@ function update() {
         antialias: !0,
         resolution: retina,
         view: gameView
-    }), renderer && (renderer.view.style.width = windowWidth + "px", renderer.view.style.height = windowHeight + "px", 
-    APP = new Application(), APP.build(), APP.show(), init = !0));
+    }), renderer ? (renderer.view.style.width = windowWidth + "px", renderer.view.style.height = windowHeight + "px", 
+    APP = new Application(), APP.build(), APP.show(), init = !0) : renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, {
+        antialias: !0,
+        resolution: retina,
+        view: gameView
+    }));
     var tempRation = window.innerHeight / windowHeight, ratioRez = resizeProportional ? tempRation < window.innerWidth / realWindowWidth ? tempRation : window.innerWidth / realWindowWidth : 1;
     windowWidthVar = realWindowWidth * ratioRez * ratio, windowHeightVar = realWindowHeight * ratioRez * ratio, 
     windowWidthVar > realWindowWidth && (windowWidthVar = realWindowWidth), windowHeightVar > realWindowHeight && (windowHeightVar = realWindowHeight), 
