@@ -9,17 +9,20 @@ var DataManager = Class.extend({
 			APP.cookieManager.getSafeCookie('highscore', function (data) {
 				if (data === null) {
 					self.highscore = null;
-				} else {
-					self.highscore = data;
-				}
-			});
-			APP.cookieManager.getSafeCookie('highscoreChar', function (data) {
-				if (data === null) {
 					self.highscoreChar = 'sem nome';
 				} else {
-					self.highscoreChar = data;
+					var send = JSON.parse(data);
+					self.highscore = send.points;
+					self.highscoreChar = send.character;
 				}
 			});
+			// APP.cookieManager.getSafeCookie('highscoreChar', function (data) {
+			// 	if (data === null) {
+			// 		self.highscoreChar = 'sem nome';
+			// 	} else {
+			// 		self.highscoreChar = data;
+			// 	}
+			// });
 		});
 
 		// this.highscore = APP.cookieManager.getCookie('highscore')? APP.cookieManager.getCookie('highscore'): null;
@@ -190,8 +193,8 @@ var DataManager = Class.extend({
 		};
 		this.highscore = send.points;//JSON.parse(sendObject);
 		this.highscoreChar = send.character;//JSON.parse(sendObject);
-		APP.cookieManager.setSafeCookie('highscore', this.highscore);
-		APP.cookieManager.setSafeCookie('highscoreChar', APP.getGameModel().playerModels[APP.getGameModel().currentID].id);
+		APP.cookieManager.setSafeCookie('highscore', JSON.stringify(send));
+		// APP.cookieManager.setSafeCookie('highscoreChar', APP.getGameModel().playerModels[APP.getGameModel().currentID].id);
 		// APP.cookieManager.setCookie('highscore', this.highscore, 500);
 		// APP.cookieManager.setCookie('highscoreChar', APP.getGameModel().playerModels[APP.getGameModel().currentID].id, 500);
 		// this.highscore = this.highscore.split(',');

@@ -1617,9 +1617,10 @@ var Application = AbstractApplication.extend({
         var self = this;
         this.highscore = null, this.highscoreChar = "sem nome", document.addEventListener("deviceready", function() {
             APP.cookieManager.getSafeCookie("highscore", function(data) {
-                self.highscore = null === data ? null : data;
-            }), APP.cookieManager.getSafeCookie("highscoreChar", function(data) {
-                self.highscoreChar = null === data ? "sem nome" : data;
+                if (null === data) self.highscore = null, self.highscoreChar = "sem nome"; else {
+                    var send = JSON.parse(data);
+                    self.highscore = send.points, self.highscoreChar = send.character;
+                }
             });
         }), this.serverApi = new ServerApi();
     },
@@ -1671,8 +1672,7 @@ var Application = AbstractApplication.extend({
             character: APP.getGameModel().playerModels[APP.getGameModel().currentID].id,
             points: APP.getGameModel().currentPoints
         };
-        this.highscore = send.points, this.highscoreChar = send.character, APP.cookieManager.setSafeCookie("highscore", this.highscore), 
-        APP.cookieManager.setSafeCookie("highscoreChar", APP.getGameModel().playerModels[APP.getGameModel().currentID].id);
+        this.highscore = send.points, this.highscoreChar = send.character, APP.cookieManager.setSafeCookie("highscore", JSON.stringify(send));
     }
 }), PlayerModel = Class.extend({
     init: function(graphicsObject, statsObject) {
