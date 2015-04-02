@@ -5,19 +5,21 @@ var DataManager = Class.extend({
 		this.highscore = null;
 		this.highscoreChar = 'sem nome';
 
-		APP.cookieManager.getSafeCookie('highscore', function (data) {
-			if (data === null) {
-				self.highscore = null;
-			} else {
-				self.highscore = data;
-			}
-		});
-		APP.cookieManager.getSafeCookie('highscoreChar', function (data) {
-			if (data === null) {
-				self.highscoreChar = 'sem nome';
-			} else {
-				self.highscoreChar = data;
-			}
+		document.addEventListener('deviceready', function() {
+			APP.cookieManager.getSafeCookie('highscore', function (data) {
+				if (data === null) {
+					self.highscore = null;
+				} else {
+					self.highscore = data;
+				}
+			});
+			APP.cookieManager.getSafeCookie('highscoreChar', function (data) {
+				if (data === null) {
+					self.highscoreChar = 'sem nome';
+				} else {
+					self.highscoreChar = data;
+				}
+			});
 		});
 
 		// this.highscore = APP.cookieManager.getCookie('highscore')? APP.cookieManager.getCookie('highscore'): null;

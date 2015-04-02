@@ -180,16 +180,15 @@ function fullscreen(){
 }
 
 
-document.addEventListener('deviceready', function() {
-    (function() {
-        var App = {
-            init: function () {
-                initialize();
-            }
-        };
-        App.init();
-    })();
-});
+
+(function() {
+    var App = {
+        init: function () {
+            initialize();
+        }
+    };
+    App.init();
+})();
 // if(!possibleFullscreen())
 // {
 // }

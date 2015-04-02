@@ -1615,10 +1615,12 @@ var Application = AbstractApplication.extend({
 }), DataManager = Class.extend({
     init: function() {
         var self = this;
-        this.highscore = null, this.highscoreChar = "sem nome", APP.cookieManager.getSafeCookie("highscore", function(data) {
-            self.highscore = null === data ? null : data;
-        }), APP.cookieManager.getSafeCookie("highscoreChar", function(data) {
-            self.highscoreChar = null === data ? "sem nome" : data;
+        this.highscore = null, this.highscoreChar = "sem nome", document.addEventListener("deviceready", function() {
+            APP.cookieManager.getSafeCookie("highscore", function(data) {
+                self.highscore = null === data ? null : data;
+            }), APP.cookieManager.getSafeCookie("highscoreChar", function(data) {
+                self.highscoreChar = null === data ? "sem nome" : data;
+            });
         }), this.serverApi = new ServerApi();
     },
     getToday: function(callback) {
@@ -3271,13 +3273,11 @@ var Application = AbstractApplication.extend({
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 }, isfull = !1;
 
-document.addEventListener("deviceready", function() {
-    !function() {
-        var App = {
-            init: function() {
-                initialize();
-            }
-        };
-        App.init();
-    }();
-});
+!function() {
+    var App = {
+        init: function() {
+            initialize();
+        }
+    };
+    App.init();
+}();
