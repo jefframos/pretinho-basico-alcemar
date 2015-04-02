@@ -37,16 +37,16 @@ function updateResolution(orientation, scale){
         if(screen.height > screen.width){
             windowWidth = screen.width * scale;
             windowWidthVar = screen.width;
-            
+
             if(possibleFullscreen()){
                 windowHeight =  screen.height * scale;
                 windowHeightVar =  screen.height;
-                
+
             }else{
                 windowHeight =  window.devicePixelRatio >= 2 ? window.innerHeight * scale : window.outerHeight * scale;//window.outerHeight * scale;
                 windowHeightVar =  window.outerHeight;
             }
-            
+
 
         }else{
             windowWidth = screen.height * scale;
@@ -75,7 +75,7 @@ function updateResolution(orientation, scale){
     realWindowWidth = windowWidth;
     realWindowHeight = windowHeight;
 
-    // alert(realWindowWidth+' - '+screen.width+' 
+    // alert(realWindowWidth+' - '+screen.width+'
 }
 function update() {
     requestAnimFrame(update );
@@ -90,7 +90,7 @@ function update() {
 
         gameScale = 1.3;
 
-        
+
         if(testMobile()){
             updateResolution('landscape', gameScale);
             renderer = PIXI.autoDetectRecommendedRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
@@ -113,7 +113,7 @@ function update() {
             renderer = PIXI.autoDetectRenderer(realWindowWidth, realWindowHeight, {antialias:true, resolution:retina, view:gameView});
         }
     }
-    
+
     // meter.tickStart();
     var tempRation =  (window.innerHeight/windowHeight);
     var ratioRez = resizeProportional ? tempRation < (window.innerWidth/realWindowWidth)?tempRation:(window.innerWidth/realWindowWidth) : 1;
@@ -131,7 +131,7 @@ function update() {
     renderer.view.style.width = windowWidthVar+'px';
     renderer.view.style.height = windowHeightVar+'px';
 
-    
+
     APP.update();
     renderer.render(APP.stage);
     // meter.tick();
@@ -180,15 +180,16 @@ function fullscreen(){
 }
 
 
-
-(function() {
-    var App = {
-        init: function () {
-            initialize();
-        }
-    };
-    App.init();
-})();
+document.addEventListener('deviceready', function() {
+    (function() {
+        var App = {
+            init: function () {
+                initialize();
+            }
+        };
+        App.init();
+    })();
+});
 // if(!possibleFullscreen())
 // {
 // }

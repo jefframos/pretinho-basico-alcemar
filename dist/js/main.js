@@ -1,4 +1,4 @@
-/*! jefframos 01-04-2015 */
+/*! jefframos 02-04-2015 */
 function rgbToHsl(r, g, b) {
     r /= 255, g /= 255, b /= 255;
     var h, s, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
@@ -1614,10 +1614,12 @@ var Application = AbstractApplication.extend({
     serialize: function() {}
 }), DataManager = Class.extend({
     init: function() {
-        this.highscore = APP.cookieManager.getCookie("highscore") ? APP.cookieManager.getCookie("highscore") : null, 
-        this.highscoreChar = APP.cookieManager.getCookie("highscoreChar") ? APP.cookieManager.getCookie("highscoreChar") : "sem nome", 
-        this.highscore && console.log("high", this.highscore), this.highscoreChar && console.log("highscoreChar", this.highscoreChar), 
-        this.serverApi = new ServerApi();
+        var self = this;
+        this.highscore = null, this.highscoreChar = "sem nome", APP.cookieManager.getSafeCookie("highscore", function(data) {
+            self.highscore = null === data ? null : data;
+        }), APP.cookieManager.getSafeCookie("highscoreChar", function(data) {
+            self.highscoreChar = null === data ? "sem nome" : data;
+        }), this.serverApi = new ServerApi();
     },
     getToday: function(callback) {
         APP.showModal("Carregando"), this.serverApi.getToday(function(message) {
@@ -1667,8 +1669,8 @@ var Application = AbstractApplication.extend({
             character: APP.getGameModel().playerModels[APP.getGameModel().currentID].id,
             points: APP.getGameModel().currentPoints
         };
-        this.highscore = send.points, this.highscoreChar = send.character, APP.cookieManager.setCookie("highscore", this.highscore, 500), 
-        APP.cookieManager.setCookie("highscoreChar", APP.getGameModel().playerModels[APP.getGameModel().currentID].id, 500);
+        this.highscore = send.points, this.highscoreChar = send.character, APP.cookieManager.setSafeCookie("highscore", this.highscore), 
+        APP.cookieManager.setSafeCookie("highscoreChar", APP.getGameModel().playerModels[APP.getGameModel().currentID].id);
     }
 }), PlayerModel = Class.extend({
     init: function(graphicsObject, statsObject) {
@@ -3046,6 +3048,31 @@ var Application = AbstractApplication.extend({
     },
     getCookie: function(name) {
         return (name = new RegExp("(?:^|;\\s*)" + ("" + name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") + "=([^;]*)").exec(document.cookie)) && name[1];
+    },
+    setSafeCookie: function(key, value) {
+        intel.security.secureStorage.write(function() {
+            console.log("success");
+        }, function(errorObj) {
+            console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message);
+        }, {
+            id: key,
+            data: value
+        });
+    },
+    getSafeCookie: function(key, callback) {
+        intel.security.secureStorage.read(function(instanceID) {
+            intel.security.secureData.getData(function(data) {
+                callback(data);
+            }, function(errorObj) {
+                console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message), 
+                callback(null);
+            }, instanceID);
+        }, function(errorObj) {
+            console.log("fail: code = " + errorObj.code + ", message = " + errorObj.message), 
+            callback(null);
+        }, {
+            id: key
+        });
     }
 }), Environment = Class.extend({
     init: function(maxWidth, maxHeight) {
@@ -3244,11 +3271,13 @@ var Application = AbstractApplication.extend({
     PIXI.BaseTexture.SCALE_MODE = PIXI.scaleModes.NEAREST, requestAnimFrame(update);
 }, isfull = !1;
 
-!function() {
-    var App = {
-        init: function() {
-            initialize();
-        }
-    };
-    App.init();
-}();
+document.addEventListener("deviceready", function() {
+    !function() {
+        var App = {
+            init: function() {
+                initialize();
+            }
+        };
+        App.init();
+    }();
+});

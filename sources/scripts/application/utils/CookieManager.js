@@ -26,18 +26,18 @@ var CookieManager = Class.extend({
 						intel.security.secureData.getData(
 								function(data) {
 										callback(data);
-								},
+									},
 								function(errorObj) {
 										console.log('fail: code = ' + errorObj.code + ', message = ' + errorObj.message);
 										callback(null);
-								},
+									},
 								instanceID
 						);
-				},
+					},
 				function(errorObj) {
 						console.log('fail: code = ' + errorObj.code + ', message = ' + errorObj.message);
 						callback(null);
-				},
+					},
 				{'id': key}
 		);
 	}
