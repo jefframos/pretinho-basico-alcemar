@@ -11,6 +11,36 @@ var CookieManager = Class.extend({
 	getCookie:function(name){
 		return (name = new RegExp('(?:^|;\\s*)' + ('' + name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
 	},
+
+	setSafeCookie: function (key, value) {
+		intel.security.secureStorage.write(
+				function() {console.log('success');},
+				function(errorObj) {console.log('fail: code = ' + errorObj.code + ', message = ' + errorObj.message);},
+				{'id': key, 'data': value }
+		);
+	},
+
+	getSafeCookie: function (key, callback) {
+		intel.security.secureStorage.read(
+				function(instanceID) {
+						intel.security.secureData.getData(
+								function(data) {
+										callback(data);
+								},
+								function(errorObj) {
+										console.log('fail: code = ' + errorObj.code + ', message = ' + errorObj.message);
+										callback(null);
+								},
+								instanceID
+						);
+				},
+				function(errorObj) {
+						console.log('fail: code = ' + errorObj.code + ', message = ' + errorObj.message);
+						callback(null);
+				},
+				{'id': key}
+		);
+	}
 });
 	// checkCookie:function(){
 	// 	var user = getCookie('username');
