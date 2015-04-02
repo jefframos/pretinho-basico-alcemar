@@ -534,39 +534,39 @@ var AppModel = Class.extend({
 		this.currentPlayerModel = this.playerModels[id];
 	},
 	zerarTudo:function(){
-		this.currentHorde = 0;
-		this.totalPoints = 0;
-		this.totalBirds = 1;
-		this.totalPlayers = 1;
-		APP.cookieManager.setCookie('totalPoints', 0, 500);
-		APP.cookieManager.setCookie('totalBirds', 1, 500);
+		// this.currentHorde = 0;
+		// this.totalPoints = 0;
+		// this.totalBirds = 1;
+		// this.totalPlayers = 1;
+		// APP.cookieManager.setCookie('totalPoints', 0, 500);
+		// APP.cookieManager.setCookie('totalBirds', 1, 500);
 
-		APP.cookieManager.setCookie('highscore', 0, 500);
-		APP.cookieManager.setCookie('highscoreChar', '', 500);
+		// APP.cookieManager.setCookie('highscore', 0, 500);
+		// APP.cookieManager.setCookie('highscoreChar', '', 500);
 
-		for (var i = this.playerModels.length - 1; i >= 0; i--) {
-			if(this.playerModels[i].toAble <= this.totalPoints){
-				this.playerModels[i].able = true;
-			}else{
-				this.playerModels[i].able = false;
-			}
-		}
+		// for (var i = this.playerModels.length - 1; i >= 0; i--) {
+		// 	if(this.playerModels[i].toAble <= this.totalPoints){
+		// 		this.playerModels[i].able = true;
+		// 	}else{
+		// 		this.playerModels[i].able = false;
+		// 	}
+		// }
 	},
 	maxPoints:function(){
-		this.currentHorde = 0;
-		this.totalPoints = 999999;
-		this.totalBirds = 8;
-		APP.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
-		APP.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
+		// this.currentHorde = 0;
+		// this.totalPoints = 999999;
+		// this.totalBirds = 8;
+		// APP.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
+		// APP.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
 
 
-		for (var i = this.playerModels.length - 1; i >= 0; i--) {
-			if(this.playerModels[i].toAble <= this.totalPoints){
-				this.playerModels[i].able = true;
-			}else{
-				this.playerModels[i].able = false;
-			}
-		}
+		// for (var i = this.playerModels.length - 1; i >= 0; i--) {
+		// 	if(this.playerModels[i].toAble <= this.totalPoints){
+		// 		this.playerModels[i].able = true;
+		// 	}else{
+		// 		this.playerModels[i].able = false;
+		// 	}
+		// }
 	},
 	getNewObstacle:function(screen){
 		var id = Math.floor(this.obstacleModels.length * Math.random());
@@ -606,20 +606,26 @@ var AppModel = Class.extend({
 			}
 		}
 		console.log(this.totalBirds);
-		APP.cookieManager.setCookie('totalBirds', this.totalBirds, 500);
+
+		var send = {
+			totalBirds: this.totalBirds
+		};
+		APP.cookieManager.setSafeCookie('totalBirds', JSON.stringify(send));
+
+		APP.cookieManager.setCookie('totalBirds', this.totalBirds);
 	},
 	add100Points:function(){
-		this.totalPoints += 100;
-		APP.cookieManager.setCookie('totalPoints', 100, 500);
-		this.totalPlayers = 0;
-		for (var i = this.playerModels.length - 1; i >= 0; i--) {
-			if(this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able){
-				this.playerModels[i].able = true;
-			}
-			if(this.playerModels[i].able){
-				this.totalPlayers ++;
-			}
-		}
+		// this.totalPoints += 100;
+		// APP.cookieManager.setCookie('totalPoints', 100, 500);
+		// this.totalPlayers = 0;
+		// for (var i = this.playerModels.length - 1; i >= 0; i--) {
+		// 	if(this.playerModels[i].toAble <= this.totalPoints && !this.playerModels[i].able){
+		// 		this.playerModels[i].able = true;
+		// 	}
+		// 	if(this.playerModels[i].able){
+		// 		this.totalPlayers ++;
+		// 	}
+		// }
 	},
 	addPoints:function(){
 		this.currentHorde = 0;
@@ -635,6 +641,10 @@ var AppModel = Class.extend({
 			// APP.cookieManager.setCookie('highScore', this.highScore, 500);
 			APP.dataManager.saveScore();
 		}
+		var send = {
+			totalPoints: this.totalPoints
+		};
+		APP.cookieManager.setSafeCookie('totalPoints', JSON.stringify(send));
 		APP.cookieManager.setCookie('totalPoints', this.totalPoints, 500);
 		if(this.maxPoints < this.currentPoints){
 			this.maxPoints = this.currentPoints;
